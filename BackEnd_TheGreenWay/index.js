@@ -1,34 +1,37 @@
 const express = require('express');
 const fs = require('fs');
 const cors = require('cors');
-const http= require('http');
 const mysql = require('mysql');
-const initAPIs = require("./routes/index");
+const bodyParser = require('body-parser');
+const authenticationRouter = require('./routes/authenticationRouter');
 const debug = console.log.bind(console);
+//demo xem co lay dc data khi ko co token ko
+const getdataDemoRouter = require('./routes/getdataDemoRouter');
+
 // var config = require('./config/configDB.js');
-
 // var connectionDB = mysql.createConnection(config.databaseOptions);
-
 // connectionDB.connect((err)=>{
 //     if(!err){
 //         debug("Connect mySQL success!");
 
         const PORT = process.env.PORT || 3001
-        const app = express();
-        app.use(cors());
-        app.use(express.json());
-        const server = http.createServer(app);
-
-        // Khởi tạo các routes cho ứng dụng
-        // initAPIs(app);
-
+        const server = express();
+        // BodyParser to read body in header of request
+        server.use(bodyParser.json());
+        server.use(express.static('public'));
+        // Cho phep ten mien dc truy cap vao origin
+        server.use(cors());
         
 
-        server.listen(PORT,(error) => {
+        // Khai bao Routers
+        authenticationRouter(server);
+        getdataDemoRouter(server);
+
+        server.listen(PORT,(error) => { 
             if(error){
                 throw error;
             }else{
-                debug(`Server listen on port ${PORT} ...`);
+                console.log('Server listen on port 3001 ...');
             }
         });
 
