@@ -7,6 +7,7 @@ let initAuthenticationRouter = (server) => {
     router.post("/login", AuthController.login);
     router.post("/register", AuthController.register);
     router.post("/forgotpassword", AuthController.forgotpassword);
+    router.post("/resetPassword", AuthController.resetPassword);
     return server.use("/auth",router);
   }
   
