@@ -8,6 +8,6 @@ export default function* root() {
     takeLatest(LoginTypes.LOGIN_REQUEST, LoginSagas.loginUser),
     //takeLatest(LoginTypes.LOGIN_FAILED, ErrorSagas.handleError),
     takeLatest(LoginTypes.SIGN_UP_REQUEST, LoginSagas.signUpUser),
-
+    takeLatest(LoginTypes.FORGOT_REQUEST, LoginSagas.forgotEmail),
   ])
 }

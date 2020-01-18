@@ -21,10 +21,10 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10
  */
 let register = async (req, res) => {
   try {
-    // get email,password 
+    // get email,password
     const email = req.body.email;
     const password = req.body.password;
-    
+
     // validate email
     if(!emailRegex.test(email)){
 
@@ -74,13 +74,13 @@ let login = async (req, res) => {
               email: req.body.email,
               password: req.body.email,
             };
-        
+
             debug(`Thực hiện tạo mã Token, [thời gian sống 1 giờ.]`);
             const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
 
             debug(`Gửi Token và Refresh Token về cho client...`);
             return res.status(200).json({
-              success: true, 
+              success: true,
               accessToken
             });
           } catch (error) {
@@ -92,7 +92,7 @@ let login = async (req, res) => {
         // }
   //     };
   //   });
-  // });  
+  // });
 }
 
 let forgotpassword = async (req, res) => {
@@ -101,6 +101,8 @@ let forgotpassword = async (req, res) => {
     const userData = {
       email: req.body.email,
     };
+    //checkdatabase
+
     const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
       // if (user === null) {
       //   console.error('email not in database');
@@ -118,12 +120,12 @@ let forgotpassword = async (req, res) => {
 
         const mailOptions = {
           from: 'nguyencuong.3061997@gmail.com',
-          to: `cuongnmse04707@fpt.edu.vn`,
+          to: `${req.body.email}`,
           subject: 'Link To Reset Password',
           text:
             'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n'
             + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
-            + `http://localhost:3001/reset/${accessToken}\n\n`
+            + `http://localhost:3000/forgot?${accessToken}?${req.body.email}\n\n`
             + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
         };
 
@@ -134,7 +136,10 @@ let forgotpassword = async (req, res) => {
             console.error('there was an error: ', err);
           } else {
             console.log('here is the res: ', response);
-            res.status(200).json('recovery email sent');
+            res.status(200).json({
+              success: true,
+              message: 'Recovery email sent'
+            });
           }
         });
       // }

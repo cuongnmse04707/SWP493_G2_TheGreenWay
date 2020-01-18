@@ -5,9 +5,12 @@ const { Types, Creators } = createActions({
   loginRequest: ['data'],
   loginSucceed: [],
   loginFailed: ['error'],
-  signUpRequest: [],
+  signUpRequest: ['data'],
   signUpSucceed: [],
   signUpFailed: ['error'],
+  forgotRequest: ['data'],
+  forgotSucceed: ['message'],
+  forgotFailed: ['error'],
   logout: [],
 })
 
@@ -17,7 +20,8 @@ export default Creators
 //TODO: Declare initial state
 export const INITIAL_STATE = {
   errorCode: '',
-  processing: false
+  processing: false,
+  forgotMessage: ''
 }
 
 export const request = (state) => {
@@ -38,6 +42,15 @@ export const signUpSucceed = (state) => {
   return {
     ...state,
     processing: false
+  }
+}
+
+export const forgotSucceed = (state, {message}) => {
+  console.log(message)
+  return {
+    ...state,
+    processing: false,
+    forgotMessage: message
   }
 }
 
@@ -64,5 +77,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [LoginTypes.SIGN_UP_REQUEST]: request,
   [LoginTypes.SIGN_UP_SUCCEED]: signUpSucceed,
   [LoginTypes.SIGN_UP_FAILED]: failed,
+  [LoginTypes.FORGOT_REQUEST]: request,
+  [LoginTypes.FORGOT_SUCCEED]: forgotSucceed,
+  [LoginTypes.FORGOT_FAILED]: failed,
   [LoginTypes.LOGOUT]: logout
 })
