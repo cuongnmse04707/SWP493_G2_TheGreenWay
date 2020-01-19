@@ -73,8 +73,12 @@ button {
 
 }
 
+.logo-container {
+	margin: 5% 0%;
+}
+
 .intro-title-2 {
-	margin-top: 54%;
+	margin-top: 65%;
 }
 
 .intro-title-1 {
@@ -288,19 +292,4 @@ input {
 
 .container.right-panel-active .overlay-right {
 	transform: translateX(20%);
-}
-
-.social-container {
-	margin: 20px 0;
-}
-
-.social-container a {
-	border: 1px solid #DDDDDD;
-	border-radius: 50%;
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0 5px;
-	height: 40px;
-	width: 40px;
 }

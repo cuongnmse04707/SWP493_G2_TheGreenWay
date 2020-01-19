@@ -1,8 +1,8 @@
 var databaseOptions = {
-    // host: '192.168.64.2',
-    // user: 'admindemo',
-    // password : 'admindemo',
-    // database: 'ChatApp',
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'DemoSWP',
 };
 
-module.exports = {databaseOptions: databaseOptions} ;
+module.exports = { databaseOptions: databaseOptions };

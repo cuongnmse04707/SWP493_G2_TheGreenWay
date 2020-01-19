@@ -3,7 +3,7 @@ import { createReducer, createActions } from "reduxsauce"
 // TODO:Declare Action and type
 const { Types, Creators } = createActions({
   loginRequest: ['data'],
-  loginSucceed: [],
+  loginSucceed: ['data'],
   loginFailed: ['error'],
   signUpRequest: ['data'],
   signUpSucceed: [],
@@ -21,7 +21,9 @@ export default Creators
 export const INITIAL_STATE = {
   errorCode: '',
   processing: false,
-  forgotMessage: ''
+  forgotMessage: '',
+  forgotMessageError: '',
+  loginSuccess: false
 }
 
 export const request = (state) => {
@@ -31,10 +33,11 @@ export const request = (state) => {
   }
 }
 
-export const loginSucceed = (state) => {
+export const loginSucceed = (state, {data}) => {
   return {
     ...state,
-    processing: false
+    processing: false,
+    loginSuccess: data.success
   }
 }
 
@@ -46,7 +49,6 @@ export const signUpSucceed = (state) => {
 }
 
 export const forgotSucceed = (state, {message}) => {
-  console.log(message)
   return {
     ...state,
     processing: false,
@@ -62,10 +64,13 @@ export const logout = (state) => {
 }
 
 export const failed = (state, { error }) => {
+  console.log(error)
   return {
     ...state,
     processing: false,
-    errorCode: error
+    errorCode: error,
+    forgotMessage: error,
+    loginSuccess: error.success
   }
 }
 

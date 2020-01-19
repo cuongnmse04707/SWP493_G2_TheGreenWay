@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../css/login.css';
 import Menu from '../components/Menu';
-import { Form, Icon, Input, Modal } from 'antd';
+import { Form, Icon, Input, Modal, message } from 'antd';
 import 'antd/dist/antd.css';
 import Processing from '../components/Procressing'
 import { connect } from 'react-redux'
@@ -20,6 +20,11 @@ class Login extends Component {
     visible: false,
     processing: true,
     show: true,
+    username: '',
+    reEmail: '',
+    rePassword: '',
+    logEmail: '',
+    logPassword: ''
   }
 
 
@@ -66,14 +71,17 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields(['username', 'reEmail', 'rePassword'], (err, values) => {
       if (!err) {
-        console.log('da vao day', values);
-        this.setState({
-          className: 'container'
-        })
         this.props.userRegister({
           email: values.reEmail,
           password: values.rePassword
         })
+        this.props.form.resetFields()
+        setTimeout(() => {
+          this.setState({
+            className: 'container'
+          })
+          this.props.history.push('/')
+        },2000)
       }
     });
   };
@@ -82,11 +90,11 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields(['logEmail', 'logPassword'], (err, values) => {
       if (!err) {
-        console.log(values);
         this.props.userLogin({
-          logEmail: values.logEmail,
-          logPassword: values.logPassword,
+          email: values.logEmail,
+          password: values.logPassword,
         })
+        this.props.form.resetFields()
       }
     });
   };
@@ -104,13 +112,14 @@ class Login extends Component {
           <div className="form-container sign-up-container">
             <div className="form-intro" >
               <h1>Create Account</h1>
-              <div>
+              <div className="logo-container">
                 <img src={require('../images/search.png')}></img>
               </div>
               <div className="login-form-container">
                 <Form className="login-form">
                   <Form.Item>
                     {getFieldDecorator('username', {
+                      initialValue: this.state.username,
                       rules: [
                         {
                           required: true, message: 'Please input your username!'
@@ -131,6 +140,7 @@ class Login extends Component {
                   </Form.Item>
                   <Form.Item>
                     {getFieldDecorator('reEmail', {
+                      initialValue: this.state.reEmail,
                       rules: [
                         {
                           required: true, message: 'Please input your email!'
@@ -146,13 +156,14 @@ class Login extends Component {
                   </Form.Item>
                   <Form.Item>
                     {getFieldDecorator('rePassword', {
+                      initialValue: this.state.rePassword,
                       rules: [
                         { required: true, message: 'Please input your password!' },
                         { pattern: passwordRegex, message: 'Please input correct password type' },
                       ],
 
                     })(
-                      <Input
+                      <Input.Password
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         type="password"
                         placeholder="Password"
@@ -167,13 +178,14 @@ class Login extends Component {
           <div className="form-container sign-in-container">
             <div className="form-intro">
               <h1>Sign in</h1>
-              <div>
+              <div className="logo-container">
                 <img src={require('../images/search.png')}></img>
               </div>
               <div className="login-form-container">
                 <Form className="login-form">
                   <Form.Item>
                     {getFieldDecorator('logEmail', {
+                      initialValue: this.state.logEmail,
                       rules: [
                         {
                           required: true, message: 'Please input your username!'
@@ -194,9 +206,10 @@ class Login extends Component {
                   </Form.Item>
                   <Form.Item>
                     {getFieldDecorator('logPassword', {
+                      initialValue: this.state.logPassword,
                       rules: [{ required: true, message: 'Please input your Password!' }],
                     })(
-                      <Input
+                      <Input.Password
                         prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                         type="password"
                         placeholder="Password"
@@ -227,29 +240,29 @@ class Login extends Component {
               </div>
             </div>
           </div>
-            <Modal
-              title="Enter your email to get new password"
-              visible={this.state.visible}
-              onOk={this.handleOk}
-              onCancel={this.handleCancel}
-            >
-              <Form className="login-form">
-                <Form.Item>
-                  {getFieldDecorator('resetEmail', {
-                    rules: [{ required: true, message: 'Please input your email!' }],
-                  })(
-                    <Input
-                      prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                      type="text"
-                      placeholder="example abc@gmail.com"
-                    />,
-                  )}
-                  <div className="forgot-message">
-                    <p>{this.props.forgotMessage}</p>
-                  </div>
-                </Form.Item>
-              </Form>
-            </Modal>
+          <Modal
+            title="Enter your email to get new password"
+            visible={this.state.visible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+          >
+            <Form className="login-form">
+              <Form.Item>
+                {getFieldDecorator('resetEmail', {
+                  rules: [{ required: true, message: 'Please input your email!' }],
+                })(
+                  <Input
+                    prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    type="text"
+                    placeholder="example abc@gmail.com"
+                  />,
+                )}
+                <div className="forgot-message">
+                  <p>{this.props.forgotMessage}</p>
+                </div>
+              </Form.Item>
+            </Form>
+          </Modal>
         </div>
       </div >
     );
@@ -259,8 +272,8 @@ const mapStateToProps = (state) => {
   console.log(state)
   return {
     errorCode: state.userLogin.errorCode,
-    processing: state.userLogin.processing,
-    forgotMessage: state.userLogin.forgotMessage
+    forgotMessage: state.userLogin.forgotMessage,
+    loginSuccess: state.userLogin.loginSuccess
   }
 }
 

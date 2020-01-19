@@ -4,10 +4,10 @@ import axios from 'axios'
 
 const LoginSagas = {
   *loginUser(action) {
-    console.log('ac',action)
+    //console.log('ac',action)
     try {
-      const userInfor = yield call(() => {
-        return axios.post('http://localhost:3001/auth/login', action.data, {
+      const userInfor = yield call(async() => {
+         return await axios.post('http://localhost:3001/auth/login', action.data, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -15,11 +15,12 @@ const LoginSagas = {
       })
       console.log(userInfor)
       if (!userInfor.data.success) {
-        yield put(LoginActions.loginFailed(userInfor.data.ErrorCode))
+        yield put(LoginActions.loginFailed(userInfor.data))
       } else {
         console.log(userInfor.data.accessToken)
         yield window.localStorage.setItem('x-access-token', userInfor.data.accessToken)
-        yield put(LoginActions.loginSucceed())
+        yield put(LoginActions.loginSucceed(userInfor.data))
+        yield window.location.href = '/home'
       }
     } catch (error) {
       yield put(LoginActions.loginFailed(error))
@@ -27,7 +28,7 @@ const LoginSagas = {
   },
 
   *signUpUser(action) {
-    console.log('12312',action)
+    //console.log('12312',action)
     try {
       const signUpUser = yield call(() => {
         return axios.post('http://localhost:3001/auth/register', action.data, {
@@ -38,7 +39,7 @@ const LoginSagas = {
       })
       console.log(signUpUser)
       if (!signUpUser.data.success) {
-        yield put(LoginActions.signUpFailed(signUpUser.data.ErrorCode))
+        yield put(LoginActions.signUpFailed(signUpUser.data.message))
       } else {
         yield put(LoginActions.signUpSucceed())
       }
@@ -48,7 +49,7 @@ const LoginSagas = {
   },
 
   *forgotEmail(action) {
-    console.log('forgot',action)
+    console.log('forgotData',action)
     try {
       const forgotEmail = yield call(() => {
         return axios.post('http://localhost:3001/auth/forgotpassword', action.data, {
@@ -57,9 +58,9 @@ const LoginSagas = {
           },
         })
       })
-      console.log(forgotEmail)
+      console.log('okeee',forgotEmail)
       if (!forgotEmail.data.success) {
-        yield put(LoginActions.forgotFailed(forgotEmail.data.ErrorCode))
+        yield put(LoginActions.forgotFailed(forgotEmail.data.message))
       } else {
         yield put(LoginActions.forgotSucceed(forgotEmail.data.message))
       }
