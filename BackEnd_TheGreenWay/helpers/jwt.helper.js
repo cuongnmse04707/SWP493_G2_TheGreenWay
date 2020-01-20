@@ -5,9 +5,9 @@ let generateToken = (user, secretSignature, tokenLife) => {
     // Định nghĩa những thông tin của user mà bạn muốn lưu vào token ở đây
     const userData = {
       email: user.email,
-      password: user.password,
+      roles:user.roles,
     }
-    // Thực hiện ký và tạo token
+    // Thực hiện ký và tạo token password: user.password,
     jwt.sign(
       {data: userData},
       secretSignature,

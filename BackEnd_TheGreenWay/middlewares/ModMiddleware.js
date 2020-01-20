@@ -17,12 +17,17 @@ let isAuth = async (req, res, next) => {
       // Thực hiện giải mã token xem có hợp lệ hay không?
       const decoded = await jwtHelper.verifyToken(tokenFromClient, accessTokenSecret);
       // Nếu token hợp lệ, lưu thông tin giải mã được vào đối tượng req, dùng cho các xử lý ở phía sau.
-
-      //Gan them jwtDecoded vao trong request de gui tiep sang middleware tiep theo
       req.jwtDecoded = decoded;
-      // Cho phép req đi tiếp sang controller.
-      next();
-      
+
+      // Middleware cua user thi khong can check
+      if(decoded.data.role === `mod`){
+        next();
+      }else{
+        return res.status(200).json({
+          success: false,
+          message: 'Unauthorized.',
+        });
+      }
     } catch (error) {
       // Nếu giải mã gặp lỗi: Không đúng, hết hạn...etc:
       // Lưu ý trong dự án thực tế hãy bỏ dòng debug bên dưới, mình để đây để debug lỗi cho các bạn xem thôi
