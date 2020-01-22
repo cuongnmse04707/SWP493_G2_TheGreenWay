@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import '../css/login.css';
-import Menu from '../components/Menu';
 import { Form, Icon, Input, Modal, message } from 'antd';
 import 'antd/dist/antd.css';
-import Processing from '../components/Procressing'
 import { connect } from 'react-redux'
 import LoginTypes from '../redux/login-redux'
 import { withRouter } from 'react-router'
-import lottie from 'lottie-web';
-import animationFile from '../components/jsonAnimation/process.json'
 
 
 const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -55,6 +51,7 @@ class Login extends Component {
         this.props.forgotPassword({
           email: values.resetEmail
         })
+        this.props.form.resetFields()
       }
     });
   };
@@ -66,24 +63,42 @@ class Login extends Component {
     });
   };
 
+  componentDidUpdate() {
+    //if login succeed => redirect to homepage
+    if (this.props.loginSuccess) {
+      this.props.history.push('/home')
+    }
 
-  handleSignUpSubmit = e => {
+    if(this.props.notifyMessage == 'Register is Success') {
+      this.props.updateNotify()
+      this.setState({
+        className: 'container'
+      })
+    }
+
+    if(this.props.notifyMessage == `We'll send instructions to this email if it's associated with a account.`) {
+      this.props.updateNotify()
+      this.setState({
+        visible: false
+      })
+    }
+
+  }
+
+   handleSignUpSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields(['username', 'reEmail', 'rePassword'], (err, values) => {
       if (!err) {
         this.props.userRegister({
+          //username: values.username,
           email: values.reEmail,
-          password: values.rePassword
+          password: values.rePassword,
         })
         this.props.form.resetFields()
-        setTimeout(() => {
-          this.setState({
-            className: 'container'
-          })
-          this.props.history.push('/')
-        },2000)
       }
-    });
+    }).then(() => {
+      console.log('123')
+    })
   };
 
   handleSignInSubmit = e => {
@@ -159,7 +174,7 @@ class Login extends Component {
                       initialValue: this.state.rePassword,
                       rules: [
                         { required: true, message: 'Please input your password!' },
-                        { pattern: passwordRegex, message: 'Please input correct password type' },
+                        // { pattern: passwordRegex, message: 'Please input correct password type' },
                       ],
 
                     })(
@@ -257,9 +272,9 @@ class Login extends Component {
                     placeholder="example abc@gmail.com"
                   />,
                 )}
-                <div className="forgot-message">
+                {/* <div className="forgot-message">
                   <p>{this.props.forgotMessage}</p>
-                </div>
+                </div> */}
               </Form.Item>
             </Form>
           </Modal>
@@ -273,7 +288,10 @@ const mapStateToProps = (state) => {
   return {
     errorCode: state.userLogin.errorCode,
     forgotMessage: state.userLogin.forgotMessage,
-    loginSuccess: state.userLogin.loginSuccess
+    loginSuccess: state.userLogin.loginSuccess,
+    registerSuccess: state.userLogin.registerSuccess,
+    forgotSuccess: state.userLogin.forgotSuccess,
+    notifyMessage : state.userLogin.notifyMessage
   }
 }
 
@@ -287,6 +305,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     forgotPassword: (email) => {
       dispatch(LoginTypes.forgotRequest(email))
+    },
+    updateNotify: () => {
+      dispatch(LoginTypes.updateNotify())
     }
   }
 }

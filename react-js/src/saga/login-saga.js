@@ -1,10 +1,11 @@
 import { put, call } from 'redux-saga/effects'
 import LoginActions from '../redux/login-redux'
+import { message } from 'antd';
+import 'antd/dist/antd.css';
 import axios from 'axios'
 
 const LoginSagas = {
   *loginUser(action) {
-    //console.log('ac',action)
     try {
       const userInfor = yield call(async() => {
          return await axios.post('http://localhost:3001/auth/login', action.data, {
@@ -16,11 +17,11 @@ const LoginSagas = {
       console.log(userInfor)
       if (!userInfor.data.success) {
         yield put(LoginActions.loginFailed(userInfor.data))
+        message.error(userInfor.data.message, 3)
       } else {
-        console.log(userInfor.data.accessToken)
         yield window.localStorage.setItem('x-access-token', userInfor.data.accessToken)
+        yield window.localStorage.setItem('email', action.data.email)
         yield put(LoginActions.loginSucceed(userInfor.data))
-        yield window.location.href = '/home'
       }
     } catch (error) {
       yield put(LoginActions.loginFailed(error))
@@ -28,7 +29,6 @@ const LoginSagas = {
   },
 
   *signUpUser(action) {
-    //console.log('12312',action)
     try {
       const signUpUser = yield call(() => {
         return axios.post('http://localhost:3001/auth/register', action.data, {
@@ -39,9 +39,11 @@ const LoginSagas = {
       })
       console.log(signUpUser)
       if (!signUpUser.data.success) {
-        yield put(LoginActions.signUpFailed(signUpUser.data.message))
+        yield put(LoginActions.signUpFailed(signUpUser.data))
+        message.error(signUpUser.data.message, 3)
       } else {
-        yield put(LoginActions.signUpSucceed())
+        message.success(signUpUser.data.message, 3)
+        yield put(LoginActions.signUpSucceed(signUpUser.data))
       }
     } catch (error) {
       yield put(LoginActions.signUpFailed(error))
@@ -60,9 +62,11 @@ const LoginSagas = {
       })
       console.log('okeee',forgotEmail)
       if (!forgotEmail.data.success) {
-        yield put(LoginActions.forgotFailed(forgotEmail.data.message))
+        yield put(LoginActions.forgotFailed(forgotEmail.data))
+        message.error(forgotEmail.data.message, 3)
       } else {
-        yield put(LoginActions.forgotSucceed(forgotEmail.data.message))
+        yield put(LoginActions.forgotSucceed(forgotEmail.data))
+        message.success(forgotEmail.data.message, 3)
       }
     } catch (error) {
       yield put(LoginActions.forgotFailed(error))
