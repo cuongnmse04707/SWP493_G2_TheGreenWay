@@ -9,7 +9,7 @@ const connectionDB = mysql.createConnection(config.databaseOptions);
 // Trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB // luu de con refresherToken
 // let tokenList = {};
 // Thời gian sống của token
-const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "1h";
+const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "10h";
 // Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-cuongnm";
 // Regex email, password
@@ -20,6 +20,7 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10
  * controller login
  */
 let register = async (req, res) => {
+    debug(req.body);
     // get email,password
     //const username = req.body.username;
     const email = req.body.email;
@@ -38,9 +39,16 @@ let register = async (req, res) => {
         });
         return
     }
-    // Them email, password vao trong database
-    const empty = {email: req.body.email , password: req.body.password };
-    connectionDB.query('INSERT INTO userBCD SET ?  ',empty, (err, result) => {
+    // Tao new empty 
+    const empty = {
+        email: req.body.email, 
+        password: req.body.password, 
+        username : req.body.username,
+        roles: 'user',
+        urlAvatar : 'https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fuser-roles-wordpress.png?alt=media&token=35187642-eb12-4c2c-a415-abd60485112c',
+    };
+    // Luu vao Database
+    connectionDB.query('INSERT INTO Accounts SET ?  ',empty, (err, result) => {
         if (err) {
           return res.status(200).json({success: false,message : "Email is exist!"});
         }else{
@@ -51,22 +59,25 @@ let register = async (req, res) => {
 
 let login = async (req, res) => {
   // check email da ton tai chua
-  let sql = `SELECT email, password FROM userBCD WHERE email=? AND password=?`;
+  debug("OK")
+  let sql = `SELECT email, password, roles FROM Accounts WHERE email=? AND password=?`;
   let query = mysql.format(sql, [req.body.email,req.body.password]);
+  debug(query);
       connectionDB.query(query , async (err, result) => {
         if (err) {
           // chua ton tai thi bao loi
           return res.status(200).json({success: false,message : err});
         }else{
           // Da ton tai thi tao ma token va gui ve client
+          debug("OK")
           const arr = Array.apply(null,result);
           if(arr.length===0){
             return res.status(200).json({success: false,message : "Email or Password is not exist!"});
           }else{
             try {
               const userData = {
-                email: req.body.email,
-                password: req.body.email,
+                email: arr[0].email,
+                roles: arr[0].roles,
               };
               debug(`Thực hiện tạo mã Token, [thời gian sống 1 giờ.]`);
               const accessToken = await jwtHelper.generateToken(userData, accessTokenSecret, accessTokenLife);
@@ -88,7 +99,7 @@ let login = async (req, res) => {
 
 let forgotpassword = async (req, res) => {
   //check email in database
-  let sql = `SELECT email, password FROM userBCD WHERE email=?`;
+  let sql = `SELECT email, password FROM Accounts WHERE email=?`;
   let query = mysql.format(sql, [req.body.email]);
   connectionDB.query(query , async (err, result) => {
     if(err){
@@ -128,7 +139,7 @@ let forgotpassword = async (req, res) => {
           };
           // Thao tac Update/Luu vao userToken table
           // Kiem tra email da co trong bang userToken chua
-          let sqlForgot = `SELECT email, token FROM userToken WHERE email=?`;
+          let sqlForgot = `SELECT email, token FROM AccountsToken WHERE email=?`;
           let queryForgot = mysql.format(sqlForgot, [req.body.email]);
           connectionDB.query(queryForgot , async (err, resultForgot) => {
             if(err){
@@ -139,7 +150,7 @@ let forgotpassword = async (req, res) => {
               if(arrForgot.length===0){
                 // Chua co thi tao 1 cai moi
                 const empty = {email: req.body.email , token: accessToken };
-                connectionDB.query('INSERT INTO userToken SET ?  ',empty, (err, result) => {
+                connectionDB.query('INSERT INTO AccountsToken SET ?  ',empty, (err, result) => {
                     if (err) {
                       return res.status(200).json({success: false,message : "Save DB userToken is Faild"});
                     }else{
@@ -147,7 +158,7 @@ let forgotpassword = async (req, res) => {
                 });
               }else{
                 // Da co email trong bang userToken thi update
-                let sqlForgot = `UPDATE userToken SET token=? WHERE email=?`;
+                let sqlForgot = `UPDATE AccountsToken SET token=? WHERE email=?`;
                 let queryForgot = mysql.format(sqlForgot, [accessToken,req.body.email]);
                 connectionDB.query(queryForgot , async (err, resultForgot) => {
                   if (err) {
@@ -184,7 +195,7 @@ let forgotpassword = async (req, res) => {
 
 let resetPassword = async (req, res) => {
   // check email da ton tai chua
-  let sql = `SELECT email, token FROM userToken WHERE email=? AND token=?`;
+  let sql = `SELECT email, token FROM AccountsToken WHERE email=? AND token=?`;
   let query = mysql.format(sql, [req.body.email,req.body.token]);
       connectionDB.query(query , async (err, result) => {
         if (err) {
@@ -198,14 +209,14 @@ let resetPassword = async (req, res) => {
             return res.status(200).json({success: false,message : "Account don't need to reset password"});
           }else{
             // thuc hien ResetPassword
-            let sqlForgot = `UPDATE userBCD SET password=? WHERE email=?`;
+            let sqlForgot = `UPDATE Accounts SET password=? WHERE email=?`;
             let queryForgot = mysql.format(sqlForgot, [req.body.password,req.body.email]);
             connectionDB.query(queryForgot , async (err, resultForgot) => {
               if (err) {
                 return res.status(200).json({success: false,message : "Reset Password Faild!"});
               }else{
                 //Sau khi update password thi xoa bo luon. Tranh truong hop gui bang postman
-                let sqlReset = `DELETE FROM userToken WHERE email=?`;
+                let sqlReset = `DELETE FROM AccountsToken WHERE email=?`;
                 let queryReset = mysql.format(sqlReset, [req.body.email]);
                 connectionDB.query(queryReset , async (err, resultForgot) => {
                   if(err){
