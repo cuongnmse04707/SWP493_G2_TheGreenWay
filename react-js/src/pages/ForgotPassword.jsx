@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../css/forgot-password.css';
-import Menu from '../components/Menu';
 import { Form, Icon, Input, Modal } from 'antd';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux'
@@ -13,6 +12,14 @@ class ForgotPassword extends Component {
     show: true,
   }
 
+  componentDidUpdate() {
+    if (this.props.notifyMessage == 'Reset Password Success!' || this.props.notifyMessage == `Account don't need to reset password`) {
+      this.props.updateNotify()
+      this.props.history.push('/')
+    }
+  }
+
+
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('password')) {
@@ -24,19 +31,17 @@ class ForgotPassword extends Component {
 
   handleConfirmSubmit = e => {
     e.preventDefault();
-    console.log(window.location.search.split('?')[0])
     this.props.form.validateFields(['password', 'confirm'], (err, values) => {
       if (!err) {
         console.log(values);
+        console.log(window.location.search.split('?')[1])
+        console.log(window.location.search.split('?')[2])
         this.props.resetPassword({
           password: values.password,
           token: window.location.search.split('?')[1],
-          email: window.location.search.split('?')[2]
+          email: window.location.search.split('?')[2],
         })
         this.props.form.resetFields()
-        setTimeout(() => {
-          this.props.history.push('/')
-        },2000)
       }
     });
   };
@@ -50,7 +55,6 @@ class ForgotPassword extends Component {
     };
     return (
       <div className="login-container">
-        {/* <Menu/> */}
         {this.state.show ? (
           <div height="300" width="400" id="animationDOM" />
         ) : null}
@@ -87,7 +91,6 @@ class ForgotPassword extends Component {
                     })(<Input.Password />)}
                   </Form.Item>
                   <button className="btn-sign-in" onClick={this.handleConfirmSubmit}>Reset</button>
-                  <p>{this.props.resetMessage}</p>
                 </Form>
               </div>
             </div>
@@ -107,7 +110,7 @@ class ForgotPassword extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    resetMessage: state.forgotPassword.resetMessage
+    notifyMessage: state.forgotPassword.notifyMessage
   }
 }
 
@@ -115,6 +118,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     resetPassword: (newPass) => {
       dispatch(ForgotTypes.resetRequest(newPass))
+    },
+    updateNotify: () => {
+      dispatch(ForgotTypes.updateNotify())
     }
   }
 }

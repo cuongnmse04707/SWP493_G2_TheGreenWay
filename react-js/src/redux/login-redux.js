@@ -6,11 +6,12 @@ const { Types, Creators } = createActions({
   loginSucceed: ['data'],
   loginFailed: ['error'],
   signUpRequest: ['data'],
-  signUpSucceed: [],
+  signUpSucceed: ['data'],
   signUpFailed: ['error'],
   forgotRequest: ['data'],
-  forgotSucceed: ['message'],
+  forgotSucceed: ['data'],
   forgotFailed: ['error'],
+  updateNotify: [],
   logout: [],
 })
 
@@ -19,47 +20,57 @@ export default Creators
 
 //TODO: Declare initial state
 export const INITIAL_STATE = {
-  errorCode: '',
-  processing: false,
   forgotMessage: '',
   forgotMessageError: '',
-  loginSuccess: false
+  loginSuccess: false,
+  registerSuccess: false,
+  forgotSuccess: false,
+  userInfor: '',
+  notifyMessage: ''
 }
 
 export const request = (state) => {
   return {
     ...state,
-    processing: true
   }
 }
 
 export const loginSucceed = (state, {data}) => {
   return {
     ...state,
-    processing: false,
-    loginSuccess: data.success
+    registerSuccess: false,
+    loginSuccess: data.success,
+    notifyMessage: data.message
   }
 }
 
-export const signUpSucceed = (state) => {
+export const signUpSucceed = (state, {data}) => {
   return {
     ...state,
-    processing: false
+    loginSuccess: false,
+    registerSuccess: data.success,
+    notifyMessage: data.message
   }
 }
 
-export const forgotSucceed = (state, {message}) => {
+export const forgotSucceed = (state, {data}) => {
   return {
     ...state,
-    processing: false,
-    forgotMessage: message
+    forgotSuccess: data.success,
+    notifyMessage: data.message
   }
 }
 
 export const logout = (state) => {
   return {
     ...state,
-    processing: false
+  }
+}
+
+export const updateNotify = (state) => {
+  return {
+    ...state,
+    notifyMessage: '',
   }
 }
 
@@ -67,10 +78,9 @@ export const failed = (state, { error }) => {
   console.log(error)
   return {
     ...state,
-    processing: false,
-    errorCode: error,
     forgotMessage: error,
-    loginSuccess: error.success
+    loginSuccess: error.success,
+    registerSuccess: error.success
   }
 }
 
@@ -84,6 +94,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [LoginTypes.SIGN_UP_FAILED]: failed,
   [LoginTypes.FORGOT_REQUEST]: request,
   [LoginTypes.FORGOT_SUCCEED]: forgotSucceed,
+  [LoginTypes.UPDATE_NOTIFY]: updateNotify,
   [LoginTypes.FORGOT_FAILED]: failed,
   [LoginTypes.LOGOUT]: logout
 })

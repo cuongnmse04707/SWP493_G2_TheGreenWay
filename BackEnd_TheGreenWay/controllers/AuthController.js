@@ -22,19 +22,22 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10
 let register = async (req, res) => {
     debug(req.body);
     // get email,password
+    //const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
     // validate email
     if(!emailRegex.test(email)){
-        res.status(400).json({
+        res.status(200).json({
             success: false,
             message: 'Invalid email adress',
         });
     }else if(!passwordRegex.test(password)){ // validate password
-        res.status(400).json({
+        res.status(200).json({
             success: false,
             message: 'Invalid password',
+
         });
+        return
     }
     // Tao new empty 
     const empty = {

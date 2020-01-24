@@ -3,8 +3,9 @@ import { createReducer, createActions } from "reduxsauce"
 // TODO:Declare Action and type
 const { Types, Creators } = createActions({
   resetRequest: ['data'],
-  resetSucceed: [],
+  resetSucceed: ['data'],
   resetFailed: ['error'],
+  updateNotify: [],
 })
 
 export const ForgotTypes = Types
@@ -12,27 +13,35 @@ export default Creators
 
 //TODO: Declare initial state
 export const INITIAL_STATE = {
-  resetMessage: ''
+  resetMessage: false,
+  notifyMessage: ''
 }
 
 export const request = (state) => {
   return {
     ...state,
-
   }
 }
 
-export const resetSucceed = (state) => {
+export const resetSucceed = (state, {data}) => {
+  console.log(data)
   return {
     ...state,
+    notifyMessage: data.message
+  }
+}
+
+export const updateNotify = (state) => {
+  return {
+    ...state,
+    notifyMessage: '',
   }
 }
 
 export const failed = (state, { error }) => {
-  
+
   return {
     ...state,
-    errorCode: error,
     resetMessage: error
   }
 }
@@ -41,5 +50,6 @@ export const failed = (state, { error }) => {
 export const reducer = createReducer(INITIAL_STATE, {
   [ForgotTypes.RESET_REQUEST]: request,
   [ForgotTypes.RESET_SUCCEED]: resetSucceed,
+  [ForgotTypes.UPDATE_NOTIFY]: updateNotify,
   [ForgotTypes.RESET_FAILED]: failed,
 })
