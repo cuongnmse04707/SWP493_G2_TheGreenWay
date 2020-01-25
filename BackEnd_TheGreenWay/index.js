@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const authenticationRouter = require('./routes/authenticationRouter');
 const modRouter = require('./routes/modRouter')
 const userRouter = require('./routes/userRouter')
+const productRouter = require('./routes/productRouter')
 const debug = console.log.bind(console);
 //demo xem co lay dc data khi ko co token ko
 const getdataDemoRouter = require('./routes/getdataDemoRouter');
@@ -23,6 +24,7 @@ connectionDB.connect((err)=>{
         // Cho phep ten mien dc truy cap vao origin
         server.use(cors());
         // Khai bao Routers
+        productRouter(server);
         authenticationRouter(server);
         getdataDemoRouter(server);
         modRouter(server);

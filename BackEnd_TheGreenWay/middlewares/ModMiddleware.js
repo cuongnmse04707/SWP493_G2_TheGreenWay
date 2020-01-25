@@ -20,7 +20,7 @@ let isAuth = async (req, res, next) => {
       req.jwtDecoded = decoded;
 
       // Middleware cua user thi khong can check
-      if(decoded.data.role === `mod`){
+      if(decoded.data.roles === `mod`|| decoded.data.roles === `admin`){
         next();
       }else{
         return res.status(200).json({
