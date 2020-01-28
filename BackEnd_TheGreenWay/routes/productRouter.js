@@ -8,6 +8,8 @@ let productRouter = (server) => {
     // List Don't Need Protect APIs:
     router.get("/getinfobyid", ProductController.getinfobyid);
     router.get("/getProductsByCategory", ProductController.getProductsByCategory);
+    router.get("/getProducts", ProductController.getProducts);
+    router.get("/searchProduct",ProductController.searchProduct);
     // Check Token User
     router.use(AuthMiddleware.isAuth); 
     // List Protect APIs:
@@ -17,6 +19,10 @@ let productRouter = (server) => {
     router.use(ModMiddleware.isAuth); 
     // List Protect APIs:
     router.post("/addNewProduct", ProductController.addNewProduct);
+    router.put("/updateProduct", ProductController.updateProduct);
+    router.post("/addNewImageProduct", ProductController.addNewImageProduct);
+    router.delete("/removeImageProduct", ProductController.removeImageProduct);
+    router.put("/updateQuatityProduct", ProductController.updateQuatityProduct);
     return server.use("/product",router);
   }
   
