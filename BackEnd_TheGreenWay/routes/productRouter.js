@@ -9,12 +9,13 @@ let productRouter = (server) => {
     router.get("/getinfobyid", ProductController.getinfobyid);
     router.get("/getProductsByCategory", ProductController.getProductsByCategory);
     router.get("/getProducts", ProductController.getProducts);
+    router.get("/fulltextsearchProduct",ProductController.fulltextsearchProduct);
     router.get("/searchProduct",ProductController.searchProduct);
+    router.get("/getinfosearchProduct",ProductController.getinfosearchProduct);
     // Check Token User
     router.use(AuthMiddleware.isAuth); 
     // List Protect APIs:
     router.post("/likeProduct", ProductController.likeProduct);
-
     // Check Token MOD
     router.use(ModMiddleware.isAuth); 
     // List Protect APIs:

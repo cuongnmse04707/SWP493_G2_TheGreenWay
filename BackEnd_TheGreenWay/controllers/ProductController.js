@@ -108,6 +108,57 @@ let likeProduct = async (req, res) => {
     });
 }
 
+// Lay thong tin Max,Min Price, Category, Name de phuc vu cho viec valicdate search nang cao, Categoty thi show check list
+let getinfosearchProduct = async (req, res) => {
+    // SQL to run
+    let sql = `SELECT MAX(Products.ProductPrice) AS MaxPrice, MIN(Products.ProductPrice) AS MinPrice FROM Products`;
+    let query = mysql.format(sql);
+    connectionDB.query(query , async (err, result) => {
+        if (err) {
+            return res.status(200).json({success: false,message : err});
+        }else{
+            //Lay ID day vao Database cho bang Product
+            const arr = await Array.apply(null,result);
+            if(arr.length===0){
+                // Chua co thi like
+                return res.status(200).json({
+                    success: false,
+                    message : "No Products !",
+                });
+            }else{
+                // Chay Query de lay total page
+                debug(arr[0].MaxPrice);       
+                debug(arr[0].MinPrice);   
+                let sqlCate = `SELECT CategoryID, CategoryDes FROM Categories`;
+                let queryCate = mysql.format(sqlCate);
+                connectionDB.query(queryCate , async (err, results) => {
+                    if (err) {
+                        return res.status(200).json({success: false,message : err});
+                    }else{
+                        //Lay ID day vao Database cho bang Product
+                        const array = await Array.apply(null,results);
+                        if(array.length===0){
+                            // Chua co thi like
+                            return res.status(200).json({
+                                success: false,
+                                message : "No Products !",
+                            });
+                        }else{
+                            // Chay Query de lay total page
+                            return res.status(200).json({
+                                success: true,
+                                maxPrice: arr[0].MaxPrice,
+                                minPrice: arr[0].MinPrice,
+                                categories: array,
+                            });  
+                        }
+                    };
+                });
+            }
+        };
+    });
+}
+
 // Search Product Nang cao search by Price, Category, Name
 let searchProduct = async (req, res) => {
     //ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail
@@ -171,6 +222,7 @@ let searchProduct = async (req, res) => {
                         return res.status(200).json({
                             success: true,
                             data: arr,
+                            resultsize: array[0].Total,
                             totalPage: totalPage, // Total page
                         }); 
                     };
@@ -179,7 +231,67 @@ let searchProduct = async (req, res) => {
             }
         };
     });
+}
 
+// FullText search In MYSQL 
+let fulltextsearchProduct = async (req, res) => {
+    //ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail
+    const page = req.query.page;
+    const pageSize = 6;
+    const offset = (page-1)*pageSize;
+    var stringSQL = req.body.fulltextsearch;
+    // SQL Query to search Product
+    // SQL to run
+    let sql = ` SELECT * FROM Products WHERE 
+                MATCH(ProductName) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) 
+                OR 
+                MATCH(Description) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
+                OR 
+                MATCH(ProductPrice) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
+                LIMIT ?
+                OFFSET ?`;
+    let query = mysql.format(sql,[pageSize,offset]);
+    connectionDB.query(query , async (err, result) => {
+        if (err) {
+            return res.status(200).json({success: false,message : err});
+        }else{
+            //Lay ID day vao Database cho bang Product
+            const arr = await Array.apply(null,result);
+            if(arr.length===0){
+                // Chua co thi like
+                return res.status(200).json({
+                    success: false,
+                    message : "No Products !",
+                });
+            }else{
+                // Chay Query de lay total page
+                let sqlTotal = `SELECT COUNT(*) AS Total FROM Products WHERE 
+                            MATCH(ProductName) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) 
+                            OR 
+                            MATCH(Description) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
+                            OR 
+                            MATCH(ProductPrice) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)`;
+                let queryTotal = mysql.format(sqlTotal);
+                connectionDB.query(queryTotal , async (err, results) => {
+                    if (err) {
+                        return res.status(200).json({success: false,message : err});
+                    }else{
+                        //Lay ID day vao Database cho bang Product
+                        const array = await Array.apply(null,results); // chi dung de lay total
+                        const totalPage = Math.ceil(array[0].Total/pageSize);
+                        // //Luu vao database
+                        return res.status(200).json({
+                            success: true,
+                            data: arr,
+                            resultsize: array[0].Total,
+                            totalPage: totalPage, // Total page
+                        }); 
+                    };
+                });
+                            
+            }
+        };
+    });
 }
 
 // Get Product By Category 1 page have 6 entry
@@ -287,8 +399,7 @@ let getProducts = async (req, res) => {
                             totalPage: totalPage, // Total page
                         }); 
                     };
-                });
-                            
+                });               
             }
         };
     });
@@ -314,7 +425,7 @@ let addNewProduct = async (req, res) => {
                 ProductID: idProduct,
                 CategoryID: req.body.CategoryID,
                 ProductName: req.body.ProductName,
-                ProductPrice: Number(req.body.ProductPrice),
+                ProductPrice: req.body.ProductPrice,
                 Description: req.body.Description,
                 ProductStatus: ProductStatus,
                 CreateDate: req.body.CreateDate,
@@ -341,7 +452,7 @@ let updateProduct = async (req, res) => {
     //Get Information Product
     const CategoryID= req.body.CategoryID;
     const ProductName= req.body.ProductName;
-    const ProductPrice= Number(req.body.ProductPrice);
+    const ProductPrice= req.body.ProductPrice;
     const Description= req.body.Description;
     const CreateDate= req.body.CreateDate;
     const Quantity= Number(req.body.Quantity);
@@ -456,6 +567,8 @@ let removeImageProduct = async (req, res) => {
 module.exports = {
     getinfobyid: getinfobyid,
     searchProduct: searchProduct,
+    getinfosearchProduct: getinfosearchProduct,
+    fulltextsearchProduct: fulltextsearchProduct,
     likeProduct: likeProduct,
     addNewProduct: addNewProduct,
     getProductsByCategory: getProductsByCategory,
