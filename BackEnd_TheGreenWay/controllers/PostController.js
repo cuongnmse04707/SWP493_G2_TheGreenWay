@@ -323,8 +323,7 @@ let fulltextsearchPost = async (req, res) => {
                             totalPage: totalPage, // Total page
                         }); 
                     };
-                });
-                            
+                });     
             }
         };
     });
