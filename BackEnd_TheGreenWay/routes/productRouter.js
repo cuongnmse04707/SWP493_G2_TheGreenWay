@@ -19,11 +19,14 @@ let productRouter = (server) => {
     // Check Token MOD
     router.use(ModMiddleware.isAuth); 
     // List Protect APIs:
+    router.get("/getProductsStatus", ProductController.getProductsStatus);
     router.post("/addNewProduct", ProductController.addNewProduct);
     router.put("/updateProduct", ProductController.updateProduct);
     router.post("/addNewImageProduct", ProductController.addNewImageProduct);
     router.delete("/removeImageProduct", ProductController.removeImageProduct);
+    router.delete("/deleteProduct", ProductController.deleteProduct);
     router.put("/updateQuatityProduct", ProductController.updateQuatityProduct);
+
     return server.use("/product",router);
   }
   

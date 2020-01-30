@@ -11,13 +11,13 @@ const connectionDB = mysql.createConnection(config.databaseOptions);
 let getinfobyid = async (req, res) => {
     const idProduct = req.query.idProduct;
     // get email from request after handle of authmiddleware
-    let sql = ` SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, Products.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLike
+    let sql = ` SELECT * FROM (
+                SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, Products.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLike
                 FROM Products
-                JOIN LikesOfProduct
+                LEFT JOIN LikesOfProduct
                 ON Products.ProductID = LikesOfProduct.ProductID
-                AND Products.ProductID = ?
-                GROUP BY LikesOfProduct.ProductID`;
-                debug(sql)
+                GROUP BY LikesOfProduct.ProductID ) GetProduct
+                WHERE GetProduct.ProductID =?`;
     let query = mysql.format(sql, [idProduct]);
     connectionDB.query(query , async (err, result) => {
         if (err) {
@@ -405,6 +405,37 @@ let getProducts = async (req, res) => {
     });
 }
 
+// Get List All Product 1 page have 6 entry
+let getProductsStatus = async (req, res) => {
+    //Get ID category
+    let sql = `SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.Quantity FROM Products WHERE Products.ProductStatus='Hết Hàng'`;
+    let query = mysql.format(sql);
+    connectionDB.query(query , async (err, result) => {
+        if (err) {
+            return res.status(200).json({success: false,message : err});
+        }else{
+            //Lay ID day vao Database cho bang Product
+            const arr = await Array.apply(null,result);
+            let sql = `SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.Quantity FROM Products WHERE Products.ProductStatus='Còn Hàng'`;
+            let query = mysql.format(sql);
+            connectionDB.query(query , async (err, results) => {
+                if (err) {
+                   return res.status(200).json({success: false,message : err});
+                }else{
+                    //Lay ID day vao Database cho bang Product
+                    const array = await Array.apply(null,results);
+                    // //Luu vao database
+                    return res.status(200).json({
+                        success: true,
+                        dataHetHang: arr,
+                        dataConHang: array, // Total page
+                    }); 
+                };
+            });
+        };
+    });
+}
+
 // Add new product
 let addNewProduct = async (req, res) => {
     let sql = `SELECT MAX(Products.ProductID) AS IDProduct FROM Products`;
@@ -420,7 +451,9 @@ let addNewProduct = async (req, res) => {
             const QuantityProduct= req.body.Quantity;
             // Check ProductStatus
             const ProductStatus = (QuantityProduct>0) ? "Còn Hàng" : "Hết Hàng";
-            
+            // Check Image Default
+            const ImageDetail = (req.body.ImageDetail) ? req.body.ImageDetail : "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fproduct_packaging_pixel_perfect_color_line_icons_2-cardboard-512.png?alt=media&token=a9b4e229-efa4-49bd-9d3d-6cd0510d668c" ;
+            // Create empty
             const empty = {
                 ProductID: idProduct,
                 CategoryID: req.body.CategoryID,
@@ -430,7 +463,7 @@ let addNewProduct = async (req, res) => {
                 ProductStatus: ProductStatus,
                 CreateDate: req.body.CreateDate,
                 Quantity: QuantityProduct,
-                ImageDetail: req.body.ImageDetail,
+                ImageDetail: ImageDetail,
             };
             // Luu vao Database
             connectionDB.query('INSERT INTO Products SET ? ',empty, (err, result) => {
@@ -456,7 +489,8 @@ let updateProduct = async (req, res) => {
     const Description= req.body.Description;
     const CreateDate= req.body.CreateDate;
     const Quantity= Number(req.body.Quantity);
-    const ImageDetail= req.body.ImageDetail;
+    const ImageDetail = (req.body.ImageDetail) ? req.body.ImageDetail : "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fproduct_packaging_pixel_perfect_color_line_icons_2-cardboard-512.png?alt=media&token=a9b4e229-efa4-49bd-9d3d-6cd0510d668c" ;
+            
     //Check const ProductStatus= req.body.ProductStatus;
     const ProductStatus = (Quantity>0) ? "Còn Hàng" : "Hết Hàng";
     //Update Product
@@ -564,6 +598,22 @@ let removeImageProduct = async (req, res) => {
     });      
 }
 
+//Delete Product
+let deleteProduct = async (req, res) => {
+    //Get ID Products
+    const idProduct = req.query.idProduct;
+    //Delete Product 
+    let sql = `DELETE FROM Products WHERE Products.ProductID=?`;
+    let query = mysql.format(sql, [idProduct]);
+    connectionDB.query(query , async (err, result) => {
+        if (err) {
+            return res.status(200).json({success: false,message : "Remove Product Failed!"});
+        }else{
+            return res.status(200).json({success: true,message : "Remove Product Success!"});
+        };
+    });      
+}
+
 module.exports = {
     getinfobyid: getinfobyid,
     searchProduct: searchProduct,
@@ -577,4 +627,6 @@ module.exports = {
     removeImageProduct:removeImageProduct,
     updateProduct:updateProduct,
     updateQuatityProduct:updateQuatityProduct,
+    getProductsStatus: getProductsStatus,
+    deleteProduct: deleteProduct,
 }

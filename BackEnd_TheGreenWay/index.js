@@ -4,9 +4,10 @@ const cors = require('cors');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const authenticationRouter = require('./routes/authenticationRouter');
-const modRouter = require('./routes/modRouter')
-const userRouter = require('./routes/userRouter')
-const productRouter = require('./routes/productRouter')
+const modRouter = require('./routes/modRouter');
+const userRouter = require('./routes/userRouter');
+const productRouter = require('./routes/productRouter');
+const postRouter = require('./routes/postRouter');
 const debug = console.log.bind(console);
 //demo xem co lay dc data khi ko co token ko
 const getdataDemoRouter = require('./routes/getdataDemoRouter');
@@ -29,6 +30,7 @@ connectionDB.connect((err)=>{
         getdataDemoRouter(server);
         modRouter(server);
         userRouter(server);
+        postRouter(server);
 
         server.listen(PORT,(error) => { 
             if(error){
