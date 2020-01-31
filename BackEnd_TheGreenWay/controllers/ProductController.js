@@ -58,6 +58,61 @@ let getinfobyid = async (req, res) => {
     });
 }
 
+//get list product email like 
+let getListProductLike = async (req, res) => {
+    const email = req.jwtDecoded.data.email;
+    const page = req.query.page;
+    const pageSize = 6;
+    const offset = (page-1)*pageSize;
+    // get email from request after handle of authmiddleware
+    let sql = ` SELECT * FROM
+                (SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, Products.ImageDetail,LikesOfProduct.UserEmail
+                FROM LikesOfProduct
+                JOIN Products
+                ON Products.ProductID = LikesOfProduct.ProductID) GetProduct
+                WHERE GetProduct.UserEmail = ?
+                LIMIT ?
+                OFFSET ?`;
+    let query = mysql.format(sql, [email,pageSize,offset]);
+    connectionDB.query(query , async (err, result) => {
+        if (err) {
+            // chua ton tai thi bao loi
+            return res.status(200).json({success: false,message : err});
+        }else{
+            // Da ton tai thi tao ma token va gui ve client
+            const arr = await Array.apply(null,result);
+            if(arr.length===0){
+                return res.status(200).json({success: false,message : "No Product In List!"});
+            }else{
+                // Chay Query de lay total page
+                let sql = ` SELECT COUNT(*) AS Total FROM
+                            (SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, Products.ImageDetail,LikesOfProduct.UserEmail
+                            FROM LikesOfProduct
+                            JOIN Products
+                            ON Products.ProductID = LikesOfProduct.ProductID) GetProduct
+                            WHERE GetProduct.UserEmail = ?`;
+                let query = mysql.format(sql,[email]);
+                connectionDB.query(query , async (err, results) => {
+                    if (err) {
+                        return res.status(200).json({success: false,message : err});
+                    }else{
+                        //Lay ID day vao Database cho bang Product
+                        const array = await Array.apply(null,results); // chi dung de lay total
+                        const totalPage = Math.ceil(array[0].Total/pageSize);
+                        // //Luu vao database
+                        return res.status(200).json({
+                            success: true,
+                            data: arr,
+                            resultsize: array[0].Total,
+                            totalPage: totalPage, // Total page
+                        }); 
+                    };
+                });  
+            }
+        };
+    });
+}
+
 // Like Product
 let likeProduct = async (req, res) => {
     //Lay thong tin email
@@ -226,8 +281,7 @@ let searchProduct = async (req, res) => {
                             totalPage: totalPage, // Total page
                         }); 
                     };
-                });
-                            
+                });       
             }
         };
     });
@@ -508,7 +562,7 @@ let updateProduct = async (req, res) => {
 }
 
 //update Quatity Product
-// Validate ben fontend
+// Validate ben fontend // Moi lan an nui cong tru sẽ được đẩy lên đây// Cong hay Tru khong quan trong. Mien là cứ gửi cái số lên đây 
 let updateQuatityProduct = async (req, res) => {
     //Get ID Product
     const idProduct = req.query.idProduct;
@@ -540,10 +594,10 @@ let updateQuatityProduct = async (req, res) => {
                         if (err) {
                             return res.status(200).json({success: false,message : "Update Quatity Product Failed!"});
                         }else{
-                            return res.status(200).json({success: true,message : "Update Quatity Product Success!"});
+                            return res.status(200).json({success: true,message : "Add Product To Cart Success!"});
                         };
                     });
-                }else{
+                } else if((oldQuatity - newQuantity) === 0){
                     // Mua cai het luon
                     // Chi ton tai truong hop 0 thoi vi ben fontend da validate so luong roi
                     let sqlUpdate = `UPDATE Products SET Quantity=0,ProductStatus="Hết Hàng" WHERE Products.ProductID=?`;
@@ -552,10 +606,12 @@ let updateQuatityProduct = async (req, res) => {
                         if (err) {
                             return res.status(200).json({success: false,message : "Update Quatity Product Failed!"});
                         }else{
-                            return res.status(200).json({success: true,message : "Update Quatity Product Success!"});
+                            return res.status(200).json({success: true,message : "Add Product To Cart Success!"});
                         };
                     });
-                }         
+                }else{
+                    return res.status(200).json({success: false,message : "The product you want to buy is not enough"});
+                }        
             }
         };
     });
@@ -614,6 +670,15 @@ let deleteProduct = async (req, res) => {
     });      
 }
 
+//Get Price,Quatity by ProductID From Cart: Phuc vu chuc nang tinh tien va validate so luong san pham trong cart
+let getInfoProductFromCart = async (req, res) => {
+    //Get ID Products
+    // Khi mà ấn mua Hàng lưu vào cái session thì ta lưu luôn cả cái obj vào session được không ? Kiểu lưu ID Tên Giá Số Lượng Kho Hàng vào session luôn 
+    // debug(req.body.data);
+    const array = req.body.data;
+    debug(array[0]);
+}
+
 module.exports = {
     getinfobyid: getinfobyid,
     searchProduct: searchProduct,
@@ -629,4 +694,6 @@ module.exports = {
     updateQuatityProduct:updateQuatityProduct,
     getProductsStatus: getProductsStatus,
     deleteProduct: deleteProduct,
+    getListProductLike: getListProductLike,
+    getInfoProductFromCart: getInfoProductFromCart,
 }

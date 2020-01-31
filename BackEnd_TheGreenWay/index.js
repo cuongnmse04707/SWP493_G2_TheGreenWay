@@ -9,6 +9,7 @@ const userRouter = require('./routes/userRouter');
 const productRouter = require('./routes/productRouter');
 const postRouter = require('./routes/postRouter');
 const conversionRouter = require('./routes/conversionRouter');
+const paymentRouter = require('./routes/paymentRouter');
 const debug = console.log.bind(console);
 //demo xem co lay dc data khi ko co token ko
 const getdataDemoRouter = require('./routes/getdataDemoRouter');
@@ -33,6 +34,7 @@ connectionDB.connect((err)=>{
         userRouter(server);
         postRouter(server);
         conversionRouter(server);
+        paymentRouter(server);
 
         server.listen(PORT,(error) => { 
             if(error){

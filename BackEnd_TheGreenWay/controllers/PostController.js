@@ -11,7 +11,7 @@ const connectionDB = mysql.createConnection(config.databaseOptions);
 let getpostbyid = async (req, res) => {
     const idPost = req.query.idPost;
     // get email from request after handle of authmiddleware
-    let sql = ` SELECT * FROM( SELECT Posts.PostID,Posts.ModEmail,Posts.Title,Posts.Content,Posts.CreateDate,Posts.UpdateDate,COUNT(LikesOfPost.UserEmail) AS NumberOfLike
+    let sql = ` SELECT * FROM( SELECT Posts.PostID,Posts.ModEmail,Posts.Title,Posts.Content,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,COUNT(LikesOfPost.UserEmail) AS NumberOfLike
                 FROM Posts
                 LEFT JOIN LikesOfPost
                 ON Posts.PostID = LikesOfPost.PostID
@@ -329,6 +329,67 @@ let fulltextsearchPost = async (req, res) => {
     });
 }
 
+//full text search Post
+let getListPostLike = async (req, res) => {
+    //ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail
+    const page = req.query.page;
+    const pageSize = 6;
+    const offset = (page-1)*pageSize;
+    var stringSQL = req.body.fulltextsearch;
+    const email = req.jwtDecoded.data.email;
+    // SQL Query to search Product
+    // SQL to run
+    let sql = ` SELECT * FROM
+                (SELECT Posts.PostID,Posts.ModEmail,Posts.Title,Posts.Content,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,LikesOfPost.UserEmail
+                FROM LikesOfPost
+                JOIN Posts
+                ON Posts.PostID = LikesOfPost.PostID) GetPost 
+                WHERE GetPost.UserEmail = ?
+                LIMIT ?
+                OFFSET ?`;
+    let query = mysql.format(sql,[email,pageSize,offset]);
+    connectionDB.query(query , async (err, result) => {
+        if (err) {
+            return res.status(200).json({success: false,message : err});
+        }else{
+            //Lay ID day vao Database cho bang Product
+            const arr = await Array.apply(null,result);
+            if(arr.length===0){
+                // Chua co thi like
+                return res.status(200).json({
+                    success: false,
+                    message : "No Post In List !",
+                });
+            }else{
+                // Chay Query de lay total page
+                let sqlTotal = `SELECT COUNT(*) AS Total FROM 
+                                (SELECT Posts.PostID,Posts.ModEmail,Posts.Title,Posts.Content,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,LikesOfPost.UserEmail
+                                FROM LikesOfPost
+                                JOIN Posts
+                                ON Posts.PostID = LikesOfPost.PostID) GetPost 
+                                WHERE GetPost.UserEmail = ?`;
+                let queryTotal = mysql.format(sqlTotal,[email]);
+                connectionDB.query(queryTotal , async (err, results) => {
+                    if (err) {
+                        return res.status(200).json({success: false,message : err});
+                    }else{
+                        //Lay ID day vao Database cho bang Product
+                        const array = await Array.apply(null,results); // chi dung de lay total
+                        const totalPage = Math.ceil(array[0].Total/pageSize);
+                        // //Luu vao database
+                        return res.status(200).json({
+                            success: true,
+                            data: arr,
+                            resultsize: array[0].Total,
+                            totalPage: totalPage, // Total page
+                        }); 
+                    };
+                });     
+            }
+        };
+    });
+}
+
 module.exports = {
     getpostbyid: getpostbyid,
     addnewpost: addnewpost,
@@ -339,4 +400,5 @@ module.exports = {
     likePost: likePost,
     getListPost: getListPost,
     fulltextsearchPost: fulltextsearchPost,
+    getListPostLike: getListPostLike,
 }

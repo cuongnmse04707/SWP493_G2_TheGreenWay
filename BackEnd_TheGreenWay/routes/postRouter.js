@@ -13,6 +13,7 @@ let postRouter = (server) => {
     router.use(AuthMiddleware.isAuth); 
     // List Protect APIs:
     router.post("/likePost", PostController.likePost);
+    router.get("/getListPostLike", PostController.getListPostLike);
     // Check Token MOD
     router.use(ModMiddleware.isAuth); 
     // List Protect APIs:
