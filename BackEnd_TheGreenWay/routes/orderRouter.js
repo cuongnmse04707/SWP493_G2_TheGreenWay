@@ -10,9 +10,14 @@ let orderRouter = (server) => {
     router.use(AuthMiddleware.isAuth); 
     // List Protect APIs:
     router.post("/addNewOrderByUser",OrderController.addNewOrderByUser);
+    router.get("/showOrderListByEmail",OrderController.showOrderListByEmail);
+    router.get("/showOrderByEmail",OrderController.showOrderByEmail);
     // Check Token MOD
     router.use(ModMiddleware.isAuth); 
     // List Protect APIs:
+    router.get("/showOrderListForMOD",OrderController.showOrderListForMOD);
+    router.put("/changeStatusOrder",OrderController.changeStatusOrder);
+    router.get("/getListOrderByStatusCode",OrderController.getListOrderByStatusCode);
     return server.use("/userorder",router);
   }
   
