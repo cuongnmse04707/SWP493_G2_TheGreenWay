@@ -86,12 +86,12 @@ let login = async (req, res) => {
                     success: true,
                     accessToken
                   });
-                } catch (error) {
-                  return res.status(200).json({
-                    success: false,
-                    message: error
-                  });
-              }
+            } catch (error) {
+              return res.status(200).json({
+                success: false,
+                message: error
+              });
+            }
           }
         };
       });
