@@ -13,6 +13,6 @@ let guessRouter = (server) => {
     router.get("/showOrderByToken", GuessController.showOrderByToken);
 
     return server.use("/guest",router);
-  }
+}
   
 module.exports = guessRouter;
