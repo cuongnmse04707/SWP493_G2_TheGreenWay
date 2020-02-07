@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../css/forgot-password.css';
-import { Form, Icon, Input, Modal } from 'antd';
+import { Form,  Input } from 'antd';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux'
 import ForgotTypes from '../redux/forgot-password-redux'
@@ -8,7 +8,7 @@ import { withRouter } from 'react-router'
 
 class ForgotPassword extends Component {
   state = {
-    className: 'container',
+    className: 'login-container',
     show: true,
   }
 
@@ -54,11 +54,8 @@ class ForgotPassword extends Component {
       wrapperCol: { span: 14 },
     };
     return (
-      <div className="login-container">
-        {this.state.show ? (
-          <div height="300" width="400" id="animationDOM" />
-        ) : null}
-        <div className={this.state.className} id="container">
+      <div className="login-wrapper">
+        <div className={this.state.className} >
           <div className="form-container sign-in-container">
             <div className="form-intro">
               <h1>Reset Password</h1>
@@ -90,7 +87,7 @@ class ForgotPassword extends Component {
                       ],
                     })(<Input.Password />)}
                   </Form.Item>
-                  <button className="btn-sign-in" onClick={this.handleConfirmSubmit}>Reset</button>
+                  <button className="btn-reset" onClick={this.handleConfirmSubmit}>Reset</button>
                 </Form>
               </div>
             </div>

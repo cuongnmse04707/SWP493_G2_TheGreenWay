@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import '../css/home.css';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux'
-import LoginTypes from '../redux/login-redux'
+import HomePageTypes from '../redux/home-page-redux'
 import { withRouter } from 'react-router'
-import { Form, Input, Icon, Select, Button, Modal, DatePicker, Collapse, Dropdown, Menu, Avatar, message } from 'antd';
-import moment from 'moment';
+import { Form, Input, Icon,  Button, Modal, DatePicker,  Dropdown, Menu, Avatar, message } from 'antd';
 
 const dateFormat = 'YYYY/MM/DD';
 const phoneRegex = /(09|03|01[2|6|8|9])+([0-9]{8})\b/;
@@ -30,16 +29,16 @@ class HomePage extends Component {
     dataTest: '',
   }
 
+  componentDidMount() {
+    this.props.getUserInfor()
+  }
+
   showModalAccount = () => {
-    this.setState({
-      visibleAccountInfor: true,
-    });
+    this.props.history.push('/account')
   };
 
   showModalPassword = () => {
-    this.setState({
-      visibleChangePass: true,
-    });
+    this.props.history.push('/changepassword')
   };
 
   handleCancelAccount = e => {
@@ -58,25 +57,6 @@ class HomePage extends Component {
     window.localStorage.clear()
     window.location.href = '/'
   }
-
-  getData = async (roomChat) => {
-    try {
-      const result = await fetch(`http://localhost:3001/demogetdata/friends`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': window.localStorage.getItem("x-access-token"),
-        },
-      }).then((res) => { return res.json(); })
-      console.log(result); // data tra ve
-      this.setState({
-        dataTest: result
-      })
-      window.alert(result[1].name)
-    } catch (error) {
-      window.alert(error.message);
-    }
-  };
 
   handleUpdateAccountSubmit = e => {
     e.preventDefault();
@@ -121,7 +101,6 @@ class HomePage extends Component {
   };
 
   render() {
-    const email = window.localStorage.getItem('email')
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -152,7 +131,7 @@ class HomePage extends Component {
           <div className="header-left">
             <Avatar size={32} icon="user" className="ml-2" />
             <p>
-              Welcome {email}
+              Welcome {this.props.userInformation.email}
             </p>
             <Dropdown overlay={menu} trigger={['click']}>
               <a className="ant-dropdown-link" href="#">
@@ -161,7 +140,6 @@ class HomePage extends Component {
             </Dropdown>
           </div>
           <div className="header-right">
-            <button className="btn-sign-up" onClick={this.getData}>Get Data</button>
             <button className="btn-sign-up" onClick={this.clearStorage}>Logout</button>
           </div>
         </div>
@@ -175,7 +153,7 @@ class HomePage extends Component {
           <Form {...formItemLayout} onSubmit={this.handleUpdateAccountSubmit}>
             <Form.Item label="E-mail">
               {getFieldDecorator('email', {
-                initialValue: email,
+                // initialValue: email,
 
               })(<Input readOnly />)}
             </Form.Item>
@@ -280,11 +258,15 @@ class HomePage extends Component {
 }
 const mapStateToProps = (state) => {
   return {
+    userInformation : state.homePage.userInformation
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getUserInfor: () => {
+      dispatch(HomePageTypes.getInforRequest())
+    },
   }
 }
 
