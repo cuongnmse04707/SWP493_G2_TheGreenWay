@@ -4,8 +4,14 @@ const cors = require('cors');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const authenticationRouter = require('./routes/authenticationRouter');
-const modRouter = require('./routes/modRouter')
-const userRouter = require('./routes/userRouter')
+const modRouter = require('./routes/modRouter');
+const userRouter = require('./routes/userRouter');
+const productRouter = require('./routes/productRouter');
+const postRouter = require('./routes/postRouter');
+const conversionRouter = require('./routes/conversionRouter');
+const paymentRouter = require('./routes/paymentRouter');
+const orderRouter = require('./routes/orderRouter');
+const guessRouter = require('./routes/guessRouter');
 const debug = console.log.bind(console);
 //demo xem co lay dc data khi ko co token ko
 const getdataDemoRouter = require('./routes/getdataDemoRouter');
@@ -23,10 +29,16 @@ connectionDB.connect((err)=>{
         // Cho phep ten mien dc truy cap vao origin
         server.use(cors());
         // Khai bao Routers
+        productRouter(server);
         authenticationRouter(server);
         getdataDemoRouter(server);
         modRouter(server);
         userRouter(server);
+        postRouter(server);
+        conversionRouter(server);
+        paymentRouter(server);
+        orderRouter(server);
+        guessRouter(server);
 
         server.listen(PORT,(error) => { 
             if(error){

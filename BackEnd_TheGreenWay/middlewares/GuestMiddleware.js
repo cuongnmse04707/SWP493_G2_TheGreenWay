@@ -1,4 +1,4 @@
-const jwtHelper = require("../helpers/jwt.helper");
+const jwtGuest = require("../helpers/jwt.guest");
 const debug = console.log.bind(console); // cach viet nhanh console.log
 
 // Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
@@ -15,19 +15,14 @@ let isAuth = async (req, res, next) => {
     // Nếu tồn tại token
     try {
       // Thực hiện giải mã token xem có hợp lệ hay không?
-      const decoded = await jwtHelper.verifyToken(tokenFromClient, accessTokenSecret);
+      const decoded = await jwtGuest.verifyTokenGuest(tokenFromClient, accessTokenSecret);
       // Nếu token hợp lệ, lưu thông tin giải mã được vào đối tượng req, dùng cho các xử lý ở phía sau.
-      req.jwtDecoded = decoded;
 
-      // Middleware cua user thi khong can check
-      if(decoded.data.roles === `mod`|| decoded.data.roles === `admin`){
-        next();
-      }else{
-        return res.status(200).json({
-          success: false,
-          message: 'Unauthorized.',
-        });
-      }
+      //Gan them jwtDecoded vao trong request de gui tiep sang middleware tiep theo
+      req.jwtDecoded = decoded;
+      // Cho phép req đi tiếp sang controller.
+      next();
+      
     } catch (error) {
       // Nếu giải mã gặp lỗi: Không đúng, hết hạn...etc:
       // Lưu ý trong dự án thực tế hãy bỏ dòng debug bên dưới, mình để đây để debug lỗi cho các bạn xem thôi
