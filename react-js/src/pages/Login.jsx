@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../css/login.css';
-import { Form, Icon, Input, Modal, message } from 'antd';
+import { Form, Icon, Input, Modal } from 'antd';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux'
 import LoginTypes from '../redux/login-redux'
@@ -8,11 +8,11 @@ import { withRouter } from 'react-router'
 
 
 const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
+
 
 class Login extends Component {
   state = {
-    className: 'container',
+    className: 'login-container',
     visible: false,
     processing: true,
     show: true,
@@ -23,16 +23,15 @@ class Login extends Component {
     logPassword: ''
   }
 
-
   handleSignInClick = () => {
 
-    if (this.state.className == 'container') {
+    if (this.state.className == 'login-container') {
       this.setState({
-        className: 'container right-panel-active'
+        className: 'login-container right-panel-active'
       })
     } else {
       this.setState({
-        className: 'container'
+        className: 'login-container'
       })
     }
   }
@@ -57,7 +56,6 @@ class Login extends Component {
   };
 
   handleCancel = e => {
-    console.log(e);
     this.setState({
       visible: false,
     });
@@ -66,13 +64,13 @@ class Login extends Component {
   componentDidUpdate() {
     //if login succeed => redirect to homepage
     if (this.props.loginSuccess) {
-      this.props.history.push('/home')
+      this.props.history.push('/')
     }
 
     if(this.props.notifyMessage == 'Register is Success') {
       this.props.updateNotify()
       this.setState({
-        className: 'container'
+        className: 'login-container'
       })
     }
 
@@ -90,14 +88,12 @@ class Login extends Component {
     this.props.form.validateFields(['username', 'reEmail', 'rePassword'], (err, values) => {
       if (!err) {
         this.props.userRegister({
-          //username: values.username,
+          username: values.username,
           email: values.reEmail,
           password: values.rePassword,
         })
         this.props.form.resetFields()
       }
-    }).then(() => {
-      console.log('123')
     })
   };
 
@@ -118,17 +114,14 @@ class Login extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <div className="login-container">
+      <div className="login-wrapper">
         {/* <Menu/> */}
-        {this.state.show ? (
-          <div height="300" width="400" id="animationDOM" />
-        ) : null}
-        <div className={this.state.className} id="container">
+        <div className={this.state.className} >
           <div className="form-container sign-up-container">
             <div className="form-intro" >
               <h1>Create Account</h1>
               <div className="logo-container">
-                <img src={require('../images/search.png')}></img>
+                <img style={{width: '64px', height: '64px'}} src={require('../images/logo.png')}></img>
               </div>
               <div className="login-form-container">
                 <Form className="login-form">
@@ -174,7 +167,6 @@ class Login extends Component {
                       initialValue: this.state.rePassword,
                       rules: [
                         { required: true, message: 'Please input your password!' },
-                        // { pattern: passwordRegex, message: 'Please input correct password type' },
                       ],
 
                     })(
@@ -194,7 +186,7 @@ class Login extends Component {
             <div className="form-intro">
               <h1>Sign in</h1>
               <div className="logo-container">
-                <img src={require('../images/search.png')}></img>
+              <img style={{width: '64px', height: '64px'}} src={require('../images/logo.png')}></img>
               </div>
               <div className="login-form-container">
                 <Form className="login-form">
@@ -272,9 +264,6 @@ class Login extends Component {
                     placeholder="example abc@gmail.com"
                   />,
                 )}
-                {/* <div className="forgot-message">
-                  <p>{this.props.forgotMessage}</p>
-                </div> */}
               </Form.Item>
             </Form>
           </Modal>
@@ -284,7 +273,6 @@ class Login extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     errorCode: state.userLogin.errorCode,
     forgotMessage: state.userLogin.forgotMessage,

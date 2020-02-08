@@ -3,6 +3,9 @@ import { BrowserRouter, Switch, Route } from "react-router-dom"
 import Login from "../pages/Login"
 import ForgotPassword from '../pages/ForgotPassword'
 import HomePage from '../pages/HomePage'
+import EditProfile from '../pages/profile/EditProfile'
+import ChangePassword from '../pages/profile/ChangePassword'
+import Index from '../pages/Index'
 import { connect } from "react-redux"
 
 class PageLayout extends Component {
@@ -11,18 +14,33 @@ class PageLayout extends Component {
       <BrowserRouter>
         <Switch>
           <Route
-            path='/'
+            path='/login'
             component={Login}
             exact
           />
-           <Route
+          <Route
             path='/forgot'
             component={ForgotPassword}
             exact
           />
-            <Route
+          <Route
             path='/home'
             component={HomePage}
+            exact
+          />
+          <Route
+            path='/account'
+            component={EditProfile}
+            exact
+          />
+           <Route
+            path='/changepassword'
+            component={ChangePassword}
+            exact
+          />
+            <Route
+            path='/'
+            component={Index}
             exact
           />
         </Switch>

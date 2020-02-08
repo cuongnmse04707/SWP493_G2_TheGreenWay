@@ -5,62 +5,11 @@
 }
 
 body {
-	/* background: #f6f5f7;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px; */
 	width: 100%;
 	height: 100%;
 }
 
-h1 {
-	font-weight: bold;
-	margin: 0;
-}
-
-h2 {
-	text-align: center;
-}
-
-p {
-	font-size: 14px;
-	font-weight: 100;
-	line-height: 20px;
-	letter-spacing: 0.5px;
-	margin: 20px 0 30px;
-}
-
-span {
-	font-size: 12px;
-}
-
-a {
-	color: #333;
-	font-size: 14px;
-	text-decoration: none;
-	margin: 15px 0;
-}
-
-
-
-button {
-	border-radius: 20px;
-	border: 1px solid #FF4B2B;
-	background-color: #FF4B2B;
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 12px 45px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	transition: transform 80ms ease-in;
-}
-
-.login-container {
+.login-wrapper {
 	height: 100vh;
 	background-color: #ffffff;
 	display: flex;
@@ -69,8 +18,6 @@ button {
 	background-image: url('../images/orlova-maria-x3Z_YxnUh54-unsplash.jpg');
 	background-size: cover;
 	background-repeat: none;
-
-
 }
 
 .logo-container {
@@ -78,7 +25,7 @@ button {
 }
 
 .intro-title-2 {
-	margin-top: 65%;
+	margin-top: 73%;
 }
 
 .intro-title-1 {
@@ -98,11 +45,6 @@ button {
 	width: 100%;
 }
 
-.forgot-message {
-	display: flex;
-	color: red;
-}
-
 .btn-sign-in, .btn-sign-up {
 	border-radius: 20px;
 	border: none !important;
@@ -118,25 +60,9 @@ button {
 	transition: transform 80ms ease-in;
 }
 
-
-
-
 .text-intro {
 	color: #000;
 	font-weight: bold;
-}
-
-button:active {
-	transform: scale(0.95);
-}
-
-button:focus {
-	outline: none;
-}
-
-button.ghost {
-	background-color: transparent;
-	border-color: #FFFFFF;
 }
 
 .form-intro {
@@ -151,29 +77,10 @@ button.ghost {
 	text-align: center;
 }
 
-form {
-	background-color: #FFFFFF;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	padding: 0 50px;
-	height: 100%;
-	text-align: center;
-}
-
-input {
-	background-color: #eee;
-	border: none;
-	padding: 12px 15px;
-	margin: 8px 0;
-	width: 100%;
-}
-
-.container {
+.login-container {
 	background-color: #fff;
 	border-radius: 10px;
-  	box-shadow: 0 14px 28px rgba(0,0,0,0.25),
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25),
 			0 10px 10px rgba(0,0,0,0.22);
 	position: relative;
 	overflow: hidden;
@@ -196,7 +103,7 @@ input {
 	z-index: 2;
 }
 
-.container.right-panel-active .sign-in-container {
+.login-container.right-panel-active .sign-in-container {
 	transform: translateX(100%);
 }
 
@@ -207,7 +114,7 @@ input {
 	z-index: 1;
 }
 
-.container.right-panel-active .sign-up-container {
+.login-container.right-panel-active .sign-up-container {
 	transform: translateX(100%);
 	opacity: 1;
 	z-index: 5;
@@ -237,14 +144,11 @@ input {
 	z-index: 100;
 }
 
-.container.right-panel-active .overlay-container{
+.login-container.right-panel-active .overlay-container{
 	transform: translateX(-100%);
 }
 
 .overlay {
-  background: #36D1DC;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #5B86E5, #36D1DC);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	background-image: url('../images/galina-n-miziNqvJx5M-unsplash.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -254,11 +158,11 @@ input {
 	left: -100%;
 	height: 100%;
 	width: 200%;
-  	transform: translateX(0);
+  transform: translateX(0);
 	transition: transform 0.6s ease-in-out;
 }
 
-.container.right-panel-active .overlay {
+.login-container.right-panel-active .overlay {
   	transform: translateX(50%);
 }
 
@@ -281,7 +185,7 @@ input {
 	transform: translateX(-20%);
 }
 
-.container.right-panel-active .overlay-left {
+.login-container.right-panel-active .overlay-left {
 	transform: translateX(0);
 }
 
@@ -290,6 +194,6 @@ input {
 	transform: translateX(0);
 }
 
-.container.right-panel-active .overlay-right {
+.login-container.right-panel-active .overlay-right {
 	transform: translateX(20%);
 }

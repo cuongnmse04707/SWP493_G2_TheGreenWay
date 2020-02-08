@@ -39,17 +39,19 @@ let register = async (req, res) => {
         });
         return
     }
-    // Tao new empty 
+    // Tao new empty
     const empty = {
-        email: req.body.email, 
-        password: req.body.password, 
+        email: req.body.email,
+        password: req.body.password,
         username : req.body.username,
         roles: 'user',
         urlAvatar : 'https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fuser-roles-wordpress.png?alt=media&token=35187642-eb12-4c2c-a415-abd60485112c',
     };
     // Luu vao Database
+
     connectionDB.query('INSERT INTO Accounts SET ?  ',empty, (err, result) => {
         if (err) {
+          debug(err);
           return res.status(200).json({success: false,message : "Email is exist!"});
         }else{
           return res.status(200).json({success: true,message : "Register is Success"});

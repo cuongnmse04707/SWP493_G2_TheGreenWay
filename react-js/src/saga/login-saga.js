@@ -19,6 +19,7 @@ const LoginSagas = {
         yield put(LoginActions.loginFailed(userInfor.data))
         message.error(userInfor.data.message, 3)
       } else {
+        console.log(userInfor.data.accessToken)
         yield window.localStorage.setItem('x-access-token', userInfor.data.accessToken)
         yield window.localStorage.setItem('email', action.data.email)
         yield put(LoginActions.loginSucceed(userInfor.data))
