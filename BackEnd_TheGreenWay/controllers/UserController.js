@@ -2,7 +2,7 @@ const debug = console.log.bind(console);
 const mysql = require("mysql");
 var config = require("../config/configDB");
 const connectionDB = mysql.createConnection(config.databaseOptions);
-
+var moment = require("moment-timezone");
 /**
  * controller user
  */
@@ -27,11 +27,15 @@ let information = async (req, res) => {
           .json({ success: false, message: "Email or Password is not exist!" });
       } else {
         try {
+          arr[0].DOB = moment(arr[0].DOB)
+            .tz("Asia/Ho_Chi_Minh")
+            .format();
           return res.status(200).json({
             success: true,
             data: arr[0]
           });
         } catch (error) {
+          console.log(error);
           return res.status(200).json({
             success: false,
             message: error
@@ -54,7 +58,7 @@ let saveinformation = async (req, res) => {
   const country = req.body.country;
   const urlAvatar = req.body.urlAvatar;
   // const urlAvatar = "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fuser-roles-wordpress.png?alt=media&token=35187642-eb12-4c2c-a415-abd60485112c"; // req.body.role
-  //Luu thong tin tu database
+  //
   let sql = `UPDATE Accounts SET username=?,phone=?,DOB=?,address=?,city=?,country=?,urlAvatar=? WHERE email=?`;
   let query = mysql.format(sql, [
     username,
