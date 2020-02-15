@@ -1,95 +1,33 @@
 import React, { Component } from 'react';
 import Review from '../components/Review'
 import { withRouter } from 'react-router'
-import {  Icon,  Dropdown, Menu } from 'antd';
+import { Icon, Dropdown, Menu } from 'antd';
 import 'antd/dist/antd.css';
+import NavBar from '../components/NavBar'
+import Footer from '../components/Footer'
+import { Carousel } from 'react-bootstrap';
+
 class Index extends Component {
   state = {
     email: '',
+    index: 0,
+    direction: null
+  }
 
-  }
-  toLogin = () => {
-    this.props.history.push('/login')
-  }
   componentDidMount() {
-    const email = window.localStorage.getItem('email')
+  }
+
+  handleSelect = (selectedIndex, e) => {
     this.setState({
-      email: email
+      index: selectedIndex,
+      direction: e.direction
     })
-  }
-
-  clearStorage() {
-    window.localStorage.clear()
-    window.location.href = '/'
-  }
-
-  showModalAccount = () => {
-    this.props.history.push('/account')
   };
 
-  showModalPassword = () => {
-    this.props.history.push('/changepassword')
-  };
   render() {
-    const token = window.localStorage.getItem('x-access-token')
-
-    //menu dropdown
-    const menu = (
-      <Menu>
-        <Menu.Item key="0">
-          <a onClick={this.showModalAccount}>Account Information</a>
-        </Menu.Item>
-        <Menu.Item key="1">
-          <a onClick={this.showModalPassword}>Change Password</a>
-        </Menu.Item>
-      </Menu>
-    );
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-          <div className="container">
-            <img style={{ width: '64px', height: '64px' }} src={require('../images/logo.png')} alt="" />
-            <a className="navbar-brand js-scroll-trigger" href="#page-top" style={{ color: 'green' }}>The Green Way</a>
-            <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-              Menu
-              <i className="fa fa-bars"></i>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarResponsive">
-              <ul className="navbar-nav text-uppercase ml-auto">
-                <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#services">Dịch vụ</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#portfolio">Cách sống</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#contact">Liên hệ</a>
-                </li>
-                {token ? (
-                  <div className="header-left">
-                    {/* <li className="nav-item">
-                      <a className="nav-link js-scroll-trigger" href="#contact"> {this.state.email}</a>
-                    </li> */}
-                    <Dropdown style={{ width: '500px' }} overlay={menu} trigger={['click']}>
-                      <a style={{ color: 'white !important' }} className="ant-dropdown-link" href="#">
-                      {this.state.email} <Icon type="down" />
-                      </a>
-                    </Dropdown>
-
-                    <li className="nav-item">
-                      <a className="nav-link js-scroll-trigger" onClick={this.clearStorage}>Logout</a>
-                    </li>
-                  </div>
-                   ) : (
-                    <li className="nav-item">
-                      <a className="nav-link js-scroll-trigger" onClick={this.toLogin}>Đăng nhập/Đăng ký</a>
-                    </li>
-                  )}
-              </ul>
-            </div>
-          </div>
-        </nav>
-
+        <NavBar />
         <header className="masthead">
           <div className="container">
             <div className="intro-text">
@@ -99,8 +37,6 @@ class Index extends Component {
             </div>
           </div>
         </header>
-
-
         <section className="page-section" id="services">
           <div className="container">
             <div className="row">
@@ -335,45 +271,8 @@ class Index extends Component {
             </div>
           </div>
         </section>
+        <Footer />
 
-        <footer className="footer">
-          <div className="container">
-            <div className="row align-items-center">
-              <div className="col-md-4">
-                <span className="copyright">Copyright &copy; The Green Way</span>
-              </div>
-              <div className="col-md-4">
-                <ul className="list-inline social-buttons">
-                  <li className="list-inline-item">
-                    <a href="#">
-                      <i className="fa fa-twitter"></i>
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a href="#">
-                      <i className="fa fa-facebook-f"></i>
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a href="#">
-                      <i className="fa fa-linkedin-in"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="col-md-4">
-                <ul className="list-inline quicklinks">
-                  <li className="list-inline-item">
-                    <a href="#">Privacy Policy</a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a href="#">Terms of Use</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     );
   }

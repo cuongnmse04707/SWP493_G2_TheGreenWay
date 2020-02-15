@@ -8,13 +8,13 @@ const connectionDB = mysql.createConnection(config.databaseOptions);
  */
 
 // get information of user fron database
-let information = async (req, res) => {
+let information = async(req, res) => {
     // get email from request after handle of authmiddleware
     const email = req.jwtDecoded.data.email;
     //Lay thong tin tu database
     let sql = `SELECT * FROM Accounts WHERE email=?`;
     let query = mysql.format(sql, [email]);
-    connectionDB.query(query, async (err, result) => {
+    connectionDB.query(query, async(err, result) => {
         if (err) {
             // chua ton tai thi bao loi
             return res.status(200).json({ success: false, message: err });
@@ -41,7 +41,7 @@ let information = async (req, res) => {
 }
 
 // save data of user to database not avatar
-let saveinformation = async (req, res) => {
+let saveinformation = async(req, res) => {
     // get email from request after handle of authmiddleware
     const email = req.jwtDecoded.data.email;
     const username = req.body.username;
@@ -50,12 +50,11 @@ let saveinformation = async (req, res) => {
     const address = req.body.address;
     const city = req.body.city;
     const country = req.body.country;
-    const urlAvatar = req.body.urlAvatar;
     // const urlAvatar = "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fuser-roles-wordpress.png?alt=media&token=35187642-eb12-4c2c-a415-abd60485112c"; // req.body.role
     //Luu thong tin tu database
-    let sql = `UPDATE Accounts SET username=?,phone=?,DOB=?,address=?,city=?,country=?,urlAvatar=? WHERE email=?`;
-    let query = mysql.format(sql, [username, phone, DOB, address, city, country, urlAvatar, email]);
-    connectionDB.query(query, async (err, result) => {
+    let sql = `UPDATE Accounts SET username=?,phone=?,DOB=?,address=?,city=?,country=? WHERE email=?`;
+    let query = mysql.format(sql, [username, phone, DOB, address, city, country, email]);
+    connectionDB.query(query, async(err, result) => {
         if (err) {
             return res.status(200).json({ success: false, message: "Save Information Of User Is Failed!" });
         } else {
@@ -65,14 +64,14 @@ let saveinformation = async (req, res) => {
 }
 
 // change avatar of user to database
-let changeavatar = async (req, res) => {
+let changeavatar = async(req, res) => {
     // get email from request after handle of authmiddleware
     const email = req.jwtDecoded.data.email;
     const urlAvatar = req.body.urlAvatar;
     //Luu thong tin tu database
     let sql = `UPDATE Accounts SET urlAvatar=? WHERE email=?`;
     let query = mysql.format(sql, [urlAvatar, email]);
-    connectionDB.query(query, async (err, result) => {
+    connectionDB.query(query, async(err, result) => {
         if (err) {
             return res.status(200).json({ success: false, message: "Save Avatar Of User Is Failed!" });
         } else {
@@ -82,7 +81,7 @@ let changeavatar = async (req, res) => {
 }
 
 // change password of user
-let changepassword = async (req, res) => {
+let changepassword = async(req, res) => {
     // get email from request after handle of authmiddleware
     const email = req.jwtDecoded.data.email;
     const oldpassword = req.body.oldpassword;
@@ -91,7 +90,7 @@ let changepassword = async (req, res) => {
     //Lay thong tin tu database
     let sql = `SELECT email,password FROM Accounts WHERE email=?`;
     let query = mysql.format(sql, [email]);
-    connectionDB.query(query, async (err, result) => {
+    connectionDB.query(query, async(err, result) => {
         if (err) {
             // chua ton tai thi bao loi
             return res.status(200).json({ success: false, message: err });
@@ -105,7 +104,7 @@ let changepassword = async (req, res) => {
                 if (oldpassword === arr[0].password) {
                     let sqlChange = `UPDATE Accounts SET password=? WHERE email=?`;
                     let queryChange = mysql.format(sqlChange, [newpassword, email]);
-                    connectionDB.query(queryChange, async (err, result) => {
+                    connectionDB.query(queryChange, async(err, result) => {
                         if (err) {
                             return res.status(200).json({ success: false, message: "Change Password Of User Is Failed!" });
                         } else {

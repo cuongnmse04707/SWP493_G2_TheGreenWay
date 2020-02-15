@@ -5,6 +5,8 @@ import 'antd/dist/antd.css';
 import { connect } from 'react-redux'
 import ForgotTypes from '../redux/forgot-password-redux'
 import { withRouter } from 'react-router'
+import NavBar from '../components/NavBar'
+import Footer from '../components/Footer'
 
 class ForgotPassword extends Component {
   state = {
@@ -15,7 +17,7 @@ class ForgotPassword extends Component {
   componentDidUpdate() {
     if (this.props.notifyMessage == 'Reset Password Success!' || this.props.notifyMessage == `Account don't need to reset password`) {
       this.props.updateNotify()
-      this.props.history.push('/')
+      this.props.history.push('/login')
     }
   }
 
@@ -54,6 +56,8 @@ class ForgotPassword extends Component {
       wrapperCol: { span: 14 },
     };
     return (
+      <div>
+        <NavBar/>
       <div className="login-wrapper">
         <div className={this.state.className} >
           <div className="form-container sign-in-container">
@@ -101,6 +105,8 @@ class ForgotPassword extends Component {
             </div>
           </div>
         </div>
+        </div>
+        <Footer/>
       </div >
     );
   }
