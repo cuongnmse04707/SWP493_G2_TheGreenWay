@@ -7,8 +7,8 @@ import axios from 'axios'
 const LoginSagas = {
   *loginUser(action) {
     try {
-      const userInfor = yield call(async() => {
-         return await axios.post('http://localhost:3001/auth/login', action.data, {
+      const userInfor = yield call(() => {
+        return axios.post('http://localhost:3001/auth/login', action.data, {
           headers: {
             'Content-Type': 'application/json',
           },

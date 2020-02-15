@@ -2,7 +2,7 @@ const debug = console.log.bind(console);
 const mysql = require("mysql");
 var config = require("../config/configDB");
 const connectionDB = mysql.createConnection(config.databaseOptions);
-
+var moment = require("moment-timezone");
 /**
  * controller user
  */
