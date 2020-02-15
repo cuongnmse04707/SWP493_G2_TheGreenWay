@@ -158,6 +158,17 @@ let showOrderListByEmail = async (req, res) => {
             const array = await Array.apply(null, results);
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
+            arr.forEach(function(item, index, arrays) {
+              item.CreateDate = moment(item.CreateDate)
+                .tz("Asia/Ho_Chi_Minh")
+                .format();
+              item.ModifyDate = moment(item.ModifyDate)
+                .tz("Asia/Ho_Chi_Minh")
+                .format();
+              item.EndDate = moment(item.EndDate)
+                .tz("Asia/Ho_Chi_Minh")
+                .format();
+            });
             return res.status(200).json({
               success: true,
               data: arr,
@@ -267,6 +278,17 @@ let showOrderListForMOD = async (req, res) => {
             const array = await Array.apply(null, results);
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
+            arr.forEach(function(item, index, arrays) {
+              item.CreateDate = moment(item.CreateDate)
+                .tz("Asia/Ho_Chi_Minh")
+                .format();
+              item.ModifyDate = moment(item.ModifyDate)
+                .tz("Asia/Ho_Chi_Minh")
+                .format();
+              item.EndDate = moment(item.EndDate)
+                .tz("Asia/Ho_Chi_Minh")
+                .format();
+            });
             return res.status(200).json({
               success: true,
               data: arr,
@@ -432,6 +454,17 @@ let getListOrderByStatusCode = async (req, res) => {
             const array = await Array.apply(null, results);
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
+            arr.forEach(function(item, index, arrays) {
+              item.CreateDate = moment(item.CreateDate)
+                .tz("Asia/Ho_Chi_Minh")
+                .format();
+              item.ModifyDate = moment(item.ModifyDate)
+                .tz("Asia/Ho_Chi_Minh")
+                .format();
+              item.EndDate = moment(item.EndDate)
+                .tz("Asia/Ho_Chi_Minh")
+                .format();
+            });
             return res.status(200).json({
               success: true,
               data: arr,

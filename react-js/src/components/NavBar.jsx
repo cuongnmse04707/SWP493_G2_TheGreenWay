@@ -1,63 +1,65 @@
-import React, { Component } from 'react';
-import { Icon, Dropdown, Menu, Modal } from 'antd';
-import 'antd/dist/antd.css';
-import { withRouter } from 'react-router'
-import { connect } from 'react-redux'
-import HomePageTypes from '../redux/home-page-redux'
+import React, { Component } from "react";
+import { Icon, Dropdown, Menu, Modal } from "antd";
+import "antd/dist/antd.css";
+import { withRouter } from "react-router";
+import { connect } from "react-redux";
+import HomePageTypes from "../redux/home-page-redux";
 class NavBar extends Component {
   state = {
-    userName: '',
+    userName: "",
     visibleLogout: false
-  }
+  };
 
   componentDidMount() {
-    const token = window.localStorage.getItem('x-access-token')
+    const token = window.localStorage.getItem("x-access-token");
     if (token) {
-      this.props.getUserInfor()
+      this.props.getUserInfor();
     }
   }
 
   componentDidUpdate(nextProps) {
-    if (this.props.userInformation && nextProps.userInformation !== this.props.userInformation) {
-      console.log(this.props.userInformation)
+    if (
+      this.props.userInformation &&
+      nextProps.userInformation !== this.props.userInformation
+    ) {
+      console.log(this.props.userInformation);
       this.setState({
         userName: this.props.userInformation.username
-      })
+      });
     }
   }
 
-
   toLogin = () => {
-    this.props.history.push('/login')
-  }
+    this.props.history.push("/login");
+  };
 
   handleLogoutCancel = e => {
     this.setState({
-      visibleLogout: false,
+      visibleLogout: false
     });
   };
 
   handleLogoutOk = e => {
-    window.localStorage.clear()
-    window.location.href= "/"
+    window.localStorage.clear();
+    window.location.href = "/";
   };
 
   showLogoutModal = () => {
     this.setState({
       visibleLogout: true
-    })
-  }
+    });
+  };
 
   showModalAccount = () => {
-    this.props.history.push('/account')
+    this.props.history.push("/account");
   };
 
   toHomePage = () => {
-    this.props.history.push('/')
-  }
+    this.props.history.push("/");
+  };
 
   render() {
-    const token = window.localStorage.getItem('x-access-token')
+    const token = window.localStorage.getItem("x-access-token");
     //menu dropdown
     const menu = (
       <Menu>
@@ -71,40 +73,81 @@ class NavBar extends Component {
     );
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <nav
+          className="navbar navbar-expand-lg navbar-dark fixed-top"
+          id="mainNav"
+        >
           <div className="container navbar-container">
-            <img style={{ width: '58px', height: '58px' }} src={require('../images/logo.png')} alt="" />
-            <a className="navbar-brand js-scroll-trigger" onClick={this.toHomePage} style={{ color: 'green' }}>The Green Way</a>
-            <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <div onClick={this.toHomePage}>
+              <img
+                style={{ width: "58px", height: "58px", cursor: "pointer" }}
+                src={require("../images/logo.png")}
+                alt=""
+              />
+              <a
+                className="navbar-brand js-scroll-trigger"
+                style={{ color: "green" }}
+              >
+                The Green Way
+              </a>
+            </div>
+            <button
+              className="navbar-toggler navbar-toggler-right"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarResponsive"
+              aria-controls="navbarResponsive"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
               Menu
               <i className="fa fa-bars"></i>
             </button>
             <div className="collapse navbar-collapse" id="navbarResponsive">
               <ul className="navbar-nav text-uppercase ml-auto">
                 <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#services">Sản Phẩm</a>
+                  <a className="nav-link js-scroll-trigger" href="#services">
+                    Sản Phẩm
+                  </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#portfolio">Cách sống</a>
+                  <a className="nav-link js-scroll-trigger" href="#portfolio">
+                    Cách sống
+                  </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#contact">Liên hệ</a>
+                  <a className="nav-link js-scroll-trigger" href="#contact">
+                    Liên hệ
+                  </a>
                 </li>
                 {token ? (
                   <div className="header-left">
                     <li className="nav-item">
-                      <Dropdown style={{ width: '500px' }} overlay={menu} trigger={['click']} >
-                        <a style={{ color: '#000 !important' }} className="ant-dropdown-link" href="#">
+                      <Dropdown
+                        style={{ width: "500px" }}
+                        overlay={menu}
+                        trigger={["click"]}
+                      >
+                        <a
+                          style={{ color: "#000 !important" }}
+                          className="ant-dropdown-link"
+                          href="#"
+                        >
                           {this.state.userName} <Icon type="down" />
                         </a>
                       </Dropdown>
                     </li>
                   </div>
                 ) : (
-                    <li className="nav-item">
-                      <a className="nav-link js-scroll-trigger" onClick={this.toLogin}>Đăng nhập/Đăng ký</a>
-                    </li>
-                  )}
+                  <li className="nav-item">
+                    <a
+                      className="nav-link js-scroll-trigger"
+                      onClick={this.toLogin}
+                    >
+                      Đăng nhập/Đăng ký
+                    </a>
+                  </li>
+                )}
               </ul>
             </div>
             <Modal
@@ -121,20 +164,19 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    userInformation: state.homePage.userInformation,
-  }
-}
+    userInformation: state.homePage.userInformation
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     getUserInfor: () => {
-      dispatch(HomePageTypes.getInforRequest())
-    },
+      dispatch(HomePageTypes.getInforRequest());
+    }
+  };
+};
 
-  }
-}
-
-NavBar = withRouter(NavBar)
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar)
+NavBar = withRouter(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

@@ -1,31 +1,33 @@
-import React, { Component } from 'react';
-import '../css/forgot-password.css';
-import { Form,  Input } from 'antd';
-import 'antd/dist/antd.css';
-import { connect } from 'react-redux'
-import ForgotTypes from '../redux/forgot-password-redux'
-import { withRouter } from 'react-router'
-import NavBar from '../components/NavBar'
-import Footer from '../components/Footer'
+import React, { Component } from "react";
+import "../css/forgot-password.css";
+import { Form, Input } from "antd";
+import "antd/dist/antd.css";
+import { connect } from "react-redux";
+import ForgotTypes from "../redux/forgot-password-redux";
+import { withRouter } from "react-router";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 
 class ForgotPassword extends Component {
   state = {
-    className: 'login-container',
-    show: true,
-  }
+    className: "login-container",
+    show: true
+  };
 
   componentDidUpdate() {
-    if (this.props.notifyMessage == 'Reset Password Success!' || this.props.notifyMessage == `Account don't need to reset password`) {
-      this.props.updateNotify()
-      this.props.history.push('/login')
+    if (
+      this.props.notifyMessage == "Reset Password Success!" ||
+      this.props.notifyMessage == `Account don't need to reset password`
+    ) {
+      this.props.updateNotify();
+      this.props.history.push("/login");
     }
   }
 
-
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
+    if (value && value !== form.getFieldValue("password")) {
+      callback("Two passwords that you enter is inconsistent!");
     } else {
       callback();
     }
@@ -33,101 +35,117 @@ class ForgotPassword extends Component {
 
   handleConfirmSubmit = e => {
     e.preventDefault();
-    this.props.form.validateFields(['password', 'confirm'], (err, values) => {
+    this.props.form.validateFields(["password", "confirm"], (err, values) => {
       if (!err) {
         console.log(values);
-        console.log(window.location.search.split('?')[1])
-        console.log(window.location.search.split('?')[2])
+        console.log(window.location.search.split("?")[1]);
+        console.log(window.location.search.split("?")[2]);
         this.props.resetPassword({
           password: values.password,
-          token: window.location.search.split('?')[1],
-          email: window.location.search.split('?')[2],
-        })
-        this.props.form.resetFields()
+          token: window.location.search.split("?")[1],
+          email: window.location.search.split("?")[2]
+        });
+        this.props.form.resetFields();
       }
     });
   };
-
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 10 },
-      wrapperCol: { span: 14 },
+      wrapperCol: { span: 14 }
     };
     return (
       <div>
-        <NavBar/>
-      <div className="login-wrapper">
-        <div className={this.state.className} >
-          <div className="form-container sign-in-container">
-            <div className="form-intro">
-              <h1>Reset Password</h1>
-              <div className="logo-container">
-                <img src={require('../images/search.png')}></img>
-              </div>
-              <div className='forgot-form-container'>
-                <Form className="login-form">
-                  <Form.Item {...formItemLayout} label="Password" hasFeedback>
-                    {getFieldDecorator('password', {
-                      rules: [
-                        {
-                          required: true,
-                          message: 'Please input your password!',
-                        },
-                      ],
-                    })(<Input.Password />)}
-                  </Form.Item>
-                  <Form.Item {...formItemLayout} label="Confirm Password" hasFeedback>
-                    {getFieldDecorator('confirm', {
-                      rules: [
-                        {
-                          required: true,
-                          message: 'Please confirm your password!',
-                        },
-                        {
-                          validator: this.compareToFirstPassword,
-                        },
-                      ],
-                    })(<Input.Password />)}
-                  </Form.Item>
-                  <button className="btn-reset" onClick={this.handleConfirmSubmit}>Reset</button>
-                </Form>
+        <NavBar />
+        <div className="login-wrapper">
+          <div className={this.state.className}>
+            <div className="form-container sign-in-container">
+              <div className="form-intro">
+                <h1>Reset Password</h1>
+                <div className="logo-container">
+                  <img
+                    style={{ width: "64px", height: "64px" }}
+                    src={require("../images/logo.png")}
+                  ></img>
+                </div>
+                <div className="forgot-form-container">
+                  <Form className="login-form">
+                    <Form.Item {...formItemLayout} label="Password" hasFeedback>
+                      {getFieldDecorator("password", {
+                        rules: [
+                          {
+                            required: true,
+                            message: "Please input your password!"
+                          }
+                        ]
+                      })(<Input.Password />)}
+                    </Form.Item>
+                    <Form.Item
+                      {...formItemLayout}
+                      label="Confirm Password"
+                      hasFeedback
+                    >
+                      {getFieldDecorator("confirm", {
+                        rules: [
+                          {
+                            required: true,
+                            message: "Please confirm your password!"
+                          },
+                          {
+                            validator: this.compareToFirstPassword
+                          }
+                        ]
+                      })(<Input.Password />)}
+                    </Form.Item>
+                    <button
+                      className="btn-reset"
+                      onClick={this.handleConfirmSubmit}
+                    >
+                      Reset
+                    </button>
+                  </Form>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="overlay-container">
-            <div className="overlay">
-              <div className="overlay-panel overlay-right">
-                <h1 className="intro-title-forgot">Hello, Friend!</h1>
-                <p className="text-intro">Enter your personal details and start journey with us</p>
+            <div className="overlay-container">
+              <div className="overlay">
+                <div className="overlay-panel overlay-right">
+                  <h1 className="intro-title-forgot">Hello, Friend!</h1>
+                  <p className="text-intro">
+                    Enter your personal details and start journey with us
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
-        <Footer/>
-      </div >
+        {/* <Footer/> */}
+      </div>
     );
   }
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     notifyMessage: state.forgotPassword.notifyMessage
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    resetPassword: (newPass) => {
-      dispatch(ForgotTypes.resetRequest(newPass))
+    resetPassword: newPass => {
+      dispatch(ForgotTypes.resetRequest(newPass));
     },
     updateNotify: () => {
-      dispatch(ForgotTypes.updateNotify())
+      dispatch(ForgotTypes.updateNotify());
     }
-  }
-}
+  };
+};
 
-ForgotPassword = withRouter(ForgotPassword)
-const ForgotPasswordScreen = Form.create()(ForgotPassword)
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordScreen)
+ForgotPassword = withRouter(ForgotPassword);
+const ForgotPasswordScreen = Form.create()(ForgotPassword);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ForgotPasswordScreen);

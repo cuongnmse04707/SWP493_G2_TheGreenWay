@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import "./App.css";
 import LoginScreen from "./pages/Login";
-import Route from './router/route'
-import { Provider } from "react-redux"
-import configureStore from "./redux/index"
+import Route from "./router/route";
+import { Provider } from "react-redux";
+import configureStore from "./redux/index";
 
 class App extends Component {
   render() {
+    // alert("{data} have been added!");
     return (
       <div>
         {/* <BrowserRouter>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Footer extends Component {
   render() {
@@ -8,7 +8,9 @@ class Footer extends Component {
           <div className="container">
             <div className="row align-items-center">
               <div className="col-md-4">
-                <span className="copyright">Copyright &copy; The Green Way</span>
+                <span className="copyright">
+                  Copyright &copy; The Green Way
+                </span>
               </div>
               <div className="col-md-4">
                 <ul className="list-inline social-buttons">
@@ -22,11 +24,11 @@ class Footer extends Component {
                       <i className="fa fa-facebook-f"></i>
                     </a>
                   </li>
-                  <li className="list-inline-item">
+                  {/* <li className="list-inline-item">
                     <a href="#">
                       <i className="fa fa-linkedin-in"></i>
                     </a>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
               <div className="col-md-4">
