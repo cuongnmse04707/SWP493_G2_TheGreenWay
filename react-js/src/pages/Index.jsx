@@ -30,27 +30,75 @@ class Index extends Component {
         <header className="masthead">
           <div className="container">
             <div className="intro-text">
-              <div className="intro-lead-in">
-                Save the Earth, Save Ourselves!
+              <div
+                className="intro-heading text-uppercase"
+                style={{ color: "#008000" }}
+              >
+                The Green Way
               </div>
-              <div className="intro-heading text-uppercase">The Green Way</div>
+              <div className="intro-lead-in">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    paddingRight: "160px",
+                    paddingLeft: "160px"
+                  }}
+                >
+                  <div
+                    style={{
+                      flex: "1",
+                      display: "flex",
+                      color: "#000000",
+                      fontSize: "28px"
+                    }}
+                  >
+                    Môi trường là nơi chúng ta gặp nhau
+                  </div>
+                  <div
+                    style={{
+                      flex: "1",
+                      display: "flex",
+                      justifyContent: "center",
+                      fontSize: "28px",
+                      color: "#000000"
+                    }}
+                  >
+                    Là nơi đem lại lợi ích cho mọi người
+                  </div>
+                  <div
+                    style={{
+                      flex: "1",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      fontSize: "28px",
+                      color: "#000000"
+                    }}
+                  >
+                    Là điều mà tất cả chúng ta đều chia sẻ.
+                  </div>
+                </div>
+              </div>
               <a
                 className="btn btn-primary btn-xl text-uppercase js-scroll-trigger"
                 href="#services"
+                style={{ marginTop: "50px" }}
               >
-                Tell Me More
+                Về chúng tôi
               </a>
             </div>
           </div>
         </header>
-     
+
         <section className="page-section" id="services">
           <div className="container">
             <div className="row">
               <div className="col-lg-12 text-center">
-                <h2 className="section-heading text-uppercase">Our mission</h2>
+                <h2 className="section-heading text-uppercase">
+                  Nhiệm vụ của chúng tôi
+                </h2>
                 <h3 className="section-subheading text-muted">
-                  Change your thinking, change the world.
+                  Chung bàn tay nhỏ tạo ảnh hưởng lớn
                 </h3>
               </div>
             </div>
@@ -67,9 +115,10 @@ class Index extends Component {
                 />
                 <h4 className="service-heading">Cây văn phòng</h4>
                 <p className="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Minima maxime quam architecto quo inventore harum ex magni,
-                  dicta impedit.
+                  Cuộc sống công sở luôn đòi hỏi con người hoạt động như một cỗ
+                  máy. Do đó sau những giờ làm căng thẳng được thư giản với cây
+                  xanh sẽ làm cho mọi người bớt đi sức nặng về thể chất và tinh
+                  thần.
                 </p>
               </div>
               <div className="col-md-4">
@@ -84,9 +133,9 @@ class Index extends Component {
                 />
                 <h4 className="service-heading">Đồ tái chế</h4>
                 <p className="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Minima maxime quam architecto quo inventore harum ex magni,
-                  dicta impedit.
+                  Tái chế là việc sử dụng rác thải, vật liệu thải làm nguyên
+                  liệu sản xuất ra các sản phẩm mới có ích, nhằm giảm việc tiêu
+                  thụ những vật liệu thô mới,giảm ô nhiễm không khí.
                 </p>
               </div>
               <div className="col-md-4">
@@ -101,9 +150,9 @@ class Index extends Component {
                 />
                 <h4 className="service-heading">Chia sẻ thông tin</h4>
                 <p className="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Minima maxime quam architecto quo inventore harum ex magni,
-                  dicta impedit.
+                  The Green Way mong muốn đưa cho các bạn những cẩm năng, gợi ý
+                  về một cách sống xanh. Từ đó bạn có thể cải thiện năng lượng
+                  xanh của chính mình.
                 </p>
               </div>
             </div>
@@ -246,7 +295,7 @@ class Index extends Component {
                     </li>
                     <li className="timeline-inverted">
                       <div className="timeline-image">
-                        <h4>See More</h4>
+                        <h4>Xem thêm</h4>
                       </div>
                     </li>
                   </ul>

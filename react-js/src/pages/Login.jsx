@@ -70,7 +70,7 @@ class Login extends Component {
       // this.props.history.push("/");
       setTimeout(() => {
         this.props.history.push("/");
-      },1000)
+      }, 1000);
     }
 
     if (this.props.notifyMessage == "Register is Success") {
@@ -134,10 +134,10 @@ class Login extends Component {
           <div className={this.state.className}>
             <div className="form-container sign-up-container">
               <div className="form-intro">
-                <h1>Create Account</h1>
+                <h2>Tạo tài khoản</h2>
                 <div className="logo-container">
                   <img
-                    style={{ width: "64px", height: "64px" }}
+                    style={{ width: "80px", height: "80px" }}
                     src={require("../images/logo.png")}
                   ></img>
                 </div>
@@ -178,11 +178,12 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập email!"
+                            message: "Vui lòng nhập email của bạn"
                           },
                           {
                             pattern: emailRegex,
-                            message: "Vui lòng nhập đúng định dạng email"
+                            message:
+                              "Vui lòng nhập đúng định dạng email của bạn"
                           }
                         ]
                       })(
@@ -203,11 +204,12 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập mật khẩu"
+                            message: "Vui lòng nhập mật khẩu của bạn"
                           },
                           {
                             pattern: passwordRegex,
-                            message: "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa"
+                            message:
+                              "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa"
                           }
                         ]
                       })(
@@ -227,7 +229,7 @@ class Login extends Component {
                       className="btn-sign-up"
                       onClick={this.handleSignUpSubmit}
                     >
-                      Register
+                      Đăng kí
                     </button>
                   </Form>
                 </div>
@@ -235,10 +237,10 @@ class Login extends Component {
             </div>
             <div className="form-container sign-in-container">
               <div className="form-intro">
-                <h1>Sign in</h1>
+                <h1>Đăng Nhập</h1>
                 <div className="logo-container">
                   <img
-                    style={{ width: "64px", height: "64px" }}
+                    style={{ width: "80px", height: "80px" }}
                     src={require("../images/logo.png")}
                   ></img>
                 </div>
@@ -250,7 +252,7 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập email!"
+                            message: "Vui lòng nhập email của bạn"
                           }
                         ]
                       })(
@@ -271,7 +273,7 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập mật khẩu!"
+                            message: "Vui lòng nhập mật khẩu của bạn"
                           }
                         ]
                       })(
@@ -293,14 +295,14 @@ class Login extends Component {
                         href=""
                         onClick={this.showModal}
                       >
-                        Quên email hoặc mật khẩu?
+                        Bạn đã quên email hoặc mật khẩu?
                       </p>
                     </Form.Item>
                     <button
                       className="btn-sign-in"
                       onClick={this.handleSignInSubmit}
                     >
-                      Sign In
+                      Đăng nhập
                     </button>
                   </Form>
                 </div>
@@ -309,30 +311,31 @@ class Login extends Component {
             <div className="overlay-container">
               <div className="overlay">
                 <div className="overlay-panel overlay-left">
-                  <h1 className="intro-title-1">Welcome Back!</h1>
+                  <h1 className="intro-title-1">Bạn đã sẵn sàng chưa ?</h1>
                   <p className="text-intro">
-                    To keep connected with us please login with your personal
-                    info
+                    Hãy đăng nhập và cùng The Green Way chung sức bảo vệ mái nhà
+                    xanh.
                   </p>
                   <button
                     className="ghost btn-sign-up"
                     id="signIn"
                     onClick={this.handleSignInClick}
                   >
-                    Sign In
+                    Đăng Nhập
                   </button>
                 </div>
                 <div className="overlay-panel overlay-right">
-                  <h1 className="intro-title-2">Hello, Friend!</h1>
+                  <h1 className="intro-title-2">Chào bạn!</h1>
                   <p className="text-intro">
-                    Enter your personal details and start journey with us
+                    The Green Way mong muốn cùng bạn tạo nên những giá trị xanh
+                    cho cuộc sống.
                   </p>
                   <button
                     className="ghost btn-sign-in"
                     id="signUp"
                     onClick={this.handleSignInClick}
                   >
-                    Register
+                    Đăng kí
                   </button>
                 </div>
               </div>
@@ -346,9 +349,7 @@ class Login extends Component {
               <Form className="login-form">
                 <Form.Item>
                   {getFieldDecorator("resetEmail", {
-                    rules: [
-                      { required: true, message: "Vui lòng nhập email" }
-                    ]
+                    rules: [{ required: true, message: "Vui lòng nhập email" }]
                   })(
                     <Input
                       prefix={

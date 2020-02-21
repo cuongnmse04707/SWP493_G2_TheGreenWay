@@ -59,7 +59,7 @@ class ForgotPassword extends Component {
     return (
       <div>
         <NavBar />
-        <div className="login-wrapper">
+        <div className="login-wrapper-forgot">
           <div className={this.state.className}>
             <div className="form-container sign-in-container">
               <div className="form-intro">

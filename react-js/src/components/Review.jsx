@@ -33,7 +33,6 @@ class Review extends Component {
                 </a>
                 <div className="portfolio-caption">
                   <h4>Xương Rồng</h4>
-                  <p className="text-muted">Illustration</p>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 portfolio-item">
@@ -55,7 +54,6 @@ class Review extends Component {
                 </a>
                 <div className="portfolio-caption">
                   <h4>Cây Văn Phòng</h4>
-                  <p className="text-muted">Graphic Design</p>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 portfolio-item">
@@ -77,7 +75,6 @@ class Review extends Component {
                 </a>
                 <div className="portfolio-caption">
                   <h4>Xương Rồng Mini</h4>
-                  <p className="text-muted">Identity</p>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 portfolio-item">
@@ -99,7 +96,6 @@ class Review extends Component {
                 </a>
                 <div className="portfolio-caption">
                   <h4>Sen Đá</h4>
-                  <p className="text-muted">Branding</p>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 portfolio-item">
@@ -121,7 +117,6 @@ class Review extends Component {
                 </a>
                 <div className="portfolio-caption">
                   <h4>Tiểu Cảnh</h4>
-                  <p className="text-muted">Website Design</p>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 portfolio-item">
@@ -143,7 +138,6 @@ class Review extends Component {
                 </a>
                 <div className="portfolio-caption">
                   <h4>Cây Để Bàn</h4>
-                  <p className="text-muted">Photography</p>
                 </div>
               </div>
             </div>
