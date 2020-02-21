@@ -67,7 +67,10 @@ class Login extends Component {
   componentDidUpdate() {
     //if login succeed => redirect to homepage
     if (this.props.loginSuccess) {
-      this.props.history.push("/");
+      // this.props.history.push("/");
+      setTimeout(() => {
+        this.props.history.push("/");
+      },1000)
     }
 
     if (this.props.notifyMessage == "Register is Success") {
@@ -146,15 +149,15 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Please input your email!"
+                            message: "Vui lòng nhập tên người dùng"
                           },
                           {
                             min: 6,
-                            message: "Email must be more than 6 characters"
+                            message: "Tên người dùng phải dài ít nhất 6 kí tự"
                           },
                           {
                             max: 32,
-                            message: "Username must smaller than 32 characters"
+                            message: "Tên người dùng không dài quá 32 kí tự"
                           }
                         ]
                       })(
@@ -175,11 +178,11 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Please input your email!"
+                            message: "Vui lòng nhập email!"
                           },
                           {
                             pattern: emailRegex,
-                            message: "Please input correct email type"
+                            message: "Vui lòng nhập đúng định dạng email"
                           }
                         ]
                       })(
@@ -190,7 +193,7 @@ class Login extends Component {
                               style={{ color: "rgba(0,0,0,.25)" }}
                             />
                           }
-                          placeholder="Email"
+                          placeholder="abc@gmail.com"
                         />
                       )}
                     </Form.Item>
@@ -200,11 +203,11 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Please input your password!"
+                            message: "Vui lòng nhập mật khẩu"
                           },
                           {
                             pattern: passwordRegex,
-                            message: "Please input correct password type"
+                            message: "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa"
                           }
                         ]
                       })(
@@ -247,7 +250,7 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Please input your email!"
+                            message: "Vui lòng nhập email!"
                           }
                         ]
                       })(
@@ -268,7 +271,7 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Please input your Password!"
+                            message: "Vui lòng nhập mật khẩu!"
                           }
                         ]
                       })(
@@ -290,7 +293,7 @@ class Login extends Component {
                         href=""
                         onClick={this.showModal}
                       >
-                        Forgot your email or password?
+                        Quên email hoặc mật khẩu?
                       </p>
                     </Form.Item>
                     <button
@@ -344,7 +347,7 @@ class Login extends Component {
                 <Form.Item>
                   {getFieldDecorator("resetEmail", {
                     rules: [
-                      { required: true, message: "Please input your email!" }
+                      { required: true, message: "Vui lòng nhập email" }
                     ]
                   })(
                     <Input

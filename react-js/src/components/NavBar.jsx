@@ -7,6 +7,7 @@ import HomePageTypes from "../redux/home-page-redux";
 class NavBar extends Component {
   state = {
     userName: "",
+    urlAvatar: '',
     visibleLogout: false
   };
 
@@ -24,7 +25,9 @@ class NavBar extends Component {
     ) {
       console.log(this.props.userInformation);
       this.setState({
-        userName: this.props.userInformation.username
+        userName: this.props.userInformation.username,
+        urlAvatar: this.props.userInformation.urlAvatar
+
       });
     }
   }
@@ -78,18 +81,18 @@ class NavBar extends Component {
           id="mainNav"
         >
           <div className="container navbar-container">
-            <div onClick={this.toHomePage}>
+            <div onClick={this.toHomePage} className="nav-logo-container">
               <img
-                style={{ width: "58px", height: "58px", cursor: "pointer" }}
-                src={require("../images/logo.png")}
+                style={{ width: "175px", height: "58px", cursor: "pointer" }}
+                src={require("../images/logo-1.png")}
                 alt=""
               />
-              <a
+              {/* <a
                 className="navbar-brand js-scroll-trigger"
                 style={{ color: "green" }}
               >
                 The Green Way
-              </a>
+              </a> */}
             </div>
             <button
               className="navbar-toggler navbar-toggler-right"
@@ -122,7 +125,12 @@ class NavBar extends Component {
                 </li>
                 {token ? (
                   <div className="header-left">
-                    <li className="nav-item">
+                    <li className="nav-item user-name">
+                      <img
+                        style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                        src={this.props.userInformation.urlAvatar}
+                        // alt=""
+                      />
                       <Dropdown
                         style={{ width: "500px" }}
                         overlay={menu}
@@ -139,15 +147,15 @@ class NavBar extends Component {
                     </li>
                   </div>
                 ) : (
-                  <li className="nav-item">
-                    <a
-                      className="nav-link js-scroll-trigger"
-                      onClick={this.toLogin}
-                    >
-                      Đăng nhập/Đăng ký
+                    <li className="nav-item">
+                      <a
+                        className="nav-link js-scroll-trigger"
+                        onClick={this.toLogin}
+                      >
+                        Đăng nhập/Đăng ký
                     </a>
-                  </li>
-                )}
+                    </li>
+                  )}
               </ul>
             </div>
             <Modal

@@ -25,7 +25,7 @@ class Index extends Component {
 
   render() {
     return (
-      <div>
+      <div className="home-page">
         <NavBar />
         <header className="masthead">
           <div className="container">
@@ -43,6 +43,7 @@ class Index extends Component {
             </div>
           </div>
         </header>
+     
         <section className="page-section" id="services">
           <div className="container">
             <div className="row">

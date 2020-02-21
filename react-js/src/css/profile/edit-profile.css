@@ -1,25 +1,54 @@
+
+
+.profile-layout .ant-layout-sider{
+    width: 350px !important;
+    max-width: 350px !important;
+    flex:none !important;
+    height: 100vh;
+    position: fixed;
+    }
+.edit-profile-wrapper {
+    /* display: flex;
+    flex-direction: column; */
+}
+
+.home-page {
+    background: url("../../images/guillaume-henrotte-bNOh-Y-ECSg-unsplash.jpg") no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 300px;
+}
+
+.opacity {
+    height: 300px;
+    width: 100%;
+    opacity: 0.8;
+     background: rgba(0, 0, 0, 0.1);;
+}
 .edit-container {
-    height: 100%;
+    height:100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../../images/edit-2.jpg');
+    /* background-image: url('../../images/edit-2.jpg');
     background-size: cover;
-    background-repeat: none;
+    background-repeat: none; */
 }
 
 .edit-form {
     background-color: #ffffff;
     height: 100%;
-    width: 80%;
+    width: 100%;
     border-radius: 10px;
     display: flex;
-    margin: 10% 0% 5% 0%;
+    margin: 78px 0% 0% 0%;
 }
 
 .edit-form-left {
-    width: 30%;
+    width: 20%;
+    height: 100vh;
     border-right: 1px solid #000;
+    background-color: rgb(216, 245, 245);
 }
 
 .edit-form-left .button-container {
@@ -31,11 +60,6 @@
 .edit-form-left .avatar-uploader {
     display: flex;
     justify-content: center;
-}
-
-.edit-form-left .avatar-uploader .ant-upload {
-    height: 200px;
-    width: 200px;
 }
 
 .edit-form-left input {
@@ -57,7 +81,8 @@
 }
 
 .edit-form-right {
-    width: 70%;
+    width: 80%;
+    height: 100%;
 }
 
 .progress-bar {
@@ -75,4 +100,47 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+}
+
+.form-div { margin-top: 100px; border: 1px solid #e0e0e0; border-radius: 50%; }
+#profileDisplay { display: block; height: 170px; width: 170px; margin: 0px auto; border-radius: 50%; }
+.img-placeholder {
+  width: 170px;
+  color: white;
+  height: 100%;
+  background: black;
+  opacity: .3;
+  height: 170px;
+  border-radius: 50%;
+  z-index: 2;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+}
+.img-placeholder h4 {
+  margin-top: 40%;
+  color: white;
+}
+.img-div:hover .img-placeholder {
+  display: block;
+  cursor: pointer;
+}
+
+.btn-upload {
+    border-radius: 20px;
+    border: none !important;
+    background: #36d1dc;
+    background: -webkit-linear-gradient(to right, #5b86e5, #36d1dc);
+    background: linear-gradient(to right, #5b86e5, #36d1dc);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 100px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
 }

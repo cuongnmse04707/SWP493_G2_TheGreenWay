@@ -16,11 +16,11 @@ p {
 }
 
 a {
-  color: #fed136;
+  /* color: #fed136; */
 }
 
 a:hover {
-  color: #fec503;
+  /* color: #fec503; */
 }
 
 .text-primary {
@@ -162,7 +162,7 @@ img::-moz-selection {
 
 #mainNav .navbar-nav .nav-item .nav-link.active,
 #mainNav .navbar-nav .nav-item .nav-link:hover {
-  color: #fed136;
+  color: #36aefe;
 }
 
 @media (min-width: 992px) {
@@ -195,6 +195,7 @@ header.masthead {
   text-align: center;
   color: #fff;
   background-image: url(../img/header-bg.jpg);
+  height: 90vh;
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;

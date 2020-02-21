@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import HomePageTypes from "../../redux/home-page-redux";
 import EditTypes from "../../redux/edit-profile";
 import ChangePassTypes from "../../redux/change-password-redux";
+import LayoutProfile from "../../layout/LayoutProfile"
 import {
   Form,
   Input,
@@ -25,6 +26,7 @@ import Footer from "../../components/Footer";
 const dateFormat = "YYYY/MM/DD";
 const phoneRegex = /(09|01[2|6|8|9])+([0-9]{8})\b/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
+
 
 class EditProfile extends Component {
   state = {
@@ -47,7 +49,7 @@ class EditProfile extends Component {
     progress: 0,
     progressClass: "ml-2 progress-bar",
     visiblePassModal: false,
-    loading: false
+    loading: false,
   };
 
   componentDidMount() {
@@ -152,10 +154,6 @@ class EditProfile extends Component {
     if (e.target.files[0]) {
       const image = e.target.files[0];
       console.log(image);
-      // this.setState(() => ({ image }));
-      // this.setState({
-      //   url: image.name
-      // })
       this.setState({
         progressClass: "ml-2"
       });
@@ -194,40 +192,13 @@ class EditProfile extends Component {
   };
 
   handleUpload = () => {
-    // if (!this.state.image) {
-    //   message.error('Please choose image to upload')
-    // } else {
-    //   this.setState({
-    //     progressClass: 'ml-2'
-    //   })
-    //   const { image } = this.state;
-    //   const uploadTask = storage.ref(`images/${image.name}`).put(image);
-    //   uploadTask.on('state_changed',
-    //     (snapshot) => {
-    //       const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-    //       console.log(progress)
-    //       this.setState({ progress });
-    //     },
-    //     (error) => {
-    //       console.log(error);
-    //     },
-    //     () => {
-    //       if (this.state.progress === 100) {
-    //         setTimeout(() => {
-    //           this.setState({
-    //             progressClass: "ml-2 progress-bar"
-    //           })
-    //         }, 1000)
-    //       }
-    //       storage.ref('images').child(image.name).getDownloadURL().then(url => {
-    //         console.log(url);
-    //         this.setState({ url });
-    //       })
-    //     });
-    // }
-    this.props.changeAvatar({
-      urlAvatar: this.state.url
-    });
+    if (this.state.url) {
+      this.props.changeAvatar({
+        urlAvatar: this.state.url
+      });
+    } else {
+      message.error('Vui lòng chọn ảnh')
+    }
   };
 
   handleUpdateAccountSubmit = e => {
@@ -264,6 +235,42 @@ class EditProfile extends Component {
     );
   };
 
+  dmm(e) {
+    document.querySelector('#profileImage').click();
+  }
+  changeImage = (e) => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      console.log(this.state)
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.querySelector('#profileDisplay').setAttribute('src', e.target.result);
+      }
+      reader.readAsDataURL(e.target.files[0]);
+      console.log(e.target.files[0])
+
+      const uploadTask = storage.ref(`images/${image.name}`).put(image);
+      uploadTask.on(
+        "state_changed",
+        snapshot => {
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then(url => {
+              console.log(url);
+              this.setState({ url });
+            });
+        }
+      );
+    }
+  }
+
   render() {
     const token = window.localStorage.getItem("x-access-token");
     const { getFieldDecorator } = this.props.form;
@@ -271,37 +278,31 @@ class EditProfile extends Component {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 }
+        sm: { span: 5 }
       },
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 16 }
       }
     };
-
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? "loading" : "plus"} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
-    const { imageUrl } = this.state;
     return token ? (
-      <div>
+      <div className="edit-profile-wrapper">
         <NavBar />
+        {/* <LayoutProfile> */}
         <div className="edit-container">
           <div className="edit-form">
             <div className="edit-form-left">
-              <div className="user-avatar">
-                <img
-                  className="user-avatar image"
-                  src={this.state.url || this.state.avartarUrl}
-                  alt="Uploaded images"
-                />
+              <div className="form-group text-center user-avatar" style={{ position: 'relative' }} >
+                <span className="img-div">
+                  <div className="text-center img-placeholder" onClick={this.dmm}>
+                    <h4>Update image</h4>
+                  </div>
+                  <img src={this.state.url || this.state.avartarUrl} onClick={this.dmm} id="profileDisplay" />
+                </span>
+                <input type="file" name="profileImage" onChange={this.changeImage} id="profileImage" className="form-control" style={{ display: "none" }} />
               </div>
-              <input type="file" onChange={this.handleChange} />
               <div className="button-container">
-                <button className="btn-sign-in" onClick={this.handleUpload}>
+                <button className="btn-upload" onClick={this.handleUpload}>
                   Upload
                 </button>
               </div>
@@ -313,9 +314,9 @@ class EditProfile extends Component {
               />
               <div className="user-information">
                 <p>{this.state.userName}</p>
-                <p>{this.state.email}</p>
               </div>
             </div>
+
             <div className="edit-form-right">
               <div className="information-form">
                 <Form {...formItemLayout} className="mt-4 mr-5">
@@ -330,7 +331,7 @@ class EditProfile extends Component {
                       rules: [
                         {
                           required: true,
-                          message: "Please input your userName"
+                          message: "Vui lòng nhập tên người dùng"
                         }
                       ]
                     })(<Input />)}
@@ -351,7 +352,7 @@ class EditProfile extends Component {
                       rules: [
                         {
                           pattern: phoneRegex,
-                          message: "Please input correct phone number type"
+                          message: "Nhập đúng định dạng số điện thoại"
                         }
                       ]
                     })(<Input style={{ width: "100%" }} />)}
@@ -395,6 +396,7 @@ class EditProfile extends Component {
                   </Button>
                 </Form>
               </div>
+
             </div>
             <Modal
               title="Change Password"
@@ -408,7 +410,7 @@ class EditProfile extends Component {
                     rules: [
                       {
                         required: true,
-                        message: "Please input your old password!"
+                        message: "Nhập mật khẩu cũ"
                       }
                     ]
                   })(<Input.Password />)}
@@ -418,11 +420,11 @@ class EditProfile extends Component {
                     rules: [
                       {
                         required: true,
-                        message: "Please input your new password!"
+                        message: "Nhập mật khẩu mới"
                       },
                       {
                         pattern: passwordRegex,
-                        message: "Please input correct passsword type"
+                        message: "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa"
                       }
                     ]
                   })(<Input.Password />)}
@@ -436,7 +438,7 @@ class EditProfile extends Component {
                     rules: [
                       {
                         required: true,
-                        message: "Please confirm your password!"
+                        message: "Xác nhận lại mật khẩu"
                       },
                       {
                         validator: this.compareToFirstPassword
@@ -448,11 +450,15 @@ class EditProfile extends Component {
             </Modal>
           </div>
         </div>
+        {/* </LayoutProfile> */}
         {/* <Footer /> */}
       </div>
+
+
+
     ) : (
-      <Redirect to="/" />
-    );
+        <Redirect to="/" />
+      );
   }
 }
 const mapStateToProps = state => {
