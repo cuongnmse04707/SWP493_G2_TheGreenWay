@@ -3,6 +3,7 @@ import { reducer as modal } from "redux-modal"
 
 const rootReducer = combineReducers({
   modal,
+  sideBar: require('./side-bar-redux').reducer,
   userLogin: require('./login-redux').reducer,
   forgotPassword: require('./forgot-password-redux').reducer,
   editProfile: require('./edit-profile').reducer,

@@ -5,6 +5,7 @@ import ForgotPassword from '../pages/ForgotPassword'
 import HomePage from '../pages/HomePage'
 import EditProfile from '../pages/profile/EditProfile'
 import Index from '../pages/Index'
+import ChangePassword from '../pages/profile/ChangePassword'
 import { connect } from "react-redux"
 
 class PageLayout extends Component {
@@ -32,7 +33,12 @@ class PageLayout extends Component {
             component={EditProfile}
             exact
           />
-            <Route
+          <Route
+            path='/changepassword'
+            component={ChangePassword}
+            exact
+          />
+          <Route
             path='/'
             component={Index}
             exact
