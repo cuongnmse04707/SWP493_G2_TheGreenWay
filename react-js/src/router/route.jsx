@@ -6,6 +6,7 @@ import HomePage from "../pages/HomePage";
 import EditProfile from "../pages/profile/EditProfile";
 import Index from "../pages/Index";
 import ChangePassword from "../pages/profile/ChangePassword";
+import LayoutProfile from '../layout/LayoutProfile'
 import { connect } from "react-redux";
 import NavBar from "../components/NavBar";
 
@@ -13,18 +14,22 @@ class PageLayout extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div>
-          <NavBar />
-          <Switch>
-            <Route path="/login" component={Login} exact />
-            <Route path="/forgot" component={ForgotPassword} exact />
-            <Route path="/home" component={HomePage} exact />
+        {/* <div>
+          <NavBar /> */}
+        <Switch>
+          <Route path="/login" component={Login} exact />
+          <Route path="/forgot" component={ForgotPassword} exact />
+          <Route path="/home" component={HomePage} exact />
+          <Route path="/" component={Index} exact></Route>
+          <LayoutProfile>
+            <div>
+              <Route path="/account" component={EditProfile} exact />
+              <Route path="/changepassword" component={ChangePassword} exact />
+            </div>
+          </LayoutProfile>
 
-            <Route path="/account" component={EditProfile} exact />
-            <Route path="/changepassword" component={ChangePassword} exact />
-            <Route path="/" component={Index} exact></Route>
-          </Switch>
-        </div>
+        </Switch>
+        {/* </div> */}
       </BrowserRouter>
     );
   }

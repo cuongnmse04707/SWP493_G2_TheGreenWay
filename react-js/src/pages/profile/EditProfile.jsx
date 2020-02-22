@@ -292,7 +292,7 @@ class EditProfile extends Component {
     return token ? (
       <div className="edit-profile-wrapper">
         {/* <NavBar /> */}
-        <LayoutProfile>
+        {/* <LayoutProfile> */}
           <div className="edit-container">
             <div className="edit-form">
               <div className="edit-form-right">
@@ -372,7 +372,7 @@ class EditProfile extends Component {
               </div>
             </div>
           </div>
-        </LayoutProfile>
+        {/* </LayoutProfile> */}
         {/* <Footer /> */}
       </div>
     ) : (

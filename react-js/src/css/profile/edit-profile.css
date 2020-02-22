@@ -153,6 +153,12 @@
   transition: transform 80ms ease-in;
 }
 
+
+
+
+
+
+
 /* sidebar */
 .content-layout-left {
   margin-left: 300px !important;
@@ -179,6 +185,10 @@
   background-size: cover;
   margin: 16px;
 }
+
+/* .ant-menu-item {
+  padding-left: 50px !important;
+} */
 
 .ant-layout-sider-children {
   background-color: #f0f2f5;
