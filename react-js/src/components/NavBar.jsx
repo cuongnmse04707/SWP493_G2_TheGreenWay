@@ -7,7 +7,7 @@ import HomePageTypes from "../redux/home-page-redux";
 class NavBar extends Component {
   state = {
     userName: "",
-    urlAvatar: '',
+    urlAvatar: "",
     visibleLogout: false
   };
 
@@ -23,11 +23,15 @@ class NavBar extends Component {
       this.props.userInformation &&
       nextProps.userInformation !== this.props.userInformation
     ) {
-      console.log(this.props.userInformation);
+      // console.log(this.props.userInformation);
+      // console.log(this.props.userInformation.username);
+      window.localStorage.setItem(
+        "abc",
+        JSON.stringify(this.props.userInformation)
+      );
       this.setState({
         userName: this.props.userInformation.username,
         urlAvatar: this.props.userInformation.urlAvatar
-
       });
     }
   }
@@ -63,6 +67,9 @@ class NavBar extends Component {
 
   render() {
     const token = window.localStorage.getItem("x-access-token");
+    const abc = window.localStorage.getItem("abc");
+    console.log("-----");
+    console.log(abc);
     //menu dropdown
     const menu = (
       <Menu>
@@ -127,7 +134,11 @@ class NavBar extends Component {
                   <div className="header-left">
                     <li className="nav-item user-name">
                       <img
-                        style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%"
+                        }}
                         src={this.props.userInformation.urlAvatar}
                         // alt=""
                       />
@@ -147,15 +158,15 @@ class NavBar extends Component {
                     </li>
                   </div>
                 ) : (
-                    <li className="nav-item">
-                      <a
-                        className="nav-link js-scroll-trigger"
-                        onClick={this.toLogin}
-                      >
-                        Đăng nhập/Đăng ký
+                  <li className="nav-item">
+                    <a
+                      className="nav-link js-scroll-trigger"
+                      onClick={this.toLogin}
+                    >
+                      Đăng nhập/Đăng ký
                     </a>
-                    </li>
-                  )}
+                  </li>
+                )}
               </ul>
             </div>
             <Modal

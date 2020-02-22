@@ -3,6 +3,7 @@ import "./App.css";
 import LoginScreen from "./pages/Login";
 import Route from "./router/route";
 import { Provider } from "react-redux";
+import NavBar from "../src/components/NavBar";
 import configureStore from "./redux/index";
 
 class App extends Component {

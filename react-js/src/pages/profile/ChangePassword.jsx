@@ -14,8 +14,8 @@ import {
   Modal,
   Progress,
   message,
-  Row,
-  Col
+  Upload,
+  Icon
 } from "antd";
 import { storage } from "../../firebase";
 import moment from "moment";
@@ -27,7 +27,7 @@ const dateFormat = "YYYY/MM/DD";
 const phoneRegex = /(09|01[2|6|8|9])+([0-9]{8})\b/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
 
-class EditProfile extends Component {
+class ChangePassword extends Component {
   state = {
     email: "",
     visibleAccountInfor: false,
@@ -36,7 +36,7 @@ class EditProfile extends Component {
     newPassword: "",
     confirmPassword: "",
     phone: "",
-    DOB: moment(new Date()).format("YYYY/MM/DD"),
+    DOB: null,
     address: "",
     city: "",
     country: "",
@@ -196,7 +196,7 @@ class EditProfile extends Component {
         urlAvatar: this.state.url
       });
     } else {
-      message.error("Vui lòng chọn ảnhfffvf");
+      message.error("Vui lòng chọn ảnh");
     }
   };
 
@@ -274,19 +274,15 @@ class EditProfile extends Component {
   render() {
     const token = window.localStorage.getItem("x-access-token");
     const { getFieldDecorator } = this.props.form;
-    console.log("12312312");
+
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 24 },
-        md: { span: 24 },
-        lg: { span: 6 }
+        sm: { span: 5 }
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 24 },
-        md: { span: 24 },
-        lg: { span: 14 }
+        sm: { span: 16 }
       }
     };
     return token ? (
@@ -296,77 +292,69 @@ class EditProfile extends Component {
           <div className="edit-container">
             <div className="edit-form">
               <div className="edit-form-right">
-                <div className="information-form" style={{ marginTop: "" }}>
-                  <Form {...formItemLayout} className="mt-4">
-                    <Form.Item label="E-mail">
-                      {getFieldDecorator("email", {
-                        initialValue: this.state.email
-                      })(<Input disabled={true} />)}
-                    </Form.Item>
-                    <Form.Item label="Tên Tài Khoản">
-                      {getFieldDecorator("username", {
-                        initialValue: this.state.userName,
+                <div className="information-form">
+                  <Form
+                    {...formItemLayout}
+                    onSubmit={this.handleChangePassSubmit}
+                    className="mt-5 ml-5"
+                  >
+                    <Form.Item
+                      {...formItemLayout}
+                      label="Old Password"
+                      hasFeedback
+                    >
+                      {getFieldDecorator("oldPassword", {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập tên người dùng"
+                            message: "Nhập mật khẩu cũ"
                           }
                         ]
-                      })(<Input />)}
+                      })(<Input.Password />)}
                     </Form.Item>
-                    <Form.Item label="Số Điện Thoại">
-                      {getFieldDecorator("phone", {
-                        initialValue: this.state.phone,
+                    <Form.Item
+                      {...formItemLayout}
+                      label="New Password"
+                      hasFeedback
+                    >
+                      {getFieldDecorator("newPassword", {
                         rules: [
                           {
-                            pattern: phoneRegex,
-                            message: "Nhập đúng định dạng số điện thoại"
+                            required: true,
+                            message: "Nhập mật khẩu mới"
+                          },
+                          {
+                            pattern: passwordRegex,
+                            message:
+                              "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa"
                           }
                         ]
-                      })(<Input style={{ width: "100%" }} />)}
+                      })(<Input.Password />)}
                     </Form.Item>
-                    <Form.Item label="Địa chỉ">
-                      {getFieldDecorator("address", {
-                        initialValue: this.state.address
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Thành Phố">
-                      {getFieldDecorator("city", {
-                        initialValue: this.state.city
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Quốc gia">
-                      {getFieldDecorator("country", {
-                        initialValue: this.state.country
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Ngày sinh">
-                      {getFieldDecorator("DOB", {
-                        initialValue: moment(this.state.DOB, dateFormat)
-                      })(
-                        <DatePicker
-                          style={{ width: "100%" }}
-                          disabledDate={d =>
-                            !d ||
-                            d.isAfter(new Date()) ||
-                            d.isSameOrBefore("1900-01-01")
+                    <Form.Item
+                      {...formItemLayout}
+                      label="Confirm Password"
+                      hasFeedback
+                    >
+                      {getFieldDecorator("confirmPassword", {
+                        rules: [
+                          {
+                            required: true,
+                            message: "Xác nhận lại mật khẩu"
+                          },
+                          {
+                            validator: this.compareToFirstPassword
                           }
-                          format={dateFormat}
-                        />
-                      )}
+                        ]
+                      })(<Input.Password />)}
                     </Form.Item>
-                    <Row>
-                      <Col span={6} offset={9}>
-                        <Button
-                          // className="edit-button"
-                          type="primary"
-                          onClick={this.handleUpdateAccountSubmit}
-                          style={{ width: "100%", marginTop: "20px" }}
-                        >
-                          Edit profile
-                        </Button>
-                      </Col>
-                    </Row>
+                    <Button
+                      className="edit-button"
+                      type="primary"
+                      onClick={this.handleChangePassSubmit}
+                    >
+                      Đổi mật khẩu
+                    </Button>
                   </Form>
                 </div>
               </div>
@@ -408,5 +396,8 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const EditProfileScreen = Form.create()(EditProfile);
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfileScreen);
+const ChangePasswordScreen = Form.create()(ChangePassword);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChangePasswordScreen);

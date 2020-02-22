@@ -440,10 +440,10 @@ header.masthead .intro-text .intro-heading {
   top: 0;
   bottom: 0;
   left: 40px;
-  width: 2px;
+  width: 3px;
   margin-left: -1.5px;
   content: "";
-  background-color: #e9ecef;
+  background-color: black;
 }
 
 .timeline > li {
@@ -493,7 +493,7 @@ header.masthead .intro-text .intro-heading {
   margin-left: 0;
   text-align: center;
   color: #fff;
-  border: 7px solid #e9ecef;
+  border: 3px solid #212529;
   border-radius: 100%;
   background-color: #fed136;
   display: flex;
@@ -591,11 +591,13 @@ header.masthead .intro-text .intro-heading {
     display: flex;
     justify-content: center;
     align-items: center;
+    border-color: black;
+    border-width: 3px;
   }
   .timeline > li .timeline-image h4 {
     font-size: 18px;
     line-height: 26px;
-    margin-top: 0px;
+    margin-top: 10px;
   }
   .timeline > li.timeline-inverted > .timeline-panel {
     padding: 0 20px 20px;
@@ -615,11 +617,15 @@ header.masthead .intro-text .intro-heading {
     margin-left: -85px;
   }
   .timeline > li .timeline-image h4 {
-    margin-top: 0px;
+    margin-top: 10px;
   }
   .timeline > li.timeline-inverted > .timeline-panel {
     padding: 0 100px 20px 20px;
   }
+}
+
+.text-muted {
+  color: black !important;
 }
 
 .team-member {

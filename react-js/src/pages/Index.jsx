@@ -53,7 +53,7 @@ class Index extends Component {
                       fontSize: "28px"
                     }}
                   >
-                    Môi trường là nơi chúng ta gặp nhau
+                    Môi trường là nơi chúng ta gặp nhau ...
                   </div>
                   <div
                     style={{
@@ -64,7 +64,7 @@ class Index extends Component {
                       color: "#000000"
                     }}
                   >
-                    Là nơi đem lại lợi ích cho mọi người
+                    Là nơi đem lại lợi ích cho mọi người ...
                   </div>
                   <div
                     style={{
@@ -75,14 +75,16 @@ class Index extends Component {
                       color: "#000000"
                     }}
                   >
-                    Là điều mà tất cả chúng ta đều chia sẻ.
+                    ... Là điều mà tất cả chúng ta đều chia sẻ.
                   </div>
                 </div>
               </div>
               <a
                 className="btn btn-primary btn-xl text-uppercase js-scroll-trigger"
                 href="#services"
-                style={{ marginTop: "50px" }}
+                style={{
+                  marginTop: "50px"
+                }}
               >
                 Về chúng tôi
               </a>
@@ -158,7 +160,7 @@ class Index extends Component {
             </div>
           </div>
         </section>
-        <div style={{ backgroundColor: "#FFF5EE" }}>
+        <div style={{ backgroundColor: "#AFEEEE" }}>
           <section className="page-section" id="about">
             <div className="container">
               <div className="row">
@@ -223,7 +225,10 @@ class Index extends Component {
                           </h4>
                         </div>
                         <div className="timeline-body">
-                          <p className="text-muted">
+                          <p
+                            className="text-muted"
+                            style={{ color: "black !important" }}
+                          >
                             1. Tập thói quen mang theo một chiếc túi cỡ bự Bạn
                             biết phần lớn nguồn rác nhựa thải ra mỗi ngày đến từ
                             đâu không? Chính là các loại túi nylon, túi nhựa bạn
@@ -305,7 +310,7 @@ class Index extends Component {
           </section>
         </div>
         <Review />
-        <div style={{ backgroundColor: "#FFF5EE" }}>
+        <div style={{ backgroundColor: "#AFEEEE" }}>
           <section className=" page-section" id="team">
             <div className="container">
               <div className="row">
@@ -325,7 +330,8 @@ class Index extends Component {
                       style={{
                         width: "150px",
                         height: "150px",
-                        borderRadius: "50%"
+                        borderRadius: "50%",
+                        borderColor: "black"
                       }}
                       src={require("../images/bill-gates.jpg")}
                       alt=""
@@ -343,7 +349,8 @@ class Index extends Component {
                       style={{
                         width: "150px",
                         height: "150px",
-                        borderRadius: "50%"
+                        borderRadius: "50%",
+                        borderColor: "black"
                       }}
                       src={require("../images/ronaldo.png")}
                       alt=""
@@ -360,7 +367,8 @@ class Index extends Component {
                       style={{
                         width: "150px",
                         height: "150px",
-                        borderRadius: "50%"
+                        borderRadius: "50%",
+                        borderColor: "black"
                       }}
                       src={require("../images/obama.jpg")}
                       alt=""
