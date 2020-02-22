@@ -5,11 +5,11 @@ import { Layout } from "antd";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { Redirect } from "react-router-dom";
+import NavBar from "../components/NavBar";
 
 const { Content } = Layout;
 class LayoutProfile extends Component {
   render() {
-    console.log("1");
     const token = window.localStorage.getItem("x-access-token");
     return token ? (
       <Layout>
@@ -22,8 +22,16 @@ class LayoutProfile extends Component {
               : { marginLeft: "200px", transition: "all 0.4s" }
           }
         >
-          {/* <HeaderComp /> */}
-          <Content style={{ height: "100vh" }}>{this.props.children}</Content>
+          <NavBar />
+          <Content
+            style={{
+              height: "100vh",
+              marginLeft: "-20px",
+              marginRight: "-20px"
+            }}
+          >
+            {this.props.children}
+          </Content>
         </Layout>
       </Layout>
     ) : (

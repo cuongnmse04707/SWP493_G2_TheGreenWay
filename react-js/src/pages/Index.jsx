@@ -50,7 +50,8 @@ class Index extends Component {
                       flex: "1",
                       display: "flex",
                       color: "#000000",
-                      fontSize: "28px"
+                      fontSize: "28px",
+                      fontFamily: "none"
                     }}
                   >
                     Môi trường là nơi chúng ta gặp nhau ...
@@ -61,7 +62,8 @@ class Index extends Component {
                       display: "flex",
                       justifyContent: "center",
                       fontSize: "28px",
-                      color: "#000000"
+                      color: "#000000",
+                      fontFamily: "none"
                     }}
                   >
                     Là nơi đem lại lợi ích cho mọi người ...
@@ -72,7 +74,8 @@ class Index extends Component {
                       display: "flex",
                       justifyContent: "flex-end",
                       fontSize: "28px",
-                      color: "#000000"
+                      color: "#000000",
+                      fontFamily: "none"
                     }}
                   >
                     ... Là điều mà tất cả chúng ta đều chia sẻ.

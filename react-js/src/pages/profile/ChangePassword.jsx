@@ -12,9 +12,9 @@ import {
   Button,
   DatePicker,
   Modal,
-  Progress,
+  Col,
   message,
-  Upload,
+  Row,
   Icon
 } from "antd";
 import { storage } from "../../firebase";
@@ -278,88 +278,97 @@ class ChangePassword extends Component {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 5 }
+        sm: { span: 24 },
+        md: { span: 24 },
+        lg: { span: 6 }
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 }
+        sm: { span: 24 },
+        md: { span: 24 },
+        lg: { span: 10 }
       }
     };
     return token ? (
       <div className="edit-profile-wrapper">
         {/* <NavBar /> */}
         {/* <LayoutProfile> */}
-          <div className="edit-container">
-            <div className="edit-form">
-              <div className="edit-form-right">
-                <div className="information-form">
-                  <Form
+        <div className="edit-container">
+          <div className="edit-form">
+            <div className="edit-form-right">
+              <div className="information-form" style={{ marginTop: "50px" }}>
+                <Form
+                  {...formItemLayout}
+                  onSubmit={this.handleChangePassSubmit}
+                  className="mt-5 ml-5"
+                >
+                  <Form.Item
                     {...formItemLayout}
-                    onSubmit={this.handleChangePassSubmit}
-                    className="mt-5 ml-5"
+                    label="Old Password"
+                    hasFeedback
                   >
-                    <Form.Item
-                      {...formItemLayout}
-                      label="Old Password"
-                      hasFeedback
-                    >
-                      {getFieldDecorator("oldPassword", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Nhập mật khẩu cũ"
-                          }
-                        ]
-                      })(<Input.Password />)}
-                    </Form.Item>
-                    <Form.Item
-                      {...formItemLayout}
-                      label="New Password"
-                      hasFeedback
-                    >
-                      {getFieldDecorator("newPassword", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Nhập mật khẩu mới"
-                          },
-                          {
-                            pattern: passwordRegex,
-                            message:
-                              "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa"
-                          }
-                        ]
-                      })(<Input.Password />)}
-                    </Form.Item>
-                    <Form.Item
-                      {...formItemLayout}
-                      label="Confirm Password"
-                      hasFeedback
-                    >
-                      {getFieldDecorator("confirmPassword", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Xác nhận lại mật khẩu"
-                          },
-                          {
-                            validator: this.compareToFirstPassword
-                          }
-                        ]
-                      })(<Input.Password />)}
-                    </Form.Item>
-                    <Button
-                      className="edit-button"
-                      type="primary"
-                      onClick={this.handleChangePassSubmit}
-                    >
-                      Đổi mật khẩu
-                    </Button>
-                  </Form>
-                </div>
+                    {getFieldDecorator("oldPassword", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Nhập mật khẩu cũ"
+                        }
+                      ]
+                    })(<Input.Password />)}
+                  </Form.Item>
+                  <Form.Item
+                    {...formItemLayout}
+                    label="New Password"
+                    hasFeedback
+                  >
+                    {getFieldDecorator("newPassword", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Nhập mật khẩu mới"
+                        },
+                        {
+                          pattern: passwordRegex,
+                          message:
+                            "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa"
+                        }
+                      ]
+                    })(<Input.Password />)}
+                  </Form.Item>
+                  <Form.Item
+                    {...formItemLayout}
+                    label="Confirm Password"
+                    hasFeedback
+                  >
+                    {getFieldDecorator("confirmPassword", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Xác nhận lại mật khẩu"
+                        },
+                        {
+                          validator: this.compareToFirstPassword
+                        }
+                      ]
+                    })(<Input.Password />)}
+                  </Form.Item>
+                  <Row>
+                    <Col span={6} offset={7}>
+                      <Button
+                        // className="edit-button"
+                        type="primary"
+                        onClick={this.handleChangePassSubmit}
+                        style={{ width: "100%", marginTop: "20px" }}
+                      >
+                        Đổi mật khẩu
+                      </Button>
+                    </Col>
+                  </Row>
+                </Form>
               </div>
             </div>
           </div>
+        </div>
         {/* </LayoutProfile> */}
         {/* <Footer /> */}
       </div>

@@ -128,7 +128,7 @@ class Login extends Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <NavBar />
+        {/* <NavBar /> */}
         <div className="login-wrapper">
           {/* <Menu/> */}
           <div className={this.state.className}>

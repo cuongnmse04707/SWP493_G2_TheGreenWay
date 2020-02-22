@@ -6,7 +6,7 @@ import HomePage from "../pages/HomePage";
 import EditProfile from "../pages/profile/EditProfile";
 import Index from "../pages/Index";
 import ChangePassword from "../pages/profile/ChangePassword";
-import LayoutProfile from '../layout/LayoutProfile'
+import LayoutProfile from "../layout/LayoutProfile";
 import { connect } from "react-redux";
 import NavBar from "../components/NavBar";
 
@@ -22,12 +22,9 @@ class PageLayout extends Component {
           <Route path="/home" component={HomePage} exact />
           <Route path="/" component={Index} exact></Route>
           <LayoutProfile>
-            <div>
-              <Route path="/account" component={EditProfile} exact />
-              <Route path="/changepassword" component={ChangePassword} exact />
-            </div>
+            <Route path="/account" component={EditProfile} exact />
+            <Route path="/changepassword" component={ChangePassword} exact />
           </LayoutProfile>
-
         </Switch>
         {/* </div> */}
       </BrowserRouter>

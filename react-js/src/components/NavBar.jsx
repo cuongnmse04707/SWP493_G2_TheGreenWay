@@ -135,8 +135,8 @@ class NavBar extends Component {
                     <li className="nav-item user-name">
                       <img
                         style={{
-                          width: "50px",
-                          height: "50px",
+                          width: "40px",
+                          height: "40px",
                           borderRadius: "50%"
                         }}
                         src={this.props.userInformation.urlAvatar}
@@ -148,7 +148,11 @@ class NavBar extends Component {
                         trigger={["click"]}
                       >
                         <a
-                          style={{ color: "#000 !important" }}
+                          style={{
+                            color: "#000 !important",
+                            fontSize: "16px",
+                            marginLeft: "10px"
+                          }}
                           className="ant-dropdown-link"
                           href="#"
                         >

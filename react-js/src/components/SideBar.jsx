@@ -147,15 +147,17 @@ class SideBar extends Component {
         <div className="sideBar-container">
           <div className="logo" />
           <div
-            className="form-group text-center user-avatar"
-            style={{ position: "relative" }}
+            // className="form-group text-center user-avatar"
+            style={{ position: "relative", marginTop: "30px" }}
           >
             <span className="img-div">
               <div
                 className="text-center img-placeholder"
                 onClick={this.clickImage}
               >
-                <h4>Update image</h4>
+                <p style={{ paddingTop: "85px" }}>
+                  Ấn vào để thay đổi ảnh đại diện của bạn
+                </p>
               </div>
               <img
                 src={this.state.url || this.state.avartarUrl}
@@ -172,15 +174,15 @@ class SideBar extends Component {
               style={{ display: "none" }}
             />
           </div>
-          <div className="button-container">
-            <button className="btn-upload" onClick={this.handleUpload}>
-              Upload
-            </button>
-          </div>
-          <br />
           <div className="user-information">
             <p>{this.state.userName}</p>
           </div>
+          <div className="button-container">
+            <button className="btn-upload" onClick={this.handleUpload}>
+              Cập nhật ảnh đại diện
+            </button>
+          </div>
+
           <Menu
             theme="dark"
             mode="inline"
@@ -212,12 +214,12 @@ class SideBar extends Component {
                 alt="aaa"
                 style={{ height: "32px", width: "32px" }}
               />
-              <span>Đổi mật khẩu</span>
+              <span>Thay Đổi mật khẩu</span>
             </Menu.Item>
             <Menu.Item
-              key="/bfd"
+              key="/changepassword1"
               onClick={() => {
-                this.props.history.push("/");
+                this.props.history.push("/changepassword");
               }}
             >
               <img
@@ -228,9 +230,9 @@ class SideBar extends Component {
               <span>Lịch sử mua hàng</span>
             </Menu.Item>
             <Menu.Item
-              key="/123"
+              key="/changepassword2"
               onClick={() => {
-                this.props.history.push("/");
+                this.props.history.push("/changepassword");
               }}
             >
               <img

@@ -293,85 +293,85 @@ class EditProfile extends Component {
       <div className="edit-profile-wrapper">
         {/* <NavBar /> */}
         {/* <LayoutProfile> */}
-          <div className="edit-container">
-            <div className="edit-form">
-              <div className="edit-form-right">
-                <div className="information-form" style={{ marginTop: "" }}>
-                  <Form {...formItemLayout} className="mt-4">
-                    <Form.Item label="E-mail">
-                      {getFieldDecorator("email", {
-                        initialValue: this.state.email
-                      })(<Input disabled={true} />)}
-                    </Form.Item>
-                    <Form.Item label="Tên Tài Khoản">
-                      {getFieldDecorator("username", {
-                        initialValue: this.state.userName,
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập tên người dùng"
-                          }
-                        ]
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Số Điện Thoại">
-                      {getFieldDecorator("phone", {
-                        initialValue: this.state.phone,
-                        rules: [
-                          {
-                            pattern: phoneRegex,
-                            message: "Nhập đúng định dạng số điện thoại"
-                          }
-                        ]
-                      })(<Input style={{ width: "100%" }} />)}
-                    </Form.Item>
-                    <Form.Item label="Địa chỉ">
-                      {getFieldDecorator("address", {
-                        initialValue: this.state.address
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Thành Phố">
-                      {getFieldDecorator("city", {
-                        initialValue: this.state.city
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Quốc gia">
-                      {getFieldDecorator("country", {
-                        initialValue: this.state.country
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Ngày sinh">
-                      {getFieldDecorator("DOB", {
-                        initialValue: moment(this.state.DOB, dateFormat)
-                      })(
-                        <DatePicker
-                          style={{ width: "100%" }}
-                          disabledDate={d =>
-                            !d ||
-                            d.isAfter(new Date()) ||
-                            d.isSameOrBefore("1900-01-01")
-                          }
-                          format={dateFormat}
-                        />
-                      )}
-                    </Form.Item>
-                    <Row>
-                      <Col span={6} offset={9}>
-                        <Button
-                          // className="edit-button"
-                          type="primary"
-                          onClick={this.handleUpdateAccountSubmit}
-                          style={{ width: "100%", marginTop: "20px" }}
-                        >
-                          Edit profile
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Form>
-                </div>
+        <div className="edit-container">
+          <div className="edit-form">
+            <div className="edit-form-right">
+              <div className="information-form" style={{ marginTop: "" }}>
+                <Form {...formItemLayout} className="mt-4">
+                  <Form.Item label="E-mail">
+                    {getFieldDecorator("email", {
+                      initialValue: this.state.email
+                    })(<Input disabled={true} />)}
+                  </Form.Item>
+                  <Form.Item label="Tên Tài Khoản">
+                    {getFieldDecorator("username", {
+                      initialValue: this.state.userName,
+                      rules: [
+                        {
+                          required: true,
+                          message: "Vui lòng nhập tên người dùng"
+                        }
+                      ]
+                    })(<Input />)}
+                  </Form.Item>
+                  <Form.Item label="Số Điện Thoại">
+                    {getFieldDecorator("phone", {
+                      initialValue: this.state.phone,
+                      rules: [
+                        {
+                          pattern: phoneRegex,
+                          message: "Nhập đúng định dạng số điện thoại"
+                        }
+                      ]
+                    })(<Input style={{ width: "100%" }} />)}
+                  </Form.Item>
+                  <Form.Item label="Địa chỉ">
+                    {getFieldDecorator("address", {
+                      initialValue: this.state.address
+                    })(<Input />)}
+                  </Form.Item>
+                  <Form.Item label="Thành Phố">
+                    {getFieldDecorator("city", {
+                      initialValue: this.state.city
+                    })(<Input />)}
+                  </Form.Item>
+                  <Form.Item label="Quốc gia">
+                    {getFieldDecorator("country", {
+                      initialValue: this.state.country
+                    })(<Input />)}
+                  </Form.Item>
+                  <Form.Item label="Ngày sinh">
+                    {getFieldDecorator("DOB", {
+                      initialValue: moment(this.state.DOB, dateFormat)
+                    })(
+                      <DatePicker
+                        style={{ width: "100%" }}
+                        disabledDate={d =>
+                          !d ||
+                          d.isAfter(new Date()) ||
+                          d.isSameOrBefore("1900-01-01")
+                        }
+                        format={dateFormat}
+                      />
+                    )}
+                  </Form.Item>
+                  <Row>
+                    <Col span={6} offset={9}>
+                      <Button
+                        // className="edit-button"
+                        type="primary"
+                        onClick={this.handleUpdateAccountSubmit}
+                        style={{ width: "100%", marginTop: "20px" }}
+                      >
+                        Cập nhật chỉnh sửa
+                      </Button>
+                    </Col>
+                  </Row>
+                </Form>
               </div>
             </div>
           </div>
+        </div>
         {/* </LayoutProfile> */}
         {/* <Footer /> */}
       </div>
