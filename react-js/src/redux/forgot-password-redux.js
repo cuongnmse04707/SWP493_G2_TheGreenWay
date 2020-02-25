@@ -14,7 +14,7 @@ export default Creators
 //TODO: Declare initial state
 export const INITIAL_STATE = {
   resetMessage: false,
-  notifyMessage: ''
+  notifyMessage: '',
 }
 
 export const request = (state) => {
@@ -27,7 +27,8 @@ export const resetSucceed = (state, {data}) => {
   console.log(data)
   return {
     ...state,
-    notifyMessage: data.message
+    notifyMessage: data.message,
+    resetMessage: data.success
   }
 }
 
@@ -35,6 +36,7 @@ export const updateNotify = (state) => {
   return {
     ...state,
     notifyMessage: '',
+    resetMessage: false
   }
 }
 

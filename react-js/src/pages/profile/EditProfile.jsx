@@ -78,17 +78,7 @@ class EditProfile extends Component {
         });
       }
     }
-    if (
-      this.props.notifyPasswordMessage === "Change Password Of User Is Success!"
-    ) {
-      this.props.updateNotify();
-      this.setState({
-        visiblePassModal: false
-      });
-      window.location.href = "/account";
-    }
-
-    if (this.props.notifyMessage === "Save Information Of User Is Success!") {
+    if (this.props.editMessage) {
       this.props.updateNotify();
       setTimeout(() => {
         this.props.history.push("/");
@@ -384,7 +374,8 @@ const mapStateToProps = state => {
   return {
     userInformation: state.homePage.userInformation,
     notifyMessage: state.editProfile.notifyMessage,
-    notifyPasswordMessage: state.changePass.notifyMessage
+    notifyPasswordMessage: state.changePass.notifyMessage,
+    editMessage: state.editProfile.editMessage
   };
 };
 

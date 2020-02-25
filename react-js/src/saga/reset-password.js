@@ -20,7 +20,7 @@ const ResetPassword = {
         message.error(resetInfor.data.message, 3)
       } else {
         yield put(ForgotActions.resetSucceed(resetInfor.data))
-        message.success(resetInfor.data.message,3)
+        message.success("Đặt lại mật khẩu thành công",3)
       }
     } catch (error) {
       yield put(ForgotActions.resetFailed(error))

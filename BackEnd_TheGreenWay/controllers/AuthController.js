@@ -54,11 +54,11 @@ let register = async (req, res) => {
     if (err) {
       return res
         .status(200)
-        .json({ success: false, message: "Email is exist!" });
+        .json({ success: false, message: "Email đã tồn tại" });
     } else {
       return res
         .status(200)
-        .json({ success: true, message: "Register is Success" });
+        .json({ success: true, message: "Đăng kí thành công" });
     }
   });
 };
@@ -77,7 +77,7 @@ let login = async (req, res) => {
       if (arr.length === 0) {
         return res
           .status(200)
-          .json({ success: false, message: "Email or Password is not exist!" });
+          .json({ success: false, message: "Email hoặc mật khẩu không đúng" });
       } else {
         try {
           const userData = {
@@ -120,7 +120,7 @@ let forgotpassword = async (req, res) => {
         // Chua ton tai Email
         return res
           .status(200)
-          .json({ success: false, message: "Email is not exist!" });
+          .json({ success: false, message: "Email không tồn tại" });
       } else {
         // Da ton tai email thi cho tao ma token
         try {
@@ -207,7 +207,7 @@ let forgotpassword = async (req, res) => {
             } else {
               return res.status(200).json({
                 success: true,
-                message: `We'll send instructions to this email if it's associated with a account.`
+                message: `Chúng tôi sẽ gửi hướng dẫn đến email này nếu liên kết với tài khoản.`
               });
             }
           });
@@ -237,7 +237,7 @@ let resetPassword = async (req, res) => {
         // Khong ton tai email can resetPassword
         return res.status(200).json({
           success: false,
-          message: "Account don't need to reset password"
+          message: "Tài khoản không cần đặt lại mật khẩu"
         });
       } else {
         // thuc hien ResetPassword

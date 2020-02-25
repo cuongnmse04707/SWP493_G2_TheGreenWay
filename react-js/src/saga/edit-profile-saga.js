@@ -21,7 +21,7 @@ const EditProfileSagas = {
                 message.error(editInfor.data.message, 3)
             } else {
                 yield put(EditActions.editSucceed(editInfor.data))
-                message.success(editInfor.data.message, 2)
+                message.success("Cập nhật thông tin thành công", 2)
             }
         } catch (error) {
             yield put(EditActions.editFailed(error))
@@ -41,10 +41,10 @@ const EditProfileSagas = {
             console.log(changeAvatarInfor)
             if (!changeAvatarInfor.data.success) {
                 yield put(EditActions.uploadFailed(changeAvatarInfor.data))
-                message.error(changeAvatarInfor.data.message, 3)
+                message.error("Lưu ảnh đại diện không thành công", 3)
             } else {
                 yield put(EditActions.uploadSucceed(changeAvatarInfor.data))
-                message.success(changeAvatarInfor.data.message, 2)
+                message.success("Lưu ảnh đại diện thành công", 2)
             }
         } catch (error) {
             yield put(EditActions.uploadFailed(error))

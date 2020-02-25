@@ -36,15 +36,16 @@ export const request = (state) => {
 }
 
 export const loginSucceed = (state, {data}) => {
+  console.log(data)
   return {
     ...state,
-    registerSuccess: false,
     loginSuccess: data.success,
-    notifyMessage: data.message
+    notifyMessage: data.success
   }
 }
 
 export const signUpSucceed = (state, {data}) => {
+  console.log(data)
   return {
     ...state,
     loginSuccess: false,
@@ -57,7 +58,7 @@ export const forgotSucceed = (state, {data}) => {
   return {
     ...state,
     forgotSuccess: data.success,
-    notifyMessage: data.message
+    notifyMessage: data.message,
   }
 }
 
@@ -71,6 +72,9 @@ export const updateNotify = (state) => {
   return {
     ...state,
     notifyMessage: '',
+    registerSuccess: false,
+    loginSucceess: false,
+    forgotSuccess: false
   }
 }
 

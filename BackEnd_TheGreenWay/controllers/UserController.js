@@ -135,19 +135,19 @@ let changepassword = async (req, res) => {
             if (err) {
               return res.status(200).json({
                 success: false,
-                message: "Change Password Of User Is Failed!"
+                message: "Thay đổi mật khẩu không thành công"
               });
             } else {
               return res.status(200).json({
                 success: true,
-                message: "Change Password Of User Is Success!"
+                message: "Thay đổi mật khẩu thành công"
               });
             }
           });
         } else {
           return res
             .status(200)
-            .json({ success: false, message: "Old Password is not exist!" });
+            .json({ success: false, message: "Mật khẩu cũ không đúng" });
         }
       }
     }

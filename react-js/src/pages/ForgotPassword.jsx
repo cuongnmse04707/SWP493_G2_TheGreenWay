@@ -16,8 +16,8 @@ class ForgotPassword extends Component {
 
   componentDidUpdate() {
     if (
-      this.props.notifyMessage == "Reset Password Success!" ||
-      this.props.notifyMessage == `Account don't need to reset password`
+      this.props.resetMessage ||
+      this.props.notifyMessage == `Tài khoản không cần đặt lại mật khẩu`
     ) {
       this.props.updateNotify();
       this.props.history.push("/login");
@@ -27,7 +27,7 @@ class ForgotPassword extends Component {
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
+      callback("2 mật khẩu không khớp");
     } else {
       callback();
     }
@@ -77,7 +77,7 @@ class ForgotPassword extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Please input your password!"
+                            message: "Vui lòng nhập mật khẩu!"
                           }
                         ]
                       })(<Input.Password />)}
@@ -91,7 +91,7 @@ class ForgotPassword extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Please confirm your password!"
+                            message: "Vui lòng xác nhận mật khẩu!"
                           },
                           {
                             validator: this.compareToFirstPassword
@@ -128,7 +128,8 @@ class ForgotPassword extends Component {
 }
 const mapStateToProps = state => {
   return {
-    notifyMessage: state.forgotPassword.notifyMessage
+    notifyMessage: state.forgotPassword.notifyMessage,
+    resetMessage: state.forgotPassword.resetMessage
   };
 };
 

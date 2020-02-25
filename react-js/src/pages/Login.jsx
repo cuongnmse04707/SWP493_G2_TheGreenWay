@@ -73,7 +73,7 @@ class Login extends Component {
       }, 1000);
     }
 
-    if (this.props.notifyMessage == "Register is Success") {
+    if (this.props.registerSuccess) {
       this.props.updateNotify();
       this.setState({
         className: "login-container"
@@ -81,9 +81,7 @@ class Login extends Component {
     }
 
     if (
-      this.props.notifyMessage ==
-      `We'll send instructions to this email if it's associated with a account.`
-    ) {
+      this.props.forgotSuccess) {
       this.props.updateNotify();
       this.setState({
         visible: false

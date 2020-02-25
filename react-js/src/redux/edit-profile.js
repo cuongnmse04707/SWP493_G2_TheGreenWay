@@ -16,7 +16,8 @@ export default Creators
 
 //TODO: Declare initial state
 export const INITIAL_STATE = {
-    notifyMessage: ''
+    notifyMessage: '',
+    editMessage: false
 }
 
 export const request = (state) => {
@@ -29,7 +30,8 @@ export const editSucceed = (state, { data }) => {
     console.log(data)
     return {
         ...state,
-        notifyMessage: data.message
+        notifyMessage: data.message,
+        editMessage: data.success
     }
 }
 
@@ -37,7 +39,8 @@ export const uploadSucceed = (state, { data }) => {
     console.log(data)
     return {
         ...state,
-        notifyMessage: data.message
+        notifyMessage: data.message,
+        editMessage: data.success
     }
 }
 
@@ -45,6 +48,7 @@ export const updateNotify = (state) => {
     return {
         ...state,
         notifyMessage: '',
+        editMessage: false
     }
 }
 

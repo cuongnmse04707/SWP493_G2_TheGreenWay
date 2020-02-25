@@ -78,21 +78,15 @@ class ChangePassword extends Component {
         });
       }
     }
-    if (
-      this.props.notifyPasswordMessage === "Change Password Of User Is Success!"
-    ) {
+    if (this.props.changeMessage) {
       this.props.updateNotify();
       this.setState({
         visiblePassModal: false
       });
-      window.location.href = "/account";
-    }
-
-    if (this.props.notifyMessage === "Save Information Of User Is Success!") {
-      this.props.updateNotify();
       setTimeout(() => {
-        this.props.history.push("/");
-      }, 2000);
+        window.location.href = "/account";
+      },2000)
+
     }
   }
 
@@ -242,7 +236,7 @@ class ChangePassword extends Component {
       const image = e.target.files[0];
       console.log(this.state);
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         document
           .querySelector("#profileDisplay")
           .setAttribute("src", e.target.result);
@@ -253,7 +247,7 @@ class ChangePassword extends Component {
       const uploadTask = storage.ref(`images/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
-        snapshot => {},
+        snapshot => { },
         error => {
           console.log(error);
         },
@@ -373,15 +367,16 @@ class ChangePassword extends Component {
         {/* <Footer /> */}
       </div>
     ) : (
-      <Redirect to="/" />
-    );
+        <Redirect to="/" />
+      );
   }
 }
 const mapStateToProps = state => {
   return {
     userInformation: state.homePage.userInformation,
     notifyMessage: state.editProfile.notifyMessage,
-    notifyPasswordMessage: state.changePass.notifyMessage
+    notifyPasswordMessage: state.changePass.notifyMessage,
+    changeMessage: state.changePass.changeMessage
   };
 };
 
