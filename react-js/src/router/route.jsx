@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Login from "../pages/Login";
+import Login from "../pages/auth/Login";
 import ForgotPassword from "../pages/ForgotPassword";
-import HomePage from "../pages/HomePage";
 import EditProfile from "../pages/profile/EditProfile";
 import Index from "../pages/Index";
 import ChangePassword from "../pages/profile/ChangePassword";
 import LayoutProfile from "../layout/LayoutProfile";
+import AboutUs from "../pages/AboutUs"
 import { connect } from "react-redux";
 import NavBar from "../components/NavBar";
 
@@ -19,8 +19,8 @@ class PageLayout extends Component {
         <Switch>
           <Route path="/login" component={Login} exact />
           <Route path="/forgot" component={ForgotPassword} exact />
-          <Route path="/home" component={HomePage} exact />
           <Route path="/" component={Index} exact></Route>
+          <Route path="/about-us" component={AboutUs} exact></Route>
           <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />

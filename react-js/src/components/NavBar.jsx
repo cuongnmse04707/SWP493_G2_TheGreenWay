@@ -65,6 +65,10 @@ class NavBar extends Component {
     this.props.history.push("/");
   };
 
+  toContactPage = () => {
+    this.props.history.push("/about-us");
+  }
+
   render() {
     const token = window.localStorage.getItem("x-access-token");
     const abc = window.localStorage.getItem("abc");
@@ -126,7 +130,7 @@ class NavBar extends Component {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#contact">
+                  <a className="nav-link js-scroll-trigger" onClick={this.toContactPage}>
                     Liên hệ
                   </a>
                 </li>

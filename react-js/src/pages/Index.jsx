@@ -6,6 +6,10 @@ import "antd/dist/antd.css";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { Carousel } from "react-bootstrap";
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // You can also use <link> for styles
+// ..
+AOS.init();
 
 class Index extends Component {
   state = {
@@ -14,7 +18,7 @@ class Index extends Component {
     direction: null
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   handleSelect = (selectedIndex, e) => {
     this.setState({

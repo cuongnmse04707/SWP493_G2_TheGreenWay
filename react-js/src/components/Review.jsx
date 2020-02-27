@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+AOS.init();
 
 class Review extends Component {
   render() {
@@ -14,7 +17,7 @@ class Review extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-md-4 col-sm-6 portfolio-item">
+              <div className="col-md-4 col-sm-6 portfolio-item" >
                 <a
                   className="portfolio-link"
                   data-toggle="modal"

@@ -268,6 +268,14 @@ header.masthead .intro-text .intro-heading {
   max-width: 310px;
   margin: 0 auto;
   cursor: pointer;
+  overflow: hidden;
+}
+
+#portfolio .portfolio-item .portfolio-link img {
+  transition: transform .5s ease;
+}
+#portfolio .portfolio-item .portfolio-link:hover img {
+  transform: scale(1.2);
 }
 
 #portfolio .portfolio-item .portfolio-link .portfolio-hover {
@@ -634,8 +642,8 @@ header.masthead .intro-text .intro-heading {
 }
 
 .team-member img {
-  width: 225px;
-  height: 225px;
+  width: 225px !important;
+  height: 225px !important;
   border: 7px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -645,9 +653,6 @@ header.masthead .intro-text .intro-heading {
   text-transform: none;
 }
 
-.team-member p {
-  margin-top: 0;
-}
 
 section#contact {
   background-color: #212529;

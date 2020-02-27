@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import "./App.css";
-import LoginScreen from "./pages/Login";
+import "./App.css"; 
 import Route from "./router/route";
 import { Provider } from "react-redux";
 import NavBar from "../src/components/NavBar";
 import configureStore from "./redux/index";
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+AOS.init();
 class App extends Component {
   render() {
     // alert("{data} have been added!");

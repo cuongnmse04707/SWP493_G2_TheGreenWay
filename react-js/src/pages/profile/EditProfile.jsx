@@ -69,12 +69,12 @@ class EditProfile extends Component {
         avartarUrl: this.props.userInformation.urlAvatar,
         email: this.props.userInformation.email,
         roles: this.props.userInformation.roles,
-        DOB: this.props.userInformation.DOB,
+        DOB: moment(this.props.userInformation.DOB).format("YYYY/MM/DD"),
         phone: this.props.userInformation.phone
       });
       if (this.state.DOB) {
         this.setState({
-          DOB: this.state.DOB.slice(0, 10)
+          DOB:moment( this.state.DOB.slice(0, 10)).format("YYYY/MM/DD"),
         });
       }
     }
