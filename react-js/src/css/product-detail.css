@@ -1,21 +1,119 @@
-.product-container {
-  height: 100vh;
+.product-containerr {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  margin: 0 10%;
 }
 
 .product-detail {
-  height: 30vh;
+  width: 100%;
   display: flex;
   flex-direction: row;
+  flex: 1;
+  padding-top: 150px;
 }
 
-.product-image {
-  width: 50%;
+.product-detail-bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: auto;
 }
 
-.product-infor{
-  width: 50%;
+.product-image-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.product-infor {
+  flex: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  margin-left: 5%;
 }
 
 .product-infor .product-name {
-  
+  font-size: 40px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.item-detail-price {
+  display: flex;
+  flex-direction: column;
+  margin: 3px 0;
+}
+
+
+.item-detail-coin {
+  display: flex;
+  align-items: center;
+}
+
+.item-detail-coin img {
+  width: 24px;
+  height: 24px;
+  margin: 0 5px;
+}
+
+.item-detail-coin span {
+  font-size: 28px !important;
+  color: #90EE90;
+  font-weight: bold;
+  margin: 0 5px;
+}
+
+.item-quantity {
+  display: flex;
+}
+
+.item-quantity span {
+  font-size: 20px;
+
+}
+
+.item-counter {
+  width: 100px;
+  border-bottom: 2px solid #90EE90;
+  display: flex;
+  justify-content: space-between;
+}
+
+.item-counter span {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.add-to-cart {
+  background-color: #fed136;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 48px;
+  width: 250px;
+  display: flex;
+  color: #fff;
+  font-size: 18px;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-to-cart:hover {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #000;
+}
+
+
+.product-detail-description {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 5% 0;
 }

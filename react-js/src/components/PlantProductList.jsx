@@ -51,7 +51,7 @@ class PlantProductList extends Component {
               </div>
             </div>
             <div className="item-name">
-              <p>Sen đá</p>
+              <p onClick={this.handleClick}>Sen đá</p>
             </div>
             <div className="item-infor">
               <div className="item-price">
@@ -77,7 +77,7 @@ class PlantProductList extends Component {
               </div>
             </div>
             <div className="item-name">
-              <p>Sen đá</p>
+              <p onClick={this.handleClick}>Sen đá</p>
             </div>
             <div className="item-infor">
               <div className="item-price">
@@ -103,7 +103,7 @@ class PlantProductList extends Component {
               </div>
             </div>
             <div className="item-name">
-              <p>Sen đá</p>
+              <p onClick={this.handleClick}>Sen đá</p>
             </div>
             <div className="item-infor">
               <div className="item-price">
@@ -129,7 +129,7 @@ class PlantProductList extends Component {
               </div>
             </div>
             <div className="item-name">
-              <p>Sen đá</p>
+              <p onClick={this.handleClick}>Sen đá</p>
             </div>
             <div className="item-infor">
               <div className="item-price">
@@ -155,7 +155,7 @@ class PlantProductList extends Component {
               </div>
             </div>
             <div className="item-name">
-              <p>Sen đá</p>
+              <p onClick={this.handleClick}>Sen đá</p>
             </div>
             <div className="item-infor">
               <div className="item-price">

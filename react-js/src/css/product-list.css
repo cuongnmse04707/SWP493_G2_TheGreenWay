@@ -162,7 +162,6 @@
   max-width: 25%;
   width: 25%;
   box-sizing: border-box;
-  cursor: pointer;
   transition: 0.3s ;
   background: rgb(211, 211, 211);
   border-radius: 5px !important;
@@ -180,6 +179,7 @@
   color: #8A3E07;
   font-size: 20px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .item-infor{
@@ -215,7 +215,7 @@
 
 .item-coin span {
   font-size: 20px !important;
-  color: green;
+  color: #90EE90;
   font-weight: bold;
   margin: 0 5px;
 }
