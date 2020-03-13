@@ -1,0 +1,21 @@
+.product-container {
+  height: 100vh;
+}
+
+.product-detail {
+  height: 30vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.product-image {
+  width: 50%;
+}
+
+.product-infor{
+  width: 50%;
+}
+
+.product-infor .product-name {
+  
+}

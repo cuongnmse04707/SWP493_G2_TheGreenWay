@@ -23,12 +23,6 @@ class NavBar extends Component {
       this.props.userInformation &&
       nextProps.userInformation !== this.props.userInformation
     ) {
-      // console.log(this.props.userInformation);
-      // console.log(this.props.userInformation.username);
-      window.localStorage.setItem(
-        "abc",
-        JSON.stringify(this.props.userInformation)
-      );
       this.setState({
         userName: this.props.userInformation.username,
         urlAvatar: this.props.userInformation.urlAvatar
@@ -69,11 +63,13 @@ class NavBar extends Component {
     this.props.history.push("/about-us");
   }
 
+  toProductPage = () => {
+    this.props.history.push("/product");
+  }
+
   render() {
     const token = window.localStorage.getItem("x-access-token");
-    const abc = window.localStorage.getItem("abc");
-    console.log("-----");
-    console.log(abc);
+
     //menu dropdown
     const menu = (
       <Menu>
@@ -120,7 +116,7 @@ class NavBar extends Component {
             <div className="collapse navbar-collapse" id="navbarResponsive">
               <ul className="navbar-nav text-uppercase ml-auto">
                 <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#services">
+                  <a className="nav-link js-scroll-trigger"  onClick={this.toProductPage}>
                     Sản Phẩm
                   </a>
                 </li>

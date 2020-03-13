@@ -7,26 +7,26 @@ import Index from "../pages/Index";
 import ChangePassword from "../pages/profile/ChangePassword";
 import LayoutProfile from "../layout/LayoutProfile";
 import AboutUs from "../pages/AboutUs"
+import ProductList from '../pages/ProductList'
+import ProductDetail from '../pages/ProductDetail'
 import { connect } from "react-redux";
-import NavBar from "../components/NavBar";
 
 class PageLayout extends Component {
   render() {
     return (
       <BrowserRouter>
-        {/* <div>
-          <NavBar /> */}
         <Switch>
           <Route path="/login" component={Login} exact />
           <Route path="/forgot" component={ForgotPassword} exact />
           <Route path="/" component={Index} exact></Route>
           <Route path="/about-us" component={AboutUs} exact></Route>
+          <Route path="/product" component={ProductList} exact></Route>
+          <Route path="/product-detail" component={ProductDetail} exact></Route>
           <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />
           </LayoutProfile>
         </Switch>
-        {/* </div> */}
       </BrowserRouter>
     );
   }
