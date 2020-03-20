@@ -9,6 +9,7 @@ import LayoutProfile from "../layout/LayoutProfile";
 import AboutUs from "../pages/AboutUs"
 import ProductList from '../pages/ProductList'
 import ProductDetail from '../pages/ProductDetail'
+import ShoppingCart from '../pages/ShoppingCart'
 import { connect } from "react-redux";
 
 class PageLayout extends Component {
@@ -22,6 +23,7 @@ class PageLayout extends Component {
           <Route path="/about-us" component={AboutUs} exact></Route>
           <Route path="/product" component={ProductList} exact></Route>
           <Route path="/product-detail" component={ProductDetail} exact></Route>
+          <Route path="/cart" component={ShoppingCart} exact></Route>
           <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />

@@ -3,6 +3,7 @@ import '../css/product-list.css'
 import NavBar from '../components/NavBar'
 import Footer from '../components/Footer'
 import PlantProductList from '../components/PlantProductList'
+import RecycleProductList from '../components/RecycleProductList'
 class ProductList extends Component {
   render() {
     return (
@@ -60,7 +61,7 @@ class ProductList extends Component {
                 </div>
               </div>
             </div>
-            <PlantProductList />
+            <RecycleProductList />
           </div>
         </div>
         <Footer />

@@ -79,6 +79,11 @@
         }
       }
 
+      .header-left {
+        display: flex;
+        align-items: center;
+      }
+
       .user-name {
         min-width: 200px !important;
 

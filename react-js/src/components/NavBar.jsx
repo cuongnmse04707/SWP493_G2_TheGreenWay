@@ -94,12 +94,6 @@ class NavBar extends Component {
                 src={require("../images/logo-1.png")}
                 alt=""
               />
-              {/* <a
-                className="navbar-brand js-scroll-trigger"
-                style={{ color: "green" }}
-              >
-                The Green Way
-              </a> */}
             </div>
             <button
               className="navbar-toggler navbar-toggler-right"
@@ -116,7 +110,7 @@ class NavBar extends Component {
             <div className="collapse navbar-collapse" id="navbarResponsive">
               <ul className="navbar-nav text-uppercase ml-auto">
                 <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger"  onClick={this.toProductPage}>
+                  <a className="nav-link js-scroll-trigger" onClick={this.toProductPage}>
                     Sản Phẩm
                   </a>
                 </li>
@@ -140,7 +134,7 @@ class NavBar extends Component {
                           borderRadius: "50%"
                         }}
                         src={this.props.userInformation.urlAvatar}
-                        // alt=""
+                      // alt=""
                       />
                       <Dropdown
                         style={{ width: "500px" }}
@@ -162,15 +156,19 @@ class NavBar extends Component {
                     </li>
                   </div>
                 ) : (
-                  <li className="nav-item">
-                    <a
-                      className="nav-link js-scroll-trigger"
-                      onClick={this.toLogin}
-                    >
-                      Đăng nhập/Đăng ký
+                    <li className="nav-item">
+                      <a
+                        className="nav-link js-scroll-trigger"
+                        onClick={this.toLogin}
+                      >
+                        Đăng nhập/Đăng ký
                     </a>
-                  </li>
-                )}
+                    </li>
+                  )}
+                <li className="shopping-cart-item">
+                  <div className="number-product"><p>0</p></div>
+                  <img style={{ height: "32px", width: "32px", marginRight: "10px" }} src={require("../images/supermarket.png")} alt="" />
+                </li>
               </ul>
             </div>
             <Modal
