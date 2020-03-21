@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Icon, Dropdown, Menu, Modal } from "antd";
+import { Avatar, Badge } from "antd";
 import "antd/dist/antd.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -61,11 +62,11 @@ class NavBar extends Component {
 
   toContactPage = () => {
     this.props.history.push("/about-us");
-  }
+  };
 
   toProductPage = () => {
     this.props.history.push("/product");
-  }
+  };
 
   render() {
     const token = window.localStorage.getItem("x-access-token");
@@ -110,7 +111,10 @@ class NavBar extends Component {
             <div className="collapse navbar-collapse" id="navbarResponsive">
               <ul className="navbar-nav text-uppercase ml-auto">
                 <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" onClick={this.toProductPage}>
+                  <a
+                    className="nav-link js-scroll-trigger"
+                    onClick={this.toProductPage}
+                  >
                     Sản Phẩm
                   </a>
                 </li>
@@ -120,7 +124,10 @@ class NavBar extends Component {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" onClick={this.toContactPage}>
+                  <a
+                    className="nav-link js-scroll-trigger"
+                    onClick={this.toContactPage}
+                  >
                     Liên hệ
                   </a>
                 </li>
@@ -134,7 +141,7 @@ class NavBar extends Component {
                           borderRadius: "50%"
                         }}
                         src={this.props.userInformation.urlAvatar}
-                      // alt=""
+                        // alt=""
                       />
                       <Dropdown
                         style={{ width: "500px" }}
@@ -156,18 +163,33 @@ class NavBar extends Component {
                     </li>
                   </div>
                 ) : (
-                    <li className="nav-item">
-                      <a
-                        className="nav-link js-scroll-trigger"
-                        onClick={this.toLogin}
-                      >
-                        Đăng nhập/Đăng ký
+                  <li className="nav-item">
+                    <a
+                      className="nav-link js-scroll-trigger"
+                      onClick={this.toLogin}
+                    >
+                      Đăng nhập/Đăng ký
                     </a>
-                    </li>
-                  )}
+                  </li>
+                )}
                 <li className="shopping-cart-item">
-                  <div className="number-product"><p>0</p></div>
-                  <img style={{ height: "32px", width: "32px", marginRight: "10px" }} src={require("../images/supermarket.png")} alt="" />
+                  {/* <div className="number-product">
+                    <p>0</p>
+                  </div> */}
+                  <Badge
+                    count={1}
+                    style={{ marginRight: "8px", marginTop: "4px" }}
+                  >
+                    <img
+                      style={{
+                        height: "32px",
+                        width: "32px",
+                        marginRight: "10px"
+                      }}
+                      src={require("../images/svgIcon/sales.svg")}
+                      alt=""
+                    />
+                  </Badge>
                 </li>
               </ul>
             </div>

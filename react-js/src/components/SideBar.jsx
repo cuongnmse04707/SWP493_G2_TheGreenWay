@@ -197,7 +197,7 @@ class SideBar extends Component {
               }}
             >
               <img
-                src={userImage}
+                src={require("../images/svgIcon/user.svg")}
                 alt="aaa"
                 style={{ height: "32px", width: "32px" }}
               />
@@ -210,7 +210,7 @@ class SideBar extends Component {
               }}
             >
               <img
-                src={passImage}
+                src={require("../images/svgIcon/password.svg")}
                 alt="aaa"
                 style={{ height: "32px", width: "32px" }}
               />
@@ -223,7 +223,7 @@ class SideBar extends Component {
               }}
             >
               <img
-                src={cartImage}
+                src={require("../images/svgIcon/shopping-history.svg")}
                 alt="aaa"
                 style={{ height: "32px", width: "32px" }}
               />
@@ -236,7 +236,7 @@ class SideBar extends Component {
               }}
             >
               <img
-                src={likeProductImage}
+                src={require("../images/svgIcon/heart.svg")}
                 alt="aaa"
                 style={{ height: "32px", width: "32px" }}
               />
