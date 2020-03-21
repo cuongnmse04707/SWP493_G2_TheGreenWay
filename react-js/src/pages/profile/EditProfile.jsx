@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../../css/profile/edit-profile.css";
-import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import HomePageTypes from "../../redux/home-page-redux";
 import EditTypes from "../../redux/edit-profile";

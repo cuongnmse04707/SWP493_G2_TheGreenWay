@@ -8,7 +8,9 @@ const rootReducer = combineReducers({
   forgotPassword: require('./forgot-password-redux').reducer,
   editProfile: require('./edit-profile').reducer,
   changePass: require('./change-password-redux').reducer,
-  homePage: require('./home-page-redux').reducer
+  homePage: require('./home-page-redux').reducer,
+  introProduct: require('./get-intro-product-redux').reducer,
+  convension: require('./paper-conversion-redux').reducer
 })
 
 export default rootReducer

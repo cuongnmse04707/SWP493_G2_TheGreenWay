@@ -4,11 +4,15 @@ import { ForgotTypes } from '../redux/forgot-password-redux'
 import { HomePageTypes } from '../redux/home-page-redux'
 import { EditTypes } from '../redux/edit-profile'
 import { ChangePassTypes } from '../redux/change-password-redux'
+import {IntroProductTypes} from '../redux/get-intro-product-redux'
+import {ConvensionTypes} from '../redux/paper-conversion-redux'
 import LoginSagas from './login-saga'
 import ResetPassword from './reset-password'
 import HomePageSagas from './home-page-saga'
 import EditProfileSagas from './edit-profile-saga'
 import ChangePassSagas from './change-password-saga'
+import IntroProductSagas from './intro-product-saga'
+import PaperConvensionSagas from './paper-convension-saga'
 
 export default function* root() {
     yield all([
@@ -20,5 +24,8 @@ export default function* root() {
         takeLatest(EditTypes.EDIT_REQUEST, EditProfileSagas.editProfile),
         takeLatest(EditTypes.UPLOAD_REQUEST, EditProfileSagas.changeAvatar),
         takeLatest(ChangePassTypes.CHANGE_REQUEST, ChangePassSagas.changePass),
+        takeLatest(IntroProductTypes.GET_INTRO_PRODUCT_REQUEST, IntroProductSagas.getIntroProduct),
+        takeLatest(IntroProductTypes.GET_RECYCLE_PRODUCT_REQUEST, IntroProductSagas.getRecycleProduct),
+        takeLatest(ConvensionTypes.GET_CONVENSION_REQUEST, PaperConvensionSagas.getConvensionRate),
     ])
 }
