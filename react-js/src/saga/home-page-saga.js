@@ -15,7 +15,6 @@ const HomePageSagas = {
           },
         })
       })
-      console.log(userInfor)
       if (!userInfor.data.success) {
         yield put(HomePageActions.getInforFailed(userInfor.data.message))
         message.error(userInfor.data.message, 3)

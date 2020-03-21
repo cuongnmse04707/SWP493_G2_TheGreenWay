@@ -1,11 +1,38 @@
 import React, { Component } from 'react';
 import '../css/product-list.css';
 import { withRouter } from "react-router";
-class RecycleProductList extends Component {
+import { connect } from "react-redux";
+import IntroProductTypes from "../redux/get-intro-product-redux";
+import ConvensionTypes from "../redux/paper-conversion-redux";
 
+class RecycleProductList extends Component {
   state = {
-    heart: false
+    heart: false,
+    introData: [],
+    convensionRate: 0
   }
+
+  componentDidMount() {
+    this.props.getPaperConvension()
+    const params = {
+      idCategory: 2,
+      page: 1
+    }
+    this.props.getRecycleProduct(params)
+  }
+
+  componentDidUpdate(nextProps) {
+    if (
+      this.props.recycleProduct &&
+      nextProps.recycleProduct !== this.props.recycleProduct
+    ) {
+      this.setState({
+        introData: this.props.recycleProduct,
+        convensionRate: this.props.convensionRate
+      });
+    }
+  }
+
 
   handleClick = () => {
     console.log(this.props.history)
@@ -21,194 +48,70 @@ class RecycleProductList extends Component {
   addToShoppingCart = () => {
     this.props.history.push("/cart")
   }
+
   render() {
     return (
       <div className="product-list-wrapper">
         <div className="product-container">
-        <div className="sub-item shadow bg-white rounded">
-            <div className="hovereffect" >
-              <img src={require("../images/product-7.png")} alt="" />
-              <div className="overlayy">
-                <h2>Ống hút tre</h2>
-                <a className="info" onClick ={this.addToShoppingCart}>
-                  <div style={{ display: "flex" }}>
-                    <img style={{ height: "32px", width: "32px", marginRight: "10px" }} src={require("../images/cart-1.png")} alt="" />Thêm vào giỏ hàng
+          {this.state.introData.map((item, index) => {
+            return (
+              <div className="sub-item shadow bg-white rounded" key={index}>
+                <div className="hovereffect" >
+                  <img src={item.ImageDetail} alt="" />
+                  <div className="overlayy">
+                    <h2>{item.ProductName}</h2>
+                    <a className="info" onClick={this.addToShoppingCart}>
+                      <div style={{ display: "flex" }}>
+                        <img style={{ height: "32px", width: "32px", marginRight: "10px" }} src={require("../images/cart-1.png")} alt="" />Thêm vào giỏ hàng
+                     </div>
+                    </a>
+                    <div className='heart-icon'>
+                      {this.state.heart ? (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-full.png")} alt="" />) :
+                        (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-empty.png")} alt="" />)}
+                    </div>
                   </div>
-                </a>
-                <div className='heart-icon'>
-                  {this.state.heart ? (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-full.png")} alt="" />) :
-                    (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-empty.png")} alt="" />)}
+                </div>
+                <div className="item-name">
+                  <p onClick={this.handleClick}>{item.ProductName}</p>
+                </div>
+                <div className="item-infor">
+                  <div className="item-price">
+                    <div className="item-coin"><img src={require("../images/coin.png")} alt="" /><span>{item.ProductPrice}</span></div>
+                    <div className="item-coin"><img src={require("../images/paperr.png")} alt="" /><span>{Math.floor(item.ProductPrice / this.state.convensionRate)}</span></div>
+                  </div>
+                  <div className="item-like">
+                    <div><img src={require("../images/heart.png")} alt="" /></div>
+                    <div className="item-coin"><span>{item.NumberOfLikes}</span></div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="item-name">
-              <p onClick={this.handleClick}>Ống hút tre</p>
-            </div>
-            <div className="item-infor">
-              <div className="item-price">
-                <div className="item-coin"><img src={require("../images/coin.png")} alt="" /><span>3000</span></div>
-                <div className="item-coin"><img src={require("../images/paperr.png")} alt="" /><span>3000</span></div>
-              </div>
-              <div className="item-like">
-                <div><img src={require("../images/heart.png")} alt="" /></div>
-                <div className="item-coin"><span>3000</span></div>
-              </div>
-            </div>
-          </div>
-          <div className="sub-item shadow bg-white rounded">
-            <div className="hovereffect" >
-              <img src={require("../images/product-10.jpg")} alt="" />
-              <div className="overlayy">
-                <h2>Ống hút tre</h2>
-                <a className="info" onClick ={this.addToShoppingCart}>
-                  <div style={{ display: "flex" }}>
-                    <img style={{ height: "32px", width: "32px", marginRight: "10px" }} src={require("../images/cart-1.png")} alt="" />Thêm vào giỏ hàng
-                  </div>
-                </a>
-                <div className='heart-icon'>
-                  {this.state.heart ? (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-full.png")} alt="" />) :
-                    (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-empty.png")} alt="" />)}
-                </div>
-              </div>
-            </div>
-            <div className="item-name">
-              <p onClick={this.handleClick}>Ống hút tre</p>
-            </div>
-            <div className="item-infor">
-              <div className="item-price">
-                <div className="item-coin"><img src={require("../images/coin.png")} alt="" /><span>3000</span></div>
-                <div className="item-coin"><img src={require("../images/paperr.png")} alt="" /><span>3000</span></div>
-              </div>
-              <div className="item-like">
-                <div><img src={require("../images/heart.png")} alt="" /></div>
-                <div className="item-coin"><span>3000</span></div>
-              </div>
-            </div>
-          </div>
-          <div className="sub-item shadow bg-white rounded">
-            <div className="hovereffect" >
-              <img src={require("../images/product-14.jpg")} alt="" />
-              <div className="overlayy">
-                <h2>Ống hút tre</h2>
-                <a className="info" onClick ={this.addToShoppingCart}>
-                  <div style={{ display: "flex" }}>
-                    <img style={{ height: "32px", width: "32px", marginRight: "10px" }} src={require("../images/cart-1.png")} alt="" />Thêm vào giỏ hàng
-                  </div>
-                </a>
-                <div className='heart-icon'>
-                  {this.state.heart ? (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-full.png")} alt="" />) :
-                    (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-empty.png")} alt="" />)}
-                </div>
-              </div>
-            </div>
-            <div className="item-name">
-              <p onClick={this.handleClick}>Ống hút tre</p>
-            </div>
-            <div className="item-infor">
-              <div className="item-price">
-                <div className="item-coin"><img src={require("../images/coin.png")} alt="" /><span>3000</span></div>
-                <div className="item-coin"><img src={require("../images/paperr.png")} alt="" /><span>3000</span></div>
-              </div>
-              <div className="item-like">
-                <div><img src={require("../images/heart.png")} alt="" /></div>
-                <div className="item-coin"><span>3000</span></div>
-              </div>
-            </div>
-          </div>
-          <div className="sub-item shadow bg-white rounded">
-            <div className="hovereffect" >
-              <img src={require("../images/product-8.jpg")} alt="" />
-              <div className="overlayy">
-                <h2>Ống hút tre</h2>
-                <a className="info" onClick ={this.addToShoppingCart}>
-                  <div style={{ display: "flex" }}>
-                    <img style={{ height: "32px", width: "32px", marginRight: "10px" }} src={require("../images/cart-1.png")} alt="" />Thêm vào giỏ hàng
-                  </div>
-                </a>
-                <div className='heart-icon'>
-                  {this.state.heart ? (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-full.png")} alt="" />) :
-                    (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-empty.png")} alt="" />)}
-                </div>
-              </div>
-            </div>
-            <div className="item-name">
-              <p onClick={this.handleClick}>Ống hút tre</p>
-            </div>
-            <div className="item-infor">
-              <div className="item-price">
-                <div className="item-coin"><img src={require("../images/coin.png")} alt="" /><span>3000</span></div>
-                <div className="item-coin"><img src={require("../images/paperr.png")} alt="" /><span>3000</span></div>
-              </div>
-              <div className="item-like">
-                <div><img src={require("../images/heart.png")} alt="" /></div>
-                <div className="item-coin"><span>3000</span></div>
-              </div>
-            </div>
-          </div>
-          <div className="sub-item shadow bg-white rounded">
-            <div className="hovereffect" >
-              <img src={require("../images/product-13.jpg")} alt="" />
-              <div className="overlayy">
-                <h2>Ống hút tre</h2>
-                <a className="info" onClick ={this.addToShoppingCart}>
-                  <div style={{ display: "flex" }}>
-                    <img style={{ height: "32px", width: "32px", marginRight: "10px" }} src={require("../images/cart-1.png")} alt="" />Thêm vào giỏ hàng
-                  </div>
-                </a>
-                <div className='heart-icon'>
-                  {this.state.heart ? (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-full.png")} alt="" />) :
-                    (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-empty.png")} alt="" />)}
-                </div>
-              </div>
-            </div>
-            <div className="item-name">
-              <p onClick={this.handleClick}>Ống hút tre</p>
-            </div>
-            <div className="item-infor">
-              <div className="item-price">
-                <div className="item-coin"><img src={require("../images/coin.png")} alt="" /><span>3000</span></div>
-                <div className="item-coin"><img src={require("../images/paperr.png")} alt="" /><span>3000</span></div>
-              </div>
-              <div className="item-like">
-                <div><img src={require("../images/heart.png")} alt="" /></div>
-                <div className="item-coin"><span>3000</span></div>
-              </div>
-            </div>
-          </div>
-          <div className="sub-item shadow bg-white rounded">
-            <div className="hovereffect" >
-              <img src={require("../images/product-16.jpg")} alt="" />
-              <div className="overlayy">
-                <h2>Ống hút tre</h2>
-                <a className="info" onClick ={this.addToShoppingCart}>
-                  <div style={{ display: "flex" }}>
-                    <img style={{ height: "32px", width: "32px", marginRight: "10px" }} src={require("../images/cart-1.png")} alt="" />Thêm vào giỏ hàng
-                  </div>
-                </a>
-                <div className='heart-icon'>
-                  {this.state.heart ? (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-full.png")} alt="" />) :
-                    (<img onClick={this.changeHeart} style={{ height: "16px", width: "16px" }} src={require("../images/heart-empty.png")} alt="" />)}
-                </div>
-              </div>
-            </div>
-            <div className="item-name">
-              <p onClick={this.handleClick}>Ống hút tre</p>
-            </div>
-            <div className="item-infor">
-              <div className="item-price">
-                <div className="item-coin"><img src={require("../images/coin.png")} alt="" /><span>3000</span></div>
-                <div className="item-coin"><img src={require("../images/paperr.png")} alt="" /><span>3000</span></div>
-              </div>
-              <div className="item-like">
-                <div><img src={require("../images/heart.png")} alt="" /></div>
-                <div className="item-coin"><span>3000</span></div>
-              </div>
-            </div>
-          </div>
+            )
+          })}
         </div>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  console.log(state.convension)
+  return {
+    recycleProduct: state.introProduct.recycleProduct,
+    convensionRate: state.convension.convensionRate
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getPaperConvension: () => {
+      dispatch(ConvensionTypes.getConvensionRequest())
+    },
+    getRecycleProduct: (params) => {
+      dispatch(IntroProductTypes.getRecycleProductRequest(params));
+    },
+  };
+};
+
+
 RecycleProductList = withRouter(RecycleProductList)
-export default RecycleProductList;
+export default connect(mapStateToProps, mapDispatchToProps)(RecycleProductList);
