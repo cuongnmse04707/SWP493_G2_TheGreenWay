@@ -6,7 +6,7 @@ var databaseOptions = {
   // host: "localhost",
   // user: "root",
   // password: "",
-  // database: "swp"
+  // database: "swpk11"
   //DemoSWP
 };
 

@@ -133,3 +133,29 @@
   height: 500px !important;
   width:100% !important;
 }
+
+.carousel .thumb {
+  height: 120px !important;
+  width: 120px !important;
+}
+
+.carousel .thumb img{
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 120px !important;
+  width: 120px !important;
+}
+
+.carousel .thumb:hover {
+  border: none !important;
+}
+
+.carousel .thumb.selected{
+  border: none !important;
+}
+
+.carousel .thumbs-wrapper {
+  margin: 20px 0px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+}
