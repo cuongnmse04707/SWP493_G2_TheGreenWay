@@ -14,7 +14,7 @@ import HomePageTypes from "../redux/home-page-redux";
 class ProductDetail extends Component {
   state = {
     image: [],
-    quantity: 1,
+    quantity: 0,
     backgroundPosition: "0% 0%",
     productInfor: {}
   };
@@ -41,9 +41,15 @@ class ProductDetail extends Component {
   }
 
   getQuantity = value => {
-    this.setState({
-      quantity: value
-    });
+    if (Number(value)) {
+      this.setState({
+        quantity: value || 0
+      });
+    } else {
+      this.setState({
+        quantity: 0
+      });
+    }
   };
 
   handleMouseMove = e => {
@@ -55,6 +61,7 @@ class ProductDetail extends Component {
 
   addToCart = () => {
     const { quantity } = this.state;
+
     const { convensionRate, productInfor, productImages } = this.props;
     const product = {
       ProductID: productInfor.ProductID,
@@ -65,6 +72,10 @@ class ProductDetail extends Component {
       Quantity: productInfor.Quantity,
       quatityBuy: quantity
     };
+    if (quantity === 0) {
+      message.info("Opps. Hãy nhập số lượng cần mua !");
+      return;
+    }
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const indexNumber = cart.findIndex(
       element => element.ProductID === product.ProductID
@@ -103,6 +114,10 @@ class ProductDetail extends Component {
       productImages.map(item => {
         arrayImages.push(item.urlImage);
       });
+    } else {
+      arrayImages = [
+        "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
+      ];
     }
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const cartItem =
@@ -119,7 +134,7 @@ class ProductDetail extends Component {
                 showIndicators={false}
                 swipeable={false}
               >
-                {arrayImages.map((item, index) => {
+                {(arrayImages || []).map((item, index) => {
                   return (
                     <div key={index}>
                       <img
@@ -148,8 +163,10 @@ class ProductDetail extends Component {
               <div className="item-quantity" style={{ marginTop: "10px" }}>
                 <span className="mr-4">Số lượng:</span>
                 <InputNumber
-                  min={1}
-                  max={productInfor.Quantity - (cartItem.quatityBuy || 0)}
+                  min={0}
+                  max={
+                    (productInfor.Quantity || 0) - (cartItem.quatityBuy || 0)
+                  }
                   value={this.state.quantity}
                   onChange={this.getQuantity}
                 />
@@ -197,7 +214,6 @@ class ProductDetail extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.productDetail.productImages);
   return {
     productInfor: state.productDetail.productInfor,
     productImages: state.productDetail.productImages,
