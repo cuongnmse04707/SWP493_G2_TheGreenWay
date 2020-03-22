@@ -232,9 +232,11 @@ class ShoppingCart extends Component {
                         <span>Nhập số kg giấy: </span>
                         <InputNumber
                           min={0}
-                          max={10}
-                          defaultValue={0}
+                          max={Math.floor(totalCash / convensionRate)}
+                          // value={0}
+                          placeholder="Nhập số kg giấy"
                           onChange={value => this.onPaperChange(value)}
+                          style={{ width: "135px" }}
                         />
                       </div>
                       <div className="money-input">
@@ -244,6 +246,7 @@ class ShoppingCart extends Component {
                           min={1}
                           value={this.state.remainingAmout}
                           disabled
+                          style={{ width: "135px" }}
                         />
                       </div>
                     </div>

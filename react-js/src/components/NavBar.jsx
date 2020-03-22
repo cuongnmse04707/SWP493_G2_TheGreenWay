@@ -76,6 +76,10 @@ class NavBar extends Component {
     this.props.history.push("/life-way");
   };
 
+  toCart = () => {
+    this.props.history.push("/cart");
+  };
+
   render() {
     const token = window.localStorage.getItem("x-access-token");
 
@@ -199,6 +203,7 @@ class NavBar extends Component {
                       }}
                       src={require("../images/svgIcon/sales.svg")}
                       alt=""
+                      onClick={this.toCart}
                     />
                   </Badge>
                 </li>
