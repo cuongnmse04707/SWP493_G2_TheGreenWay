@@ -33,8 +33,9 @@ class PlantProductList extends Component {
     }
   }
 
-  handleClick = () => {
-    this.props.history.push("/product-detail");
+  handleClick = (event, id) => {
+    event.stopPropagation()
+    this.props.history.push(`/product-detail/${id}`);
   };
 
   changeHeart = event => {
@@ -58,7 +59,7 @@ class PlantProductList extends Component {
             return (
               <div
                 className="sub-item shadow bg-white rounded"
-                onClick={this.handleClick}
+                onClick={event => this.handleClick(event, item.ProductID)}
                 key={index}
               >
                 <div className="hovereffect">
@@ -90,13 +91,13 @@ class PlantProductList extends Component {
                           alt=""
                         />
                       ) : (
-                        <img
-                          onClick={event => this.changeHeart(event)}
-                          style={{ height: "35px", width: "35px" }}
-                          src={require("../images/svgIcon/unLike.svg")}
-                          alt=""
-                        />
-                      )}
+                          <img
+                            onClick={event => this.changeHeart(event)}
+                            style={{ height: "35px", width: "35px" }}
+                            src={require("../images/svgIcon/unLike.svg")}
+                            alt=""
+                          />
+                        )}
                     </div>
                   </div>
                 </div>
@@ -108,7 +109,7 @@ class PlantProductList extends Component {
                     fontWeight: "normal"
                   }}
                 >
-                  <span onClick={this.handleClick}>{item.ProductName}</span>
+                  <span>{item.ProductName}</span>
                 </div>
                 <div className="item-infor">
                   <div className="item-price">

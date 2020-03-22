@@ -23,7 +23,7 @@ class PageLayout extends Component {
           <Route path="/" component={Index} exact></Route>
           <Route path="/about-us" component={AboutUs} exact></Route>
           <Route path="/product" component={ProductList} exact></Route>
-          <Route path="/product-detail" component={ProductDetail} exact></Route>
+          <Route path="/product-detail/:id" component={ProductDetail} exact></Route>
           <Route path="/cart" component={ShoppingCart} exact></Route>
           <Route path="/plant-product" component={PlantProductDetail} exact></Route>
           <LayoutProfile>
