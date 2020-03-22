@@ -17,6 +17,10 @@ class NavBar extends Component {
     if (token) {
       this.props.getUserInfor();
     }
+    const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
+    let numberOfTotal = 0;
+    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    this.props.setDataCart(numberOfTotal);
   }
 
   componentDidUpdate(nextProps) {
@@ -225,6 +229,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getUserInfor: () => {
       dispatch(HomePageTypes.getInforRequest());
+    },
+    setDataCart: param => {
+      dispatch(HomePageTypes.updateStateCart(param));
     }
   };
 };
