@@ -13,6 +13,7 @@
   display: flex;
   flex: 2;
   width: 100%;
+  min-height: 680px;
 }
 
 .payment-infor .total-money {
@@ -27,10 +28,10 @@
   height: 100%;
 }
 
-.list-item-table .table-header tr{
+.list-item-table .table-header tr {
   width: 100%;
   height: 64px;
-  background: #f5f7fa ;
+  background: #f5f7fa;
 }
 
 .list-item-table .table-body tr {
@@ -79,7 +80,7 @@
   justify-content: space-between;
 }
 
-.total-money-card .button-check-out{
+.total-money-card .button-check-out {
   background: #fed136;
   display: flex;
   justify-content: center;

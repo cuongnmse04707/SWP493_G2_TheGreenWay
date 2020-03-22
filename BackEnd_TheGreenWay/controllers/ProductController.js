@@ -382,8 +382,8 @@ let getProductsByCategory = async (req, res) => {
   const page = req.query.page;
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
-  let sql = ` SELECT ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes
-                FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail 
+  let sql = ` SELECT ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes, ProductsCate.Quantity
+                FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail, Products.Quantity
                         FROM Products
                         JOIN Categories
                         ON Products.CategoryID=Categories.CategoryID 
@@ -442,7 +442,7 @@ let getProducts = async (req, res) => {
   const page = req.query.page;
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
-  let sql = ` SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes
+  let sql = ` SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes, Products.Quantity
                 FROM Products
                 LEFT JOIN LikesOfProduct
                 ON Products.ProductID=LikesOfProduct.ProductID

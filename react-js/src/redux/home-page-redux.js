@@ -1,48 +1,65 @@
-import { createReducer, createActions } from "reduxsauce"
+import { createReducer, createActions } from "reduxsauce";
 
 // TODO:Declare Action and type
 const { Types, Creators } = createActions({
   getInforRequest: [],
-  getInforSucceed: ['data'],
-  getInforFailed: ['error'],
-  updateNotify: [],
-})
+  getInforSucceed: ["data"],
+  getInforFailed: ["error"],
+  updateStateCart: ["data"],
+  updateValueCart: ["data"],
+  updateNotify: []
+});
 
-export const HomePageTypes = Types
-export default Creators
+export const HomePageTypes = Types;
+export default Creators;
 
 //TODO: Declare initial state
 export const INITIAL_STATE = {
-  notifyMessage: '',
-  userInformation: ''
-}
+  notifyMessage: "",
+  userInformation: "",
+  stateCartNumber: 0
+};
 
-export const request = (state) => {
+export const request = state => {
   return {
-    ...state,
-  }
-}
+    ...state
+  };
+};
 
-export const getInforSucceed = (state, {data}) => {
+export const getInforSucceed = (state, { data }) => {
   return {
     ...state,
     notifyMessage: data.message,
     userInformation: data
-  }
-}
-export const updateNotify = (state) => {
+  };
+};
+export const updateNotify = state => {
   return {
     ...state,
-    notifyMessage: '',
-  }
-}
+    notifyMessage: ""
+  };
+};
 
 export const failed = (state, { error }) => {
-  console.log(error)
+  console.log(error);
+  return {
+    ...state
+  };
+};
+
+export const updateStateCart = (state, { data }) => {
   return {
     ...state,
-  }
-}
+    stateCartNumber: data
+  };
+};
+
+export const updateValueCart = (state, { data }) => {
+  return {
+    ...state,
+    stateCartNumber: state.stateCartNumber + data
+  };
+};
 
 //TODO:Hookup Reducers To Types in Action
 export const reducer = createReducer(INITIAL_STATE, {
@@ -50,4 +67,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [HomePageTypes.GET_INFOR_SUCCEED]: getInforSucceed,
   [HomePageTypes.GET_INFOR_FAILED]: failed,
   [HomePageTypes.UPDATE_NOTIFY]: updateNotify,
-})
+  [HomePageTypes.UPDATE_STATE_CART]: updateStateCart,
+  [HomePageTypes.UPDATE_VALUE_CART]: updateValueCart
+});

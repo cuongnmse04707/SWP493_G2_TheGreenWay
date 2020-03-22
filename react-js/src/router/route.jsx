@@ -6,11 +6,12 @@ import EditProfile from "../pages/profile/EditProfile";
 import Index from "../pages/Index";
 import ChangePassword from "../pages/profile/ChangePassword";
 import LayoutProfile from "../layout/LayoutProfile";
-import AboutUs from "../pages/AboutUs"
-import ProductList from '../pages/ProductList'
-import ProductDetail from '../pages/ProductDetail'
-import ShoppingCart from '../pages/ShoppingCart'
-import PlantProductDetail from '../pages/PlantProductsDetail'
+import AboutUs from "../pages/AboutUs";
+import ProductList from "../pages/ProductList";
+import ProductDetail from "../pages/ProductDetail";
+import ShoppingCart from "../pages/ShoppingCart";
+import LifeWay from "../pages/lifeWayPage/lifeWayPage";
+import PlantProductDetail from "../pages/PlantProductsDetail";
 import { connect } from "react-redux";
 
 class PageLayout extends Component {
@@ -24,8 +25,13 @@ class PageLayout extends Component {
           <Route path="/about-us" component={AboutUs} exact></Route>
           <Route path="/product" component={ProductList} exact></Route>
           <Route path="/product-detail" component={ProductDetail} exact></Route>
+          <Route path="/life-way" component={LifeWay} exact></Route>
           <Route path="/cart" component={ShoppingCart} exact></Route>
-          <Route path="/plant-product" component={PlantProductDetail} exact></Route>
+          <Route
+            path="/plant-product"
+            component={PlantProductDetail}
+            exact
+          ></Route>
           <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />

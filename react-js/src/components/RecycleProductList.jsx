@@ -34,7 +34,6 @@ class RecycleProductList extends Component {
   }
 
   handleClick = () => {
-    console.log(this.props.history);
     this.props.history.push("/product-detail");
   };
 

@@ -68,6 +68,10 @@ class NavBar extends Component {
     this.props.history.push("/product");
   };
 
+  toLifeWay = () => {
+    this.props.history.push("/life-way");
+  };
+
   render() {
     const token = window.localStorage.getItem("x-access-token");
 
@@ -119,7 +123,10 @@ class NavBar extends Component {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link js-scroll-trigger" href="#portfolio">
+                  <a
+                    className="nav-link js-scroll-trigger"
+                    onClick={this.toLifeWay}
+                  >
                     Cách sống
                   </a>
                 </li>
@@ -177,7 +184,7 @@ class NavBar extends Component {
                     <p>0</p>
                   </div> */}
                   <Badge
-                    count={1}
+                    count={this.props.stateCartNumber}
                     style={{ marginRight: "8px", marginTop: "4px" }}
                   >
                     <img
@@ -209,7 +216,8 @@ class NavBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    userInformation: state.homePage.userInformation
+    userInformation: state.homePage.userInformation,
+    stateCartNumber: state.homePage.stateCartNumber
   };
 };
 
