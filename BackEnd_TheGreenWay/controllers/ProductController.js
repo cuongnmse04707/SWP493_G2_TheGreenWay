@@ -16,7 +16,7 @@ let getinfobyid = async (req, res) => {
                 FROM Products
                 LEFT JOIN LikesOfProduct
                 ON Products.ProductID = LikesOfProduct.ProductID
-                GROUP BY LikesOfProduct.ProductID ) GetProduct
+                GROUP BY Products.ProductID ) GetProduct
                 WHERE GetProduct.ProductID =?`;
   let query = mysql.format(sql, [idProduct]);
   connectionDB.query(query, async (err, result) => {
@@ -152,6 +152,7 @@ let likeProduct = async (req, res) => {
           empty,
           (err, result) => {
             if (err) {
+              console.log(empty)
               return res
                 .status(200)
                 .json({ success: false, message: "ERROR!" });
@@ -260,10 +261,10 @@ let searchProduct = async (req, res) => {
     : stringSQL + "";
   // SQL to run
   let sql = ` SELECT ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes
-                FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail 
+                FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail
                         FROM Products
                         JOIN Categories
-                        ON Products.CategoryID=Categories.CategoryID 
+                        ON Products.CategoryID=Categories.CategoryID
                         ${stringSQL} ) ProductsCate
                 LEFT JOIN LikesOfProduct
                 ON ProductsCate.ProductID=LikesOfProduct.ProductID
@@ -286,10 +287,10 @@ let searchProduct = async (req, res) => {
       } else {
         // Chay Query de lay total page
         let sql = `SELECT COUNT(*) AS Total
-                            FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail 
+                            FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail
                                     FROM Products
                                     JOIN Categories
-                                    ON Products.CategoryID=Categories.CategoryID 
+                                    ON Products.CategoryID=Categories.CategoryID
                                     ${stringSQL} ) ProductsCate
                             LEFT JOIN LikesOfProduct
                             ON ProductsCate.ProductID=LikesOfProduct.ProductID`;
@@ -324,11 +325,11 @@ let fulltextsearchProduct = async (req, res) => {
   var stringSQL = req.body.fulltextsearch;
   // SQL Query to search Product
   // SQL to run
-  let sql = ` SELECT * FROM Products WHERE 
-                MATCH(ProductName) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) 
-                OR 
+  let sql = ` SELECT * FROM Products WHERE
+                MATCH(ProductName) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
+                OR
                 MATCH(Description) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
-                OR 
+                OR
                 MATCH(ProductPrice) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
                 LIMIT ?
                 OFFSET ?`;
@@ -347,11 +348,11 @@ let fulltextsearchProduct = async (req, res) => {
         });
       } else {
         // Chay Query de lay total page
-        let sqlTotal = `SELECT COUNT(*) AS Total FROM Products WHERE 
-                            MATCH(ProductName) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) 
-                            OR 
+        let sqlTotal = `SELECT COUNT(*) AS Total FROM Products WHERE
+                            MATCH(ProductName) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
+                            OR
                             MATCH(Description) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
-                            OR 
+                            OR
                             MATCH(ProductPrice) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)`;
         let queryTotal = mysql.format(sqlTotal);
         connectionDB.query(queryTotal, async (err, results) => {
@@ -386,7 +387,7 @@ let getProductsByCategory = async (req, res) => {
                 FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail, Products.Quantity
                         FROM Products
                         JOIN Categories
-                        ON Products.CategoryID=Categories.CategoryID 
+                        ON Products.CategoryID=Categories.CategoryID
                         AND Categories.CategoryID=?) ProductsCate
                 LEFT JOIN LikesOfProduct
                 ON ProductsCate.ProductID=LikesOfProduct.ProductID
@@ -408,10 +409,10 @@ let getProductsByCategory = async (req, res) => {
         });
       } else {
         let sql = `SELECT COUNT(*) AS Total
-                            FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail 
+                            FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail
                                     FROM Products
                                     JOIN Categories
-                                    ON Products.CategoryID=Categories.CategoryID 
+                                    ON Products.CategoryID=Categories.CategoryID
                                     AND Categories.CategoryID=?) ProductsCate
                             LEFT JOIN LikesOfProduct
                             ON ProductsCate.ProductID=LikesOfProduct.ProductID`;
@@ -587,8 +588,8 @@ let updateProduct = async (req, res) => {
   //Check const ProductStatus= req.body.ProductStatus;
   const ProductStatus = Quantity > 0 ? "Còn Hàng" : "Hết Hàng";
   //Update Product
-  let sql = `UPDATE Products 
-                SET CategoryID=?,ProductName=?,ProductPrice=?,Description=?,ProductStatus=?,CreateDate=?,Quantity=?,ImageDetail=? 
+  let sql = `UPDATE Products
+                SET CategoryID=?,ProductName=?,ProductPrice=?,Description=?,ProductStatus=?,CreateDate=?,Quantity=?,ImageDetail=?
                 WHERE Products.ProductID=?`;
   let query = mysql.format(sql, [
     CategoryID,

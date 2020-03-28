@@ -12,6 +12,7 @@ const rootReducer = combineReducers({
   introProduct: require('./get-intro-product-redux').reducer,
   convension: require('./paper-conversion-redux').reducer,
   productDetail: require('./product-detail-redux').reducer,
+  lifeWay: require('./life-way-redux').reducer
 })
 
 export default rootReducer

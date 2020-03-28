@@ -11,7 +11,7 @@ const IntroProductSagas = {
         return axios.get(`http://localhost:3001/product/getProductsByCategory?idCategory=${action.data.idCategory}&page=${action.data.page}`, {
           headers: {
             'Content-Type': 'application/json',
-
+            
           },
         });
       });

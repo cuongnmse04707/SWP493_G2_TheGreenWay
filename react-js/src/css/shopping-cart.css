@@ -80,21 +80,22 @@
   justify-content: space-between;
 }
 
-.total-money-card .button-check-out {
+.button-check-out {
   background: #fed136;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 64px;
   margin: 8% 5%;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-.total-money-card .button-check-out:hover {
+.button-check-out:hover {
   background: #f8d863;
 }
 
-.total-money-card .button-check-out span {
+.button-check-out span {
   font-size: 18px;
   font-weight: bold;
 }

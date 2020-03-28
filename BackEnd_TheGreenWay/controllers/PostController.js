@@ -15,7 +15,7 @@ let getpostbyid = async (req, res) => {
                 FROM Posts
                 LEFT JOIN LikesOfPost
                 ON Posts.PostID = LikesOfPost.PostID
-                GROUP BY LikesOfPost.PostID) GetPost 
+                GROUP BY LikesOfPost.PostID) GetPost
                 WHERE GetPost.PostID = ?`;
   let query = mysql.format(sql, [idPost]);
   connectionDB.query(query, async (err, result) => {
@@ -171,7 +171,7 @@ let updatePost = async (req, res) => {
     ? req.body.ImageDetail
     : "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fmaxresdefault.jpg?alt=media&token=2aa6af8d-44a0-43fc-bdaa-73f38bd006dd";
   //Update Post
-  let sql = `UPDATE Posts 
+  let sql = `UPDATE Posts
                 SET Title=?,Content=?,CreateDate=?,UpdateDate=?,ImageDetail=?
                 WHERE Posts.PostID=?`;
   let query = mysql.format(sql, [
@@ -279,7 +279,7 @@ let getListPost = async (req, res) => {
   const page = req.query.page;
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
-  let sql = ` SELECT * FROM 
+  let sql = ` SELECT * FROM
                 (SELECT Posts.PostID,Posts.Title,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,COUNT(LikesOfPost.UserEmail) AS NumberOfLikes
                 FROM Posts
                 LEFT JOIN LikesOfPost
@@ -287,7 +287,7 @@ let getListPost = async (req, res) => {
                 GROUP BY Posts.PostID
                 LIMIT ?
                 OFFSET ? ) PostList
-                GROUP BY PostList.UpdateDate DESC`;
+                ORDER BY PostList.UpdateDate DESC`;
   let query = mysql.format(sql, [pageSize, offset]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
@@ -342,9 +342,9 @@ let fulltextsearchPost = async (req, res) => {
   var stringSQL = req.body.fulltextsearch;
   // SQL Query to search Product
   // SQL to run
-  let sql = ` SELECT * FROM Posts WHERE 
-                MATCH(Title) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) 
-                OR 
+  let sql = ` SELECT * FROM Posts WHERE
+                MATCH(Title) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
+                OR
                 MATCH(Content) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
                 LIMIT ?
                 OFFSET ?`;
@@ -363,9 +363,9 @@ let fulltextsearchPost = async (req, res) => {
         });
       } else {
         // Chay Query de lay total page
-        let sqlTotal = `SELECT COUNT(*) AS Total FROM Posts WHERE 
-                                MATCH(Title) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) 
-                                OR 
+        let sqlTotal = `SELECT COUNT(*) AS Total FROM Posts WHERE
+                                MATCH(Title) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
+                                OR
                                 MATCH(Content) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)`;
         let queryTotal = mysql.format(sqlTotal);
         connectionDB.query(queryTotal, async (err, results) => {
@@ -411,7 +411,7 @@ let getListPostLike = async (req, res) => {
                 (SELECT Posts.PostID,Posts.ModEmail,Posts.Title,Posts.Content,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,LikesOfPost.UserEmail
                 FROM LikesOfPost
                 JOIN Posts
-                ON Posts.PostID = LikesOfPost.PostID) GetPost 
+                ON Posts.PostID = LikesOfPost.PostID) GetPost
                 WHERE GetPost.UserEmail = ?
                 LIMIT ?
                 OFFSET ?`;
@@ -430,11 +430,11 @@ let getListPostLike = async (req, res) => {
         });
       } else {
         // Chay Query de lay total page
-        let sqlTotal = `SELECT COUNT(*) AS Total FROM 
+        let sqlTotal = `SELECT COUNT(*) AS Total FROM
                                 (SELECT Posts.PostID,Posts.ModEmail,Posts.Title,Posts.Content,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,LikesOfPost.UserEmail
                                 FROM LikesOfPost
                                 JOIN Posts
-                                ON Posts.PostID = LikesOfPost.PostID) GetPost 
+                                ON Posts.PostID = LikesOfPost.PostID) GetPost
                                 WHERE GetPost.UserEmail = ?`;
         let queryTotal = mysql.format(sqlTotal, [email]);
         connectionDB.query(queryTotal, async (err, results) => {

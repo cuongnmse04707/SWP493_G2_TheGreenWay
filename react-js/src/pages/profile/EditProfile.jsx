@@ -272,9 +272,9 @@ class EditProfile extends Component {
         lg: { span: 6 }
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 24 },
-        md: { span: 24 },
+        xs: { span: 23 },
+        sm: { span: 23 },
+        md: { span: 23 },
         lg: { span: 14 }
       }
     };

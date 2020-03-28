@@ -7,6 +7,7 @@ import { ChangePassTypes } from '../redux/change-password-redux'
 import {IntroProductTypes} from '../redux/get-intro-product-redux'
 import {ConvensionTypes} from '../redux/paper-conversion-redux'
 import {ProductDetailTypes} from  '../redux/product-detail-redux'
+import {LifeWayTypes} from  '../redux/life-way-redux'
 import LoginSagas from './login-saga'
 import ResetPassword from './reset-password'
 import HomePageSagas from './home-page-saga'
@@ -15,6 +16,7 @@ import ChangePassSagas from './change-password-saga'
 import IntroProductSagas from './intro-product-saga'
 import PaperConvensionSagas from './paper-convension-saga'
 import ProductDetailSagas from './product-detail-saga'
+import LifeWaySagas from './life-way-saga'
 
 export default function* root() {
     yield all([
@@ -30,5 +32,6 @@ export default function* root() {
         takeLatest(IntroProductTypes.GET_RECYCLE_PRODUCT_REQUEST, IntroProductSagas.getRecycleProduct),
         takeLatest(ConvensionTypes.GET_CONVENSION_REQUEST, PaperConvensionSagas.getConvensionRate),
         takeLatest(ProductDetailTypes.GET_PRODUCT_DETAIL_REQUEST, ProductDetailSagas.getProductDetail),
+        takeLatest(LifeWayTypes.GET_LIFE_WAY_REQUEST, LifeWaySagas.getPostInfor),
     ])
 }

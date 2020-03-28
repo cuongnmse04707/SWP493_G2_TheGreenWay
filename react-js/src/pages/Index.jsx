@@ -58,7 +58,7 @@ class Index extends Component {
                       fontFamily: "none"
                     }}
                   >
-                    Môi trường là nơi chúng ta gặp nhau ...
+                    Môi trường là khởi nguồn cho mọi sự sống của toàn nhân loại ...
                   </div>
                   <div
                     style={{
@@ -70,7 +70,7 @@ class Index extends Component {
                       fontFamily: "none"
                     }}
                   >
-                    Là nơi đem lại lợi ích cho mọi người ...
+                    Mỗi chúng ta hãy cùng nhau chung tay vì một môi trường bền vững ...
                   </div>
                   <div
                     style={{
@@ -82,7 +82,7 @@ class Index extends Component {
                       fontFamily: "none"
                     }}
                   >
-                    ... Là điều mà tất cả chúng ta đều chia sẻ.
+                    ...Mỗi chúng ta hãy cùng nhau chung tay vì một môi trường bền vững.
                   </div>
                 </div>
               </div>
@@ -107,7 +107,7 @@ class Index extends Component {
                   Nhiệm vụ của chúng tôi
                 </h2>
                 <h3 className="section-subheading text-muted">
-                  Chung bàn tay nhỏ tạo ảnh hưởng lớn
+                  Hành động nhỏ vì một mục tiêu lớn
                 </h3>
               </div>
             </div>
@@ -124,10 +124,10 @@ class Index extends Component {
                 />
                 <h4 className="service-heading">Cây văn phòng</h4>
                 <p className="text-muted">
-                  Cuộc sống công sở luôn đòi hỏi con người hoạt động như một cỗ
-                  máy. Do đó sau những giờ làm căng thẳng được thư giản với cây
-                  xanh sẽ làm cho mọi người bớt đi sức nặng về thể chất và tinh
-                  thần.
+                  Không gian làm việc nơi văn phòng sẽ thực sự mang một diện mạo mới khi được bày
+                  trí một vài loại cây xanh . Sử dụng cây xanh trong thiết kế nội thất văn phòng
+                  không chỉ giúp thanh lọc không khí, giảm thiếu các chất độc hại từ thiết bị điện tử
+                  mà còn giúp tăng khả năng tập trung , kích thích sáng tạo trong công việc.
                 </p>
               </div>
               <div className="col-md-4">
@@ -142,9 +142,11 @@ class Index extends Component {
                 />
                 <h4 className="service-heading">Đồ tái chế</h4>
                 <p className="text-muted">
-                  Tái chế là việc sử dụng rác thải, vật liệu thải làm nguyên
-                  liệu sản xuất ra các sản phẩm mới có ích, nhằm giảm việc tiêu
-                  thụ những vật liệu thô mới,giảm ô nhiễm không khí.
+                  Tái chế là một hành động đơn giản gần gũi mà bất cứ ai cũng đều có thể làm được, việc
+                  tái chế chính là tái sử dụng lại những vật liệu đã cũ , không còn sử dụng được nữa
+                  nhằm giảm lượng chất thải thải ra môi trường hàng ngày và giải quyết được vắn đề
+                  lãng phí tài nguyên hiện nay.
+
                 </p>
               </div>
               <div className="col-md-4">
@@ -159,9 +161,10 @@ class Index extends Component {
                 />
                 <h4 className="service-heading">Chia sẻ thông tin</h4>
                 <p className="text-muted">
-                  The Green Way mong muốn đưa cho các bạn những cẩm năng, gợi ý
-                  về một cách sống xanh. Từ đó bạn có thể cải thiện năng lượng
-                  xanh của chính mình.
+                  Ngay từ bây giờ mỗi người dân chúng ta hãy cùng nhau lan tỏa những hành động ý nghĩa ,
+                   giúp ích gìn giữ và bảo vệ hành tinh xanh “lá phổi của nhân loại”.
+                    Hãy cùng The Green Way chúng tôi chung tay tạo nên một thông điệp
+                    vàng “Bảo vệ môi trường chính là bảo vệ cuộc sống của bạn”
                 </p>
               </div>
             </div>

@@ -10,9 +10,13 @@ import AboutUs from "../pages/AboutUs";
 import ProductList from "../pages/ProductList";
 import ProductDetail from "../pages/ProductDetail";
 import ShoppingCart from "../pages/ShoppingCart";
-import LifeWay from "../pages/lifeWayPage/lifeWayPage";
+import LifeWay from "../pages/lifeWayPage/lifeWayPage.jsx";
 import PlantProductDetail from "../pages/PlantProductsDetail";
+import RecycleProducDetail from "../pages/RecycleProductDetail";
+import LifeWayPageDetail from "../pages/lifeWayPage/lifeWayPageDetail";
+import ConfirmPayment from "../pages/ConfirmPayment";
 import { connect } from "react-redux";
+import OrderSuccess from "../pages/OrderSuccess"
 
 class PageLayout extends Component {
   render() {
@@ -25,6 +29,7 @@ class PageLayout extends Component {
           <Route path="/about-us" component={AboutUs} exact></Route>
           <Route path="/product" component={ProductList} exact></Route>
           <Route path="/life-way" component={LifeWay} exact></Route>
+          <Route path="/life-way-detail" component={LifeWayPageDetail} exact></Route>
           <Route
             path="/product-detail/:id"
             component={ProductDetail}
@@ -36,6 +41,13 @@ class PageLayout extends Component {
             component={PlantProductDetail}
             exact
           ></Route>
+           <Route
+            path="/recycle-product"
+            component={RecycleProducDetail}
+            exact
+          ></Route>
+          <Route path="/confirm-payment" component={ConfirmPayment} exact></Route>
+          <Route path="/order-success" component={OrderSuccess} exact></Route>
           <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />

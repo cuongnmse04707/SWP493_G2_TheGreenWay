@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import "../css/product-list.css";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import PlantProductList from "../components/PlantProductList";
-import RecycleProductList from "../components/RecycleProductList";
+import PlantProductDetailList from "../components/PlantProductDetailList";
 class PlantProductDetail extends Component {
+
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
   render() {
     return (
       <div>
@@ -27,7 +30,7 @@ class PlantProductDetail extends Component {
                 <img src={require("../images/product-a.png")} />
               </div>
             </div>
-            <PlantProductList />
+            <PlantProductDetailList />
           </div>
         </div>
         <Footer />

@@ -17,6 +17,8 @@ export default Creators
 export const INITIAL_STATE = {
   introProduct: [],
   recycleProduct: [],
+  totalPlantsPage: 0,
+  totalRecyclePage: 0
 }
 
 export const request = (state) => {
@@ -26,10 +28,11 @@ export const request = (state) => {
 }
 
 export const getIntroProductSucceed = (state, {data}) => {
-  console.log(data.data)
+  console.log('response data',data.data)
   return {
     ...state,
-    introProduct: data.data
+    introProduct: data.data,
+    totalPlantsPage: data.totalPage
   }
 }
 
@@ -37,7 +40,8 @@ export const getRecycleProductSucceed = (state, {data}) => {
   console.log(data.data)
   return {
     ...state,
-    recycleProduct: data.data
+    recycleProduct: data.data,
+    totalRecyclePage: data.totalPage
   }
 }
 

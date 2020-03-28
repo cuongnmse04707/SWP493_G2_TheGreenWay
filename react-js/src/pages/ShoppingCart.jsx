@@ -114,6 +114,9 @@ class ShoppingCart extends Component {
     });
   };
 
+  confirmPayment = () => {
+    this.props.history.push('/confirm-payment')
+  }
   render() {
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const columns = [
@@ -253,7 +256,7 @@ class ShoppingCart extends Component {
                 </div>
                 <div
                   className="button-check-out"
-                  style={{ borderRadius: "5px" }}
+                  onClick={this.confirmPayment}
                 >
                   <span>Tiến hành thanh toán </span>
                 </div>
