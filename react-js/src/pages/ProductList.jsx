@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
-import '../css/product-list.css'
-import NavBar from '../components/NavBar'
-import Footer from '../components/Footer'
-import PlantProductList from '../components/PlantProductList'
-import RecycleProductList from '../components/RecycleProductList'
+import React, { Component } from "react";
+import "../css/product-list.css";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
+import PlantProductList from "../components/PlantProductList";
+import RecycleProductList from "../components/RecycleProductList";
+import { connect } from "react-redux";
+import HomePageTypes from "../redux/home-page-redux";
+
 class ProductList extends Component {
 
   toListPlantPage = () => {
@@ -11,7 +14,13 @@ class ProductList extends Component {
   }
 
   toListRecyclePage = () => {
-    this.props.history.push('/recycle-product')
+    this.props.history.push('/recycle-product')}
+    
+  componentDidMount() {
+    const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
+    let numberOfTotal = 0;
+    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    this.props.setDataCart(numberOfTotal);
   }
 
   render() {
@@ -19,10 +28,17 @@ class ProductList extends Component {
       <div>
         <NavBar />
         <div className="product-wrapper">
-          <div className="product-header" data-aos='fade-up' data-aos-duration="2000">
+          <div
+            className="product-header"
+            data-aos="fade-up"
+            data-aos-duration="2000"
+          >
             <div className="product-header-left">
-              <div >
-                <img className="product-image" src={require('../images/product-1.jpg')} />
+              <div>
+                <img
+                  className="product-image"
+                  src={require("../images/product-1.jpg")}
+                />
               </div>
             </div>
             <div className="product-header-right">
@@ -52,15 +68,18 @@ class ProductList extends Component {
                 </div>
               </div>
               <div>
-                <img src={require('../images/product-a.png')} />
+                <img src={require("../images/product-a.png")} />
               </div>
             </div>
             <PlantProductList />
           </div>
           <div className="plant-container">
             <div className="plant-intro">
-              <div >
-                <img className="recycle-img" src={require('../images/reuse.png')} />
+              <div>
+                <img
+                  className="recycle-img"
+                  src={require("../images/reuse.png")}
+                />
               </div>
               <div className="intro-left">
                 <p className="title">Đồ tái chế</p>
@@ -86,5 +105,16 @@ class ProductList extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {};
+};
 
-export default ProductList;
+const mapDispatchToProps = dispatch => {
+  return {
+    setDataCart: param => {
+      dispatch(HomePageTypes.updateStateCart(param));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductList);

@@ -3,17 +3,18 @@ import { withRouter } from "react-router";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import "../css/product-detail.css";
-import { InputNumber } from "antd";
+import { InputNumber, message } from "antd";
 import RelatedProduct from "../components/RelatedProduct";
 import { connect } from "react-redux";
 import ProductDetailTypes from "../redux/product-detail-redux";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import HomePageTypes from "../redux/home-page-redux";
 
 class ProductDetail extends Component {
   state = {
     image: [],
-    quantity: 1,
+    quantity: 0,
     backgroundPosition: "0% 0%",
     productInfor: {}
   };
@@ -22,6 +23,10 @@ class ProductDetail extends Component {
     window.scrollTo(0, 0);
     const productId = window.location.pathname.split("/")[2];
     this.props.getProductDetail(productId);
+    const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
+    let numberOfTotal = 0;
+    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    this.props.setDataCart(numberOfTotal);
   }
 
   componentDidUpdate(nextProps) {
@@ -36,9 +41,15 @@ class ProductDetail extends Component {
   }
 
   getQuantity = value => {
-    this.setState({
-      quantity: value
-    });
+    if (Number(value)) {
+      this.setState({
+        quantity: value || 0
+      });
+    } else {
+      this.setState({
+        quantity: 0
+      });
+    }
   };
 
   handleMouseMove = e => {
@@ -49,7 +60,51 @@ class ProductDetail extends Component {
   };
 
   addToCart = () => {
-    this.props.history.push("/cart");
+    const { quantity } = this.state;
+
+    const { convensionRate, productInfor, productImages } = this.props;
+    const product = {
+      ProductID: productInfor.ProductID,
+      ProductName: productInfor.ProductName,
+      ProductPrice: productInfor.ProductPrice,
+      ImageDetail: productInfor.ImageDetail,
+      NumberOfLikes: productInfor.NumberOfLikes,
+      Quantity: productInfor.Quantity,
+      quatityBuy: quantity
+    };
+    if (quantity === 0) {
+      message.info("Opps. Hãy nhập số lượng cần mua !");
+      return;
+    }
+    const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
+    const indexNumber = cart.findIndex(
+      element => element.ProductID === product.ProductID
+    );
+    if (indexNumber >= 0) {
+      if (product.Quantity < cart[indexNumber].quatityBuy + quantity) {
+        message.error("Opps. Xin lỗi bạn, sản phẩm này đã không đủ số hàng !");
+      } else {
+        message.success("Thêm sản phẩm vào giỏ hàng thành công !");
+        cart[indexNumber].quatityBuy = cart[indexNumber].quatityBuy + quantity;
+        let numberOfTotal = 0;
+        cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+        this.props.setDataCart(numberOfTotal);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        this.props.history.push("/cart");
+      }
+    } else {
+      if (product.Quantity === 0) {
+        message.error("Opps. Xin lỗi bạn, sản phẩm này đã hết hàng");
+      } else {
+        message.success("Thêm sản phẩm vào giỏ hàng thành công !");
+        cart.push(product);
+        let numberOfTotal = 0;
+        cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+        this.props.setDataCart(numberOfTotal);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        this.props.history.push("/cart");
+      }
+    }
   };
 
   render() {
@@ -59,7 +114,14 @@ class ProductDetail extends Component {
       productImages.map(item => {
         arrayImages.push(item.urlImage);
       });
+    } else {
+      arrayImages = [
+        "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
+      ];
     }
+    const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
+    const cartItem =
+      cart.find(element => element.ProductID === productInfor.ProductID) || {};
     return (
       <div>
         <NavBar />
@@ -72,7 +134,7 @@ class ProductDetail extends Component {
                 showIndicators={false}
                 swipeable={false}
               >
-                {arrayImages.map((item, index) => {
+                {(arrayImages || []).map((item, index) => {
                   return (
                     <div key={index}>
                       <img
@@ -88,21 +150,24 @@ class ProductDetail extends Component {
               <p className="product-name">{productInfor.ProductName}</p>
               <div className="item-detail-price">
                 <div className="item-detail-coin">
-                  <img src={require("../images/coin.png")} alt="" />
-                  <span>{productInfor.ProductPrice}</span>
+                  <img src={require("../images/svgIcon/money.svg")} alt="" />
+                  <span>{productInfor.ProductPrice} VNĐ</span>
                 </div>
-                <div className="item-detail-coin">
-                  <img src={require("../images/paperr.png")} alt="" />
+                <div className="item-detail-coin" style={{ marginTop: "10px" }}>
+                  <img src={require("../images/svgIcon/paper.svg")} alt="" />
                   <span>
-                    {Math.floor(productInfor.ProductPrice / convensionRate)}
+                    {Math.floor(productInfor.ProductPrice / convensionRate)} Kg
                   </span>
                 </div>
               </div>
-              <div className="item-quantity">
+              <div className="item-quantity" style={{ marginTop: "10px" }}>
                 <span className="mr-4">Số lượng:</span>
                 <InputNumber
-                  min={1}
-                  defaultValue={this.state.quantity}
+                  min={0}
+                  max={
+                    (productInfor.Quantity || 0) - (cartItem.quatityBuy || 0)
+                  }
+                  value={this.state.quantity}
                   onChange={this.getQuantity}
                 />
               </div>
@@ -117,7 +182,7 @@ class ProductDetail extends Component {
                       width: "32px",
                       marginRight: "10px"
                     }}
-                    src={require("../images/supermarket.png")}
+                    src={require("../images/svgIcon/cart.svg")}
                     alt=""
                   />
                   <span>Thêm vào giỏ hàng</span>
@@ -149,7 +214,6 @@ class ProductDetail extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.productDetail.productImages);
   return {
     productInfor: state.productDetail.productInfor,
     productImages: state.productDetail.productImages,
@@ -161,6 +225,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getProductDetail: productId => {
       dispatch(ProductDetailTypes.getProductDetailRequest(productId));
+    },
+    setDataCart: param => {
+      dispatch(HomePageTypes.updateStateCart(param));
     }
   };
 };

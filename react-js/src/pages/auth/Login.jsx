@@ -29,7 +29,7 @@ class Login extends Component {
   };
 
   handleSignInClick = () => {
-    if (this.state.className == "login-container") {
+    if (this.state.className === "login-container") {
       this.setState({
         className: "login-container right-panel-active"
       });
@@ -80,8 +80,7 @@ class Login extends Component {
       });
     }
 
-    if (
-      this.props.forgotSuccess) {
+    if (this.props.forgotSuccess) {
       this.props.updateNotify();
       this.setState({
         visible: false

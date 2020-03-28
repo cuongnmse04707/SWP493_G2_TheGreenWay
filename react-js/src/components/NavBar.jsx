@@ -17,6 +17,10 @@ class NavBar extends Component {
     if (token) {
       this.props.getUserInfor();
     }
+    const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
+    let numberOfTotal = 0;
+    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    this.props.setDataCart(numberOfTotal);
   }
 
   componentDidUpdate(nextProps) {
@@ -70,6 +74,10 @@ class NavBar extends Component {
 
   toLifeWay = () => {
     this.props.history.push("/life-way");
+  };
+
+  toCart = () => {
+    this.props.history.push("/cart");
   };
 
   render() {
@@ -195,6 +203,7 @@ class NavBar extends Component {
                       }}
                       src={require("../images/svgIcon/sales.svg")}
                       alt=""
+                      onClick={this.toCart}
                     />
                   </Badge>
                 </li>
@@ -225,6 +234,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getUserInfor: () => {
       dispatch(HomePageTypes.getInforRequest());
+    },
+    setDataCart: param => {
+      dispatch(HomePageTypes.updateStateCart(param));
     }
   };
 };

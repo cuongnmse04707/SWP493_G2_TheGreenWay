@@ -52,23 +52,23 @@
   margin: 3px 0;
 }
 
-
 .item-detail-coin {
   display: flex;
   align-items: center;
 }
 
 .item-detail-coin img {
-  width: 24px;
-  height: 24px;
+  width: 36px;
   margin: 0 5px;
 }
 
 .item-detail-coin span {
-  font-size: 28px !important;
-  color: #90EE90;
-  font-weight: bold;
-  margin: 0 5px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 18px;
+  color: #6c738d;
+  padding-top: 5px;
 }
 
 .item-quantity {
@@ -77,7 +77,6 @@
 
 .item-quantity span {
   font-size: 20px;
-
 }
 
 .add-to-cart {
@@ -98,7 +97,6 @@
   color: #000;
   border: 2px solid #000;
 }
-
 
 .product-detail-description {
   height: auto;
@@ -129,9 +127,9 @@
   display: flex;
   justify-content: space-between;
 }
-.alice-carousel__stage-item  {
+.alice-carousel__stage-item {
   height: 500px !important;
-  width:100% !important;
+  width: 100% !important;
 }
 
 .carousel .thumb {
@@ -139,7 +137,7 @@
   width: 120px !important;
 }
 
-.carousel .thumb img{
+.carousel .thumb img {
   background-repeat: no-repeat;
   background-size: cover;
   height: 120px !important;
@@ -150,7 +148,7 @@
   border: none !important;
 }
 
-.carousel .thumb.selected{
+.carousel .thumb.selected {
   border: none !important;
 }
 
