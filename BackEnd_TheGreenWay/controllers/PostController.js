@@ -15,7 +15,7 @@ let getpostbyid = async (req, res) => {
                 FROM Posts
                 LEFT JOIN LikesOfPost
                 ON Posts.PostID = LikesOfPost.PostID
-                GROUP BY LikesOfPost.PostID) GetPost
+                GROUP BY Posts.PostID) GetPost
                 WHERE GetPost.PostID = ?`;
   let query = mysql.format(sql, [idPost]);
   connectionDB.query(query, async (err, result) => {
@@ -280,7 +280,7 @@ let getListPost = async (req, res) => {
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
   let sql = ` SELECT * FROM
-                (SELECT Posts.PostID,Posts.Title,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,COUNT(LikesOfPost.UserEmail) AS NumberOfLikes
+                (SELECT Posts.PostID,Posts.Title,Posts.Content,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,COUNT(LikesOfPost.UserEmail) AS NumberOfLikes
                 FROM Posts
                 LEFT JOIN LikesOfPost
                 ON Posts.PostID=LikesOfPost.PostID

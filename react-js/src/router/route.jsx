@@ -29,7 +29,7 @@ class PageLayout extends Component {
           <Route path="/about-us" component={AboutUs} exact></Route>
           <Route path="/product" component={ProductList} exact></Route>
           <Route path="/life-way" component={LifeWay} exact></Route>
-          <Route path="/life-way-detail" component={LifeWayPageDetail} exact></Route>
+          <Route path="/life-way-detail/:id" component={LifeWayPageDetail} exact></Route>
           <Route
             path="/product-detail/:id"
             component={ProductDetail}
