@@ -25,6 +25,28 @@ const LifeWaySagas = {
       yield put(LifeWayActions.getLifeWayRequestFailed(error));
     }
   },
+
+  *getPostDetailInfor(action) {
+    console.log(action)
+    try {
+      const postDetailInfor = yield call(() => {
+        return axios.get(`http://localhost:3001/post/getpostbyid?idPost=${action.data}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      });
+      console.log('post infor',postDetailInfor);
+      if (!postDetailInfor.data.success) {
+        yield put(LifeWayActions.getLifeWayDetailRequestFailed(postDetailInfor.data));
+        message.error(postDetailInfor.data.message, 3);
+      } else {
+        yield put(LifeWayActions.getLifeWayDetailSucceed(postDetailInfor.data));
+      }
+    } catch (error) {
+      yield put(LifeWayActions.getLifeWayDetailRequestFailed(error));
+    }
+  },
 };
 
 export default LifeWaySagas;

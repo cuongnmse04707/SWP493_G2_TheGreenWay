@@ -73,13 +73,6 @@ class SideBar extends Component {
       });
       window.location.href = "/account";
     }
-
-    if (this.props.notifyMessage === "Save Information Of User Is Success!") {
-      this.props.updateNotify();
-      setTimeout(() => {
-        this.props.history.push("/");
-      }, 2000);
-    }
   }
 
   handleLogOut = () => {

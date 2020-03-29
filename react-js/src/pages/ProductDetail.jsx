@@ -164,6 +164,7 @@ class ProductDetail extends Component {
               <div className="item-quantity" style={{ marginTop: "10px" }}>
                 <span className="mr-4">Số lượng:</span>
                 <InputNumber
+                  type="number"
                   min={0}
                   max={
                     (productInfor.Quantity || 0) - (cartItem.quatityBuy || 0)

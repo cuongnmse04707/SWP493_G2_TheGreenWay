@@ -4,6 +4,8 @@ import { createReducer, createActions } from "reduxsauce";
 const { Types, Creators } = createActions({
   getInforRequest: [],
   getInforSucceed: ["data"],
+  getInforSucceedEdit: ["data"],
+  getInforSucceedAvatar: ["data"],
   getInforFailed: ["error"],
   updateStateCart: ["data"],
   updateValueCart: ["data"],
@@ -33,6 +35,37 @@ export const getInforSucceed = (state, { data }) => {
     userInformation: data
   };
 };
+
+export const getInforSucceedEdit = (state, data) => {
+  return {
+    ...state,
+    userInformation: {
+      ...state.userInformation,
+      username: data.data.username
+    }
+  };
+};
+
+export const getInforSucceedAvatar = (state, data) => {
+  return {
+    ...state,
+    userInformation: {
+      ...state.userInformation,
+      urlAvatar: data.data.urlAvatar
+    }
+  };
+};
+
+export const getInforSucceedImage = (state, data) => {
+  return {
+    ...state,
+    userInformation: {
+      ...state.userInformation,
+      username: data.data.username
+    }
+  };
+};
+
 export const updateNotify = state => {
   return {
     ...state,
@@ -41,7 +74,6 @@ export const updateNotify = state => {
 };
 
 export const failed = (state, { error }) => {
-  console.log(error);
   return {
     ...state
   };
@@ -65,6 +97,8 @@ export const updateValueCart = (state, { data }) => {
 export const reducer = createReducer(INITIAL_STATE, {
   [HomePageTypes.GET_INFOR_REQUEST]: request,
   [HomePageTypes.GET_INFOR_SUCCEED]: getInforSucceed,
+  [HomePageTypes.GET_INFOR_SUCCEED_EDIT]: getInforSucceedEdit,
+  [HomePageTypes.GET_INFOR_SUCCEED_AVATAR]: getInforSucceedAvatar,
   [HomePageTypes.GET_INFOR_FAILED]: failed,
   [HomePageTypes.UPDATE_NOTIFY]: updateNotify,
   [HomePageTypes.UPDATE_STATE_CART]: updateStateCart,

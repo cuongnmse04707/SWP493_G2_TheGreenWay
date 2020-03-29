@@ -115,8 +115,8 @@ class ShoppingCart extends Component {
   };
 
   confirmPayment = () => {
-    this.props.history.push('/confirm-payment')
-  }
+    this.props.history.push("/confirm-payment");
+  };
   render() {
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const columns = [
@@ -152,6 +152,7 @@ class ShoppingCart extends Component {
         dataIndex: "address",
         render: (text, record) => (
           <InputNumber
+            type="number"
             min={1}
             max={record.Quantity}
             value={record.quatityBuy}
@@ -234,6 +235,7 @@ class ShoppingCart extends Component {
                       <div className="money-input mb-1">
                         <span>Nhập số kg giấy: </span>
                         <InputNumber
+                          type="number"
                           min={0}
                           max={Math.floor(totalCash / convensionRate)}
                           // value={0}
@@ -257,10 +259,7 @@ class ShoppingCart extends Component {
                     <div className="show-option-payment"></div>
                   )}
                 </div>
-                <div
-                  className="button-check-out"
-                  onClick={this.confirmPayment}
-                >
+                <div className="button-check-out" onClick={this.confirmPayment}>
                   <span>Tiến hành thanh toán </span>
                 </div>
               </div>

@@ -54,37 +54,6 @@ class EditProfile extends Component {
     this.props.getUserInfor();
   }
 
-  componentDidUpdate(nextProps) {
-    if (
-      this.props.userInformation &&
-      nextProps.userInformation !== this.props.userInformation
-    ) {
-      this.setState({
-        userName: this.props.userInformation.username,
-        address: this.props.userInformation.address,
-        city: this.props.userInformation.city,
-        country: this.props.userInformation.country,
-        password: this.props.userInformation.password,
-        avartarUrl: this.props.userInformation.urlAvatar,
-        email: this.props.userInformation.email,
-        roles: this.props.userInformation.roles,
-        DOB: moment(this.props.userInformation.DOB).format("YYYY/MM/DD"),
-        phone: this.props.userInformation.phone
-      });
-      if (this.state.DOB) {
-        this.setState({
-          DOB:moment( this.state.DOB.slice(0, 10)).format("YYYY/MM/DD"),
-        });
-      }
-    }
-    if (this.props.editMessage) {
-      this.props.updateNotify();
-      setTimeout(() => {
-        this.props.history.push("/");
-      }, 2000);
-    }
-  }
-
   showPasswordModal = () => {
     this.setState({
       visiblePassModal: true
@@ -97,7 +66,6 @@ class EditProfile extends Component {
       ["oldPassword", "newPassword", "confirmPassword"],
       (err, fieldsValues) => {
         if (!err) {
-          console.log("Password Information", fieldsValues);
           this.props.changePass({
             oldpassword: fieldsValues.oldPassword,
             newpassword: fieldsValues.newPassword
@@ -122,7 +90,6 @@ class EditProfile extends Component {
       ["oldPassword", "newPassword", "confirmPassword"],
       (err, fieldsValues) => {
         if (!err) {
-          console.log("Password Information", fieldsValues);
           this.props.changePass({
             oldpassword: fieldsValues.oldPassword,
             newpassword: fieldsValues.newPassword
@@ -141,7 +108,6 @@ class EditProfile extends Component {
   handleChange = e => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
-      console.log(image);
       this.setState({
         progressClass: "ml-2"
       });
@@ -152,7 +118,6 @@ class EditProfile extends Component {
           const progress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
-          console.log(progress);
           this.setState({ progress });
         },
         error => {
@@ -171,7 +136,6 @@ class EditProfile extends Component {
             .child(image.name)
             .getDownloadURL()
             .then(url => {
-              console.log(url);
               this.setState({ url });
             });
         }
@@ -185,12 +149,12 @@ class EditProfile extends Component {
         urlAvatar: this.state.url
       });
     } else {
-      message.error("Vui lòng chọn ảnhfffvf");
+      message.error("Vui lòng chọn ảnh");
     }
   };
 
   handleUpdateAccountSubmit = e => {
-    e.preventDefault();
+    e.stopPropagation();
     this.props.form.validateFieldsAndScroll(
       [
         "username",
@@ -207,7 +171,6 @@ class EditProfile extends Component {
           if (values.DOB) {
             values.DOB = values.DOB.format("YYYY-MM-DD");
           }
-          console.log(values);
           this.props.editUserProfile({
             email: values.email,
             username: values.username,
@@ -226,10 +189,10 @@ class EditProfile extends Component {
   clickImage(e) {
     document.querySelector("#profileImage").click();
   }
+
   changeImage = e => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
-      console.log(this.state);
       const reader = new FileReader();
       reader.onload = function(e) {
         document
@@ -237,8 +200,6 @@ class EditProfile extends Component {
           .setAttribute("src", e.target.result);
       };
       reader.readAsDataURL(e.target.files[0]);
-      console.log(e.target.files[0]);
-
       const uploadTask = storage.ref(`images/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
@@ -252,7 +213,6 @@ class EditProfile extends Component {
             .child(image.name)
             .getDownloadURL()
             .then(url => {
-              console.log(url);
               this.setState({ url });
             });
         }
@@ -263,7 +223,7 @@ class EditProfile extends Component {
   render() {
     const token = window.localStorage.getItem("x-access-token");
     const { getFieldDecorator } = this.props.form;
-    console.log("12312312");
+    const { userInformation } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -278,10 +238,8 @@ class EditProfile extends Component {
         lg: { span: 14 }
       }
     };
-    return token ? (
+    return (
       <div className="edit-profile-wrapper">
-        {/* <NavBar /> */}
-        {/* <LayoutProfile> */}
         <div className="edit-container">
           <div className="edit-form">
             <div className="edit-form-right">
@@ -289,12 +247,12 @@ class EditProfile extends Component {
                 <Form {...formItemLayout} className="mt-4">
                   <Form.Item label="E-mail">
                     {getFieldDecorator("email", {
-                      initialValue: this.state.email
+                      initialValue: userInformation.email
                     })(<Input disabled={true} />)}
                   </Form.Item>
                   <Form.Item label="Tên Tài Khoản">
                     {getFieldDecorator("username", {
-                      initialValue: this.state.userName,
+                      initialValue: userInformation.username,
                       rules: [
                         {
                           required: true,
@@ -305,7 +263,7 @@ class EditProfile extends Component {
                   </Form.Item>
                   <Form.Item label="Số Điện Thoại">
                     {getFieldDecorator("phone", {
-                      initialValue: this.state.phone,
+                      initialValue: userInformation.phone,
                       rules: [
                         {
                           pattern: phoneRegex,
@@ -316,22 +274,26 @@ class EditProfile extends Component {
                   </Form.Item>
                   <Form.Item label="Địa chỉ">
                     {getFieldDecorator("address", {
-                      initialValue: this.state.address
+                      initialValue: userInformation.address
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Thành Phố">
                     {getFieldDecorator("city", {
-                      initialValue: this.state.city
+                      initialValue: userInformation.city
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Quốc gia">
                     {getFieldDecorator("country", {
-                      initialValue: this.state.country
+                      initialValue: userInformation.country
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Ngày sinh">
                     {getFieldDecorator("DOB", {
-                      initialValue: moment(this.state.DOB, dateFormat)
+                      initialValue:
+                        userInformation.DOB &&
+                        userInformation.DOB !== "Invalid date"
+                          ? moment(userInformation.DOB)
+                          : null
                     })(
                       <DatePicker
                         style={{ width: "100%" }}
@@ -340,7 +302,7 @@ class EditProfile extends Component {
                           d.isAfter(new Date()) ||
                           d.isSameOrBefore("1900-01-01")
                         }
-                        format={dateFormat}
+                        format={"DD/MM/YYYY"}
                       />
                     )}
                   </Form.Item>
@@ -364,8 +326,6 @@ class EditProfile extends Component {
         {/* </LayoutProfile> */}
         {/* <Footer /> */}
       </div>
-    ) : (
-      <Redirect to="/" />
     );
   }
 }

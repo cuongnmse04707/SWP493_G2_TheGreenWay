@@ -106,9 +106,11 @@ const IntroProductSagas = {
   },
 
   *searchDefault(action) {
-    //Magic
+    let textName = action.data.value.split("`").join("");
+    textName = textName.split(`'`).join("");
+    textName = textName.split(`"`).join("");
     const params = {
-      fulltextsearch: action.data.value
+      fulltextsearch: textName
     };
     try {
       const productInfor = yield call(() => {
@@ -140,12 +142,34 @@ const IntroProductSagas = {
 
   *searchHigh(action) {
     //Magic value.textName === "" && value.maxP === "" && value.minP === ""
-    const params = {
-      ProductName: action.data.value.textName,
+    // let params = {
+    //   ProductName: action.data.value.textName,
+    //   MaxPrice: action.data.value.maxP,
+    //   MinPrice: action.data.value.minP
+    //   // CategoryID: action.data.cate
+    // };
+
+    let textName = action.data.value.textName.split("`").join("");
+    textName = textName.split(`'`).join("");
+    textName = textName.split(`"`).join("");
+
+    let params = {
+      ProductName: textName.toLowerCase(),
       MaxPrice: action.data.value.maxP,
       MinPrice: action.data.value.minP
-      // CategoryID: action.data.cate
     };
+    const regex = /[\_\%]/g;
+    let newtext = textName;
+    const found = newtext.match(regex);
+    if (found) {
+      found.map(el => (newtext = newtext.replace(el, `!${el}`)));
+      params = {
+        ...params,
+        ProductName: newtext.toLowerCase()
+      };
+    }
+
+    console.log("variable: ", params);
     try {
       const productInfor = yield call(() => {
         return axios.post(

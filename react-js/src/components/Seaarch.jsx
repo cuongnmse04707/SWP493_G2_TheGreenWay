@@ -46,6 +46,7 @@ class SearchComponent extends Component {
         >
           {size === "default" ? (
             <Search
+              allowClear
               style={{ width: "50%" }}
               placeholder="Nhập từ khoá cần tìm kiếm ....."
               onSearch={value => this.props.onSearchFullText(value)}
@@ -60,6 +61,7 @@ class SearchComponent extends Component {
               }}
             >
               <Input
+                allowClear
                 placeholder="Nhập Tên Sản Phẩm  ..."
                 onChange={event => {
                   this.setState({
@@ -72,6 +74,8 @@ class SearchComponent extends Component {
                   <Option value="1"> Giá </Option>
                 </Select>
                 <Input
+                  type="number"
+                  allowClear
                   style={{ width: 100, textAlign: "center" }}
                   placeholder="Minimum"
                   onChange={event => {
@@ -92,6 +96,8 @@ class SearchComponent extends Component {
                   disabled
                 />
                 <Input
+                  allowClear
+                  type="number"
                   className="site-input-right"
                   style={{
                     width: 100,

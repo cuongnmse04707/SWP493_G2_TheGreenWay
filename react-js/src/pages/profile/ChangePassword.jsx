@@ -85,8 +85,7 @@ class ChangePassword extends Component {
       });
       setTimeout(() => {
         window.location.href = "/account";
-      },2000)
-
+      }, 2000);
     }
   }
 
@@ -236,7 +235,7 @@ class ChangePassword extends Component {
       const image = e.target.files[0];
       console.log(this.state);
       const reader = new FileReader();
-      reader.onload = function (e) {
+      reader.onload = function(e) {
         document
           .querySelector("#profileDisplay")
           .setAttribute("src", e.target.result);
@@ -247,7 +246,7 @@ class ChangePassword extends Component {
       const uploadTask = storage.ref(`images/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
-        snapshot => { },
+        snapshot => {},
         error => {
           console.log(error);
         },
@@ -367,8 +366,8 @@ class ChangePassword extends Component {
         {/* <Footer /> */}
       </div>
     ) : (
-        <Redirect to="/" />
-      );
+      <Redirect to="/" />
+    );
   }
 }
 const mapStateToProps = state => {

@@ -53,6 +53,28 @@ export default function* root() {
       IntroProductTypes.SEARCH_DEFAULT,
       IntroProductSagas.searchDefault
     ),
-    takeLatest(IntroProductTypes.SEARCH_HIGH, IntroProductSagas.searchHigh)
+    takeLatest(IntroProductTypes.SEARCH_HIGH, IntroProductSagas.searchHigh),
+    takeLatest(LifeWayTypes.GET_LIFE_WAY_REQUEST, LifeWaySagas.getPostInfor),
+    takeLatest(
+      LifeWayTypes.GET_LIFE_WAY_DETAIL_REQUEST,
+      LifeWaySagas.getPostDetailInfor
+    )
   ]);
 }
+//     yield all([
+//         takeLatest(LoginTypes.LOGIN_REQUEST, LoginSagas.loginUser),
+//         takeLatest(LoginTypes.SIGN_UP_REQUEST, LoginSagas.signUpUser),
+//         takeLatest(LoginTypes.FORGOT_REQUEST, LoginSagas.forgotEmail),
+//         takeLatest(ForgotTypes.RESET_REQUEST, ResetPassword.resetPassword),
+//         takeLatest(HomePageTypes.GET_INFOR_REQUEST, HomePageSagas.userInformation),
+//         takeLatest(EditTypes.EDIT_REQUEST, EditProfileSagas.editProfile),
+//         takeLatest(EditTypes.UPLOAD_REQUEST, EditProfileSagas.changeAvatar),
+//         takeLatest(ChangePassTypes.CHANGE_REQUEST, ChangePassSagas.changePass),
+//         takeLatest(IntroProductTypes.GET_INTRO_PRODUCT_REQUEST, IntroProductSagas.getIntroProduct),
+//         takeLatest(IntroProductTypes.GET_RECYCLE_PRODUCT_REQUEST, IntroProductSagas.getRecycleProduct),
+//         takeLatest(ConvensionTypes.GET_CONVENSION_REQUEST, PaperConvensionSagas.getConvensionRate),
+//         takeLatest(ProductDetailTypes.GET_PRODUCT_DETAIL_REQUEST, ProductDetailSagas.getProductDetail),
+//         takeLatest(LifeWayTypes.GET_LIFE_WAY_REQUEST, LifeWaySagas.getPostInfor),
+//         takeLatest(LifeWayTypes.GET_LIFE_WAY_DETAIL_REQUEST, LifeWaySagas.getPostDetailInfor),
+//     ])
+// }
