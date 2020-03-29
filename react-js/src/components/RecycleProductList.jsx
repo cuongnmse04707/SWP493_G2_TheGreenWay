@@ -7,8 +7,6 @@ import ConvensionTypes from "../redux/paper-conversion-redux";
 
 class RecycleProductList extends Component {
   state = {
-    heart: false,
-    introData: [],
     convensionRate: 0
   };
 
@@ -21,25 +19,15 @@ class RecycleProductList extends Component {
     this.props.getRecycleProduct(params);
   }
 
-  componentDidUpdate(nextProps) {
-    if (
-      this.props.recycleProduct &&
-      nextProps.recycleProduct !== this.props.recycleProduct
-    ) {
-      this.setState({
-        introData: this.props.recycleProduct,
-        convensionRate: this.props.convensionRate
-      });
-    }
-  }
-
   handleClick = () => {
     this.props.history.push("/product-detail");
   };
 
-  changeHeart = () => {
-    this.setState({
-      heart: !this.state.heart
+  changeHeart = (event, item) => {
+    event.stopPropagation();
+    this.props.setDataLike({
+      method: item.like === "like" ? "unLike" : "like",
+      idP: item.ProductID
     });
   };
 
@@ -48,11 +36,11 @@ class RecycleProductList extends Component {
   };
 
   render() {
-    const { convensionRate } = this.props;
+    const { convensionRate, recycleProduct } = this.props;
     return (
       <div className="product-list-wrapper">
         <div className="product-container">
-          {this.state.introData.map((item, index) => {
+          {recycleProduct.map((item, index) => {
             return (
               <div
                 className="sub-item shadow bg-white rounded"
@@ -80,16 +68,16 @@ class RecycleProductList extends Component {
                       </div>
                     </a>
                     <div className="heart-icon">
-                      {this.state.heart ? (
+                      {(item || {}).like === "like" ? (
                         <img
-                          onClick={event => this.changeHeart(event)}
+                          onClick={event => this.changeHeart(event, item)}
                           style={{ height: "35px", width: "35px" }}
                           src={require("../images/svgIcon/like.svg")}
                           alt=""
                         />
                       ) : (
                         <img
-                          onClick={event => this.changeHeart(event)}
+                          onClick={event => this.changeHeart(event, item)}
                           style={{ height: "35px", width: "35px" }}
                           src={require("../images/svgIcon/unLike.svg")}
                           alt=""
@@ -156,7 +144,6 @@ class RecycleProductList extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("state.convension :", state.convension);
   return {
     recycleProduct: state.introProduct.recycleProduct,
     convensionRate: state.convension.convensionRate
@@ -170,6 +157,9 @@ const mapDispatchToProps = dispatch => {
     },
     getRecycleProduct: params => {
       dispatch(IntroProductTypes.getRecycleProductRequest(params));
+    },
+    setDataLike: params => {
+      dispatch(IntroProductTypes.updateLikeProduct(params));
     }
   };
 };

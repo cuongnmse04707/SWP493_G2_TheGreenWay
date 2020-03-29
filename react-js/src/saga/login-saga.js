@@ -23,6 +23,7 @@ const LoginSagas = {
           "x-access-token",
           userInfor.data.accessToken
         );
+        yield window.localStorage.setItem("email", action.data.email);
 
         yield put(LoginActions.loginSucceed(userInfor.data));
       }

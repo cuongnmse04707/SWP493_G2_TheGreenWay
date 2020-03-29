@@ -152,7 +152,7 @@ let likeProduct = async (req, res) => {
           empty,
           (err, result) => {
             if (err) {
-              console.log(empty)
+              console.log(empty);
               return res
                 .status(200)
                 .json({ success: false, message: "ERROR!" });
@@ -240,38 +240,45 @@ let searchProduct = async (req, res) => {
   //ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail
   const page = req.query.page;
   const pageSize = 6;
+  const category = req.query.category;
+  const email = req.query.email;
   const offset = (page - 1) * pageSize;
   var stringSQL = "";
   // SQL Query to search Product
   const ProductName = await req.body.ProductName;
   stringSQL = ProductName
-    ? stringSQL + ` AND Products.ProductName LIKE '%${ProductName}%'`
+    ? stringSQL + ` AND ProductName like '%${ProductName}%'`
     : stringSQL + "";
   const MaxPrice = await req.body.MaxPrice;
   stringSQL = MaxPrice
-    ? stringSQL + ` AND Products.ProductPrice <= ${MaxPrice}`
+    ? stringSQL + ` AND ProductPrice <= ${MaxPrice}`
     : stringSQL + "";
   const MinPrice = await req.body.MinPrice;
   stringSQL = MinPrice
-    ? stringSQL + ` AND Products.ProductPrice >= ${MinPrice}`
+    ? stringSQL + ` AND ProductPrice >= ${MinPrice}`
     : stringSQL + "";
-  const CategoryID = await req.body.CategoryID;
-  stringSQL = CategoryID
-    ? stringSQL + ` AND Products.CategoryID = ${CategoryID}`
-    : stringSQL + "";
+  // const CategoryID = await req.body.CategoryID;
+  // stringSQL = CategoryID
+  //   ? stringSQL + ` AND CategoryID = ${CategoryID}`
+  //   : stringSQL + "";
   // SQL to run
-  let sql = ` SELECT ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes
-                FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail
-                        FROM Products
-                        JOIN Categories
-                        ON Products.CategoryID=Categories.CategoryID
-                        ${stringSQL} ) ProductsCate
-                LEFT JOIN LikesOfProduct
-                ON ProductsCate.ProductID=LikesOfProduct.ProductID
-                GROUP BY ProductsCate.ProductID
+  let sql = ` SELECT * FROM
+  (SELECT CategoriesTable.ProductID,CategoriesTable.ProductName,CategoriesTable.ProductPrice,CategoriesTable.ImageDetail,CategoriesTable.NumberOfLikes,CategoriesTable.Quantity,LikeTable.UserEmail FROM
+  (SELECT ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes, ProductsCate.Quantity
+          FROM (SELECT * FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail,Products.CategoryID,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity FROM Products JOIN Categories ON Products.CategoryID=Categories.CategoryID ) AB WHERE CategoryID = ?
+              ${stringSQL} ) ProductsCate
+          LEFT JOIN LikesOfProduct
+          ON ProductsCate.ProductID=LikesOfProduct.ProductID
+          GROUP BY ProductsCate.ProductID ) CategoriesTable  
+          JOIN (SELECT GetProduct.ProductID,GetProduct.UserEmail FROM
+          (SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, 								Products.ImageDetail,LikesOfProductA.UserEmail
+          FROM Products
+          LEFT JOIN (SELECT * FROM LikesOfProduct WHERE LikesOfProduct.UserEmail = ?)LikesOfProductA
+          ON Products.ProductID = LikesOfProductA.ProductID) GetProduct ) LikeTable
+          WHERE LikeTable.ProductID = CategoriesTable.ProductID ) ABC
                 LIMIT ?
                 OFFSET ?`;
-  let query = mysql.format(sql, [pageSize, offset]);
+  let query = mysql.format(sql, [category, email, pageSize, offset]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       return res.status(200).json({ success: false, message: err });
@@ -291,10 +298,9 @@ let searchProduct = async (req, res) => {
                                     FROM Products
                                     JOIN Categories
                                     ON Products.CategoryID=Categories.CategoryID
-                                    ${stringSQL} ) ProductsCate
-                            LEFT JOIN LikesOfProduct
-                            ON ProductsCate.ProductID=LikesOfProduct.ProductID`;
-        let query = mysql.format(sql);
+                                    WHERE Products.CategoryID = ?
+                                    ${stringSQL} ) ProductsCate`;
+        let query = mysql.format(sql, [category]);
         connectionDB.query(query, async (err, results) => {
           if (err) {
             return res.status(200).json({ success: false, message: err });
@@ -305,7 +311,10 @@ let searchProduct = async (req, res) => {
             // //Luu vao database
             return res.status(200).json({
               success: true,
-              data: arr,
+              data: arr.map(el => ({
+                ...el,
+                like: el.UserEmail ? "like" : "unLike"
+              })),
               resultsize: array[0].Total,
               totalPage: totalPage // Total page
             });
@@ -320,20 +329,32 @@ let searchProduct = async (req, res) => {
 let fulltextsearchProduct = async (req, res) => {
   //ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail
   const page = req.query.page;
+  const email = req.query.email;
+  const category = req.query.category;
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
   var stringSQL = req.body.fulltextsearch;
-  // SQL Query to search Product
-  // SQL to run
-  let sql = ` SELECT * FROM Products WHERE
+  let sql = ` SELECT * FROM
+  (SELECT CategoriesTable.ProductID,CategoriesTable.ProductName,CategoriesTable.ProductPrice,CategoriesTable.ImageDetail,CategoriesTable.NumberOfLikes,CategoriesTable.Quantity,LikeTable.UserEmail FROM
+  (SELECT ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes, ProductsCate.Quantity
+          FROM (SELECT * FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail,Products.CategoryID,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity FROM Products JOIN Categories ON Products.CategoryID=Categories.CategoryID AND Categories.CategoryID = ?) AB WHERE
                 MATCH(ProductName) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
                 OR
                 MATCH(Description) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
                 OR
-                MATCH(ProductPrice) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
-                LIMIT ?
-                OFFSET ?`;
-  let query = mysql.format(sql, [pageSize, offset]);
+                MATCH(ProductPrice) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) ) ProductsCate
+          LEFT JOIN LikesOfProduct
+          ON ProductsCate.ProductID=LikesOfProduct.ProductID
+          GROUP BY ProductsCate.ProductID ) CategoriesTable  
+          JOIN (SELECT GetProduct.ProductID,GetProduct.UserEmail FROM
+          (SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, 								Products.ImageDetail,LikesOfProductA.UserEmail
+          FROM Products
+          LEFT JOIN (SELECT * FROM LikesOfProduct WHERE LikesOfProduct.UserEmail = ?)LikesOfProductA
+          ON Products.ProductID = LikesOfProductA.ProductID) GetProduct ) LikeTable
+          WHERE LikeTable.ProductID = CategoriesTable.ProductID ) ABC
+          LIMIT ?
+          OFFSET ?`;
+  let query = mysql.format(sql, [category, email, pageSize, offset]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       return res.status(200).json({ success: false, message: err });
@@ -348,13 +369,8 @@ let fulltextsearchProduct = async (req, res) => {
         });
       } else {
         // Chay Query de lay total page
-        let sqlTotal = `SELECT COUNT(*) AS Total FROM Products WHERE
-                            MATCH(ProductName) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
-                            OR
-                            MATCH(Description) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
-                            OR
-                            MATCH(ProductPrice) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)`;
-        let queryTotal = mysql.format(sqlTotal);
+        let sqlTotal = `(SELECT COUNT(*) AS Total FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail,Products.CategoryID,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity FROM Products JOIN Categories ON Products.CategoryID=Categories.CategoryID AND Categories.CategoryID = ?) AB WHERE MATCH(ProductName) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) OR MATCH(Description) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) OR MATCH(ProductPrice) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) )`;
+        let queryTotal = mysql.format(sqlTotal, [category]);
         connectionDB.query(queryTotal, async (err, results) => {
           if (err) {
             return res.status(200).json({ success: false, message: err });
@@ -365,7 +381,10 @@ let fulltextsearchProduct = async (req, res) => {
             // //Luu vao database
             return res.status(200).json({
               success: true,
-              data: arr,
+              data: arr.map(el => ({
+                ...el,
+                like: el.UserEmail ? "like" : "unLike"
+              })),
               resultsize: array[0].Total,
               totalPage: totalPage // Total page
             });
@@ -380,21 +399,30 @@ let fulltextsearchProduct = async (req, res) => {
 let getProductsByCategory = async (req, res) => {
   //Get ID category
   const idCategory = req.query.idCategory;
+  const email = req.query.email;
   const page = req.query.page;
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
-  let sql = ` SELECT ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes, ProductsCate.Quantity
-                FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail, Products.Quantity
-                        FROM Products
-                        JOIN Categories
-                        ON Products.CategoryID=Categories.CategoryID
-                        AND Categories.CategoryID=?) ProductsCate
-                LEFT JOIN LikesOfProduct
-                ON ProductsCate.ProductID=LikesOfProduct.ProductID
-                GROUP BY ProductsCate.ProductID
-                LIMIT ?
-                OFFSET ?`;
-  let query = mysql.format(sql, [idCategory, pageSize, offset]);
+  let sql = `SELECT * FROM
+  (SELECT CategoriesTable.ProductID,CategoriesTable.ProductName,CategoriesTable.ProductPrice,CategoriesTable.ImageDetail,CategoriesTable.NumberOfLikes,CategoriesTable.Quantity,LikeTable.UserEmail FROM
+  (SELECT ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes, ProductsCate.Quantity
+          FROM (SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail, Products.Quantity
+                  FROM Products
+                  JOIN Categories
+                  ON Products.CategoryID=Categories.CategoryID
+                  AND Categories.CategoryID= ? ) ProductsCate
+          LEFT JOIN LikesOfProduct
+          ON ProductsCate.ProductID=LikesOfProduct.ProductID
+          GROUP BY ProductsCate.ProductID ) CategoriesTable  
+          JOIN (SELECT GetProduct.ProductID,GetProduct.UserEmail FROM
+          (SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, 								Products.ImageDetail,LikesOfProductA.UserEmail
+          FROM Products
+          LEFT JOIN (SELECT * FROM LikesOfProduct WHERE LikesOfProduct.UserEmail = ?)LikesOfProductA
+          ON Products.ProductID = LikesOfProductA.ProductID) GetProduct ) LikeTable
+          WHERE LikeTable.ProductID = CategoriesTable.ProductID ) ABC
+          LIMIT ?
+          OFFSET ?`;
+  let query = mysql.format(sql, [idCategory, email, pageSize, offset]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       return res.status(200).json({ success: false, message: err });
@@ -425,9 +453,13 @@ let getProductsByCategory = async (req, res) => {
             const array = await Array.apply(null, results);
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
+
             return res.status(200).json({
               success: true,
-              data: arr,
+              data: arr.map(el => ({
+                ...el,
+                like: el.UserEmail ? "like" : "unLike"
+              })),
               totalPage: totalPage // Total page
             });
           }

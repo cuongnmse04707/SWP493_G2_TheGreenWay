@@ -109,6 +109,7 @@ class ProductDetail extends Component {
 
   render() {
     const { convensionRate, productInfor, productImages } = this.props;
+    console.log("object123 :", productInfor);
     let arrayImages = [];
     if (productImages != "No Images") {
       productImages.map(item => {
@@ -203,7 +204,10 @@ class ProductDetail extends Component {
                   Sản phẩm liên quan
                 </span>
               </div>
-              <RelatedProduct />
+              <RelatedProduct
+                idP={window.location.pathname.split("/")[2]}
+                category={productInfor.CategoryID}
+              />
             </div>
           </div>
         </div>
