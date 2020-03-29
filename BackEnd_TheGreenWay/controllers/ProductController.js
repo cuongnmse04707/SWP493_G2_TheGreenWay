@@ -247,7 +247,7 @@ let searchProduct = async (req, res) => {
   // SQL Query to search Product
   const ProductName = await req.body.ProductName;
   stringSQL = ProductName
-    ? stringSQL + ` AND ProductName like '%${ProductName}%'`
+    ? stringSQL + ` AND lower(ProductName) like '%${ProductName}%' ESCAPE '!'`
     : stringSQL + "";
   const MaxPrice = await req.body.MaxPrice;
   stringSQL = MaxPrice
