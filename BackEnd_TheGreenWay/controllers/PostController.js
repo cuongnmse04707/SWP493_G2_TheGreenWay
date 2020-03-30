@@ -10,14 +10,68 @@ var moment = require("moment-timezone");
 // get information of user fron database
 let getpostbyid = async (req, res) => {
   const idPost = req.query.idPost;
+  const email = req.query.email;
   // get email from request after handle of authmiddleware
-  let sql = ` SELECT * FROM( SELECT Posts.PostID,Posts.ModEmail,Posts.Title,Posts.Content,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,COUNT(LikesOfPost.UserEmail) AS NumberOfLike
-                FROM Posts
-                LEFT JOIN LikesOfPost
-                ON Posts.PostID = LikesOfPost.PostID
-                GROUP BY Posts.PostID) GetPost
-                WHERE GetPost.PostID = ?`;
-  let query = mysql.format(sql, [idPost]);
+  let sql = ` SELECT
+                *
+              FROM
+                (
+                SELECT
+                    PostLike.PostID,
+                    PostLike.ModEmail,
+                    PostLike.Title,
+                    PostLike.Content,
+                    PostLike.ImageDetail,
+                    PostLike.CreateDate,
+                    PostLike.UpdateDate,
+                    PostLike.NumberOfLikes,
+                    GetLikePostUser.UserEmail
+                FROM
+                    (
+                    SELECT
+                        Posts.PostID,
+                        Posts.ModEmail,
+                        Posts.Title,
+                        Posts.Content,
+                        Posts.ImageDetail,
+                        Posts.CreateDate,
+                        Posts.UpdateDate,
+                        COUNT(LikesOfPost.UserEmail) AS NumberOfLikes
+                    FROM
+                        Posts
+                    LEFT JOIN LikesOfPost ON Posts.PostID = LikesOfPost.PostID
+                    GROUP BY
+                        Posts.PostID
+                ) PostLike
+              JOIN(
+                SELECT
+                    Posts.PostID,
+                    Posts.ModEmail,
+                    Posts.Title,
+                    Posts.Content,
+                    Posts.ImageDetail,
+                    Posts.CreateDate,
+                    Posts.UpdateDate,
+                    LikesOfPostA.UserEmail
+                FROM
+                    Posts
+                LEFT JOIN(
+                    SELECT
+                        *
+                    FROM
+                        LikesOfPost
+                    WHERE
+                        LikesOfPost.UserEmail = ?
+                ) LikesOfPostA
+              ON
+                Posts.PostID = LikesOfPostA.PostID
+              ) GetLikePostUser
+              WHERE
+                GetLikePostUser.PostID = PostLike.PostID
+              ) PostList
+              WHERE
+                PostList.PostID = ?`;
+  let query = mysql.format(sql, [email, idPost]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       // chua ton tai thi bao loi
@@ -48,13 +102,19 @@ let getpostbyid = async (req, res) => {
             if (arrayImage.length === 0) {
               return res.status(200).json({
                 success: true,
-                data: arr[0],
+                data: {
+                  ...arr[0],
+                  like: arr[0].UserEmail ? "like" : "unLike"
+                },
                 images: "No Images"
               });
             } else {
               return res.status(200).json({
                 success: true,
-                data: arr[0],
+                data: {
+                  ...arr[0],
+                  like: arr[0].UserEmail ? "like" : "unLike"
+                },
                 images: arrayImage
               });
             }
@@ -277,18 +337,71 @@ let likePost = async (req, res) => {
 let getListPost = async (req, res) => {
   //Get ID category
   const page = req.query.page;
+  const email = req.query.email;
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
-  let sql = ` SELECT * FROM
-                (SELECT Posts.PostID,Posts.Title,Posts.Content,Posts.CreateDate,Posts.UpdateDate,Posts.ImageDetail,COUNT(LikesOfPost.UserEmail) AS NumberOfLikes
-                FROM Posts
-                LEFT JOIN LikesOfPost
-                ON Posts.PostID=LikesOfPost.PostID
-                GROUP BY Posts.PostID
-                LIMIT ?
-                OFFSET ? ) PostList
-                ORDER BY PostList.UpdateDate DESC`;
-  let query = mysql.format(sql, [pageSize, offset]);
+  let sql = `SELECT
+                *
+              FROM
+                (
+                SELECT
+                    PostLike.PostID,
+                    PostLike.ModEmail,
+                    PostLike.Title,
+                    PostLike.Content,
+                    PostLike.ImageDetail,
+                    PostLike.CreateDate,
+                    PostLike.UpdateDate,
+                    PostLike.NumberOfLikes,
+                    GetLikePostUser.UserEmail
+                FROM
+                    (
+                    SELECT
+                        Posts.PostID,
+                        Posts.ModEmail,
+                        Posts.Title,
+                        Posts.Content,
+                        Posts.ImageDetail,
+                        Posts.CreateDate,
+                        Posts.UpdateDate,
+                        COUNT(LikesOfPost.UserEmail) AS NumberOfLikes
+                    FROM
+                        Posts
+                    LEFT JOIN LikesOfPost ON Posts.PostID = LikesOfPost.PostID
+                    GROUP BY
+                        Posts.PostID
+                ) PostLike
+              JOIN(
+                SELECT
+                    Posts.PostID,
+                    Posts.ModEmail,
+                    Posts.Title,
+                    Posts.Content,
+                    Posts.ImageDetail,
+                    Posts.CreateDate,
+                    Posts.UpdateDate,
+                    LikesOfPostA.UserEmail
+                FROM
+                    Posts
+                LEFT JOIN(
+                    SELECT
+                        *
+                    FROM
+                        LikesOfPost
+                    WHERE
+                        LikesOfPost.UserEmail = ?
+                ) LikesOfPostA
+              ON
+                Posts.PostID = LikesOfPostA.PostID
+              ) GetLikePostUser
+              WHERE
+                GetLikePostUser.PostID = PostLike.PostID
+              LIMIT ? OFFSET ?
+              ) PostList
+              ORDER BY
+                PostList.UpdateDate
+              DESC`;
+  let query = mysql.format(sql, [email, pageSize, offset]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       return res.status(200).json({ success: false, message: err });
@@ -323,7 +436,10 @@ let getListPost = async (req, res) => {
             // Sua Date
             return res.status(200).json({
               success: true,
-              data: arr,
+              data: arr.map(el => ({
+                ...el,
+                like: el.UserEmail ? "like" : "unLike"
+              })),
               totalPage: totalPage // Total page
             });
           }
@@ -337,18 +453,81 @@ let getListPost = async (req, res) => {
 let fulltextsearchPost = async (req, res) => {
   //ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail
   const page = req.query.page;
+  const email = req.query.email;
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
   var stringSQL = req.body.fulltextsearch;
   // SQL Query to search Product
   // SQL to run
-  let sql = ` SELECT * FROM Posts WHERE
-                MATCH(Title) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
-                OR
-                MATCH(Content) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
-                LIMIT ?
-                OFFSET ?`;
-  let query = mysql.format(sql, [pageSize, offset]);
+  let sql = `SELECT
+                *
+              FROM
+                (
+                SELECT
+                    PostLike.PostID,
+                    PostLike.ModEmail,
+                    PostLike.Title,
+                    PostLike.Content,
+                    PostLike.ImageDetail,
+                    PostLike.CreateDate,
+                    PostLike.UpdateDate,
+                    PostLike.NumberOfLikes,
+                    GetLikePostUser.UserEmail
+                FROM
+                    (
+                    SELECT
+                        PostsSearch.PostID,
+                        PostsSearch.ModEmail,
+                        PostsSearch.Title,
+                        PostsSearch.Content,
+                        PostsSearch.ImageDetail,
+                        PostsSearch.CreateDate,
+                        PostsSearch.UpdateDate,
+                        COUNT(LikesOfPost.UserEmail) AS NumberOfLikes
+                    FROM
+                        (
+                        SELECT
+                            *
+                        FROM
+                            Posts
+                        WHERE
+                            MATCH(Title) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) OR MATCH(Content) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE)
+                    ) PostsSearch
+                LEFT JOIN LikesOfPost ON PostsSearch.PostID = LikesOfPost.PostID
+                GROUP BY
+                    PostsSearch.PostID
+                ) PostLike
+              JOIN(
+                SELECT
+                    Posts.PostID,
+                    Posts.ModEmail,
+                    Posts.Title,
+                    Posts.Content,
+                    Posts.ImageDetail,
+                    Posts.CreateDate,
+                    Posts.UpdateDate,
+                    LikesOfPostA.UserEmail
+                FROM
+                    Posts
+                LEFT JOIN(
+                    SELECT
+                        *
+                    FROM
+                        LikesOfPost
+                    WHERE
+                        LikesOfPost.UserEmail = ?
+                ) LikesOfPostA
+              ON
+                Posts.PostID = LikesOfPostA.PostID
+              ) GetLikePostUser
+              WHERE
+                GetLikePostUser.PostID = PostLike.PostID
+              LIMIT ? OFFSET ?
+              ) PostList
+              ORDER BY
+                PostList.NumberOfLikes
+              DESC`;
+  let query = mysql.format(sql, [email, pageSize, offset]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       return res.status(200).json({ success: false, message: err });
@@ -386,7 +565,10 @@ let fulltextsearchPost = async (req, res) => {
             });
             return res.status(200).json({
               success: true,
-              data: arr,
+              data: arr.map(el => ({
+                ...el,
+                like: el.UserEmail ? "like" : "unLike"
+              })),
               resultsize: array[0].Total,
               totalPage: totalPage // Total page
             });
