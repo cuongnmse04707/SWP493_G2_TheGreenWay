@@ -30,6 +30,8 @@ class ProductDetail extends Component {
   }
 
   componentDidUpdate(nextProps) {
+    const productId = window.location.pathname.split("/")[2];
+    this.props.getProductDetail(productId);
     if (
       this.props.productInfor &&
       nextProps.productInfor !== this.props.productInfor
@@ -61,7 +63,6 @@ class ProductDetail extends Component {
 
   addToCart = () => {
     const { quantity } = this.state;
-
     const { convensionRate, productInfor, productImages } = this.props;
     const product = {
       ProductID: productInfor.ProductID,
@@ -109,7 +110,6 @@ class ProductDetail extends Component {
 
   render() {
     const { convensionRate, productInfor, productImages } = this.props;
-    console.log("object123 :", productInfor);
     let arrayImages = [];
     if (productImages != "No Images") {
       productImages.map(item => {
@@ -208,6 +208,7 @@ class ProductDetail extends Component {
               <RelatedProduct
                 idP={window.location.pathname.split("/")[2]}
                 category={productInfor.CategoryID}
+                onClickTop={this.onClickTop}
               />
             </div>
           </div>

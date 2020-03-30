@@ -449,6 +449,89 @@ let getListPost = async (req, res) => {
   });
 };
 
+let getMuchLike = async (req, res) => {
+  const email = req.query.email;
+  // get email from request after handle of authmiddleware
+  let sql = ` SELECT
+                *
+              FROM
+                (
+                SELECT
+                    PostLike.PostID,
+                    PostLike.ModEmail,
+                    PostLike.Title,
+                    PostLike.Content,
+                    PostLike.ImageDetail,
+                    PostLike.CreateDate,
+                    PostLike.UpdateDate,
+                    PostLike.NumberOfLikes,
+                    GetLikePostUser.UserEmail
+                FROM
+                    (
+                    SELECT
+                        Posts.PostID,
+                        Posts.ModEmail,
+                        Posts.Title,
+                        Posts.Content,
+                        Posts.ImageDetail,
+                        Posts.CreateDate,
+                        Posts.UpdateDate,
+                        COUNT(LikesOfPost.UserEmail) AS NumberOfLikes
+                    FROM
+                        Posts
+                    LEFT JOIN LikesOfPost ON Posts.PostID = LikesOfPost.PostID
+                    GROUP BY
+                        Posts.PostID
+                ) PostLike
+              JOIN(
+                SELECT
+                    Posts.PostID,
+                    Posts.ModEmail,
+                    Posts.Title,
+                    Posts.Content,
+                    Posts.ImageDetail,
+                    Posts.CreateDate,
+                    Posts.UpdateDate,
+                    LikesOfPostA.UserEmail
+                FROM
+                    Posts
+                LEFT JOIN(
+                    SELECT
+                        *
+                    FROM
+                        LikesOfPost
+                    WHERE
+                        LikesOfPost.UserEmail = ?
+                ) LikesOfPostA
+              ON
+                Posts.PostID = LikesOfPostA.PostID
+              ) GetLikePostUser
+              WHERE
+                GetLikePostUser.PostID = PostLike.PostID
+              ) PostList
+              ORDER BY
+                PostList.NumberOfLikes
+              DESC
+              LIMIT 1 OFFSET 0
+                `;
+  let query = mysql.format(sql, [email]);
+  connectionDB.query(query, async (err, result) => {
+    if (err) {
+      // chua ton tai thi bao loi
+      return res.status(200).json({ success: false, message: err });
+    } else {
+      const arr = await Array.apply(null, result);
+      return res.status(200).json({
+        success: true,
+        data: {
+          ...arr[0],
+          like: arr[0].UserEmail ? "like" : "unLike"
+        }
+      });
+    }
+  });
+};
+
 //full text search Post
 let fulltextsearchPost = async (req, res) => {
   //ProductsCate.ProductID,ProductsCate.ProductName,ProductsCate.ProductPrice,ProductsCate.ImageDetail
@@ -658,5 +741,6 @@ module.exports = {
   likePost: likePost,
   getListPost: getListPost,
   fulltextsearchPost: fulltextsearchPost,
-  getListPostLike: getListPostLike
+  getListPostLike: getListPostLike,
+  getMuchLike: getMuchLike
 };

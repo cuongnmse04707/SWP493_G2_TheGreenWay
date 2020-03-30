@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
-import '../css/related-product.css';
+import React, { Component } from "react";
+import "../css/related-product.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import LifeWayTypes from "../redux/life-way-redux";
+
+var moment = require("moment");
 
 class RelatedPost extends Component {
   state = {
     heart: false,
     introData: []
-  }
+  };
 
   componentDidMount() {
     const params = {
@@ -17,41 +19,63 @@ class RelatedPost extends Component {
     };
     this.props.getPostInfor(params);
   }
+
+  changeHeart = (event, item) => {
+    event.stopPropagation();
+    this.props.setDataLikePost({
+      method: item.like === "like" ? "unLike" : "like",
+      idP: item.PostID
+    });
+  };
+
   render() {
-    const { postInfor } = this.props;
-    console.log(postInfor)
+    const { postInfor, filterPost } = this.props;
     return (
       <div>
         <div className="related-article">
-          {postInfor.map((item, index) => {
-            if (index < 3) {
-              return (
-                <div className="sub-item shadow bg-white rounded" key={index}>
-                  <div className="hovereffect">
-                    <img src={item.ImageDetail} alt="" />
-                    <div className="overlayy">
-                      <div className="heart-icon">
-                        <img
-                          style={{ height: "35px", width: "35px" }}
-                          src={require("../images/svgIcon/like.svg")}
-                          alt=""
-                        />
+          {postInfor
+            .filter(el => el.PostID !== filterPost)
+            .map((item, index) => {
+              if (index < 3) {
+                return (
+                  <div className="sub-item shadow bg-white rounded" key={index}>
+                    <div className="hovereffect">
+                      <img src={item.ImageDetail} alt="" />
+                      <div className="overlayy">
+                        <div className="heart-icon">
+                          {(item || {}).like === "like" ? (
+                            <img
+                              onClick={event => this.changeHeart(event, item)}
+                              style={{ height: "35px", width: "35px" }}
+                              src={require("../images/svgIcon/like.svg")}
+                              alt=""
+                            />
+                          ) : (
+                            <img
+                              onClick={event => this.changeHeart(event, item)}
+                              style={{ height: "35px", width: "35px" }}
+                              src={require("../images/svgIcon/unLike.svg")}
+                              alt=""
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="related-article-sub-title">
+                      <span>{item.Title}</span>
+                    </div>
+                    <div className="related-article-infor">
+                      <div className="related-article-time">
+                        <img src={require("../images/clock.png")} alt="" />
+                        <span className="ml-2">
+                          {moment(item.CreateDate).fromNow()}
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="related-article-sub-title">
-                    <span>{item.Title}</span>
-                  </div>
-                  <div className="related-article-infor">
-                    <div className="related-article-time">
-                      <img src={require("../images/clock.png")} alt="" />
-                      <span className="ml-2">{item.CreateDate}</span>
-                    </div>
-                  </div>
-                </div>
-              )
-            }
-          })}
+                );
+              }
+            })}
         </div>
       </div>
     );
@@ -60,17 +84,20 @@ class RelatedPost extends Component {
 
 const mapStateToProps = state => {
   return {
-    postInfor: state.lifeWay.postInfor,
+    postInfor: state.lifeWay.postInfor
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getPostInfor: (params) => {
+    getPostInfor: params => {
       dispatch(LifeWayTypes.getLifeWayRequest(params));
     },
+    setDataLikePost: params => {
+      dispatch(LifeWayTypes.getLifeWayLikeRequest(params));
+    }
   };
 };
 
-RelatedPost = withRouter(RelatedPost)
+RelatedPost = withRouter(RelatedPost);
 export default connect(mapStateToProps, mapDispatchToProps)(RelatedPost);

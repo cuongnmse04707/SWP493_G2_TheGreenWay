@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import '../../css/life-way-detail.css';
+import React, { Component } from "react";
+import "../../css/life-way-detail.css";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
-import { Input, DatePicker, Pagination } from 'antd';
+import { Input, DatePicker, Pagination } from "antd";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import LifeWayTypes from "../../redux/life-way-redux";
-import RelatedPost from '../../components/RelatedPost'
+import RelatedPost from "../../components/RelatedPost";
+
+var moment = require("moment");
 
 const { Search } = Input;
 class lifeWayPageDetail extends Component {
-
   componentDidMount() {
-    this.props.getPostDetailInfor(window.location.pathname.split('/')[2]);
+    this.props.getPostDetailInfor(window.location.pathname.split("/")[2]);
   }
   render() {
-    const { postDetailInfor } = this.props
-    console.log(postDetailInfor)
+    const { postDetailInfor } = this.props;
     return (
       <div>
         <NavBar />
@@ -27,8 +27,12 @@ class lifeWayPageDetail extends Component {
             </div>
             <div className="article-header-time">
               <img src={require("../../images/clock.png")} alt="" />
-              <span className="ml-2">{postDetailInfor.CreateDate}</span>
-              <span className="ml-2">Lượt thích: {postDetailInfor.NumberOfLikes}</span>
+              <span className="ml-2">
+                {moment(postDetailInfor.CreateDate).fromNow()}
+              </span>
+              <span className="ml-2">
+                Lượt thích: {postDetailInfor.NumberOfLikes}
+              </span>
             </div>
             <div className="article-header-image">
               <img src={postDetailInfor.ImageDetail} alt="" />
@@ -40,7 +44,7 @@ class lifeWayPageDetail extends Component {
           <div className="related-article-title">
             <span>Bài viết liên quan</span>
           </div>
-          <RelatedPost/>
+          <RelatedPost filterPost={window.location.pathname.split("/")[2]} />
         </div>
         <Footer />
       </div>
@@ -50,16 +54,16 @@ class lifeWayPageDetail extends Component {
 
 const mapStateToProps = state => {
   return {
-    postDetailInfor: state.lifeWay.postDetailInfor,
+    postDetailInfor: state.lifeWay.postDetailInfor
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getPostDetailInfor: (id) => {
+    getPostDetailInfor: id => {
       dispatch(LifeWayTypes.getLifeWayDetailRequest(id));
-    },
+    }
   };
 };
-lifeWayPageDetail = withRouter(lifeWayPageDetail)
+lifeWayPageDetail = withRouter(lifeWayPageDetail);
 export default connect(mapStateToProps, mapDispatchToProps)(lifeWayPageDetail);
