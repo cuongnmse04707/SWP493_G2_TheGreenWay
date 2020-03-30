@@ -28,6 +28,12 @@ class RelatedPost extends Component {
     });
   };
 
+  onClickDetailPost = (event, item) => {
+    event.stopPropagation();
+    this.props.history.push(`/life-way-detail/${item.PostID}`);
+    this.props.getPostDetailInfor(item.PostID);
+  };
+
   render() {
     const { postInfor, filterPost } = this.props;
     return (
@@ -38,7 +44,11 @@ class RelatedPost extends Component {
             .map((item, index) => {
               if (index < 3) {
                 return (
-                  <div className="sub-item shadow bg-white rounded" key={index}>
+                  <div
+                    className="sub-item shadow bg-white rounded"
+                    key={index}
+                    onClick={event => this.onClickDetailPost(event, item)}
+                  >
                     <div className="hovereffect">
                       <img src={item.ImageDetail} alt="" />
                       <div className="overlayy">
@@ -95,6 +105,9 @@ const mapDispatchToProps = dispatch => {
     },
     setDataLikePost: params => {
       dispatch(LifeWayTypes.getLifeWayLikeRequest(params));
+    },
+    getPostDetailInfor: id => {
+      dispatch(LifeWayTypes.getLifeWayDetailRequest(id));
     }
   };
 };

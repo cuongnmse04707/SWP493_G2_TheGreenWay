@@ -16,12 +16,17 @@ class RelatedProduct extends Component {
       page: 1
     };
     this.props.getIntroProduct(params);
+    const params2 = {
+      idCategory: 2,
+      page: 1
+    };
+    this.props.getIntroProductCate(params2);
   }
 
   handleClick = (event, id) => {
     event.stopPropagation();
     this.props.history.push(`/product-detail/${id}`);
-    this.props.getProductDetail(id)
+    this.props.getProductDetail(id);
   };
 
   changeHeart = (event, item) => {
@@ -169,11 +174,14 @@ const mapDispatchToProps = dispatch => {
     getIntroProduct: params => {
       dispatch(IntroProductTypes.getIntroProductRequest(params));
     },
-    getProductDetail: (id) => {
+    getProductDetail: id => {
       dispatch(ProductDetailTypes.getProductDetailRequest(id));
     },
     setDataLike: params => {
       dispatch(IntroProductTypes.updateLikeProduct(params));
+    },
+    getIntroProductCate: params => {
+      dispatch(IntroProductTypes.getRecycleProductRequest(params));
     }
   };
 };

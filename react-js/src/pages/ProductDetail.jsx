@@ -29,18 +29,18 @@ class ProductDetail extends Component {
     this.props.setDataCart(numberOfTotal);
   }
 
-  componentDidUpdate(nextProps) {
-    const productId = window.location.pathname.split("/")[2];
-    this.props.getProductDetail(productId);
-    if (
-      this.props.productInfor &&
-      nextProps.productInfor !== this.props.productInfor
-    ) {
-      this.setState({
-        productInfor: this.props.productInfor
-      });
-    }
-  }
+  // componentDidUpdate(nextProps) {
+  //   const productId = window.location.pathname.split("/")[2];
+  //   this.props.getProductDetail(productId);
+  //   if (
+  //     this.props.productInfor &&
+  //     nextProps.productInfor !== this.props.productInfor
+  //   ) {
+  //     this.setState({
+  //       productInfor: this.props.productInfor
+  //     });
+  //   }
+  // }
 
   getQuantity = value => {
     if (Number(value)) {

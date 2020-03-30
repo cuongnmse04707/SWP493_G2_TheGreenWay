@@ -183,7 +183,7 @@ class RecycleProductDetailList extends Component {
     const { convensionRate, introProduct } = this.props;
     const { checkSearch } = this.state;
     return (
-      <div className="product-list-wrapper">
+      <div className="product-list-wrapper" style={{ marginTop: "10px" }}>
         <SearchComponent
           onSearchFullText={this.onSearchFullText}
           onSearchHigh={this.onSearchHigh}

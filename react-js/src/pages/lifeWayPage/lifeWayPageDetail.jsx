@@ -15,6 +15,7 @@ class lifeWayPageDetail extends Component {
   componentDidMount() {
     this.props.getPostDetailInfor(window.location.pathname.split("/")[2]);
   }
+
   render() {
     const { postDetailInfor } = this.props;
     return (

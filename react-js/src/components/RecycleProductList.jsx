@@ -19,8 +19,8 @@ class RecycleProductList extends Component {
     this.props.getRecycleProduct(params);
   }
 
-  handleClick = () => {
-    this.props.history.push("/product-detail");
+  handleClick = (event, item) => {
+    this.props.history.push(`/product-detail/${item.ProductID}`);
   };
 
   changeHeart = (event, item) => {
@@ -44,7 +44,7 @@ class RecycleProductList extends Component {
             return (
               <div
                 className="sub-item shadow bg-white rounded"
-                onClick={this.handleClick}
+                onClick={event => this.handleClick(event, item)}
                 key={index}
               >
                 <div className="hovereffect">
