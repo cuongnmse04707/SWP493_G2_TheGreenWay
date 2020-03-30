@@ -186,6 +186,7 @@ class ShoppingCart extends Component {
                 dataSource={JSON.parse(window.localStorage.getItem("cart"))}
                 style={{ width: "100%" }}
                 pagination={false}
+                rowkey="id"
               />
             </div>
             <div className="total-money">

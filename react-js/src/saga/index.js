@@ -8,6 +8,7 @@ import { IntroProductTypes } from "../redux/get-intro-product-redux";
 import { ConvensionTypes } from "../redux/paper-conversion-redux";
 import { ProductDetailTypes } from "../redux/product-detail-redux";
 import { LifeWayTypes } from "../redux/life-way-redux";
+import { UserLikeProductTypes } from "../redux/user-product-like-redux";
 import LoginSagas from "./login-saga";
 import ResetPassword from "./reset-password";
 import HomePageSagas from "./home-page-saga";
@@ -17,6 +18,7 @@ import IntroProductSagas from "./intro-product-saga";
 import PaperConvensionSagas from "./paper-convension-saga";
 import ProductDetailSagas from "./product-detail-saga";
 import LifeWaySagas from "./life-way-saga";
+import UserProductLikeSagas from "./user-product-like-saga";
 
 export default function* root() {
   yield all([
@@ -64,6 +66,10 @@ export default function* root() {
       LifeWayTypes.GET_LIFE_WAY_SEARCH_REQUEST,
       LifeWaySagas.searchPost
     ),
-    takeLatest(LifeWayTypes.GET_POST_LIKE_MUCH, LifeWaySagas.getPostLikeMuch)
+    takeLatest(LifeWayTypes.GET_POST_LIKE_MUCH, LifeWaySagas.getPostLikeMuch),
+    takeLatest(
+      UserLikeProductTypes.GET_PRODUCT_LIKE_REQUEST,
+      UserProductLikeSagas.getProductLikeInfor
+    )
   ]);
 }

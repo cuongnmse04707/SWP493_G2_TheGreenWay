@@ -4,6 +4,7 @@ import "../css/product-list.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import IntroProductTypes from "../redux/get-intro-product-redux";
+import ProductDetailTypes from "../redux/product-detail-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
 
@@ -22,6 +23,8 @@ class PlantProductList extends Component {
   handleClick = (event, id) => {
     event.stopPropagation();
     this.props.history.push(`/product-detail/${id}`);
+    this.props.getProductDetail(id)
+
   };
 
   changeHeart = (event, item) => {
@@ -187,6 +190,9 @@ const mapDispatchToProps = dispatch => {
     },
     getIntroProduct: params => {
       dispatch(IntroProductTypes.getIntroProductRequest(params));
+    },
+    getProductDetail: (id) => {
+      dispatch(ProductDetailTypes.getProductDetailRequest(id));
     },
     setDataCart: params => {
       dispatch(HomePageTypes.updateStateCart(params));

@@ -15,6 +15,7 @@ import PlantProductDetail from "../pages/PlantProductsDetail";
 import RecycleProducDetail from "../pages/RecycleProductDetail";
 import LifeWayPageDetail from "../pages/lifeWayPage/lifeWayPageDetail";
 import ConfirmPayment from "../pages/ConfirmPayment";
+import UserProductLike from "../pages/UserProductLike";
 import { connect } from "react-redux";
 import OrderSuccess from "../pages/OrderSuccess"
 
@@ -51,6 +52,7 @@ class PageLayout extends Component {
           <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />
+            <Route path="/user-product-like" component={UserProductLike} exact />
           </LayoutProfile>
         </Switch>
       </BrowserRouter>

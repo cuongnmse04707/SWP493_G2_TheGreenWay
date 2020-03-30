@@ -225,7 +225,7 @@ class SideBar extends Component {
             <Menu.Item
               key="/changepassword2"
               onClick={() => {
-                this.props.history.push("/changepassword");
+                this.props.history.push("/user-product-like");
               }}
             >
               <img
