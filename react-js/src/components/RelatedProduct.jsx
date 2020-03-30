@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import "../css/related-product.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
+import { Typography, message } from "antd";
 import IntroProductTypes from "../redux/get-intro-product-redux";
 import ProductDetailTypes from "../redux/product-detail-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
+import HomePageTypes from "../redux/home-page-redux";
 
 class RelatedProduct extends Component {
   state = {};
@@ -37,6 +39,41 @@ class RelatedProduct extends Component {
     });
   };
 
+  addToShoppingCart = (event, item) => {
+    event.stopPropagation();
+    // console.log("item :", item);
+    // const quatityBuy = 5;
+    const product = {
+      ...item,
+      quatityBuy: 1
+    };
+    const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
+    const indexNumber = cart.findIndex(
+      element => element.ProductID === product.ProductID
+    );
+    if (indexNumber >= 0) {
+      if (product.Quantity < cart[indexNumber].quatityBuy + 1) {
+        message.error("Opps. Xin lỗi bạn, sản phẩm này đã hết hàng !");
+      } else {
+        message.success("Thêm sản phẩm vào giỏ hàng thành công !");
+        cart[indexNumber].quatityBuy = cart[indexNumber].quatityBuy + 1;
+      }
+    } else {
+      if (product.Quantity === 0) {
+        message.error("Opps. Xin lỗi bạn, sản phẩm này đã hết hàng");
+      } else {
+        message.success("Thêm sản phẩm vào giỏ hàng thành công !");
+        cart.push(product);
+      }
+    }
+
+    let numberOfTotal = 0;
+    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    this.props.setDataCart(numberOfTotal);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    this.props.history.push("/cart");
+  };
+
   render() {
     const {
       convensionRate,
@@ -64,7 +101,7 @@ class RelatedProduct extends Component {
                       <div className="overlayy">
                         <a
                           className="info"
-                          onClick={event => this.addToShoppingCart(event)}
+                          onClick={event => this.addToShoppingCart(event, item)}
                         >
                           <div style={{ display: "flex" }}>
                             <img
@@ -182,6 +219,9 @@ const mapDispatchToProps = dispatch => {
     },
     getIntroProductCate: params => {
       dispatch(IntroProductTypes.getRecycleProductRequest(params));
+    },
+    setDataCart: params => {
+      dispatch(HomePageTypes.updateStateCart(params));
     }
   };
 };
