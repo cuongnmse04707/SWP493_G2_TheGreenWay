@@ -7,6 +7,8 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import LifeWayTypes from "../../redux/life-way-redux";
 import RelatedPost from '../../components/RelatedPost'
+
+const { Search } = Input;
 class lifeWayPageDetail extends Component {
 
   componentDidMount() {
@@ -26,7 +28,7 @@ class lifeWayPageDetail extends Component {
             <div className="article-header-time">
               <img src={require("../../images/clock.png")} alt="" />
               <span className="ml-2">{postDetailInfor.CreateDate}</span>
-              <span className="ml-2">Lượt thích: {postDetailInfor.NumberOfLike}</span>
+              <span className="ml-2">Lượt thích: {postDetailInfor.NumberOfLikes}</span>
             </div>
             <div className="article-header-image">
               <img src={postDetailInfor.ImageDetail} alt="" />

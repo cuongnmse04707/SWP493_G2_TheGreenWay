@@ -58,7 +58,19 @@ class Lifeway extends Component {
         <div className="life-way-wrapper">
           <div className="post-header">
             <div className="post-header-image">
-              <img src={postDetailInfor.ImageDetail} alt="" />
+              {/* <img src={postDetailInfor.ImageDetail} alt="" /> */}
+              <div className="hovereffect">
+                <img src={postDetailInfor.ImageDetail} alt="" />
+                <div className="overlayy">
+                  <div className="heart-icon">
+                    <img
+                      style={{ height: "35px", width: "35px" }}
+                      src={require("../../images/svgIcon/like.svg")}
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="post-header-content">
               <div className="post-header-title">
@@ -70,6 +82,10 @@ class Lifeway extends Component {
               <div className="post-header-time">
                 <img src={require("../../images/clock.png")} alt="" />
                 <span className="ml-2">{postDetailInfor.CreateDate}</span>
+              </div>
+              <div className="post-detail-like">
+                <span>Lượt thích:</span>
+                <span>{postDetailInfor.NumberOfLikes}</span>
               </div>
               <div className="view-detail-btn" onClick={() => this.toPostDetail(postDetailInfor.PostID)}>
                 <span>Xem chi tiết</span>
@@ -90,7 +106,18 @@ class Lifeway extends Component {
                 return (
                   <div className="post-detail-container" key={index}>
                     <div className="post-detail-image">
-                      <img src={item.ImageDetail} alt="" />
+                      <div className="hovereffect">
+                        <img src={item.ImageDetail} alt="" />
+                        <div className="overlayy">
+                          <div className="heart-icon">
+                            <img
+                              style={{ height: "35px", width: "35px" }}
+                              src={require("../../images/svgIcon/like.svg")}
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="post-detail-content">
                       <div className="post-detail-title">

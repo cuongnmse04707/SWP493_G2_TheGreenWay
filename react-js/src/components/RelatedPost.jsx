@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import '../css/related-product.css';
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
-import IntroProductTypes from "../redux/get-intro-product-redux";
-import ConvensionTypes from "../redux/paper-conversion-redux";
+import LifeWayTypes from "../redux/life-way-redux";
 
 class RelatedPost extends Component {
   state = {
@@ -16,7 +15,7 @@ class RelatedPost extends Component {
       idCategory: 1,
       page: 1
     };
-    // this.props.getIntroProduct(params);
+    this.props.getPostInfor(params);
   }
   render() {
     const { postInfor } = this.props;
@@ -30,6 +29,15 @@ class RelatedPost extends Component {
                 <div className="sub-item shadow bg-white rounded" key={index}>
                   <div className="hovereffect">
                     <img src={item.ImageDetail} alt="" />
+                    <div className="overlayy">
+                      <div className="heart-icon">
+                        <img
+                          style={{ height: "35px", width: "35px" }}
+                          src={require("../images/svgIcon/like.svg")}
+                          alt=""
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="related-article-sub-title">
                     <span>{item.Title}</span>
@@ -58,6 +66,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getPostInfor: (params) => {
+      dispatch(LifeWayTypes.getLifeWayRequest(params));
+    },
   };
 };
 
