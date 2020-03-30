@@ -51,39 +51,39 @@ class EditProfile extends Component {
   };
 
   componentDidMount() {
-    this.props.getUserInfor();
+    //this.props.getUserInfor();
   }
 
-  componentDidUpdate(nextProps) {
-    if (
-      this.props.userInformation &&
-      nextProps.userInformation !== this.props.userInformation
-    ) {
-      this.setState({
-        userName: this.props.userInformation.username,
-        address: this.props.userInformation.address,
-        city: this.props.userInformation.city,
-        country: this.props.userInformation.country,
-        password: this.props.userInformation.password,
-        avartarUrl: this.props.userInformation.urlAvatar,
-        email: this.props.userInformation.email,
-        roles: this.props.userInformation.roles,
-        DOB: moment(this.props.userInformation.DOB).format("YYYY/MM/DD"),
-        phone: this.props.userInformation.phone
-      });
-      if (this.state.DOB) {
-        this.setState({
-          DOB:moment( this.state.DOB.slice(0, 10)).format("YYYY/MM/DD"),
-        });
-      }
-    }
-    if (this.props.editMessage) {
-      this.props.updateNotify();
-      setTimeout(() => {
-        this.props.history.push("/");
-      }, 2000);
-    }
-  }
+  // componentDidUpdate(nextProps) {
+  //   if (
+  //     this.props.userInformation &&
+  //     nextProps.userInformation !== this.props.userInformation
+  //   ) {
+  //     this.setState({
+  //       userName: this.props.userInformation.username,
+  //       address: this.props.userInformation.address,
+  //       city: this.props.userInformation.city,
+  //       country: this.props.userInformation.country,
+  //       password: this.props.userInformation.password,
+  //       avartarUrl: this.props.userInformation.urlAvatar,
+  //       email: this.props.userInformation.email,
+  //       roles: this.props.userInformation.roles,
+  //       DOB: moment(this.props.userInformation.DOB).format("YYYY/MM/DD"),
+  //       phone: this.props.userInformation.phone
+  //     });
+  //     if (this.state.DOB) {
+  //       this.setState({
+  //         DOB:moment( this.state.DOB.slice(0, 10)).format("YYYY/MM/DD"),
+  //       });
+  //     }
+  //   }
+  //   if (this.props.editMessage) {
+  //     this.props.updateNotify();
+  //     // setTimeout(() => {
+  //     //   this.props.history.push("/");
+  //     // }, 2000);
+  //   }
+  // }
 
   showPasswordModal = () => {
     this.setState({
@@ -189,6 +189,49 @@ class EditProfile extends Component {
     }
   };
 
+  fixloi = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll(
+      [
+        "username",
+        "phone",
+        "email",
+        "DOB",
+        "city",
+        "address",
+        "country",
+        "password"
+      ],(err,values) => {
+        console.log(values)
+        if (!err) {
+          if (values.DOB) {
+            values.DOB = values.DOB.format("YYYY-MM-DD");
+          }
+          console.log(values);
+          const params = {
+            email: values.email,
+            username: values.username,
+            phone: values.phone,
+            DOB: values.DOB,
+            city: values.city,
+            address: values.address,
+            country: values.country
+          }
+          this.props.editUserProfile({
+            params
+            // email: values.email,
+            // username: values.username,
+            // phone: values.phone,
+            // DOB: values.DOB,
+            // city: values.city,
+            // address: values.address,
+            // country: values.country
+          });
+
+        }
+      })
+  }
+
   handleUpdateAccountSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(
@@ -263,7 +306,6 @@ class EditProfile extends Component {
   render() {
     const token = window.localStorage.getItem("x-access-token");
     const { getFieldDecorator } = this.props.form;
-    console.log("12312312");
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -278,6 +320,8 @@ class EditProfile extends Component {
         lg: { span: 14 }
       }
     };
+    const {userInformation} = this.props
+    console.log(userInformation)
     return token ? (
       <div className="edit-profile-wrapper">
         {/* <NavBar /> */}
@@ -289,12 +333,12 @@ class EditProfile extends Component {
                 <Form {...formItemLayout} className="mt-4">
                   <Form.Item label="E-mail">
                     {getFieldDecorator("email", {
-                      initialValue: this.state.email
+                      initialValue: userInformation.email
                     })(<Input disabled={true} />)}
                   </Form.Item>
                   <Form.Item label="Tên Tài Khoản">
                     {getFieldDecorator("username", {
-                      initialValue: this.state.userName,
+                      initialValue: userInformation.username,
                       rules: [
                         {
                           required: true,
@@ -305,7 +349,7 @@ class EditProfile extends Component {
                   </Form.Item>
                   <Form.Item label="Số Điện Thoại">
                     {getFieldDecorator("phone", {
-                      initialValue: this.state.phone,
+                      initialValue: userInformation.phone,
                       rules: [
                         {
                           pattern: phoneRegex,
@@ -316,22 +360,22 @@ class EditProfile extends Component {
                   </Form.Item>
                   <Form.Item label="Địa chỉ">
                     {getFieldDecorator("address", {
-                      initialValue: this.state.address
+                      initialValue: userInformation.address
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Thành Phố">
                     {getFieldDecorator("city", {
-                      initialValue: this.state.city
+                      initialValue: userInformation.city
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Quốc gia">
                     {getFieldDecorator("country", {
-                      initialValue: this.state.country
+                      initialValue: userInformation.country
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Ngày sinh">
                     {getFieldDecorator("DOB", {
-                      initialValue: moment(this.state.DOB, dateFormat)
+                      initialValue: moment(userInformation.DOB, dateFormat)
                     })(
                       <DatePicker
                         style={{ width: "100%" }}
@@ -349,7 +393,7 @@ class EditProfile extends Component {
                       <Button
                         // className="edit-button"
                         type="primary"
-                        onClick={this.handleUpdateAccountSubmit}
+                        onClick={this.fixloi}
                         style={{ width: "100%", marginTop: "20px" }}
                       >
                         Cập nhật chỉnh sửa

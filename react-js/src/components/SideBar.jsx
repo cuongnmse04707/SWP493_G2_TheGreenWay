@@ -76,9 +76,9 @@ class SideBar extends Component {
 
     if (this.props.notifyMessage === "Save Information Of User Is Success!") {
       this.props.updateNotify();
-      setTimeout(() => {
-        this.props.history.push("/");
-      }, 2000);
+      // setTimeout(() => {
+      //   this.props.history.push("/");
+      // }, 2000);
     }
   }
 

@@ -6,12 +6,15 @@ import { connect } from "react-redux";
 import IntroProductTypes from "../redux/get-intro-product-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
+import SearchComponent from "./Seaarch";
 
 class RecycleProductDetailList extends Component {
   state = {
-    heart: false,
     introData: [],
-    current: 1
+    current: 1,
+    checkSearch: false,
+    valueSearch: "",
+    valueSearchHigh: {}
   };
 
   componentDidMount() {
@@ -23,39 +26,121 @@ class RecycleProductDetailList extends Component {
     this.props.getIntroProduct(params);
   }
 
-  componentDidUpdate(nextProps) {
-    if (
-      this.props.introProduct &&
-      nextProps.introProduct !== this.props.introProduct
-    ) {
-      this.setState({
-        introData: this.props.introProduct,
-        convensionRate: this.props.convensionRate
-      });
-    }
-  }
-
   onSelectPageChange = page => {
-    console.log(page);
-    this.setState({
-      current: page,
-    });
-    const params = {
-      idCategory: 2,
-      page: page
-    };
-    this.props.getIntroProduct(params);
+    const { checkSearch, valueSearch, valueSearchHigh } = this.state;
+    if (checkSearch) {
+      if (valueSearchHigh) {
+        this.setState({
+          current: page
+        });
+        this.setState({
+          checkSearch: true
+        });
+        this.props.searchHigh({
+          value: valueSearchHigh,
+          page: page,
+          cate: "2"
+        });
+      }
+      if (valueSearch) {
+        this.setState({
+          current: page
+        });
+        this.setState({
+          checkSearch: true
+        });
+        this.props.searchDefault({
+          value: valueSearch,
+          page: page,
+          cate: "2"
+        });
+      }
+    } else {
+      this.setState({
+        current: page
+      });
+      const params = {
+        idCategory: 2,
+        page: page
+      };
+      this.props.getIntroProduct(params);
+    }
   };
 
   handleClick = (event, id) => {
-    event.stopPropagation()
+    event.stopPropagation();
     this.props.history.push(`/product-detail/${id}`);
   };
 
-  changeHeart = event => {
-    event.stopPropagation();
+  onChangeCheckSearch = value => {
     this.setState({
-      heart: !this.state.heart
+      checkSearch: value
+    });
+  };
+
+  onSearchHigh = value => {
+    this.setState({
+      valueSearchHigh: value,
+      valueSearch: null
+    });
+    this.setState({
+      current: 1
+    });
+    if (value.textName === "" && value.maxP === "" && value.minP === "") {
+      this.setState({
+        checkSearch: false
+      });
+      const params = {
+        idCategory: 2,
+        page: 1
+      };
+      this.props.getIntroProduct(params);
+    } else {
+      this.setState({
+        checkSearch: true
+      });
+      this.props.searchHigh({
+        value: value,
+        page: 1,
+        cate: "2"
+      });
+    }
+  };
+
+  onSearchFullText = value => {
+    this.setState({
+      valueSearch: value,
+      valueSearchHigh: null
+    });
+    this.setState({
+      current: 1
+    });
+    if (value) {
+      this.setState({
+        checkSearch: true
+      });
+      this.props.searchDefault({
+        value: value,
+        page: 1,
+        cate: "2"
+      });
+    } else {
+      this.setState({
+        checkSearch: false
+      });
+      const params = {
+        idCategory: 2,
+        page: 1
+      };
+      this.props.getIntroProduct(params);
+    }
+  };
+
+  changeHeart = (event, item) => {
+    event.stopPropagation();
+    this.props.setDataLike({
+      method: item.like === "like" ? "unLike" : "like",
+      idP: item.ProductID
     });
   };
 
@@ -95,11 +180,21 @@ class RecycleProductDetailList extends Component {
   };
 
   render() {
-    const { convensionRate } = this.props;
+    const { convensionRate, introProduct } = this.props;
+    const { checkSearch } = this.state;
     return (
       <div className="product-list-wrapper">
+        <SearchComponent
+          onSearchFullText={this.onSearchFullText}
+          onSearchHigh={this.onSearchHigh}
+        />
+        {this.props.resultSize && checkSearch ? (
+          <div style={{ marginTop: "5px" }}>
+            <span>Có {this.props.resultSize} sản phẩm được tìm kiếm</span>
+          </div>
+        ) : null}
         <div className="product-container">
-          {this.state.introData.map((item, index) => {
+          {introProduct.map((item, index) => {
             return (
               <div
                 className="sub-item shadow bg-white rounded"
@@ -127,21 +222,21 @@ class RecycleProductDetailList extends Component {
                       </div>
                     </a>
                     <div className="heart-icon">
-                      {this.state.heart ? (
+                      {(item || {}).like === "like" ? (
                         <img
-                          onClick={event => this.changeHeart(event)}
+                          onClick={event => this.changeHeart(event, item)}
                           style={{ height: "35px", width: "35px" }}
                           src={require("../images/svgIcon/like.svg")}
                           alt=""
                         />
                       ) : (
-                          <img
-                            onClick={event => this.changeHeart(event)}
-                            style={{ height: "35px", width: "35px" }}
-                            src={require("../images/svgIcon/unLike.svg")}
-                            alt=""
-                          />
-                        )}
+                        <img
+                          onClick={event => this.changeHeart(event, item)}
+                          style={{ height: "35px", width: "35px" }}
+                          src={require("../images/svgIcon/unLike.svg")}
+                          alt=""
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -197,9 +292,16 @@ class RecycleProductDetailList extends Component {
             );
           })}
         </div>
-        <Pagination current={this.state.current}
-        onChange={this.onSelectPageChange}
-        total={this.props.totalPage*10} />
+        {introProduct.length !== 0 ? (
+          <Pagination
+            current={this.state.current}
+            onChange={this.onSelectPageChange}
+            total={this.props.totalPage * 10}
+          />
+        ) : null}
+        {introProduct.length === 0 ? (
+          <span>Không có sản phầm nào !</span>
+        ) : null}
       </div>
     );
   }
@@ -207,7 +309,8 @@ class RecycleProductDetailList extends Component {
 
 const mapStateToProps = state => {
   return {
-    introProduct: state.introProduct.introProduct,
+    resultSize: state.introProduct.resultsize,
+    introProduct: state.introProduct.recycleProduct,
     totalPage: state.introProduct.totalRecyclePage,
     convensionRate: state.convension.convensionRate
   };
@@ -219,13 +322,28 @@ const mapDispatchToProps = dispatch => {
       dispatch(ConvensionTypes.getConvensionRequest());
     },
     getIntroProduct: params => {
-      dispatch(IntroProductTypes.getIntroProductRequest(params));
+      dispatch(IntroProductTypes.getRecycleProductRequest(params));
     },
     setDataCart: params => {
       dispatch(HomePageTypes.updateStateCart(params));
+    },
+    setDataLike: params => {
+      dispatch(IntroProductTypes.updateLikeProduct(params));
+    },
+    searchDefault: params => {
+      dispatch(IntroProductTypes.searchDefault(params));
+    },
+    searchHigh: params => {
+      dispatch(IntroProductTypes.searchHigh(params));
+    },
+    resetData: params => {
+      dispatch(IntroProductTypes.resetData());
     }
   };
 };
 
 RecycleProductDetailList = withRouter(RecycleProductDetailList);
-export default connect(mapStateToProps, mapDispatchToProps)(RecycleProductDetailList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RecycleProductDetailList);

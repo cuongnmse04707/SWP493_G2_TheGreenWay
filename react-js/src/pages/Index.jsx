@@ -28,6 +28,7 @@ class Index extends Component {
   };
 
   render() {
+    console.log(1)
     return (
       <div className="home-page">
         <NavBar />

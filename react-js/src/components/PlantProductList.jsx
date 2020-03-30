@@ -8,10 +8,7 @@ import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
 
 class PlantProductList extends Component {
-  state = {
-    heart: false,
-    introData: []
-  };
+  state = {};
 
   componentDidMount() {
     this.props.getPaperConvension();
@@ -22,34 +19,21 @@ class PlantProductList extends Component {
     this.props.getIntroProduct(params);
   }
 
-  componentDidUpdate(nextProps) {
-    if (
-      this.props.introProduct &&
-      nextProps.introProduct !== this.props.introProduct
-    ) {
-      this.setState({
-        introData: this.props.introProduct,
-        convensionRate: this.props.convensionRate
-      });
-    }
-  }
-
   handleClick = (event, id) => {
-    event.stopPropagation()
+    event.stopPropagation();
     this.props.history.push(`/product-detail/${id}`);
   };
 
-  changeHeart = event => {
+  changeHeart = (event, item) => {
     event.stopPropagation();
-    this.setState({
-      heart: !this.state.heart
+    this.props.setDataLike({
+      method: item.like === "like" ? "unLike" : "like",
+      idP: item.ProductID
     });
   };
 
   addToShoppingCart = (event, item) => {
     event.stopPropagation();
-    // console.log("item :", item);
-    // const quatityBuy = 5;
     const product = {
       ...item,
       quatityBuy: 1
@@ -82,11 +66,11 @@ class PlantProductList extends Component {
   };
 
   render() {
-    const { convensionRate } = this.props;
+    const { convensionRate, introProduct } = this.props;
     return (
       <div className="product-list-wrapper">
         <div className="product-container">
-          {this.state.introData.map((item, index) => {
+          {introProduct.map((item, index) => {
             return (
               <div
                 className="sub-item shadow bg-white rounded"
@@ -114,21 +98,21 @@ class PlantProductList extends Component {
                       </div>
                     </a>
                     <div className="heart-icon">
-                      {this.state.heart ? (
+                      {(item || {}).like === "like" ? (
                         <img
-                          onClick={event => this.changeHeart(event)}
+                          onClick={event => this.changeHeart(event, item)}
                           style={{ height: "35px", width: "35px" }}
                           src={require("../images/svgIcon/like.svg")}
                           alt=""
                         />
                       ) : (
-                          <img
-                            onClick={event => this.changeHeart(event)}
-                            style={{ height: "35px", width: "35px" }}
-                            src={require("../images/svgIcon/unLike.svg")}
-                            alt=""
-                          />
-                        )}
+                        <img
+                          onClick={event => this.changeHeart(event, item)}
+                          style={{ height: "35px", width: "35px" }}
+                          src={require("../images/svgIcon/unLike.svg")}
+                          alt=""
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
@@ -190,7 +174,6 @@ class PlantProductList extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.convension);
   return {
     introProduct: state.introProduct.introProduct,
     convensionRate: state.convension.convensionRate
@@ -207,6 +190,9 @@ const mapDispatchToProps = dispatch => {
     },
     setDataCart: params => {
       dispatch(HomePageTypes.updateStateCart(params));
+    },
+    setDataLike: params => {
+      dispatch(IntroProductTypes.updateLikeProduct(params));
     }
   };
 };

@@ -82,7 +82,8 @@ class NavBar extends Component {
 
   render() {
     const token = window.localStorage.getItem("x-access-token");
-
+    const {userInformation} = this.props
+    console.log(userInformation)
     //menu dropdown
     const menu = (
       <Menu>
@@ -155,7 +156,7 @@ class NavBar extends Component {
                           height: "40px",
                           borderRadius: "50%"
                         }}
-                        src={this.props.userInformation.urlAvatar}
+                        src={userInformation.urlAvatar}
                         // alt=""
                       />
                       <Dropdown
@@ -172,7 +173,7 @@ class NavBar extends Component {
                           className="ant-dropdown-link"
                           href="#"
                         >
-                          {this.state.userName} <Icon type="down" />
+                          {userInformation.username} <Icon type="down" />
                         </a>
                       </Dropdown>
                     </li>

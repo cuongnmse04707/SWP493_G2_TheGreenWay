@@ -52,6 +52,7 @@ class Lifeway extends Component {
   }
   render() {
     const { postInfor, totalPage, postDetailInfor } = this.props
+    console.log(postDetailInfor)
     return (
       <div>
         <NavBar />

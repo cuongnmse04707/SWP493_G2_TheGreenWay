@@ -6,9 +6,10 @@ import axios from 'axios'
 
 const EditProfileSagas = {
     * editProfile(action) {
+        console.log(action)
         try {
             const editInfor = yield call(async() => {
-                return await axios.post('http://localhost:3001/user/saveinformation', action.data, {
+                return await axios.post('http://localhost:3001/user/saveinformation', action.data.params, {
                     headers: {
                         'Content-Type': 'application/json',
                         'x-access-token': window.localStorage.getItem("x-access-token"),
@@ -22,6 +23,7 @@ const EditProfileSagas = {
             } else {
                 yield put(EditActions.editSucceed(editInfor.data))
                 message.success("Cập nhật thông tin thành công", 2)
+
             }
         } catch (error) {
             yield put(EditActions.editFailed(error))
