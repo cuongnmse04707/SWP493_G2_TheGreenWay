@@ -24,15 +24,19 @@ class SearchComponent extends Component {
   onClick = () => {
     const { textSearch, maxP, minP } = this.state;
     const { onSearchHigh } = this.props;
+    if (textSearch === undefined) {
+      this.setState({
+        textSearch: ""
+      });
+    }
     onSearchHigh({
-      textName: textSearch,
+      textName: textSearch || "",
       maxP,
       minP
     });
   };
 
   handleChange = value => {
-    // console.log("object", value);
     this.setState({
       textSearch: value,
       checkData: false
