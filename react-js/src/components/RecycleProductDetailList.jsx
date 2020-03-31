@@ -24,6 +24,7 @@ class RecycleProductDetailList extends Component {
       page: 1
     };
     this.props.getIntroProduct(params);
+    this.props.getDataSearch({ idCategory: 2 });
   }
 
   onSelectPageChange = page => {
@@ -338,6 +339,9 @@ const mapDispatchToProps = dispatch => {
     },
     resetData: params => {
       dispatch(IntroProductTypes.resetData());
+    },
+    getDataSearch: params => {
+      dispatch(IntroProductTypes.listProductSearch(params));
     }
   };
 };

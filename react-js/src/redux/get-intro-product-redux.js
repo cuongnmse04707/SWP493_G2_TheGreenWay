@@ -17,7 +17,10 @@ const { Types, Creators } = createActions({
   resetData: [],
   searchHigh: ["data"],
   searchHighSucceed: ["data"],
-  searchHighFailed: ["error"]
+  searchHighFailed: ["error"],
+  listProductSearch: ["data"],
+  listProductSearchSucceed: ["data"],
+  listProductSearchFailed: ["error"]
 });
 
 export const IntroProductTypes = Types;
@@ -27,6 +30,7 @@ export default Creators;
 export const INITIAL_STATE = {
   introProduct: [],
   recycleProduct: [],
+  listProductSearch: [],
   totalPlantsPage: 0,
   totalRecyclePage: 0,
   resultsize: null,
@@ -122,6 +126,13 @@ export const failedSearch = (state, { error }) => {
   };
 };
 
+export const listProductSearch = (state, { data }) => {
+  return {
+    ...state,
+    listProductSearch: data.data
+  };
+};
+
 //TODO:Hookup Reducers To Types in Action
 export const reducer = createReducer(INITIAL_STATE, {
   [IntroProductTypes.GET_INTRO_PRODUCT_REQUEST]: request,
@@ -139,5 +150,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [IntroProductTypes.RESET_DATA]: resetData,
   [IntroProductTypes.SEARCH_HIGH]: request,
   [IntroProductTypes.SEARCH_HIGH_SUCCEED]: searchDefault,
-  [IntroProductTypes.SEARCH_HIGH_FAILED]: failedSearch
+  [IntroProductTypes.SEARCH_HIGH_FAILED]: failedSearch,
+  [IntroProductTypes.LIST_PRODUCT_SEARCH]: request,
+  [IntroProductTypes.LIST_PRODUCT_SEARCH_SUCCEED]: listProductSearch,
+  [IntroProductTypes.LIST_PRODUCT_SEARCH_FAILED]: failed
 });

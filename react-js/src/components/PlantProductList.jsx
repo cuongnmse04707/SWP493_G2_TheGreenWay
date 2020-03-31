@@ -23,8 +23,7 @@ class PlantProductList extends Component {
   handleClick = (event, id) => {
     event.stopPropagation();
     this.props.history.push(`/product-detail/${id}`);
-    this.props.getProductDetail(id)
-
+    this.props.getProductDetail(id);
   };
 
   changeHeart = (event, item) => {
@@ -191,7 +190,7 @@ const mapDispatchToProps = dispatch => {
     getIntroProduct: params => {
       dispatch(IntroProductTypes.getIntroProductRequest(params));
     },
-    getProductDetail: (id) => {
+    getProductDetail: id => {
       dispatch(ProductDetailTypes.getProductDetailRequest(id));
     },
     setDataCart: params => {

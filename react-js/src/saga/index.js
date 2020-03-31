@@ -70,6 +70,10 @@ export default function* root() {
     takeLatest(
       UserLikeProductTypes.GET_PRODUCT_LIKE_REQUEST,
       UserProductLikeSagas.getProductLikeInfor
+    ),
+    takeLatest(
+      IntroProductTypes.LIST_PRODUCT_SEARCH,
+      IntroProductSagas.getListSearchProduct
     )
   ]);
 }

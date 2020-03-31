@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../css/related-product.css";
-import { Button, Radio, Input, Select } from "antd";
+import { Button, Radio, Input, Select, Avatar } from "antd";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import IntroProductTypes from "../redux/get-intro-product-redux";
@@ -11,7 +11,9 @@ class SearchComponent extends Component {
     size: "default",
     textName: "",
     maxP: "",
-    minP: ""
+    minP: "",
+    checkData: true,
+    textSearch: ""
   };
 
   handleSizeChange = e => {
@@ -20,20 +22,28 @@ class SearchComponent extends Component {
   };
 
   onClick = () => {
-    const { textName, maxP, minP } = this.state;
+    const { textSearch, maxP, minP } = this.state;
     const { onSearchHigh } = this.props;
     onSearchHigh({
-      textName,
+      textName: textSearch,
       maxP,
       minP
+    });
+  };
+
+  handleChange = value => {
+    // console.log("object", value);
+    this.setState({
+      textSearch: value,
+      checkData: false
     });
   };
 
   render() {
     const { Search } = Input;
     const { Option } = Select;
-    const { size } = this.state;
-    const { onSearchFullText } = this.props;
+    const { size, checkData, textSearch } = this.state;
+    const { onSearchFullText, listProductSearch } = this.props;
     return (
       <div>
         <div
@@ -56,11 +66,101 @@ class SearchComponent extends Component {
             <div
               style={{
                 display: "flex",
-                width: "650px",
+                width: "auto",
                 height: "100%"
               }}
             >
-              <Input
+              <Select
+                // Important
+                showSearch
+                allowClear
+                optionFilterProp="children"
+                placeholder="Nhập tên sản phẩm ..."
+                optionLabelProp="label"
+                value={textSearch}
+                onFocus={() => {
+                  this.setState({
+                    checkData: true
+                  });
+                }}
+                onSearch={value => {
+                  // if (
+                  //   listProductSearch.filter(
+                  //     el =>
+                  //       el.ProductName.toLowerCase().indexOf(
+                  //         value.toLowerCase()
+                  //       ) >= 0
+                  //   ).length > 0 ||
+                  //   value === ""
+                  // ) {
+                  //   this.setState({
+                  //     checkData: false,
+                  //     textSearch: value
+                  //   });
+                  // } else {
+                  if (checkData) {
+                    this.setState({
+                      textSearch: value
+                    });
+                  }
+
+                  // }
+                }}
+                onChange={this.handleChange}
+                filterOption={(input, option) => {
+                  // if (checkData) {
+                  //   return 1;
+                  // }
+                  // console.log(option);
+                  return (
+                    option.props.children[1].props.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  );
+                }}
+                style={{ width: "500px" }}
+              >
+                <Option
+                  key={textSearch}
+                  value={textSearch}
+                  label={textSearch}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <Avatar shape="square" style={{ marginRight: "10px" }} />
+                  <span>{textSearch}</span>
+                </Option>
+                {false ? (
+                  <Option
+                    value={textSearch}
+                    label={textSearch}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between"
+                    }}
+                  >
+                    <Avatar shape="square" style={{ marginRight: "10px" }} />
+                    <span>{textSearch}</span>
+                  </Option>
+                ) : (
+                  listProductSearch.map(items => (
+                    <Option
+                      key={items.ProductID}
+                      value={items.ProductName}
+                      label={items.ProductName}
+                      style={{ display: "flex", alignItems: "center" }}
+                    >
+                      <Avatar
+                        shape="square"
+                        src={items.ImageDetail}
+                        style={{ marginRight: "10px" }}
+                      />
+                      <span>{items.ProductName}</span>
+                    </Option>
+                  ))
+                )}
+              </Select>
+              {/* <Input
                 allowClear
                 placeholder="Nhập Tên Sản Phẩm  ..."
                 onChange={event => {
@@ -68,7 +168,7 @@ class SearchComponent extends Component {
                     textName: event.target.value
                   });
                 }}
-              />
+              /> */}
               <Input.Group compact>
                 <Select defaultValue="1">
                   <Option value="1"> Giá </Option>
@@ -76,7 +176,7 @@ class SearchComponent extends Component {
                 <Input
                   type="number"
                   allowClear
-                  style={{ width: 100, textAlign: "center" }}
+                  style={{ width: 150, textAlign: "center" }}
                   placeholder="Minimum"
                   onChange={event => {
                     this.setState({
@@ -100,7 +200,7 @@ class SearchComponent extends Component {
                   type="number"
                   className="site-input-right"
                   style={{
-                    width: 100,
+                    width: 150,
                     textAlign: "center"
                   }}
                   placeholder="Maximum"
@@ -133,7 +233,11 @@ class SearchComponent extends Component {
   }
 }
 
-const mapStateToProps = state => {};
+const mapStateToProps = state => {
+  return {
+    listProductSearch: state.introProduct.listProductSearch
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {

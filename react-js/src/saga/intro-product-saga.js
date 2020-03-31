@@ -68,6 +68,33 @@ const IntroProductSagas = {
     }
   },
 
+  *getListSearchProduct(action) {
+    try {
+      const productInfor = yield call(() => {
+        return axios.get(
+          `http://localhost:3001/product/getProductAllByCategory?cate=${action.data.idCategory}`,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
+      });
+      if (!productInfor.data.success) {
+        yield put(
+          IntroProductActions.listProductSearchFailed(productInfor.data)
+        );
+        message.error(productInfor.data.message, 3);
+      } else {
+        yield put(
+          IntroProductActions.listProductSearchSucceed(productInfor.data)
+        );
+      }
+    } catch (error) {
+      yield put(IntroProductActions.listProductSearchFailed(error));
+    }
+  },
+
   *updateLikeProduct(action) {
     //Magic
     const params = {
@@ -141,14 +168,6 @@ const IntroProductSagas = {
   },
 
   *searchHigh(action) {
-    //Magic value.textName === "" && value.maxP === "" && value.minP === ""
-    // let params = {
-    //   ProductName: action.data.value.textName,
-    //   MaxPrice: action.data.value.maxP,
-    //   MinPrice: action.data.value.minP
-    //   // CategoryID: action.data.cate
-    // };
-
     let textName = action.data.value.textName.split("`").join("");
     textName = textName.split(`'`).join("");
     textName = textName.split(`"`).join("");

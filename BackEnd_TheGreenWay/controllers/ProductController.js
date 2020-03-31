@@ -441,9 +441,7 @@ let getProductsByCategory = async (req, res) => {
                                     FROM Products
                                     JOIN Categories
                                     ON Products.CategoryID=Categories.CategoryID
-                                    AND Categories.CategoryID=?) ProductsCate
-                            LEFT JOIN LikesOfProduct
-                            ON ProductsCate.ProductID=LikesOfProduct.ProductID`;
+                                    AND Categories.CategoryID=?) ProductsCate`;
         let query = mysql.format(sql, [idCategory]);
         connectionDB.query(query, async (err, results) => {
           if (err) {
@@ -463,6 +461,32 @@ let getProductsByCategory = async (req, res) => {
               totalPage: totalPage // Total page
             });
           }
+        });
+      }
+    }
+  });
+};
+
+let getProductAllByCategory = async (req, res) => {
+  const cate = req.query.cate;
+  let sql = ` SELECT ProductID,ProductName,ImageDetail FROM Products WHERE CategoryID = ?`;
+  let query = mysql.format(sql, [cate]);
+  connectionDB.query(query, async (err, result) => {
+    if (err) {
+      return res.status(200).json({ success: false, message: err });
+    } else {
+      //Lay ID day vao Database cho bang Product
+      const arr = await Array.apply(null, result);
+      if (arr.length === 0) {
+        // Chua co thi like
+        return res.status(200).json({
+          success: false,
+          message: "No Products!"
+        });
+      } else {
+        return res.status(200).json({
+          success: true,
+          data: arr
         });
       }
     }
@@ -814,5 +838,6 @@ module.exports = {
   getProductsStatus: getProductsStatus,
   deleteProduct: deleteProduct,
   getListProductLike: getListProductLike,
-  getInfoProductFromCart: getInfoProductFromCart
+  getInfoProductFromCart: getInfoProductFromCart,
+  getProductAllByCategory: getProductAllByCategory
 };

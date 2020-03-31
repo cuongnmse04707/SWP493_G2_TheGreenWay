@@ -19,6 +19,10 @@ let productRouter = server => {
     "/getInfoProductFromCart",
     ProductController.getInfoProductFromCart
   );
+  router.get(
+    "/getProductAllByCategory",
+    ProductController.getProductAllByCategory
+  );
   // Check Token User
   router.use(AuthMiddleware.isAuth);
   // List Protect APIs:
