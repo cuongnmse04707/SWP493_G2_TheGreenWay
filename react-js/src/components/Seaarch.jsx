@@ -88,34 +88,14 @@ class SearchComponent extends Component {
                   });
                 }}
                 onSearch={value => {
-                  // if (
-                  //   listProductSearch.filter(
-                  //     el =>
-                  //       el.ProductName.toLowerCase().indexOf(
-                  //         value.toLowerCase()
-                  //       ) >= 0
-                  //   ).length > 0 ||
-                  //   value === ""
-                  // ) {
-                  //   this.setState({
-                  //     checkData: false,
-                  //     textSearch: value
-                  //   });
-                  // } else {
                   if (checkData) {
                     this.setState({
                       textSearch: value
                     });
                   }
-
-                  // }
                 }}
                 onChange={this.handleChange}
                 filterOption={(input, option) => {
-                  // if (checkData) {
-                  //   return 1;
-                  // }
-                  // console.log(option);
                   return (
                     option.props.children[1].props.children
                       .toLowerCase()
@@ -130,24 +110,24 @@ class SearchComponent extends Component {
                   label={textSearch}
                   style={{ display: "flex", alignItems: "center" }}
                 >
-                  <Avatar shape="square" style={{ marginRight: "10px" }} />
+                  <Avatar
+                    shape="square"
+                    style={{ marginRight: "10px" }}
+                    src={
+                      listProductSearch.filter(
+                        el => el.ProductName === textSearch
+                      ).length > 0
+                        ? listProductSearch.find(
+                            el => el.ProductName === textSearch
+                          ).ImageDetail
+                        : null
+                    }
+                  />
                   <span>{textSearch}</span>
                 </Option>
-                {false ? (
-                  <Option
-                    value={textSearch}
-                    label={textSearch}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between"
-                    }}
-                  >
-                    <Avatar shape="square" style={{ marginRight: "10px" }} />
-                    <span>{textSearch}</span>
-                  </Option>
-                ) : (
-                  listProductSearch.map(items => (
+                {listProductSearch
+                  .filter(el => el.ProductName !== textSearch)
+                  .map(items => (
                     <Option
                       key={items.ProductID}
                       value={items.ProductName}
@@ -161,18 +141,8 @@ class SearchComponent extends Component {
                       />
                       <span>{items.ProductName}</span>
                     </Option>
-                  ))
-                )}
+                  ))}
               </Select>
-              {/* <Input
-                allowClear
-                placeholder="Nhập Tên Sản Phẩm  ..."
-                onChange={event => {
-                  this.setState({
-                    textName: event.target.value
-                  });
-                }}
-              /> */}
               <Input.Group compact>
                 <Select defaultValue="1">
                   <Option value="1"> Giá </Option>
