@@ -145,12 +145,12 @@ let forgotpassword = async (req, res) => {
           const mailOptions = {
             from: "nguyencuong.3061997@gmail.com",
             to: `${req.body.email}`,
-            subject: "Link To Reset Password",
+            subject: "[TGW] - Tạo lại mật khẩu",
             text:
-              "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
-              "Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n" +
-              `http://localhost:3000/forgot?${accessToken}?${req.body.email}\n\n` +
-              "If you did not request this, please ignore this email and your password will remain unchanged.\n"
+              "Bạn đang nhận được điều này bởi vì bạn (hoặc người khác) đã yêu cầu đặt lại mật khẩu cho tài khoản của bạn.\n\n" +
+              "Vui lòng nhấp vào liên kết sau hoặc dán liên kết này vào trình duyệt của bạn để hoàn tất quy trình trong vòng mười giờ sau khi nhận được:\n\n" +
+              `http://localhost:3000/forgot?${accessToken}?${req.body.email}` +
+              "\n\nNếu bạn không yêu cầu điều này, xin vui lòng bỏ qua email này và mật khẩu của bạn sẽ không thay đổi.\n"
           };
           // Thao tac Update/Luu vao userToken table
           // Kiem tra email da co trong bang userToken chua

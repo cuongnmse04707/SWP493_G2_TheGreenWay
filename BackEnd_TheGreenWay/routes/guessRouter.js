@@ -10,7 +10,7 @@ let guessRouter = server => {
   // Check Token MOD
   router.use(GuestMiddleware.isAuth);
   // check token
-  router.get("/showOrderByToken", GuessController.showOrderByToken);
+  router.post("/showOrderByToken", GuessController.showOrderByToken);
 
   return server.use("/guest", router);
 };

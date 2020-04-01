@@ -120,7 +120,7 @@ class SearchComponent extends Component {
                         ? listProductSearch.find(
                             el => el.ProductName === textSearch
                           ).ImageDetail
-                        : null
+                        : "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Ficons8-package-search-64.png?alt=media&token=d0ac4fb7-699e-480a-8bbc-32eb701a92dd"
                     }
                   />
                   <span>{textSearch}</span>

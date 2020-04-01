@@ -1,6 +1,7 @@
 const debug = console.log.bind(console);
 const mysql = require("mysql");
 var config = require("../config/configDB");
+const nodemailer = require("nodemailer");
 const connectionDB = mysql.createConnection(config.databaseOptions);
 
 const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "3650d";
@@ -146,7 +147,7 @@ let addNewOrderByGuest = async (req, res) => {
                           OrderID: OrderID
                         };
                         debug(
-                          `Thực hiện tạo mã Token, [thời gian sống 1 giờ.]`
+                          `Thực hiện tạo mã Token, [thời gian sống 3650 ngày.]`
                         );
                         const accessToken = await jwtGuest.generateTokenGuest(
                           guestData,
@@ -157,6 +158,26 @@ let addNewOrderByGuest = async (req, res) => {
                         const emptyGuest = {
                           GuestID: guestID,
                           token: accessToken
+                        };
+
+                        //Tao transporter
+                        const transporter = nodemailer.createTransport({
+                          service: "gmail",
+                          auth: {
+                            user: `nguyencuong.3061997@gmail.com`,
+                            pass: `manhcuong@vickyrius1997`
+                          }
+                        });
+                        // tao mailOptions
+                        const mailOptions = {
+                          from: "nguyencuong.3061997@gmail.com",
+                          to: `cuongnmse04707@fpt.edu.vn`,
+                          subject: "[TGW] - Đơn hàng của bạn",
+                          text:
+                            "Bạn đang nhận được điều này bởi vì bạn (hoặc người khác) đã yêu cầu đặt hàng bằng email của bạn.\n\n" +
+                            "Vui lòng nhấp vào liên kết sau hoặc dán liên kết này vào trình duyệt của bạn để xem thông tin đơn hàng:\n\n" +
+                            `http://localhost:3000/order-detail/order?token=${accessToken}` +
+                            "\n\nNếu bạn không yêu cầu điều này, xin vui lòng bỏ qua email này.\n"
                         };
                         // Luu vao Database
                         connectionDB.query(
@@ -170,14 +191,24 @@ let addNewOrderByGuest = async (req, res) => {
                                 message: "Add Guest is Unsuccess!"
                               });
                             } else {
-                              return res.status(200).json({
-                                success: true,
-                                message: "Create Order by Guest Success!",
-                                accessToken
-                              });
                             }
                           }
                         );
+
+                        transporter.sendMail(mailOptions, (err, response) => {
+                          if (err) {
+                            return res.status(200).json({
+                              success: false,
+                              message: err
+                            });
+                          } else {
+                            return res.status(200).json({
+                              success: true,
+                              message: "Create Order by Guest Success!",
+                              accessToken
+                            });
+                          }
+                        });
                       } catch (error) {
                         return res.status(200).json({
                           success: false,
