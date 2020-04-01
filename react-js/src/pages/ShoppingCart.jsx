@@ -3,7 +3,7 @@ import "../css/shopping-cart.css";
 import { Table, Button } from "antd";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { InputNumber, Modal, Select, Input } from "antd";
+import { InputNumber, Modal, Select, Input, message } from "antd";
 import { connect } from "react-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
@@ -65,7 +65,7 @@ class ShoppingCart extends Component {
     });
   };
 
-  componentDidUpdate() { }
+  componentDidUpdate() {}
 
   handleOk = e => {
     // console.log(e);
@@ -115,7 +115,12 @@ class ShoppingCart extends Component {
   };
 
   confirmPayment = () => {
-    this.props.history.push("/confirm-payment");
+    const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
+    if (cart.length === 0) {
+      message.error("Chưa có sản phẩm trong giỏ hàng !");
+    } else {
+      this.props.history.push("/confirm-payment");
+    }
   };
   render() {
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
@@ -198,11 +203,11 @@ class ShoppingCart extends Component {
                     <span style={{ fontWeight: "bold" }}>{totalCash} VNĐ</span>
                   </div>
                 ) : (
-                    <div className="text-total-money">
-                      <span>Tổng số tiền</span>
-                      <span style={{ fontWeight: "bold" }}>{totalCash} VNĐ</span>
-                    </div>
-                  )}
+                  <div className="text-total-money">
+                    <span>Tổng số tiền</span>
+                    <span style={{ fontWeight: "bold" }}>{totalCash} VNĐ</span>
+                  </div>
+                )}
                 {this.state.paymentOption == "1" ? (
                   <div className="text-total-money-disable">
                     <span>Tổng số giấy</span>
@@ -211,13 +216,13 @@ class ShoppingCart extends Component {
                     </span>
                   </div>
                 ) : (
-                    <div className="text-total-money">
-                      <span>Tổng số giấy</span>
-                      <span style={{ fontWeight: "bold" }}>
-                        {Math.floor(totalCash / convensionRate)} kg
+                  <div className="text-total-money">
+                    <span>Tổng số giấy</span>
+                    <span style={{ fontWeight: "bold" }}>
+                      {Math.floor(totalCash / convensionRate)} kg
                     </span>
-                    </div>
-                  )}
+                  </div>
+                )}
 
                 <div className="button-check-out" onClick={this.confirmPayment}>
                   <span>Tiến hành thanh toán </span>

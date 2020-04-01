@@ -242,7 +242,16 @@ let showOrderByToken = async (req, res) => {
                 message: "You can't have access this order!"
               });
             } else {
-              let sql = `SELECT OrderID,ProductID,QuantityProduct,Price FROM OrderDetail WHERE OrderDetail.OrderID=?`;
+              let sql = `SELECT
+                          OrderDetail.OrderID,OrderDetail.ProductID,Products.ProductName,Products.ImageDetail,OrderDetail.QuantityProduct,OrderDetail.Price
+                          FROM
+                              OrderDetail
+                          JOIN 
+                            Products
+                          WHERE
+                              Products.ProductID = OrderDetail.ProductID
+                          AND 
+                            OrderDetail.OrderID = ?`;
               let query = mysql.format(sql, [OrderID]);
               connectionDB.query(query, async (err, result) => {
                 if (err) {
