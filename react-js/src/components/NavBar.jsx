@@ -207,14 +207,6 @@ class NavBar extends Component {
                     />
                   </Badge>
                 </li>
-                <li className="nav-item">
-                    <a
-                      className="nav-link js-scroll-trigger"
-                      onClick={this.toLogin}
-                    >
-                      Đăng nhập/Đăng ký
-                    </a>
-                  </li>
               </ul>
             </div>
             <Modal

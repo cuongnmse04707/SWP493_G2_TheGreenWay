@@ -35,7 +35,7 @@ class UserOrderHistory extends Component {
   render() {
     const columns = [
       {
-        title: 'STT',
+        title: 'OrderId',
         dataIndex: "index",
         render: (text, record) => (
           <div>
@@ -78,6 +78,15 @@ class UserOrderHistory extends Component {
         render: (text, record) => (
           <div>
             <span>{record.CreateDate.split('T')[0]}</span>
+          </div>
+        )
+      },
+      {
+        title: 'Ngày nhận hàng',
+        dataIndex: 'endDate',
+        render: (text, record) => (
+          <div>
+            <span>{record.EndDate}</span>
           </div>
         )
       },
