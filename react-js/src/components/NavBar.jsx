@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Icon, Dropdown, Menu, Modal } from "antd";
+import { Icon, Dropdown, Menu, Modal, Button } from "antd";
 import { Avatar, Badge } from "antd";
 import "antd/dist/antd.css";
 import { withRouter } from "react-router";
@@ -207,6 +207,14 @@ class NavBar extends Component {
                     />
                   </Badge>
                 </li>
+                <li className="nav-item">
+                    <a
+                      className="nav-link js-scroll-trigger"
+                      onClick={this.toLogin}
+                    >
+                      Đăng nhập/Đăng ký
+                    </a>
+                  </li>
               </ul>
             </div>
             <Modal

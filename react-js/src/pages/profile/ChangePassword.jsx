@@ -297,7 +297,7 @@ class ChangePassword extends Component {
                 >
                   <Form.Item
                     {...formItemLayout}
-                    label="Old Password"
+                    label="Mật khẩu cũ"
                     hasFeedback
                   >
                     {getFieldDecorator("oldPassword", {
@@ -311,7 +311,7 @@ class ChangePassword extends Component {
                   </Form.Item>
                   <Form.Item
                     {...formItemLayout}
-                    label="New Password"
+                    label="Mật khẩu mới"
                     hasFeedback
                   >
                     {getFieldDecorator("newPassword", {
@@ -330,7 +330,7 @@ class ChangePassword extends Component {
                   </Form.Item>
                   <Form.Item
                     {...formItemLayout}
-                    label="Confirm Password"
+                    label="Xác nhận mật khẩu"
                     hasFeedback
                   >
                     {getFieldDecorator("confirmPassword", {

@@ -5,6 +5,10 @@ import Footer from "../components/Footer";
 
 class OrderSuccess extends Component {
 
+  componentDidMount() {
+    window.localStorage.removeItem('cart')
+  }
+
   toHomePage = () => {
     this.props.history.push('/')
   }
@@ -28,7 +32,10 @@ class OrderSuccess extends Component {
               <p className="thank-order">thank for your order</p>
               <div>
                 <p>Cảm ơn bạn đã lựa chọn The Green Way để trải nghiệm cho mình phong cách sống xanh,
-                   lựa chọn những sản phẩm thân thiện với môi trường.</p>
+                lựa chọn những sản phẩm thân thiện với môi trường.
+                   </p>
+                <p>Đơn hàng đang được xử lí, chúng tôi sẽ giao đến quý khách trong thời gian sớm nhất.
+                   </p>
               </div>
               <div className="button-check-out btn-continue" onClick={this.toHomePage}>
                 <span>Tiếp tục mua hàng</span>

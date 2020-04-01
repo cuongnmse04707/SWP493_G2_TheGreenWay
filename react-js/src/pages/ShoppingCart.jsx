@@ -65,7 +65,7 @@ class ShoppingCart extends Component {
     });
   };
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   handleOk = e => {
     // console.log(e);
@@ -162,7 +162,7 @@ class ShoppingCart extends Component {
       },
       {
         title: "Action",
-        key: "ProductName",
+        key: "action",
         render: (text, record) => (
           <img
             onClick={event => this.showModal(record.ProductID)}
@@ -198,11 +198,11 @@ class ShoppingCart extends Component {
                     <span style={{ fontWeight: "bold" }}>{totalCash} VNĐ</span>
                   </div>
                 ) : (
-                  <div className="text-total-money">
-                    <span>Tổng số tiền</span>
-                    <span style={{ fontWeight: "bold" }}>{totalCash} VNĐ</span>
-                  </div>
-                )}
+                    <div className="text-total-money">
+                      <span>Tổng số tiền</span>
+                      <span style={{ fontWeight: "bold" }}>{totalCash} VNĐ</span>
+                    </div>
+                  )}
                 {this.state.paymentOption == "1" ? (
                   <div className="text-total-money-disable">
                     <span>Tổng số giấy</span>
@@ -211,55 +211,14 @@ class ShoppingCart extends Component {
                     </span>
                   </div>
                 ) : (
-                  <div className="text-total-money">
-                    <span>Tổng số giấy</span>
-                    <span style={{ fontWeight: "bold" }}>
-                      {Math.floor(totalCash / convensionRate)} kg
+                    <div className="text-total-money">
+                      <span>Tổng số giấy</span>
+                      <span style={{ fontWeight: "bold" }}>
+                        {Math.floor(totalCash / convensionRate)} kg
                     </span>
-                  </div>
-                )}
-                <div className="payment-option mt-3">
-                  <span style={{ fontSize: "18px", marginBottom: "10px" }}>
-                    Chọn hình thức thanh toán:
-                  </span>
-                  <Select
-                    style={{ width: 200, marginBottom: "10px" }}
-                    onChange={this.handleOptionChange}
-                    placeholder="Chọn phương thức"
-                  >
-                    <Option value="1">Tiền</Option>
-                    <Option value="2">Giấy</Option>
-                    <Option value="3">Cả hai</Option>
-                  </Select>
-                  {this.state.paymentOption == 3 ? (
-                    <div className="show-option-payment">
-                      <div className="money-input mb-1">
-                        <span>Nhập số kg giấy: </span>
-                        <InputNumber
-                          type="number"
-                          min={0}
-                          max={Math.floor(totalCash / convensionRate)}
-                          // value={0}
-                          placeholder="Nhập số kg giấy"
-                          onChange={value => this.onPaperChange(value)}
-                          style={{ width: "135px" }}
-                        />
-                      </div>
-                      <div className="money-input">
-                        <span>Số tiền còn thiếu: </span>
-                        <InputNumber
-                          readOnly
-                          min={1}
-                          value={this.state.remainingAmout}
-                          disabled
-                          style={{ width: "135px" }}
-                        />
-                      </div>
                     </div>
-                  ) : (
-                    <div className="show-option-payment"></div>
                   )}
-                </div>
+
                 <div className="button-check-out" onClick={this.confirmPayment}>
                   <span>Tiến hành thanh toán </span>
                 </div>

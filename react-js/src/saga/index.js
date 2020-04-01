@@ -9,6 +9,8 @@ import { ConvensionTypes } from "../redux/paper-conversion-redux";
 import { ProductDetailTypes } from "../redux/product-detail-redux";
 import { LifeWayTypes } from "../redux/life-way-redux";
 import { UserLikeProductTypes } from "../redux/user-product-like-redux";
+import { UserOrderHistoryTypes } from "../redux/user-order-history-redux";
+import { OrderCartTypes } from "../redux/order-card-redux";
 import LoginSagas from "./login-saga";
 import ResetPassword from "./reset-password";
 import HomePageSagas from "./home-page-saga";
@@ -19,6 +21,8 @@ import PaperConvensionSagas from "./paper-convension-saga";
 import ProductDetailSagas from "./product-detail-saga";
 import LifeWaySagas from "./life-way-saga";
 import UserProductLikeSagas from "./user-product-like-saga";
+import UserOrderHistorySagas from "./user-order-history-saga";
+import OrderCartSagas from "./order-cart-saga";
 
 export default function* root() {
   yield all([
@@ -30,50 +34,22 @@ export default function* root() {
     takeLatest(EditTypes.EDIT_REQUEST, EditProfileSagas.editProfile),
     takeLatest(EditTypes.UPLOAD_REQUEST, EditProfileSagas.changeAvatar),
     takeLatest(ChangePassTypes.CHANGE_REQUEST, ChangePassSagas.changePass),
-    takeLatest(
-      IntroProductTypes.GET_INTRO_PRODUCT_REQUEST,
-      IntroProductSagas.getIntroProduct
-    ),
-    takeLatest(
-      IntroProductTypes.GET_RECYCLE_PRODUCT_REQUEST,
-      IntroProductSagas.getRecycleProduct
-    ),
-    takeLatest(
-      ConvensionTypes.GET_CONVENSION_REQUEST,
-      PaperConvensionSagas.getConvensionRate
-    ),
-    takeLatest(
-      ProductDetailTypes.GET_PRODUCT_DETAIL_REQUEST,
-      ProductDetailSagas.getProductDetail
-    ),
+    takeLatest(IntroProductTypes.GET_INTRO_PRODUCT_REQUEST,IntroProductSagas.getIntroProduct),
+    takeLatest(IntroProductTypes.GET_RECYCLE_PRODUCT_REQUEST,IntroProductSagas.getRecycleProduct),
+    takeLatest(ConvensionTypes.GET_CONVENSION_REQUEST,PaperConvensionSagas.getConvensionRate),
+    takeLatest(ProductDetailTypes.GET_PRODUCT_DETAIL_REQUEST,ProductDetailSagas.getProductDetail),
     takeLatest(LifeWayTypes.GET_LIFE_WAY_REQUEST, LifeWaySagas.getPostInfor),
-    takeLatest(
-      IntroProductTypes.UPDATE_LIKE_PRODUCT,
-      IntroProductSagas.updateLikeProduct
-    ),
-    takeLatest(
-      IntroProductTypes.SEARCH_DEFAULT,
-      IntroProductSagas.searchDefault
-    ),
+    takeLatest(IntroProductTypes.UPDATE_LIKE_PRODUCT,IntroProductSagas.updateLikeProduct),
+    takeLatest(IntroProductTypes.SEARCH_DEFAULT,IntroProductSagas.searchDefault),
     takeLatest(IntroProductTypes.SEARCH_HIGH, IntroProductSagas.searchHigh),
     takeLatest(LifeWayTypes.GET_LIFE_WAY_REQUEST, LifeWaySagas.getPostInfor),
-    takeLatest(
-      LifeWayTypes.GET_LIFE_WAY_DETAIL_REQUEST,
-      LifeWaySagas.getPostDetailInfor
-    ),
+    takeLatest(LifeWayTypes.GET_LIFE_WAY_DETAIL_REQUEST, LifeWaySagas.getPostDetailInfor),
     takeLatest(LifeWayTypes.GET_LIFE_WAY_LIKE_REQUEST, LifeWaySagas.likePost),
-    takeLatest(
-      LifeWayTypes.GET_LIFE_WAY_SEARCH_REQUEST,
-      LifeWaySagas.searchPost
-    ),
+    takeLatest(LifeWayTypes.GET_LIFE_WAY_SEARCH_REQUEST,LifeWaySagas.searchPost),
     takeLatest(LifeWayTypes.GET_POST_LIKE_MUCH, LifeWaySagas.getPostLikeMuch),
-    takeLatest(
-      UserLikeProductTypes.GET_PRODUCT_LIKE_REQUEST,
-      UserProductLikeSagas.getProductLikeInfor
-    ),
-    takeLatest(
-      IntroProductTypes.LIST_PRODUCT_SEARCH,
-      IntroProductSagas.getListSearchProduct
-    )
+    takeLatest(UserLikeProductTypes.GET_PRODUCT_LIKE_REQUEST,UserProductLikeSagas.getProductLikeInfor),
+    takeLatest(UserOrderHistoryTypes.GET_USER_ORDER_REQUEST,UserOrderHistorySagas.getOrderHistoryInfor),
+    takeLatest(IntroProductTypes.LIST_PRODUCT_SEARCH, IntroProductSagas.getListSearchProduct),
+    takeLatest(OrderCartTypes.GET_ORDER_CART_REQUEST, OrderCartSagas.orderCart)
   ]);
 }

@@ -14,6 +14,8 @@ const rootReducer = combineReducers({
   productDetail: require('./product-detail-redux').reducer,
   lifeWay: require('./life-way-redux').reducer,
   userProductLike: require('./user-product-like-redux').reducer,
+  userOrderHistory: require('./user-order-history-redux').reducer,
+  orderCart: require('./order-card-redux').reducer,
 })
 
 export default rootReducer

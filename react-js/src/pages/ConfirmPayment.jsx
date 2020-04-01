@@ -4,7 +4,7 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import { connect } from "react-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
-import HomePageTypes from "../redux/home-page-redux";
+import OrderCartTypes from "../redux/order-card-redux";
 import {
   Form,
   Input,
@@ -23,15 +23,103 @@ const { TextArea } = Input;
 
 class ConfirmPayment extends Component {
   state = {
+    totalCash: 0,
+    paymentOption: '',
+    remainingAmout: 0,
+    QuantityPaper: 0
+  };
+
+  componentDidMount = () => {
+    this.props.getPaperConvension();
+    const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
+    let total = 0;
+    cart.map(e => {
+      total = total + e.ProductPrice * e.quatityBuy;
+    });
+    this.setState({
+      totalCash: total,
+      remainingAmout: total
+    });
+  };
+
+  onPaperChange = value => {
+    console.log(value)
+    this.setState({
+      QuantityPaper: value
+    })
+    console.log(this.props.convensionRate)
+    const sotienthieu =
+      this.state.totalCash - value * this.props.convensionRate;
+    this.setState({
+      remainingAmout: this.state.totalCash - value * this.props.convensionRate
+    });
+    console.log(this.state.totalCash - value * this.props.convensionRate)
   };
 
   handleSelectChange = (value) => {
     console.log(`selected ${value}`);
   }
 
+
+  handleOptionChange = value => {
+    this.setState({
+      paymentOption: value
+    });
+  };
+
   orderSuccess = () => {
-    this.props.history.push('/order-success')
+    this.props.form.validateFieldsAndScroll(
+      ["address", "paymentOption"],
+      (err, fieldsValues) => {
+        if (!err) {
+          console.log(fieldsValues)
+          var totalPaper = Math.floor(this.state.totalCash / this.props.convensionRate)
+          var totalMoney = this.state.totalCash
+          var cash = 0
+          var check = this.state.paymentOption
+          const cart = JSON.parse(window.localStorage.getItem('cart'))
+          console.log(cart)
+          if (check === '1') {
+            console.log(1)
+            totalPaper = 0
+            cash = totalMoney
+          }
+          if (this.state.paymentOption === '2') {
+            console.log(2)
+          }
+          if (this.state.paymentOption === '3') {
+            console.log(3)
+            totalPaper = this.state.QuantityPaper
+            cash = this.state.remainingAmout
+          }
+          console.log(totalPaper)
+          const params = {
+            PaymentID: fieldsValues.paymentOption,
+            ConversionID: this.props.convensionId,
+            TotalPrice: totalMoney,
+            ShipAddress: fieldsValues.address,
+            CreateDate: new Date(),
+            QuantityPaper: totalPaper,
+            Cash: cash,
+            cart: cart.map(ele => ({
+              ProductName: ele.ProductName,
+              id: ele.ProductID,
+              quatity: ele.Quantity,
+              price: ele.ProductPrice,
+              quatityBuy: ele.quatityBuy
+            }))
+          }
+          console.log("params", params)
+          this.props.sendOrderCart(params)
+          this.props.history.push('/order-success')
+        }
+      }
+    );
+
+
   }
+
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -49,7 +137,9 @@ class ConfirmPayment extends Component {
       }
     };
     const token = window.localStorage.getItem('x-access-token')
-    console.log(this.props.userInformation)
+    const cart = JSON.parse(window.localStorage.getItem('cart'))
+    const { totalCash } = this.state;
+    const { convensionRate } = this.props;
     return (
       <div>
         <NavBar />
@@ -63,51 +153,37 @@ class ConfirmPayment extends Component {
               {token ? (
                 <div>
                   <Form {...formItemLayout} className="mt-4">
-                      <Form.Item label="Họ và tên">
-                        {getFieldDecorator("fullname", {
-                          initialValue: this.props.userInformation.username
-                        })(<Input />)}
-                      </Form.Item>
-                      <Form.Item label="Số điện thoại">
-                        {getFieldDecorator("username", {
-                          initialValue: this.props.userInformation.phone
-                        })(<Input />)}
-                      </Form.Item>
-                      <Form.Item label="Tỉnh/Thành Phố">
-                        {getFieldDecorator("phone", {
-                          initialValue: this.props.userInformation.address
-                        })(<Input style={{ width: "100%" }} />)}
-                      </Form.Item>
-                      <Form.Item label="Quận/Huyện/Thị xã">
-                        {getFieldDecorator("address", {
-                          initialValue: this.props.userInformation.address
-                        })(<Input />)}
-                      </Form.Item>
-                      <Form.Item label="Xã">
-                        {getFieldDecorator("city", {
-                          initialValue: this.props.userInformation.address
-                        })(<Input />)}
-                      </Form.Item>
-                      <Form.Item label="Địa chỉ">
-                        {getFieldDecorator("city", {
-                          initialValue: this.props.userInformation.address
-                        })(<TextArea rows={4} />)}
-                      </Form.Item>
-                      <Form.Item label="Lựa chọn phương thức thanh toán">
-                        {getFieldDecorator("country", {
-                          initialValue: this.state.country
-                        })(
-                          <Select defaultValue="lucy"
-                            style={{ width: 200 }}
-                            onChange={this.handleSelectChange}
-                            placeholder="Chọn phương thức"
-                          >
-                            <Option value="1">Ship COD</Option>
-                            <Option value="2">Chuyển Khoản</Option>
-                          </Select>
-                        )}
-                      </Form.Item>
-                    </Form>
+                    <Form.Item label="Họ và tên">
+                      {getFieldDecorator("fullname", {
+                        initialValue: this.props.userInformation.username
+                      })(<Input />)}
+                    </Form.Item>
+                    <Form.Item label="Số điện thoại">
+                      {getFieldDecorator("phone", {
+                        initialValue: this.props.userInformation.phone
+                      })(<Input />)}
+                    </Form.Item>
+
+                    <Form.Item label="Nhập địa chỉ giao hàng:">
+                      {getFieldDecorator("address", {
+                        initialValue: this.props.userInformation.address
+                      })(<TextArea rows={4} />)}
+                    </Form.Item>
+                    <Form.Item label="Lựa chọn phương thức thanh toán">
+                      {getFieldDecorator("paymentOption", {
+                        initialValue: "1"
+                      })(
+                        <Select
+                          style={{ width: 200 }}
+                          {...this.props}
+
+                        >
+                          <Option value="1">Ship COD</Option>
+                          <Option value="2">Chuyển Khoản</Option>
+                        </Select>
+                      )}
+                    </Form.Item>
+                  </Form>
                 </div>
               ) : (
                   <div>
@@ -149,13 +225,11 @@ class ConfirmPayment extends Component {
                         })(<TextArea rows={4} />)}
                       </Form.Item>
                       <Form.Item label="Lựa chọn phương thức thanh toán">
-                        {getFieldDecorator("country", {
-                          initialValue: this.state.country
+                        {getFieldDecorator("paymentOption", {
+                          initialValue: "1"
                         })(
-                          <Select defaultValue="lucy"
+                          <Select defaultValue="1"
                             style={{ width: 200 }}
-                            onChange={this.handleSelectChange}
-                            placeholder="Chọn phương thức"
                           >
                             <Option value="1">Ship COD</Option>
                             <Option value="2">Chuyển Khoản</Option>
@@ -173,36 +247,70 @@ class ConfirmPayment extends Component {
                   <span>Sản phẩm</span>
                   <span>Số lượng</span>
                 </div>
-                <div className="text-bill-detail" >
-                  <span style={{ flex: "5", marginRight: "15px" }}>Sen đá</span>
-                  <span style={{ fontWeight: "bold", flex: "1" }}>
-                    1
-                    </span>
-                </div>
-                <div className="text-bill-detail" >
-                  <span style={{ flex: "5", marginRight: "15px" }}>Xương rồng</span>
-                  <span style={{ fontWeight: "bold", flex: "1" }}>
-                    1
-                    </span>
-                </div>
-                <div className="text-bill-detail" >
-                  <span style={{ flex: "5", marginRight: "15px" }}>Cây vạn lộc</span>
-                  <span style={{ fontWeight: "bold", flex: "1" }}>
-                    1
-                    </span>
+                <div className="text-bill-detail-container">
+                  {cart.map((item, index) => {
+                    return (
+                      <div className="text-bill-detail" key={index}>
+                        <span style={{ flex: "5", marginRight: "15px" }}>{item.ProductName}</span>
+                        <span style={{ fontWeight: "bold", flex: "1" }}>{item.quatityBuy}</span>
+                      </div>
+                    )
+                  })}
                 </div>
                 <div className="text-bill-total-money">
                   <span>Tổng số tiền</span>
-                  <span style={{ fontWeight: "bold" }}>10000VNĐ</span>
+                  <span style={{ fontWeight: "bold" }}>{this.state.totalCash}VNĐ</span>
                 </div>
                 <div className="text-bill-detail">
                   <span>Tổng số giấy</span>
-                  <span style={{ fontWeight: "bold" }}>50 Kg</span>
+                  <span style={{ fontWeight: "bold" }}>{Math.floor(totalCash / convensionRate)} Kg</span>
+                </div>
+                <div className="payment-option mt-3">
+                  <span style={{ fontSize: "18px", marginBottom: "10px" }}>
+                    Chọn hình thức thanh toán:
+                  </span>
+                  <Select
+                    style={{ width: 200, marginBottom: "10px" }}
+                    onChange={this.handleOptionChange}
+                    defaultValue = "1"
+                  >
+                    <Option value="1">Tiền</Option>
+                    <Option value="2">Giấy</Option>
+                    <Option value="3">Cả hai</Option>
+                  </Select>
+                  {this.state.paymentOption == 3 ? (
+                    <div className="show-option-payment">
+                      <div className="money-input mb-1">
+                        <span>Nhập số kg giấy: </span>
+                        <InputNumber
+                          type="number"
+                          min={0}
+                          max={Math.floor(totalCash / convensionRate)}
+                          // value={0}
+                          placeholder="Nhập số kg giấy"
+                          onChange={value => this.onPaperChange(value)}
+                          style={{ width: "135px" }}
+                        />
+                      </div>
+                      <div className="money-input">
+                        <span>Số tiền còn thiếu: </span>
+                        <InputNumber
+                          readOnly
+                          min={1}
+                          value={this.state.remainingAmout}
+                          disabled
+                          style={{ width: "135px" }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                      <div className="show-option-payment"></div>
+                    )}
                 </div>
                 <p className="change-shopping-cart">Thay đổi sản phẩm</p>
                 <div
                   className="button-check-out"
-                  onClick= {this.orderSuccess}
+                  onClick={this.orderSuccess}
                 >
                   <span>Đặt hàng </span>
                 </div>
@@ -217,13 +325,22 @@ class ConfirmPayment extends Component {
 }
 
 const mapStateToProps = state => {
+
   return {
     userInformation: state.homePage.userInformation,
+    convensionRate: state.convension.convensionRate,
+    convensionId: state.convension.convensionId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    getPaperConvension: () => {
+      dispatch(ConvensionTypes.getConvensionRequest());
+    },
+    sendOrderCart: (params) => {
+      dispatch(OrderCartTypes.getOrderCartRequest(params));
+    }
   };
 };
 const ConfirmPaymentScreen = Form.create()(ConfirmPayment);

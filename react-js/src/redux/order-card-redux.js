@@ -2,18 +2,16 @@ import { createReducer, createActions } from "reduxsauce"
 
 // TODO:Declare Action and type
 const { Types, Creators } = createActions({
-  getConvensionRequest: ['data'],
-  getConvensionRequestFailed: ['error'],
-  getConvensionSucceed: ['data']
+  getOrderCartRequest: ['data'],
+  getOrderCartRequestFailed: ['error'],
+  getOrderCartSucceed: ['data']
 })
 
-export const ConvensionTypes = Types
+export const OrderCartTypes = Types
 export default Creators
 
 //TODO: Declare initial state
 export const INITIAL_STATE = {
-  convensionRate: '',
-  convensionId: 0
 }
 
 export const request = (state) => {
@@ -22,12 +20,10 @@ export const request = (state) => {
   }
 }
 
-export const getConvensionSucceed = (state, {data}) => {
+export const geOrderCartSucceed = (state, {data}) => {
   console.log(data)
   return {
     ...state,
-    convensionRate: data.ConversionWorking.PaperPrice,
-    convensionId: data.ConversionWorking.ConversionID
   }
 }
 export const failed = (state, { error }) => {
@@ -39,7 +35,7 @@ export const failed = (state, { error }) => {
 
 //TODO:Hookup Reducers To Types in Action
 export const reducer = createReducer(INITIAL_STATE, {
-  [ConvensionTypes.GET_CONVENSION_REQUEST]: request,
-  [ConvensionTypes.GET_CONVENSION_SUCCEED]: getConvensionSucceed,
-  [ConvensionTypes.GET_CONVENSION_REQUEST_FAILED]: failed
+  [OrderCartTypes.GET_ORDER_CART_REQUEST]: request,
+  [OrderCartTypes.GET_ORDER_CART_SUCCEED]: geOrderCartSucceed,
+  [OrderCartTypes.GET_ORDER_CART_REQUEST_FAILED]: failed
 })

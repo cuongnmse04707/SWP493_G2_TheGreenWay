@@ -39,7 +39,6 @@ class UserProductLike extends Component {
     this.props.getProductDetail(params)
   }
   render() {
-
     const columns = [
       {
         title: 'Tên Sản Phẩm',
