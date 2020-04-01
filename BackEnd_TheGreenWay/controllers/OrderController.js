@@ -117,12 +117,12 @@ let showOrderListByEmail = async (req, res) => {
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
   // Run sql to get orderHistory
-  let sql = `SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate 
-              FROM Orders 
-              JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate 
+  let sql = `SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate
+              FROM Orders
+              JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate
                     FROM OrderStatus
-                    JOIN OrderStatusDetail 
-                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes 
+                    JOIN OrderStatusDetail
+                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
               ON Orders.OrderID = OrderStatusDes.OrderID
               AND Orders.UserEmail= ?
               LIMIT ?
@@ -142,11 +142,11 @@ let showOrderListByEmail = async (req, res) => {
         });
       } else {
         let sql = ` SELECT COUNT(*) AS Total
-                            FROM Orders 
-                            JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate 
-                                  FROM OrderStatus 
-                                  JOIN OrderStatusDetail 
-                                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes 
+                            FROM Orders
+                            JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate
+                                  FROM OrderStatus
+                                  JOIN OrderStatusDetail
+                                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
                             ON Orders.OrderID = OrderStatusDes.OrderID
                             AND Orders.UserEmail= ?`;
         let query = mysql.format(sql, [email]);
@@ -205,12 +205,12 @@ let showOrderByEmail = async (req, res) => {
           message: "You can't have access this order!"
         });
       } else {
-        let sql = ` SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate 
-                    FROM Orders 
-                    JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate 
+        let sql = ` SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate
+                    FROM Orders
+                    JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate
                           FROM OrderStatus
-                          JOIN OrderStatusDetail 
-                          ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes 
+                          JOIN OrderStatusDetail
+                          ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
                     ON Orders.OrderID = OrderStatusDes.OrderID
                     AND Orders.OrderID = ?
                     AND Orders.UserEmail= ?`;
@@ -232,11 +232,11 @@ let showOrderByEmail = async (req, res) => {
               OrderDetail.OrderID,OrderDetail.ProductID,Products.ProductName,Products.ImageDetail,OrderDetail.QuantityProduct,OrderDetail.Price
               FROM
                   OrderDetail
-              JOIN 
+              JOIN
                 Products
               WHERE
                   Products.ProductID = OrderDetail.ProductID
-              AND 
+              AND
                 OrderDetail.OrderID = ?`;
               let queryOrder = mysql.format(sql, [idOrder]);
               connectionDB.query(queryOrder, async (err, resultsOrder) => {
@@ -275,12 +275,12 @@ let showOrderListForMOD = async (req, res) => {
   const pageSize = 6;
   const offset = (page - 1) * pageSize;
   // Run sql to get orderHistory
-  let sql = `SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate 
-              FROM Orders 
-              JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate 
-                    FROM OrderStatus 
-                    JOIN OrderStatusDetail 
-                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes 
+  let sql = `SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate
+              FROM Orders
+              JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate
+                    FROM OrderStatus
+                    JOIN OrderStatusDetail
+                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
               ON Orders.OrderID = OrderStatusDes.OrderID
               LIMIT ?
               OFFSET ?`;
@@ -299,11 +299,11 @@ let showOrderListForMOD = async (req, res) => {
         });
       } else {
         let sql = ` SELECT COUNT(*) AS Total
-                            FROM Orders 
-                            JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate 
-                                  FROM OrderStatus 
-                                  JOIN OrderStatusDetail 
-                                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes 
+                            FROM Orders
+                            JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate
+                                  FROM OrderStatus
+                                  JOIN OrderStatusDetail
+                                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
                             ON Orders.OrderID = OrderStatusDes.OrderID `;
         let query = mysql.format(sql);
         connectionDB.query(query, async (err, results) => {
@@ -345,7 +345,7 @@ let changeStatusOrder = async (req, res) => {
   const OrderStatusCode = req.body.OrderStatusCode;
   var arraySave = [];
   // Run sql to get orderHistory
-  let sql = ` UPDATE OrderStatusDetail 
+  let sql = ` UPDATE OrderStatusDetail
               SET OrderStatusID=?,MODEmail=?,ModifyDate=?
               WHERE OrderStatusDetail.OrderID=?`;
   const day = new Date();
@@ -400,7 +400,7 @@ let changeStatusOrder = async (req, res) => {
                     if (index === arrP.length - 1) {
                       await arraySave.forEach(function(item, index, arrays) {
                         // Luu vao Database
-                        let sql = `UPDATE Products 
+                        let sql = `UPDATE Products
                                  SET Quantity=?
                                  WHERE ProductID=?`;
                         let query = mysql.format(sql, [
@@ -467,12 +467,12 @@ let getListOrderByStatusCode = async (req, res) => {
   const offset = (page - 1) * pageSize;
   const OrderStatusID = req.body.OrderStatusID;
   // Run sql to get orderHistory
-  let sql = ` SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate 
-              FROM Orders 
+  let sql = ` SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate
+              FROM Orders
               JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate,OrderStatusDetail.OrderStatusID
-                    FROM OrderStatus 
-                    JOIN OrderStatusDetail 
-                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes 
+                    FROM OrderStatus
+                    JOIN OrderStatusDetail
+                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
               ON Orders.OrderID = OrderStatusDes.OrderID
               AND OrderStatusDes.OrderStatusID = ?
               LIMIT ?
@@ -492,11 +492,11 @@ let getListOrderByStatusCode = async (req, res) => {
         });
       } else {
         let sql = ` SELECT COUNT(*) AS Total
-                            FROM Orders 
+                            FROM Orders
                             JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate,OrderStatusDetail.OrderStatusID
-                                  FROM OrderStatus 
-                                  JOIN OrderStatusDetail 
-                                  ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes 
+                                  FROM OrderStatus
+                                  JOIN OrderStatusDetail
+                                  ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
                             ON Orders.OrderID = OrderStatusDes.OrderID
                             AND OrderStatusDes.OrderStatusID = ?`;
         let query = mysql.format(sql, [OrderStatusID]);

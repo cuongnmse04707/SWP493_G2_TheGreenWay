@@ -4,7 +4,8 @@ import { createReducer, createActions } from "reduxsauce"
 const { Types, Creators } = createActions({
   getOrderCartRequest: ['data'],
   getOrderCartRequestFailed: ['error'],
-  getOrderCartSucceed: ['data']
+  getOrderCartSucceed: ['data'],
+  guestToken: ''
 })
 
 export const OrderCartTypes = Types
@@ -20,7 +21,7 @@ export const request = (state) => {
   }
 }
 
-export const geOrderCartSucceed = (state, {data}) => {
+export const getOrderCartSucceed = (state, {data}) => {
   console.log(data)
   return {
     ...state,
@@ -36,6 +37,6 @@ export const failed = (state, { error }) => {
 //TODO:Hookup Reducers To Types in Action
 export const reducer = createReducer(INITIAL_STATE, {
   [OrderCartTypes.GET_ORDER_CART_REQUEST]: request,
-  [OrderCartTypes.GET_ORDER_CART_SUCCEED]: geOrderCartSucceed,
+  [OrderCartTypes.GET_ORDER_CART_SUCCEED]: getOrderCartSucceed,
   [OrderCartTypes.GET_ORDER_CART_REQUEST_FAILED]: failed
 })

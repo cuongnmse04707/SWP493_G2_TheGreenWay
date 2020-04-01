@@ -18,10 +18,10 @@ class UserOrderHistory extends Component {
     this.props.getOrderCart(params);
   }
 
-  toDetailCart = record => {
-    console.log(record);
-    this.props.history.push(`/order-detail/${record.OrderID}`);
-  };
+  toDetailCart = (record) => {
+    console.log(record)
+    this.props.history.push(`/order-detail/order?idOrder=${record.OrderID}`)
+  }
 
   onSelectPageChange = page => {
     console.log(page);

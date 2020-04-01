@@ -171,7 +171,7 @@ let addNewOrderByGuest = async (req, res) => {
                         // tao mailOptions
                         const mailOptions = {
                           from: "nguyencuong.3061997@gmail.com",
-                          to: `cuongnmse04707@fpt.edu.vn`,
+                          to: `${Email}`,
                           subject: "[TGW] - Đơn hàng của bạn",
                           text:
                             "Bạn đang nhận được điều này bởi vì bạn (hoặc người khác) đã yêu cầu đặt hàng bằng email của bạn.\n\n" +
@@ -251,13 +251,13 @@ let showOrderByToken = async (req, res) => {
           message: "You can't have access this order!"
         });
       } else {
-        let sql = `   SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate 
-                            FROM Orders 
-                            JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate 
+        let sql = `   SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate
+                            FROM Orders
+                            JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate
                                     FROM OrderStatus
-                                    JOIN OrderStatusDetail 
-                                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes 
-                            ON Orders.OrderID = OrderStatusDes.OrderID 
+                                    JOIN OrderStatusDetail
+                                    ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
+                            ON Orders.OrderID = OrderStatusDes.OrderID
                             WHERE Orders.OrderID= ?`;
         let query = mysql.format(sql, [OrderID]);
         connectionDB.query(query, async (err, results) => {
@@ -277,11 +277,11 @@ let showOrderByToken = async (req, res) => {
                           OrderDetail.OrderID,OrderDetail.ProductID,Products.ProductName,Products.ImageDetail,OrderDetail.QuantityProduct,OrderDetail.Price
                           FROM
                               OrderDetail
-                          JOIN 
+                          JOIN
                             Products
                           WHERE
                               Products.ProductID = OrderDetail.ProductID
-                          AND 
+                          AND
                             OrderDetail.OrderID = ?`;
               let query = mysql.format(sql, [OrderID]);
               connectionDB.query(query, async (err, result) => {

@@ -33,8 +33,7 @@ class PageLayout extends Component {
           <Route path="/product" component={ProductList} exact></Route>
           <Route path="/life-way" component={LifeWay} exact></Route>
           <Route path="/life-way-detail/:id" component={LifeWayPageDetail} exact></Route>
-          <Route path="/order-detail/:id" component={OrderHistoryDetail} exact></Route>
-          <Route path="/order-detail/token/:token" component={OrderHistoryDetail} exact></Route>
+          <Route path="/order-detail/order" component={OrderHistoryDetail} exact></Route>
           <Route
             path="/product-detail/:id"
             component={ProductDetail}

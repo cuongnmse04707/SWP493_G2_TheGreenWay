@@ -43,6 +43,7 @@ const OrderCartSagas = {
             }
           );
         });
+        console.log(orderInfor)
         if (!orderInfor.data.success) {
           yield put(OrderCartctions.getOrderCartRequestFailed(orderInfor.data));
           message.error(orderInfor.data.message, 3);
@@ -50,7 +51,7 @@ const OrderCartSagas = {
           action.data.callbackA(orderInfor.data.accessToken);
           yield put(OrderCartctions.getOrderCartSucceed(orderInfor.data));
           message.success(orderInfor.data.message, 3);
-        }
+          }
       } catch (error) {
         yield put(OrderCartctions.getOrderCartRequestFailed(error));
       }

@@ -1,8 +1,17 @@
 .order-detail-wrapper {
   height: 100vh;
-  margin: 8% 5% 3% 5%;
+  margin: 8% 10% 3% 10%;
 }
 
 .order-infor-container {
-  height: 30%;
+  height: auto;
+  margin-bottom: 3%;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.order-infor-title {
+  width: 200px;
+  font-weight: bold;
 }

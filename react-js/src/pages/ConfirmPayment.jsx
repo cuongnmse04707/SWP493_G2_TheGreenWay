@@ -166,8 +166,8 @@ class ConfirmPayment extends Component {
             params,
             method: "guest",
             callbackA: token => {
-              //
               console.log(token);
+              window.localStorage.setItem('token', token)
               window.localStorage.removeItem("cart");
               this.props.history.push("/order-success");
             }
