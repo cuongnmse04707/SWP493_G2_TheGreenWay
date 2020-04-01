@@ -17,7 +17,8 @@ import LifeWayPageDetail from "../pages/lifeWayPage/lifeWayPageDetail";
 import ConfirmPayment from "../pages/ConfirmPayment";
 import UserProductLike from "../pages/UserProductLike";
 import UserOrderHistory from "../pages/UserOrderHistory";
-import OrderSuccess from "../pages/OrderSuccess"
+import OrderSuccess from "../pages/OrderSuccess";
+import OrderHistoryDetail from "../pages/OrderHistoryDetail";
 import { connect } from "react-redux";
 
 class PageLayout extends Component {
@@ -32,6 +33,8 @@ class PageLayout extends Component {
           <Route path="/product" component={ProductList} exact></Route>
           <Route path="/life-way" component={LifeWay} exact></Route>
           <Route path="/life-way-detail/:id" component={LifeWayPageDetail} exact></Route>
+          <Route path="/order-detail/:id" component={OrderHistoryDetail} exact></Route>
+          <Route path="/order-detail/token/:token" component={OrderHistoryDetail} exact></Route>
           <Route
             path="/product-detail/:id"
             component={ProductDetail}
@@ -50,6 +53,7 @@ class PageLayout extends Component {
           ></Route>
           <Route path="/confirm-payment" component={ConfirmPayment} exact></Route>
           <Route path="/order-success" component={OrderSuccess} exact></Route>
+
           <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />

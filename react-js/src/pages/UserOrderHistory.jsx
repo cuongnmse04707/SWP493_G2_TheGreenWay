@@ -20,6 +20,7 @@ class UserOrderHistory extends Component {
 
   toDetailCart = (record) => {
     console.log(record)
+    this.props.history.push(`/order-detail/${record.OrderID}`)
   }
 
   onSelectPageChange = (page) => {
@@ -77,7 +78,7 @@ class UserOrderHistory extends Component {
         dataIndex: 'date',
         render: (text, record) => (
           <div>
-            <span>{record.CreateDate.split('T')[0]}</span>
+            <span>{moment(record.CreateDate).format('DD/MM/YYYY')}</span>
           </div>
         )
       },
@@ -86,7 +87,16 @@ class UserOrderHistory extends Component {
         dataIndex: 'endDate',
         render: (text, record) => (
           <div>
-            <span>{record.EndDate}</span>
+            <span>{moment(record.EndDate).format('DD/MM/YYYY')}</span>
+          </div>
+        )
+      },
+      {
+        title: 'Ngày chỉnh sửa',
+        dataIndex: 'modifyDate',
+        render: (text, record) => (
+          <div>
+            <span>{moment(record.ModifyDate).format('DD/MM/YYYY')}</span>
           </div>
         )
       },

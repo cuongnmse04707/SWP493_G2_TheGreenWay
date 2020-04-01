@@ -21,6 +21,8 @@ import {
 const { Option } = Select;
 const { TextArea } = Input;
 
+var moment = require('moment')
+
 class ConfirmPayment extends Component {
   state = {
     totalCash: 0,
@@ -98,7 +100,7 @@ class ConfirmPayment extends Component {
             ConversionID: this.props.convensionId,
             TotalPrice: totalMoney,
             ShipAddress: fieldsValues.address,
-            CreateDate: new Date(),
+            CreateDate: moment().format("YYYY-MM-DD") ,
             QuantityPaper: totalPaper,
             Cash: cash,
             cart: cart.map(ele => ({
