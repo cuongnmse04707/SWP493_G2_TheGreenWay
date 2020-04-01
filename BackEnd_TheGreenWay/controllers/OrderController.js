@@ -205,24 +205,60 @@ let showOrderByEmail = async (req, res) => {
           message: "You can't have access this order!"
         });
       } else {
-        let sql = ` SELECT OrderID,ProductID,QuantityProduct,Price FROM OrderDetail WHERE OrderDetail.OrderID= ?`;
-        let query = mysql.format(sql, [idOrder]);
+        let sql = ` SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate 
+                    FROM Orders 
+                    JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate 
+                          FROM OrderStatus
+                          JOIN OrderStatusDetail 
+                          ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes 
+                    ON Orders.OrderID = OrderStatusDes.OrderID
+                    AND Orders.OrderID = ?
+                    AND Orders.UserEmail= ?`;
+        let query = mysql.format(sql, [idOrder, email]);
         connectionDB.query(query, async (err, results) => {
           if (err) {
             return res.status(200).json({ success: false, message: err });
           } else {
             //Lay ID day vao Database cho bang Product
             const array = await Array.apply(null, results);
-            if (arr.length === 0) {
+            if (array.length === 0) {
               // Chua co thi likex
               return res.status(200).json({
                 success: false,
                 message: "You can't have access this order!"
               });
             } else {
-              return res.status(200).json({
-                success: true,
-                data: array[0]
+              let sql = `SELECT
+              OrderDetail.OrderID,OrderDetail.ProductID,Products.ProductName,Products.ImageDetail,OrderDetail.QuantityProduct,OrderDetail.Price
+              FROM
+                  OrderDetail
+              JOIN 
+                Products
+              WHERE
+                  Products.ProductID = OrderDetail.ProductID
+              AND 
+                OrderDetail.OrderID = ?`;
+              let queryOrder = mysql.format(sql, [idOrder]);
+              connectionDB.query(queryOrder, async (err, resultsOrder) => {
+                if (err) {
+                  return res.status(200).json({ success: false, message: err });
+                } else {
+                  //Lay ID day vao Database cho bang Product
+                  const arrayOrder = await Array.apply(null, resultsOrder);
+                  if (arrayOrder.length === 0) {
+                    // Chua co thi likex
+                    return res.status(200).json({
+                      success: false,
+                      message: "You can't have access this order!"
+                    });
+                  } else {
+                    return res.status(200).json({
+                      success: true,
+                      data: array[0],
+                      cart: arrayOrder
+                    });
+                  }
+                }
               });
             }
           }
