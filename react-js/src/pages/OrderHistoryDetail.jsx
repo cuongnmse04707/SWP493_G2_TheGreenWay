@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "../css/order-history-detail.css";
 import { connect } from "react-redux";
 import NavBar from "../components/NavBar";
@@ -8,34 +8,32 @@ import queryString from "query-string";
 
 var moment = require("moment");
 class OrderHistoryDetail extends Component {
-
   componentDidMount() {
     const id = queryString.parse(this.props.history.location.search);
-    console.log(id)
-
-    if(id.token) {
+    console.log("1");
+    if (id.token) {
       const params = {
         token: id.token
-      }
-      console.log(1)
-      this.props.getOrderDetailByGuest(params)
-    }else {
-      console.log(2)
+      };
+      console.log("a1");
+      this.props.getOrderDetailByGuest(params);
+    } else {
+      console.log("a2");
       const params = {
         idOrder: id.idOrder
-      }
-      this.props.getOrderDetail(params)
+      };
+      this.props.getOrderDetail(params);
     }
   }
 
-  backToOrderList =  () =>  {
-    this.props.history.push('/user-order-history')
-  }
+  backToOrderList = () => {
+    this.props.history.push("/user-order-history");
+  };
 
   render() {
     const columns = [
       {
-        title: 'Tên Sản Phẩm',
+        title: "Tên Sản Phẩm",
         dataIndex: "ProductName",
         render: (text, record) => (
           <div>
@@ -60,57 +58,78 @@ class OrderHistoryDetail extends Component {
         )
       },
       {
-        title: 'Số lượng',
-        dataIndex: 'address',
+        title: "Số lượng",
+        dataIndex: "address",
         render: (text, record) => (
           <div>
             <span>{record.QuantityProduct}</span>
           </div>
         )
-      },
+      }
     ];
 
-    const { orderInfor, cartInfor } = this.props
-    console.log(orderInfor)
+    const { orderInfor, cartInfor } = this.props;
     return (
       <div>
         <NavBar />
         <div className="order-detail-wrapper">
           <div className="order-infor-container">
             <div className="order-infor-left">
-              <p style={{ fontSize: "18px", fontWeight: "bold" }}>Thông tin giỏ hàng:</p>
+              <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                Thông tin giỏ hàng:
+              </p>
               <div style={{ display: "flex" }}>
-                <span className="mr-4 order-infor-title">Tổng số tiền:</span> <span>{cartInfor.TotalPrice} VND</span>
+                <span className="mr-4 order-infor-title">Tổng số tiền:</span>{" "}
+                <span>{cartInfor.TotalPrice} VND</span>
               </div>
               <div style={{ display: "flex" }}>
-                <span className="mr-4 order-infor-title">Tiền mặt:</span> <span>{cartInfor.Cash} VND</span>
+                <span className="mr-4 order-infor-title">Tiền mặt:</span>{" "}
+                <span>{cartInfor.Cash} VND</span>
               </div>
               <div style={{ display: "flex" }}>
-                <span className="mr-4 order-infor-title">Giấy:</span> <span>{cartInfor.QuantityPaper} Kg</span>
+                <span className="mr-4 order-infor-title">Giấy:</span>{" "}
+                <span>{cartInfor.QuantityPaper} Kg</span>
               </div>
               <div style={{ display: "flex" }}>
-                <span className="mr-4 order-infor-title">Địa chỉ giao hàng:</span> <span>{cartInfor.ShipAddress}</span>
+                <span className="mr-4 order-infor-title">
+                  Địa chỉ giao hàng:
+                </span>{" "}
+                <span>{cartInfor.ShipAddress}</span>
               </div>
               <div style={{ display: "flex" }}>
-                <span className="mr-4 order-infor-title">Trạng thái đơn hàng:</span> <span>{cartInfor.Description}</span>
+                <span className="mr-4 order-infor-title">
+                  Trạng thái đơn hàng:
+                </span>{" "}
+                <span>{cartInfor.Description}</span>
               </div>
               <div style={{ display: "flex" }}>
-                <span className="mr-4 order-infor-title">Ngày mua:</span> <span>{moment(cartInfor.CreateDate).format('DD/MM/YYYY')}</span>
+                <span className="mr-4 order-infor-title">Ngày mua:</span>{" "}
+                <span>{moment(cartInfor.CreateDate).format("DD/MM/YYYY")}</span>
               </div>
               <div style={{ display: "flex" }}>
-                <span className="mr-4 order-infor-title">Ngày nhận hàng:</span> <span>{moment(cartInfor.EndDate).format('DD/MM/YYYY')}</span>
+                <span className="mr-4 order-infor-title">Ngày nhận hàng:</span>{" "}
+                <span>{moment(cartInfor.EndDate).format("DD/MM/YYYY")}</span>
               </div>
               <div style={{ display: "flex" }}>
-                <span className="mr-4 order-infor-title">Ngày chỉnh sửa:</span> <span>{moment(cartInfor.ModifyDate).format('DD/MM/YYYY')}</span>
+                <span className="mr-4 order-infor-title">Ngày chỉnh sửa:</span>{" "}
+                <span>{moment(cartInfor.ModifyDate).format("DD/MM/YYYY")}</span>
               </div>
             </div>
             <div className="order-infor-right">
-              <Button type="primary" onClick={this.backToOrderList}>Quay lại</Button>
+              <Button type="primary" onClick={this.backToOrderList}>
+                Quay lại
+              </Button>
             </div>
           </div>
-          <p style={{ fontSize: "18px", fontWeight: "bold" }}>Danh sách sản phẩm:</p>
-          <Table dataSource={orderInfor} columns={columns} pagination={false} rowkey="id">
-          </Table>
+          <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+            Danh sách sản phẩm:
+          </p>
+          <Table
+            dataSource={orderInfor}
+            columns={columns}
+            pagination={false}
+            rowkey="id"
+          ></Table>
         </div>
       </div>
     );
@@ -121,16 +140,16 @@ const mapStateToProps = state => {
   return {
     orderInfor: state.userOrderHistory.orderDetail,
     cartInfor: state.userOrderHistory.cartInfor,
-    guestCartInfor: state.userOrderHistory.guestCartInfor,
+    guestCartInfor: state.userOrderHistory.guestCartInfor
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getOrderDetail: (params) => {
+    getOrderDetail: params => {
       dispatch(UserOrderHistoryTypes.getUserOrderDetailRequest(params));
     },
-    getOrderDetailByGuest: (params) => {
+    getOrderDetailByGuest: params => {
       dispatch(UserOrderHistoryTypes.getOrderDetailByGuestRequest(params));
     }
   };

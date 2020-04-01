@@ -177,7 +177,7 @@ class RecycleProductDetailList extends Component {
     cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
     this.props.setDataCart(numberOfTotal);
     localStorage.setItem("cart", JSON.stringify(cart));
-    this.props.history.push("/cart");
+    // this.props.history.push("/cart");
   };
 
   render() {
