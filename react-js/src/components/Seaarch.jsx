@@ -45,10 +45,18 @@ class SearchComponent extends Component {
   };
 
   handleChange = value => {
-    this.setState({
-      textSearch: value,
-      checkData: false
-    });
+    // console.log("ghi vao", value);
+    if (value === undefined) {
+      this.setState({
+        textSearch: value,
+        checkData: true
+      });
+    } else {
+      this.setState({
+        textSearch: value,
+        checkData: false
+      });
+    }
   };
 
   render() {
@@ -56,6 +64,7 @@ class SearchComponent extends Component {
     const { Option } = Select;
     const { size, checkData, textSearch } = this.state;
     const { onSearchFullText, listProductSearch } = this.props;
+    // console.log(textSearch);
     return (
       <div>
         <div
@@ -91,22 +100,36 @@ class SearchComponent extends Component {
                 optionLabelProp="label"
                 value={textSearch}
                 onFocus={() => {
+                  console.log("2");
+                  this.setState({
+                    checkData: true
+                  });
+                }}
+                onClick={() => {
+                  console.log("3");
                   this.setState({
                     checkData: true
                   });
                 }}
                 onSearch={value => {
                   if (checkData) {
+                    // console.log("1");
                     this.setState({
                       textSearch: value
                     });
                   }
                 }}
+                // onBlur={() => {
+                //   this.setState({
+                //     checkData: false,
+                //   });
+                // }}
                 onChange={this.handleChange}
                 filterOption={(input, option) => {
-                  console.log(option);
-                  if (option.props.children[1].props.children === undefined)
+                  if (option.key === "0") {
+                    // console.log(option);
                     return 1;
+                  }
                   return (
                     option.props.children[1].props.children
                       .toLowerCase()
@@ -116,8 +139,8 @@ class SearchComponent extends Component {
                 style={{ width: "500px" }}
               >
                 <Option
-                  key={textSearch || "under"}
-                  value={textSearch || ""}
+                  key={0}
+                  value={textSearch}
                   label={textSearch}
                   style={{ display: "flex", alignItems: "center" }}
                 >
