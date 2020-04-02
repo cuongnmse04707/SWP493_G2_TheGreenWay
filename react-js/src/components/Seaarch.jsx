@@ -99,8 +99,8 @@ class SearchComponent extends Component {
                 placeholder="Nhập tên sản phẩm ..."
                 optionLabelProp="label"
                 value={textSearch}
-                onFocus={() => {
-                  console.log("2");
+                onFocus={value => {
+                  console.log("Forcus", value);
                   this.setState({
                     checkData: true
                   });
@@ -112,12 +112,18 @@ class SearchComponent extends Component {
                   });
                 }}
                 onSearch={value => {
+                  console.log("2");
                   if (checkData) {
                     // console.log("1");
                     this.setState({
                       textSearch: value
                     });
                   }
+                }}
+                onSelect={value => {
+                  this.setState({
+                    checkData: true
+                  });
                 }}
                 // onBlur={() => {
                 //   this.setState({
