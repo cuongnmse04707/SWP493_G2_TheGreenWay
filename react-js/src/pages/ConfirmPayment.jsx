@@ -34,8 +34,6 @@ class ConfirmPayment extends Component {
 
   componentDidMount = () => {
     const dataId = queryString.parse(this.props.history.location.search);
-    console.log("HH", dataId.token);
-    console.log("HH", dataId.idOrder);
     this.props.getPaperConvension();
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     let total = 0;

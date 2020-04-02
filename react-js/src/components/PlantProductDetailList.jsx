@@ -71,6 +71,7 @@ class PlantProductDetailList extends Component {
   handleClick = (event, id) => {
     event.stopPropagation();
     this.props.history.push(`/product-detail/${id}`);
+    console.log('vao day')
   };
 
   onChangeCheckSearch = value => {
@@ -177,7 +178,6 @@ class PlantProductDetailList extends Component {
     cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
     this.props.setDataCart(numberOfTotal);
     localStorage.setItem("cart", JSON.stringify(cart));
-    // this.props.history.push("/cart");
   };
 
   render() {

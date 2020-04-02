@@ -3,12 +3,10 @@ import { withRouter } from "react-router";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import "../css/product-detail.css";
-import { InputNumber, message } from "antd";
+import { InputNumber, message, Carousel, Upload, Icon, Modal } from "antd";
 import RelatedProduct from "../components/RelatedProduct";
 import { connect } from "react-redux";
 import ProductDetailTypes from "../redux/product-detail-redux";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import HomePageTypes from "../redux/home-page-redux";
 
 class ProductDetail extends Component {
@@ -16,10 +14,16 @@ class ProductDetail extends Component {
     image: [],
     quantity: 0,
     backgroundPosition: "0% 0%",
-    productInfor: {}
+    productInfor: {},
+    productImage: [],
+    previewVisible: false,
+    previewImage: "",
+    imageShow: "",
+    fileList: []
   };
 
   componentDidMount() {
+    console.log(1)
     window.scrollTo(0, 0);
     const productId = window.location.pathname.split("/")[2];
     this.props.getProductDetail(productId);
@@ -28,19 +32,6 @@ class ProductDetail extends Component {
     cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
     // this.props.setDataCart(numberOfTotal);
   }
-
-  // componentDidUpdate(nextProps) {
-  //   const productId = window.location.pathname.split("/")[2];
-  //   this.props.getProductDetail(productId);
-  //   if (
-  //     this.props.productInfor &&
-  //     nextProps.productInfor !== this.props.productInfor
-  //   ) {
-  //     this.setState({
-  //       productInfor: this.props.productInfor
-  //     });
-  //   }
-  // }
 
   getQuantity = value => {
     if (Number(value)) {
@@ -108,53 +99,90 @@ class ProductDetail extends Component {
     }
   };
 
+  handleCancel = () => this.setState({ previewVisible: false });
+
+  handlePreview = async file => {
+    console.log("1");
+  };
+
   render() {
     const { convensionRate, productInfor, productImages } = this.props;
-    // let arrayImages = [];
-    // console.log(productImages);
-    // if (productImages != "No Images") {
-    //   productImages.map(item => {
-    //     arrayImages.push(item.urlImage);
-    //   });
-    // } else {
-    //   arrayImages = [
-    //     "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
-    //   ];
-    // }
+    let arrayImages = [];
+    console.log(productImages);
+    if (productImages != "No Images") {
+      productImages.map(item => {
+        arrayImages.push(item.urlImage);
+      });
+    } else {
+      arrayImages = [
+        "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
+      ];
+    }
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const cartItem =
       cart.find(element => element.ProductID === productInfor.ProductID) || {};
+
+    const props = {
+      showUploadList: {
+        showDownloadIcon: false,
+        showRemoveIcon: false
+      }
+    };
+
     return (
       <div>
         <NavBar />
         <div className="product-containerr">
           <div className="product-detail">
-            <div className="product-image-detail">
-              {productImages.length ? (
-                <Carousel
-                  autoPlay
-                  showStatus={false}
-                  showIndicators={false}
-                  swipeable={false}
+            <div style={{ width: "448px" }}>
+              <Carousel auto style={{ width: "440px", marginBottom: "20px" }}>
+                {(
+                  productImages || [
+                    "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
+                  ]
+                ).map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <img
+                        style={{ width: "100%", height: "450px" }}
+                        src={item.urlImage}
+                      />
+                    </div>
+                  );
+                })}
+              </Carousel>
+              <div className="clearfix">
+                <Upload
+                  {...props}
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  listType="picture-card"
+                  fileList={(arrayImages || []).map((ele, index) => ({
+                    uid: index,
+                    name: "a",
+                    status: "done",
+                    url:
+                      ele
+                  }))}
+
+                  onPreview={ele => {
+                    this.setState({
+                      previewVisible: true,
+                      imageShow: ele.url
+                    });
+                  }}
                 >
-                  {(
-                    productImages || [
-                      "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
-                    ]
-                  ).map((item, index) => {
-                    console.log("1");
-                    return (
-                      <div key={index}>
-                        <img
-                          style={{ width: "100%", height: "450px" }}
-                          src={item.urlImage}
-                        />
-                      </div>
-                    );
-                  })}
-                </Carousel>
-              ) : null}
+                </Upload>
+
+                <Modal
+                  visible={this.state.previewVisible}
+                  footer={null}
+                  onCancel={this.handleCancel}
+                >
+                  <img alt="example" style={{ width: "100%" }} src={this.state.imageShow} />
+                </Modal>
+              </div>
             </div>
+
             <div className="product-infor">
               <p className="product-name">{productInfor.ProductName}</p>
               <div className="item-detail-price">

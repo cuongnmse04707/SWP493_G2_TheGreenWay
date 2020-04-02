@@ -148,7 +148,7 @@ class ShoppingCart extends Component {
           <div>
             <span>{record.ProductPrice} VNĐ</span>
             <span className="mr-2 ml-2">|</span>
-            <span>{record.ProductPrice}</span>
+            <span>{Math.floor(record.ProductPrice / this.props.convensionRate)}</span>
           </div>
         )
       },

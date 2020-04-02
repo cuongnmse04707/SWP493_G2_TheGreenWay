@@ -91,6 +91,11 @@ export default function* root() {
       IntroProductTypes.LIST_PRODUCT_SEARCH,
       IntroProductSagas.getListSearchProduct
     ),
+    // takeLatest(UserLikeProductTypes.GET_PRODUCT_LIKE_REQUEST,UserProductLikeSagas.getProductLikeInfor),
+    // takeLatest(UserOrderHistoryTypes.GET_USER_ORDER_REQUEST,UserOrderHistorySagas.getOrderHistoryInfor),
+    // takeLatest(UserOrderHistoryTypes.GET_USER_ORDER_DETAIL_REQUEST,UserOrderHistorySagas.getOrderDetailInfor),
+    // takeLatest(UserOrderHistoryTypes.GET_ORDER_DETAIL_BY_GUEST_REQUEST,UserOrderHistorySagas.getOrderDetailInforGuest),
+    // takeLatest(IntroProductTypes.LIST_PRODUCT_SEARCH, IntroProductSagas.getListSearchProduct),
     takeLatest(OrderCartTypes.GET_ORDER_CART_REQUEST, OrderCartSagas.orderCart)
   ]);
 }
