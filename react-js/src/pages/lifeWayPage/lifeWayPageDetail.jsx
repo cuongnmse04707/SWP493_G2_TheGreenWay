@@ -13,6 +13,7 @@ var moment = require("moment");
 const { Search } = Input;
 class lifeWayPageDetail extends Component {
   componentDidMount() {
+    window.scrollTo(0, 0);
     this.props.getPostDetailInfor(window.location.pathname.split("/")[2]);
   }
 

@@ -26,7 +26,7 @@ class ProductDetail extends Component {
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     let numberOfTotal = 0;
     cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
-    this.props.setDataCart(numberOfTotal);
+    // this.props.setDataCart(numberOfTotal);
   }
 
   // componentDidUpdate(nextProps) {
@@ -110,16 +110,17 @@ class ProductDetail extends Component {
 
   render() {
     const { convensionRate, productInfor, productImages } = this.props;
-    let arrayImages = [];
-    if (productImages != "No Images") {
-      productImages.map(item => {
-        arrayImages.push(item.urlImage);
-      });
-    } else {
-      arrayImages = [
-        "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
-      ];
-    }
+    // let arrayImages = [];
+    // console.log(productImages);
+    // if (productImages != "No Images") {
+    //   productImages.map(item => {
+    //     arrayImages.push(item.urlImage);
+    //   });
+    // } else {
+    //   arrayImages = [
+    //     "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
+    //   ];
+    // }
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const cartItem =
       cart.find(element => element.ProductID === productInfor.ProductID) || {};
@@ -129,23 +130,30 @@ class ProductDetail extends Component {
         <div className="product-containerr">
           <div className="product-detail">
             <div className="product-image-detail">
-              <Carousel
-                autoPlay
-                showStatus={false}
-                showIndicators={false}
-                swipeable={false}
-              >
-                {(arrayImages || []).map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <img
-                        style={{ width: "100%", height: "450px" }}
-                        src={item}
-                      />
-                    </div>
-                  );
-                })}
-              </Carousel>
+              {productImages.length ? (
+                <Carousel
+                  autoPlay
+                  showStatus={false}
+                  showIndicators={false}
+                  swipeable={false}
+                >
+                  {(
+                    productImages || [
+                      "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
+                    ]
+                  ).map((item, index) => {
+                    console.log("1");
+                    return (
+                      <div key={index}>
+                        <img
+                          style={{ width: "100%", height: "450px" }}
+                          src={item.urlImage}
+                        />
+                      </div>
+                    );
+                  })}
+                </Carousel>
+              ) : null}
             </div>
             <div className="product-infor">
               <p className="product-name">{productInfor.ProductName}</p>

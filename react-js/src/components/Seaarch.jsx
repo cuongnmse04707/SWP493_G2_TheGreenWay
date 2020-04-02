@@ -18,7 +18,15 @@ class SearchComponent extends Component {
 
   handleSizeChange = e => {
     this.props.resetData();
-    this.setState({ size: e.target.value });
+
+    this.setState({
+      size: e.target.value,
+      textName: "",
+      maxP: "",
+      minP: "",
+      // checkData: true,
+      textSearch: ""
+    });
   };
 
   onClick = () => {
@@ -96,6 +104,9 @@ class SearchComponent extends Component {
                 }}
                 onChange={this.handleChange}
                 filterOption={(input, option) => {
+                  console.log(option);
+                  if (option.props.children[1].props.children === undefined)
+                    return 1;
                   return (
                     option.props.children[1].props.children
                       .toLowerCase()
@@ -105,8 +116,8 @@ class SearchComponent extends Component {
                 style={{ width: "500px" }}
               >
                 <Option
-                  key={textSearch}
-                  value={textSearch}
+                  key={textSearch || "under"}
+                  value={textSearch || ""}
                   label={textSearch}
                   style={{ display: "flex", alignItems: "center" }}
                 >
