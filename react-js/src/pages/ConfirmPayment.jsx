@@ -27,7 +27,7 @@ var moment = require("moment");
 class ConfirmPayment extends Component {
   state = {
     totalCash: 0,
-    paymentOption: "",
+    paymentOption: "1",
     remainingAmout: 0,
     QuantityPaper: 0
   };
@@ -84,7 +84,7 @@ class ConfirmPayment extends Component {
             var cash = 0;
             var check = this.state.paymentOption;
             const cart = JSON.parse(window.localStorage.getItem("cart"));
-            if (check === "1") {
+            if (this.state.paymentOption === "1") {
               totalPaper = 0;
               cash = totalMoney;
             }
@@ -122,6 +122,7 @@ class ConfirmPayment extends Component {
         }
       );
     } else {
+      console.log('la guest')
       this.props.form.validateFields((err, values) => {
         if (!err) {
           var totalPaper = Math.floor(
@@ -130,10 +131,13 @@ class ConfirmPayment extends Component {
           var totalMoney = this.state.totalCash;
           var cash = 0;
           var check = this.state.paymentOption;
+          console.log(this.state.paymentOption)
           const cart = JSON.parse(window.localStorage.getItem("cart"));
-          if (check === "1") {
+          if (this.state.paymentOption === "1") {
             totalPaper = 0;
             cash = totalMoney;
+            console.log('vao day')
+              console.log(cash)
           }
           if (this.state.paymentOption === "2") {
           }
@@ -290,9 +294,8 @@ class ConfirmPayment extends Component {
                     </Form.Item>
                     <Form.Item label="Lựa chọn phương thức thanh toán">
                       {getFieldDecorator("paymentOption", {
-                        initialValue: "1"
                       })(
-                        <Select {...this.props} style={{ width: 200 }}>
+                        <Select {...this.props} defaultValue="1" style={{ width: 200 }}>
                           <Option value="1">Ship COD</Option>
                           <Option value="2">Chuyển Khoản</Option>
                         </Select>
@@ -342,7 +345,7 @@ class ConfirmPayment extends Component {
                   <Select
                     style={{ width: 200, marginBottom: "10px" }}
                     onChange={this.handleOptionChange}
-                    defaultValue="1"
+                    value={this.state.paymentOption}
                   >
                     <Option value="1">Tiền</Option>
                     <Option value="2">Giấy</Option>
