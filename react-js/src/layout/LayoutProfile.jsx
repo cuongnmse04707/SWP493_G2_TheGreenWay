@@ -44,7 +44,7 @@ class LayoutProfile extends Component {
 }
 
 const mapStateToProps = state => ({
-  collapsed: state.sideBar.collapsed
+ // collapsed: state.sideBar.collapsed
 });
 
 export default connect(mapStateToProps, null)(LayoutProfile);

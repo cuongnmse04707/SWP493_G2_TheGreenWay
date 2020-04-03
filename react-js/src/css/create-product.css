@@ -1,0 +1,30 @@
+.create-product-wrapper {
+  height: 100%;
+  margin: 3% 5%;
+}
+
+.ant-form-item-label{
+  text-align: left !important;
+}
+
+.create-product-wrapper .title {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.admin-create-form-container {
+  width: 100%;
+  display: flex;
+}
+
+.admin-create-form-left , .admin-create-form-right {
+  display: flex;
+  flex: 1;
+  width: 50%;
+}
+
+.avatar-uploader .ant-upload.ant-upload-select-picture-card {
+  height: 124px;
+  width: 124px;
+}

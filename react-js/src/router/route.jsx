@@ -21,6 +21,9 @@ import OrderSuccess from "../pages/OrderSuccess";
 import OrderHistoryDetail from "../pages/OrderHistoryDetail";
 import { connect } from "react-redux";
 
+//admin
+import LayoutAdmin from "../layout/LayoutAdmin";
+
 class PageLayout extends Component {
   render() {
     return (
@@ -45,15 +48,15 @@ class PageLayout extends Component {
             component={PlantProductDetail}
             exact
           ></Route>
-           <Route
+          <Route
             path="/recycle-product"
             component={RecycleProducDetail}
             exact
           ></Route>
           <Route path="/confirm-payment" component={ConfirmPayment} exact></Route>
           <Route path="/order-success" component={OrderSuccess} exact></Route>
-
-          <LayoutProfile>
+          <Route path="/admin" component={LayoutAdmin} exact></Route>
+         <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />
             <Route path="/user-order-history" component={UserOrderHistory} exact />

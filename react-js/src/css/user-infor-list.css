@@ -1,0 +1,10 @@
+.admin-user {
+  height: 100%;
+  margin: 3% 5%;
+}
+
+.admin-user .title {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
