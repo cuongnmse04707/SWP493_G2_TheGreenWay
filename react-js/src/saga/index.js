@@ -107,5 +107,7 @@ export default function* root() {
     takeLatest(AdminProductTypes.GET_PRODUCT_REQUEST, AdminProductSagas.getAdminProductInfor),
     takeLatest(AdminProductTypes.GET_PRODUCT_DETAIL_ADMIN_REQUEST, AdminProductSagas.getProductDetailInfor),
     takeLatest(AdminProductTypes.UPDATE_PRODUCT_REQUEST, AdminProductSagas.updateProduct),
+    takeLatest(AdminProductTypes.DELETE_IMAGE_DETAIL_REQUEST, AdminProductSagas.deleteImageDetail),
+    takeLatest(AdminProductTypes.ADD_IMAGE_DETAIL_REQUEST, AdminProductSagas.addImageDetail),
   ]);
 }

@@ -17,6 +17,7 @@ import {
 import { connect } from "react-redux";
 import AdminProductTypes from "../../redux/admin-product-redux";
 import CKEditor from 'ckeditor4-react';
+import { storage } from "../../firebase";
 
 const { Option } = Select;
 
@@ -35,17 +36,20 @@ function getBase64(file) {
   });
 }
 
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
+const beforeUpload = (file) => {
+  console.log('File moi up', file)
+
+  // const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  // if (!isJpgOrPng) {
+  //   message.error('You can only upload JPG/PNG file!');
+  // }
+  // const isLt2M = file.size / 1024 / 1024 < 2;
+  // if (!isLt2M) {
+  //   message.error('Image must smaller than 2MB!');
+  // }
+  // return isJpgOrPng && isLt2M;
 }
+
 class ProductInforList extends Component {
   state = {
     visible: false,
@@ -130,14 +134,14 @@ class ProductInforList extends Component {
           //console.log(this.props.productDetail)
           const params = {
 
-              idProduct: this.state.productId,
-              CategoryID: values.category,
-              ProductName: values.productName,
-              ProductPrice: values.productPrice,
-              Description: values.productDescription,
-              Quantity: values.productQuantity,
-              ImageDetail: this.props.productDetail.ImageDetail,
-              CreateDate: this.props.productDetail.CreateDate
+            idProduct: this.state.productId,
+            CategoryID: values.category,
+            ProductName: values.productName,
+            ProductPrice: values.productPrice,
+            Description: values.productDescription,
+            Quantity: values.productQuantity,
+            ImageDetail: this.props.productDetail.ImageDetail,
+            CreateDate: this.props.productDetail.CreateDate
 
           }
           this.props.updateProduct({
@@ -260,7 +264,6 @@ class ProductInforList extends Component {
     );
     const { imageUrl } = this.state;
     const { productList, productDetail, imageDetail } = this.props
-    console.log(productList)
     return (
       <div className="admin-product-wrapper">
         <p className="title">Thông tin sản phẩm</p>
@@ -359,8 +362,30 @@ class ProductInforList extends Component {
                     className="avatar-uploader"
                     showUploadList={false}
                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                    beforeUpload={beforeUpload}
-                    onChange={this.handleChange}
+                    beforeUpload={(file) => {
+                      //Upload File Base
+                      console.log('File moi up', file)
+                      //Link Image
+                      const uploadTask = storage.ref(`images/${file.name}`).put(file);
+                      // Set vao state
+                      uploadTask.on(
+                        "state_changed",
+                        snapshot => {
+                        },
+                        error => {
+                          console.log(error);
+                        },
+                        () => {
+                          storage
+                            .ref("images")
+                            .child(file.name)
+                            .getDownloadURL()
+                            .then(url => {
+                              this.props.changeAvatarImage(url)
+                            });
+                        }
+                      );
+                    }}
                   >
                     {productDetail.ImageDetail ? <img src={productDetail.ImageDetail} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
                   </Upload>)}
@@ -382,7 +407,7 @@ class ProductInforList extends Component {
                         fileList={
                           (imageDetail || []).map((item, index) => {
                             return ({
-                              uid: index,
+                              uid: item.ImageID,
                               name: 'image.png',
                               status: 'done',
                               url: item.urlImage
@@ -390,7 +415,40 @@ class ProductInforList extends Component {
                           })
                         }
                         onPreview={this.handlePreview}
-                        onChange={this.handleImageDetailChange}
+                        onRemove={(file) => {
+                          // Xoa => Api XOa => Reducer tm
+                          console.log('2', file)
+                          this.props.deleteDetailImage({
+                            idImage: file.uid
+                          })
+
+                        }}
+                        beforeUpload={(file) => {
+                          // Xoa => Api XOa => Reducer tm
+                          console.log('taimoi', file)
+                          //Link Image
+                          const uploadTask = storage.ref(`images/${file.name}`).put(file);
+                          // Set vao state
+                          uploadTask.on(
+                            "state_changed",
+                            snapshot => {
+                            },
+                            error => {
+                              console.log(error);
+                            },
+                            () => {
+                              storage
+                                .ref("images")
+                                .child(file.name)
+                                .getDownloadURL()
+                                .then(url => {
+                                  this.props.addDetailImage({
+                                    ProductID: this.props.productDetail.ProductID,
+                                    urlImage: url,
+                                  })
+                                });
+                            })
+                        }}
                       >
                         {(imageDetail || []).length >= 4 ? null : uploadImageDetailButton}
                       </Upload>
@@ -426,7 +484,16 @@ const mapDispatchToProps = dispatch => {
     },
     updateProduct: (params) => {
       dispatch(AdminProductTypes.updateProductRequest(params));
-    }
+    },
+    changeAvatarImage: (params) => {
+      dispatch(AdminProductTypes.changeAvatarImage(params));
+    },
+    deleteDetailImage: (params) => {
+      dispatch(AdminProductTypes.deleteImageDetailRequest(params));
+    },
+    addDetailImage: (params) => {
+      dispatch(AdminProductTypes.addImageDetailRequest(params));
+    },
   };
 };
 const ProductInforListScreen = Form.create()(ProductInforList);

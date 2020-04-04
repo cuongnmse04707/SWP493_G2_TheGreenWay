@@ -108,7 +108,7 @@ class ProductDetail extends Component {
   render() {
     const { convensionRate, productInfor, productImages } = this.props;
     let arrayImages = [];
-    console.log(productImages);
+    console.log('productImages',productImages);
     if (productImages != "No Images") {
       productImages.map(item => {
         arrayImages.push(item.urlImage);

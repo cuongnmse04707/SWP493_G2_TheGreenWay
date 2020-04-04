@@ -11,6 +11,13 @@ const { Types, Creators } = createActions({
   updateProductRequest: ['data'],
   updateProductRequestFailed: ['error'],
   updateProductSucceed: ['data'],
+  changeAvatarImage: ['data'],
+  addImageDetailRequest: ['data'],
+  addImageDetailRequestFailed: ['data'],
+  addImageDetailSucceed: ['data'],
+  deleteImageDetailRequest: ['data'],
+  deleteImageDetailRequestFailed: ['data'],
+  deleteImageDetailSucceed: ['data']
 })
 
 export const AdminProductTypes = Types
@@ -29,16 +36,16 @@ export const request = (state) => {
   }
 }
 
-export const getProductSucceed = (state, {data}) => {
-  console.log('data',data)
+export const getProductSucceed = (state, { data }) => {
+  console.log('data', data)
   return {
     ...state,
     productList: data.data,
   }
 }
 
-export const getProductDetailSucceed = (state, {data}) => {
-  console.log('data',data)
+export const getProductDetailSucceed = (state, { data }) => {
+  console.log('data', data)
   return {
     ...state,
     productDetail: data.data,
@@ -46,12 +53,40 @@ export const getProductDetailSucceed = (state, {data}) => {
   }
 }
 
-export const updateProductSucceed = (state, {data}) => {
-  console.log('data',data)
+export const updateProductSucceed = (state, { data }) => {
+  // console.log('data', data)
   return {
     ...state,
-    // productDetail: data.data,
-    // imageDetail: data.images
+  }
+}
+
+export const addImageSucceed = (state, { data }) => {
+  // console.log('data123123', data)
+  // console.log(state.imageDetail)
+  return {
+    ...state,
+    imageDetail: [...state.imageDetail,{
+      ImageID : data.data.idImage.MAX,
+      urlImage: data.urlImage
+    }]
+  }
+}
+
+export const deleteImageSucceed = (state, { data }) => {
+  // console.log('dat12a', data)
+  return {
+    ...state,
+    imageDetail : state.imageDetail.filter(el => el.ImageID !== data)
+  }
+}
+
+export const changeAvatarImage = (state, { data }) => {
+  return {
+    ...state,
+    productDetail: {
+      ...state.productDetail,
+      ImageDetail: data
+    }
   }
 }
 
@@ -73,4 +108,11 @@ export const reducer = createReducer(INITIAL_STATE, {
   [AdminProductTypes.UPDATE_PRODUCT_REQUEST]: request,
   [AdminProductTypes.UPDATE_PRODUCT_SUCCEED]: updateProductSucceed,
   [AdminProductTypes.UPDATE_PRODUCT_REQUEST_FAILED]: failed,
+  [AdminProductTypes.CHANGE_AVATAR_IMAGE]: changeAvatarImage,
+  [AdminProductTypes.ADD_IMAGE_DETAIL_REQUEST]: request,
+  [AdminProductTypes.ADD_IMAGE_DETAIL_SUCCEED]: addImageSucceed,
+  [AdminProductTypes.ADD_IMAGE_DETAIL_REQUEST_FAILED]: failed,
+  [AdminProductTypes.DELETE_IMAGE_DETAIL_REQUEST]: request,
+  [AdminProductTypes.DELETE_IMAGE_DETAIL_SUCCEED]: deleteImageSucceed,
+  [AdminProductTypes.DELETE_IMAGE_DETAIL_REQUEST_FAILED]: failed,
 })
