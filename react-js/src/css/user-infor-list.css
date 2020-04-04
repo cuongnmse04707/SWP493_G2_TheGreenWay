@@ -8,3 +8,24 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+
+.contentComponent {
+  height: auto;
+  background-color: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.bodyContainer {
+  width: 100%;
+  flex: 1;
+  margin-top: 15px;
+}
+
+.textProjectMember {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  color: #6c738d;
+}

@@ -186,7 +186,7 @@
 }
 
 .ant-menu-item {
-  padding-left: 40px !important;
+  /* padding-left: 40px !important; */
   margin-top: 0px !important;
   display: flex;
   align-items: center;
@@ -247,7 +247,7 @@
 }
 
 .ant-menu-item-selected {
-  background-color: #fffaf0 !important;
+  background-color: #076bff6e !important;
 }
 
 .ant-layout-sider-children button {

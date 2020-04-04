@@ -11,6 +11,7 @@ import { LifeWayTypes } from "../redux/life-way-redux";
 import { UserLikeProductTypes } from "../redux/user-product-like-redux";
 import { UserOrderHistoryTypes } from "../redux/user-order-history-redux";
 import { OrderCartTypes } from "../redux/order-card-redux";
+import { ModTypes } from "../redux/mod-redux";
 import LoginSagas from "./login-saga";
 import ResetPassword from "./reset-password";
 import HomePageSagas from "./home-page-saga";
@@ -23,6 +24,7 @@ import LifeWaySagas from "./life-way-saga";
 import UserProductLikeSagas from "./user-product-like-saga";
 import UserOrderHistorySagas from "./user-order-history-saga";
 import OrderCartSagas from "./order-cart-saga";
+import ModSagas from "./mod-saga";
 
 export default function* root() {
   yield all([
@@ -96,6 +98,7 @@ export default function* root() {
     // takeLatest(UserOrderHistoryTypes.GET_USER_ORDER_DETAIL_REQUEST,UserOrderHistorySagas.getOrderDetailInfor),
     // takeLatest(UserOrderHistoryTypes.GET_ORDER_DETAIL_BY_GUEST_REQUEST,UserOrderHistorySagas.getOrderDetailInforGuest),
     // takeLatest(IntroProductTypes.LIST_PRODUCT_SEARCH, IntroProductSagas.getListSearchProduct),
-    takeLatest(OrderCartTypes.GET_ORDER_CART_REQUEST, OrderCartSagas.orderCart)
+    takeLatest(OrderCartTypes.GET_ORDER_CART_REQUEST, OrderCartSagas.orderCart),
+    takeLatest(ModTypes.GET_USER_REQUEST, ModSagas.getUser),
   ]);
 }
