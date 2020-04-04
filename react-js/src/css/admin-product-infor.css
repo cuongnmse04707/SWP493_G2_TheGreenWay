@@ -1,0 +1,18 @@
+.admin-product-wrapper {
+  height: 100%;
+  margin: 3% 5%;
+}
+
+.ant-form-item-label{
+  text-align: left !important;
+}
+
+.admin-product-wrapper .title {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* .ant-modal {
+  width: 80% !important;
+} */

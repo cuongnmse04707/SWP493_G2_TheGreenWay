@@ -18,13 +18,18 @@
   display: flex;
 }
 
-.admin-create-form-left , .admin-create-form-right {
+.admin-create-form-left {
+  display: flex;
+  flex: 1.3;
+  width: 50%;
+}
+.admin-create-form-right {
   display: flex;
   flex: 1;
   width: 50%;
 }
 
 .avatar-uploader .ant-upload.ant-upload-select-picture-card {
-  height: 124px;
-  width: 124px;
+  height: 129px;
+  width: 129px;
 }

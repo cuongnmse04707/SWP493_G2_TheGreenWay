@@ -269,7 +269,7 @@ let searchProduct = async (req, res) => {
               ${stringSQL} ) ProductsCate
           LEFT JOIN LikesOfProduct
           ON ProductsCate.ProductID=LikesOfProduct.ProductID
-          GROUP BY ProductsCate.ProductID ) CategoriesTable  
+          GROUP BY ProductsCate.ProductID ) CategoriesTable
           JOIN (SELECT GetProduct.ProductID,GetProduct.UserEmail FROM
           (SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, 								Products.ImageDetail,LikesOfProductA.UserEmail
           FROM Products
@@ -345,7 +345,7 @@ let fulltextsearchProduct = async (req, res) => {
                 MATCH(ProductPrice) AGAINST('${stringSQL}' IN NATURAL LANGUAGE MODE) ) ProductsCate
           LEFT JOIN LikesOfProduct
           ON ProductsCate.ProductID=LikesOfProduct.ProductID
-          GROUP BY ProductsCate.ProductID ) CategoriesTable  
+          GROUP BY ProductsCate.ProductID ) CategoriesTable
           JOIN (SELECT GetProduct.ProductID,GetProduct.UserEmail FROM
           (SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, 								Products.ImageDetail,LikesOfProductA.UserEmail
           FROM Products
@@ -413,7 +413,7 @@ let getProductsByCategory = async (req, res) => {
                   AND Categories.CategoryID= ? ) ProductsCate
           LEFT JOIN LikesOfProduct
           ON ProductsCate.ProductID=LikesOfProduct.ProductID
-          GROUP BY ProductsCate.ProductID ) CategoriesTable  
+          GROUP BY ProductsCate.ProductID ) CategoriesTable
           JOIN (SELECT GetProduct.ProductID,GetProduct.UserEmail FROM
           (SELECT Products.ProductID, Products.CategoryID, Products.ProductName, Products.ProductPrice,Products.Description,Products.ProductStatus,Products.CreateDate,Products.Quantity, 								Products.ImageDetail,LikesOfProductA.UserEmail
           FROM Products
@@ -496,17 +496,12 @@ let getProductAllByCategory = async (req, res) => {
 // Get List All Product 1 page have 6 entry
 let getProducts = async (req, res) => {
   //Get ID category
-  const page = req.query.page;
-  const pageSize = 6;
-  const offset = (page - 1) * pageSize;
   let sql = ` SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes, Products.Quantity
                 FROM Products
                 LEFT JOIN LikesOfProduct
                 ON Products.ProductID=LikesOfProduct.ProductID
-                GROUP BY Products.ProductID
-                LIMIT ?
-                OFFSET ?`;
-  let query = mysql.format(sql, [pageSize, offset]);
+                GROUP BY Products.ProductID`;
+  let query = mysql.format(sql);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       return res.status(200).json({ success: false, message: err });
@@ -528,12 +523,10 @@ let getProducts = async (req, res) => {
           } else {
             //Lay ID day vao Database cho bang Product
             const array = await Array.apply(null, results);
-            const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
             return res.status(200).json({
               success: true,
               data: arr,
-              totalPage: totalPage // Total page
             });
           }
         });

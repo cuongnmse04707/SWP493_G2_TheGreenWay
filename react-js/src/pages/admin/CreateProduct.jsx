@@ -7,12 +7,15 @@ import {
   Upload,
   Icon,
   message,
-  Modal
+  Modal,
+  Select,
+  Row,
+  Col
 } from 'antd';
 import CKEditor from 'ckeditor4-react';
 
 const { TextArea } = Input;
-
+const { Option } = Select;
 
 function getBase64Avatar(img, callback) {
   const reader = new FileReader();
@@ -107,6 +110,9 @@ class CreateProduct extends Component {
     });
   };
 
+  handleCategoryChange(value) {
+    console.log(`selected ${value}`);
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -114,7 +120,7 @@ class CreateProduct extends Component {
         xs: { span: 24 },
         sm: { span: 24 },
         md: { span: 24 },
-        lg: { span: 12 }
+        lg: { span: 14 }
       },
       wrapperCol: {
         xs: { span: 22 },
@@ -143,90 +149,122 @@ class CreateProduct extends Component {
         <p className="title">Tạo sản phẩm mới</p>
         <div className="admin-create-form-container">
           <div className="admin-create-form-left">
-            <Form {...formItemLayout} >
-              <Form.Item label="Tên sản phẩm">
-                {getFieldDecorator('productName', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Vui lòng nhập tên sản phẩm',
-                    },
-                  ],
-                })(<Input />)}
-              </Form.Item>
-              <Form.Item label="Giá sản phẩm">
-                {getFieldDecorator('productPrice', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Vui lòng nhập giá sản phẩm',
-                    },
-                  ],
-                })(<InputNumber min={1} max={10} defaultValue={3} />)}
-              </Form.Item>
-              <Form.Item label="Mô tả sản phẩm">
-                {getFieldDecorator('productDescription', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Vui lòng nhập mô tả sản phẩm',
-                    },
-                  ],
-                })(
-                  <CKEditor data="" />
-                )}
-              </Form.Item>
-            </Form>
+          <Row>
+              <Form {...formItemLayout} >
+                <Col span={13}>
+                  <Form.Item label="Tên sản phẩm">
+                    {getFieldDecorator('productName', {
+                      rules: [
+                        {
+                          required: true,
+                          message: 'Vui lòng nhập tên sản phẩm',
+                        },
+                      ],
+                    })(<Input />)}
+                  </Form.Item>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <Form.Item label="Giá sản phẩm">
+                      {getFieldDecorator('productPrice', {
+                        rules: [
+                          {
+                            required: true,
+                            message: 'Vui lòng nhập giá sản phẩm',
+                          },
+                        ],
+                      })(<InputNumber min={1} max={10} value={3} />)}
+                    </Form.Item>
+                    <Form.Item label="Số lượng">
+                      {getFieldDecorator('productQuantity', {
+                        rules: [
+                          {
+                            required: true,
+                            message: 'Vui lòng nhập số lượng sản phẩm',
+                          },
+                        ],
+                      })(<InputNumber min={1} max={10} value={3} />)}
+                    </Form.Item>
+                    <Form.Item label="Loại sản phẩm">
+                      {getFieldDecorator('category', {
+                        rules: [
+                          {
+                            required: true,
+                            message: 'Vui lòng nhập loại sản phẩm',
+                          },
+                        ],
+                      })(
+                        <Select {...this.props} style={{ width: 160 }} onChange={this.handleCategoryChange}>
+                          <Option value="1">Cây văn phòng</Option>
+                          <Option value="2">Đồ tái chế</Option>
+                        </Select>
+                      )}
+                    </Form.Item>
+                  </div>
+                  <Form.Item label="Mô tả sản phẩm">
+                    {getFieldDecorator('productDescription', {
+                      rules: [
+                        {
+                          required: true,
+                          message: 'Vui lòng nhập mô tả sản phẩm',
+                        },
+                      ],
+                    })(
+                      <CKEditor data="" />
+                    )}
+                  </Form.Item></Col>
+                {/* </Form>
           </div>
           <div className="admin-create-form-right">
-            <Form {...formItemLayout} >
-              <Form.Item label="Ảnh đại diện">
-                {getFieldDecorator('productAvatar', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Vui lòng nhập tên sản phẩm',
-                    },
-                  ],
-                })(<Upload
-                  name="avatar"
-                  listType="picture-card"
-                  className="avatar-uploader"
-                  showUploadList={false}
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  beforeUpload={beforeUpload}
-                  onChange={this.handleChange}
-                >
-                  {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
-                </Upload>)}
-              </Form.Item>
+            <Form {...formItemLayout} > */}
+                <Col span={11}>
+                  <Form.Item label="Ảnh đại diện">
+                    {getFieldDecorator('productAvatar', {
+                      rules: [
+                        {
+                          required: true,
+                          message: 'Vui lòng nhập tên sản phẩm',
+                        },
+                      ],
+                    })(<Upload
+                      name="avatar"
+                      listType="picture-card"
+                      className="avatar-uploader"
+                      showUploadList={false}
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      beforeUpload={beforeUpload}
+                      onChange={this.handleChange}
+                    >
+                      {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
+                    </Upload>)}
+                  </Form.Item>
 
-              <Form.Item label="Ảnh chi tiết">
-                {getFieldDecorator('imageDetail', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Vui lòng nhập mô tả sản phẩm',
-                    },
-                  ],
-                })(
-                  <div className="clearfix">
-                  <Upload
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                    listType="picture-card"
-                    fileList={fileList}
-                    onPreview={this.handlePreview}
-                    onChange={this.handleImageDetailChange}
-                  >
-                    {fileList.length >= 4 ? null : uploadImageDetailButton}
-                  </Upload>
-                  <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                  </Modal>
-                </div>
-                )}
-              </Form.Item>
-            </Form>
+                  <Form.Item label="Ảnh chi tiết">
+                    {getFieldDecorator('imageDetail', {
+                      rules: [
+                        {
+                          required: true,
+                          message: 'Vui lòng nhập mô tả sản phẩm',
+                        },
+                      ],
+                    })(
+                      <div className="clearfix">
+                        <Upload
+                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                          listType="picture-card"
+                          fileList={fileList}
+                          onPreview={this.handlePreview}
+                          onChange={this.handleImageDetailChange}
+                        >
+                          {fileList.length >= 4 ? null : uploadImageDetailButton}
+                        </Upload>
+                        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                        </Modal>
+                      </div>
+                    )}
+                  </Form.Item>
+                </Col>
+              </Form>
+            </Row>
           </div>
         </div>
       </div>
