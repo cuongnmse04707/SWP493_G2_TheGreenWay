@@ -93,7 +93,7 @@ let downRow = async (req, res) => {
 
 let deleteUser = async (req, res) => {
   //Lay thong tin tu database
-  const email = req.body.email;
+  const email = req.query.email;
   let sql = `DELETE FROM Accounts WHERE Accounts.email = ?`;
   let query = mysql.format(sql, [email]);
   connectionDB.query(query, async (err, result) => {

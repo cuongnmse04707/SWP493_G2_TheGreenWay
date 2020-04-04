@@ -11,8 +11,8 @@ let modRouter = (server) => {
   // List Protect APIs:
   router.get("/getListUser", ModController.getListUser);
   router.use(AdminMiddleware.isAuth);
-  router.put("/upRow", ModController.upRow);
-  router.put("/dowRow", ModController.downRow);
+  router.get("/upRow", ModController.upRow);
+  router.get("/dowRow", ModController.downRow);
   router.delete("/deleteUser", ModController.deleteUser);
   return server.use("/mod", router);
 };

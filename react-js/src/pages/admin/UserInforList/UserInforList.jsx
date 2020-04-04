@@ -9,6 +9,9 @@ import {
   Form,
   message,
   Pagination,
+  Collapse,
+  Drawer,
+  Select,
 } from "antd";
 import "../../../css/user-infor-list.css";
 import { connect } from "react-redux";
@@ -25,6 +28,7 @@ class UserInforList extends Component {
       idMemberRemove: "",
       keyFilterValue: "",
       keyFilterRole: "all",
+      emailChange: "",
     };
   }
 
@@ -33,175 +37,86 @@ class UserInforList extends Component {
     getUser();
   }
 
-  // showModal = (id) => {
-  //   const { user } = this.props;
-  //   const {
-  //     location,
-  //     projectNS: { project },
-  //   } = this.props;
-  //   const { list: dataList } = project;
-  //   let dataObj =
-  //     dataList[
-  //       dataList.findIndex(
-  //         (element) => element._id === location.query.projectid
-  //       )
-  //     ] || {};
-  //   if (
-  //     dataObj.members[
-  //       dataObj.members.findIndex(
-  //         (element) => element.employee._id === user.employee_id
-  //       )
-  //     ].role === "admin"
-  //   ) {
-  //     this.setState({
-  //       visibleRemove: true,
-  //       idMemberRemove: id,
-  //     });
-  //   } else {
-  //     message.error("You have to access admin permission !");
-  //   }
-  // };
+  showModal = (id) => {
+    this.setState({
+      visibleRemove: true,
+      idMemberRemove: id,
+    });
+  };
 
-  // handleCancel = () => {
-  //   this.setState({
-  //     visibleRemove: false,
-  //     idMemberRemove: "",
-  //   });
-  // };
+  handleCancel = () => {
+    this.setState({
+      visibleRemove: false,
+      idMemberRemove: "",
+    });
+  };
 
   // handleOk = () => {
   //   // Remove deleteMember
   //   const { idMemberRemove } = this.state;
-  //   const { location, dispatch } = this.props;
-  //   dispatch({
-  //     type: "projectNS/deleteMember",
-  //     payload: {
-  //       project: location.query.projectid,
-  //       member: idMemberRemove,
-  //     },
-  //     callback: () => {
-  //       this.setState({
-  //         visibleRemove: false,
-  //         idMemberRemove: "",
-  //       });
-  //     },
+  //   const { deleteUser } = this.props;
+  //   deleteUser({
+  //     email: idMemberRemove,
+  //     callback: () => {},
   //   });
   // };
 
-  // onOpenDrawerMemberSetting = (event) => {
-  //   event.preventDefault();
-  //   const { user } = this.props;
-  //   const {
-  //     location,
-  //     projectNS: { project },
-  //   } = this.props;
-  //   const { list: dataList } = project;
-  //   let dataObj =
-  //     dataList[
-  //       dataList.findIndex(
-  //         (element) => element._id === location.query.projectid
-  //       )
-  //     ] || {};
-  //   if (
-  //     dataObj.members[
-  //       dataObj.members.findIndex(
-  //         (element) => element.employee._id === user.employee_id
-  //       )
-  //     ].role === "admin"
-  //   ) {
-  //     this.setState({
-  //       visibleDrawerMemberSetting: true,
-  //     });
-  //   } else {
-  //     message.error("You have to access admin permission !");
-  //   }
-  // };
+  onOpenDrawerMemberSetting = (event) => {
+    event.preventDefault();
+    console.log("1");
+    this.setState({
+      visibleDrawerMemberSetting: true,
+    });
+  };
 
-  // onCloseDrawerMemberSetting = () => {
-  //   const { dispatch } = this.props;
-  //   dispatch({
-  //     type: "projectNS/getEmployee",
-  //     payload: { page_size: -1 },
-  //   });
-  //   this.setState({
-  //     visibleDrawerMemberSetting: false,
-  //   });
-  // };
+  onCloseDrawerMemberSetting = () => {
+    this.setState({
+      visibleDrawerMemberSetting: false,
+    });
+  };
 
-  // onClickAddSelect = () => {
-  //   const {
-  //     form,
-  //     dispatch,
-  //     location,
-  //     projectNS: { employees },
-  //     projectNS: { project },
-  //   } = this.props;
-  //   form.validateFields(["inviteMember"], async (err, values) => {
-  //     if (!err) {
-  //       const memberList = Array.isArray(values.inviteMember)
-  //         ? values.inviteMember
-  //         : [values.inviteMember];
-  //       const memberListDB = [];
-  //       // eslint-disable-next-line array-callback-return
-  //       memberList.map((element) => {
-  //         memberListDB.push({
-  //           employee:
-  //             employees[employees.findIndex((item) => item._id === element)]
-  //               ._id,
-  //           photo_url:
-  //             employees[employees.findIndex((item) => item._id === element)]
-  //               .photo_url,
-  //           display_name:
-  //             employees[employees.findIndex((item) => item._id === element)]
-  //               .display_name,
-  //           email:
-  //             employees[employees.findIndex((item) => item._id === element)]
-  //               .email,
-  //           role: "member",
-  //         });
-  //       });
-  //       const { list: dataList } = project;
-  //       let dataObj =
-  //         dataList[
-  //           dataList.findIndex(
-  //             (element) => element._id === location.query.projectid
-  //           )
-  //         ] || {};
-  //       form.resetFields();
-  //       dispatch({
-  //         type: "projectNS/updateEmptyProject",
-  //         payload: {
-  //           id: location.query.projectid,
-  //           members: [...dataObj.members, ...memberListDB],
-  //         },
-  //       });
-  //     }
-  //   });
-  // };
+  saveInfor = () => {
+    const { emailChange } = this.state;
+    const { upRole } = this.props;
+    if (emailChange === "") {
+      return;
+    }
+    upRole({
+      email: emailChange,
+      callback: () => {
+        this.setState({
+          emailChange: "",
+        });
+      },
+    });
+  };
 
-  // getDataTable = (list) => {
-  //   const { keyFilterRole, keyFilterValue } = this.state;
-  //   let data = [...list];
+  getDataTable = (list) => {
+    const { keyFilterValue } = this.state;
+    let data = [...list];
+    if (keyFilterValue) {
+      const rg = new RegExp(keyFilterValue, "i");
+      data = data.filter(
+        (element) => rg.test(element.username) || rg.test(element.email)
+      );
+    }
 
-  //   if (keyFilterRole === "admin") {
-  //     data = data.filter((element) => element.role === "admin");
-  //   }
+    return data;
+  };
 
-  //   if (keyFilterRole === "member") {
-  //     data = data.filter((element) => element.role === "member");
-  //   }
+  onChangeDrawer = (value) => {
+    this.setState({
+      emailChange: value,
+    });
+  };
 
-  //   if (keyFilterValue) {
-  //     const rg = new RegExp(keyFilterValue, "i");
-  //     data = data.filter(
-  //       (element) =>
-  //         rg.test(element.employee.display_name) ||
-  //         rg.test(element.employee.email)
-  //     );
-  //   }
-
-  //   return data;
-  // };
+  onDownRole = (value) => {
+    const { downRole } = this.props;
+    downRole({
+      email: value,
+      callback: (value) => {},
+    });
+  };
 
   render() {
     const columns = [
@@ -214,39 +129,102 @@ class UserInforList extends Component {
               alignItems: "center",
             }}
           >
-            <span>Nickname</span>
+            <span>Name</span>
           </div>
         ),
-        // dataIndex: 'display_name',
-        key: "display_name",
+        key: "name",
+        width: "20%",
         render: (text, record) => (
-          <div>
-            <Avatar
-              shape="square"
-              src={
-                record.employee.photo_url ||
-                `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${record.employee.display_name}`
-              }
-            />
-            <span>{record.employee.display_name}</span>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Avatar shape="square" src={record.urlAvatar || ``} />
+            <span style={{ marginLeft: "8px" }}>{record.username}</span>
           </div>
         ),
       },
       {
         title: <span>Email Address</span>,
+        dataIndex: "email",
         key: "email",
-        render: (text, record) => <span>{record.employee.email}</span>,
+        width: "25%",
       },
       {
         title: <span>Role</span>,
-        dataIndex: "role",
+        dataIndex: "roles",
         key: "role",
+        width: "10%",
       },
       {
-        title: <span>Joined on</span>,
-        dataIndex: "createdAt",
-        key: "createdAt",
-        render: (text) => <span>{moment(text).format("DD/MM/YYYY")}</span>,
+        title: <span>DOB</span>,
+        dataIndex: "DOB",
+        key: "DOB",
+        render: (text) => (
+          <span>
+            {text !== "Invalid date" ? moment(text).format("DD/MM/YYYY") : `--`}
+          </span>
+        ),
+        width: "10%",
+      },
+      {
+        title: <span>Address</span>,
+        dataIndex: "address",
+        key: "address",
+        render: (text) => <span>{text !== "" ? text : `--`}</span>,
+        width: "25%",
+      },
+      {
+        title: (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <span>Infor</span>
+          </div>
+        ),
+        width: "10%",
+        key: "action",
+        render: (text, record) => (
+          <Button
+            icon="info-circle"
+            onClick={() => this.showModal(record)}
+            // disabled={record.roles === "admin"}
+            style={{ border: "none" }}
+          />
+        ),
+      },
+    ];
+    const columnsAdmin = [
+      {
+        title: (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <span>Name</span>
+          </div>
+        ),
+        key: "name",
+        render: (text, record) => (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Avatar shape="square" src={record.urlAvatar || ``} />
+            <span style={{ marginLeft: "8px" }}>{record.username}</span>
+          </div>
+        ),
+      },
+      {
+        title: <span>Email Address</span>,
+        dataIndex: "email",
+        key: "email",
+      },
+      {
+        title: <span>Role</span>,
+        dataIndex: "roles",
+        key: "role",
       },
       {
         title: (
@@ -264,78 +242,474 @@ class UserInforList extends Component {
         render: (text, record) => (
           <Button
             icon="delete"
-            // onClick={() => this.showModal(record.employee._id)}
+            onClick={() => this.onDownRole(record.email)}
+            // disabled={record.roles === "admin"}
             style={{ border: "none" }}
           />
         ),
       },
     ];
-    const { visibleRemove, visibleDrawerMemberSetting } = this.state;
-    const { form } = this.props;
+    const {
+      visibleRemove,
+      visibleDrawerMemberSetting,
+      idMemberRemove,
+    } = this.state;
+    const { form, listUser } = this.props;
     const { getFieldDecorator } = form;
+    const { Panel } = Collapse;
+    const { Option } = Select;
     return (
       <div
         style={{ flex: 1, display: "flex", flexDirection: "column" }}
         className="contentComponent"
       >
-        {/* Container of BreadcrumbComponent */}
         <Form>
           <div className="bodyContainer">
-            <span className="textProjectMember">
-              Project Members 11 members
-            </span>
-            <div>
-              <span>Filter user</span>
-              <div>
-                <Icon type="search" />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <span className="textProjectMember">
+                The Green Way have {get(listUser, "length")} members
+              </span>
+            </div>
+            <div className="divSearh">
+              <span style={{ fontSize: "16px" }}>Filter user</span>
+              <div className="FilterName">
                 <Input
                   placeholder="Search in Nickname or Email address"
                   bordered="false"
                   onChange={(event) => {
-                    // this.setState({
-                    //   keyFilterValue: event.target.value,
-                    // });
+                    this.setState({
+                      keyFilterValue: event.target.value,
+                    });
                   }}
-                  // className={styles.inputCustomStyle}
                   allowClear
                 />
               </div>
-              {/* <div className={styles.selectBox}> */}
-              {/* <SelectList
-                  onChange={(val) => this.setState({ keyFilterRole: val })}
-                /> */}
-              {/* </div> */}
+              <Button
+                type="primary"
+                style={{ marginLeft: "10px" }}
+                onClick={this.onOpenDrawerMemberSetting}
+              >
+                Web User Setting
+              </Button>
             </div>
-            <Table
-              // className={styles.stylesTable}
-              columns={columns}
-              dataSource={[]}
-              style={{ background: "white" }}
-              pagination={false}
-            />
+            <Collapse
+              defaultActiveKey={["1"]}
+              style={{ marginTop: "10px" }}
+              expandIconPosition={"right"}
+            >
+              <Panel header="Admin" key="1">
+                <div>
+                  <Table
+                    className="stylesTable"
+                    columns={columns}
+                    dataSource={this.getDataTable(
+                      (listUser || []).filter((el) => el.roles === "admin") ||
+                        []
+                    )}
+                    style={{ background: "white" }}
+                    pagination={false}
+                  />
+                </div>
+              </Panel>
+              <Panel header="List MOD" key="2">
+                <div>
+                  <Table
+                    className="stylesTable"
+                    columns={columns}
+                    dataSource={this.getDataTable(
+                      (listUser || []).filter((el) => el.roles === "mod") || []
+                    )}
+                    style={{ background: "white" }}
+                    pagination={false}
+                  />
+                </div>
+              </Panel>
+              <Panel header="List User" key="3">
+                <div>
+                  <Table
+                    className="stylesTable"
+                    columns={columns}
+                    dataSource={this.getDataTable(
+                      (listUser || []).filter((el) => el.roles === "user") || []
+                    )}
+                    style={{ background: "white" }}
+                    pagination={false}
+                  />
+                </div>
+              </Panel>
+            </Collapse>
           </div>
         </Form>
+        {visibleDrawerMemberSetting ? (
+          <Drawer
+            title="Basic Drawer"
+            placement="right"
+            onClose={this.onCloseDrawerMemberSetting}
+            visible={visibleDrawerMemberSetting}
+            width="40vw"
+          >
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                height: "88vh",
+                flexDirection: "column",
+                alignSelf: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  width: "100%",
+                  height: "80px",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Select
+                  showSearch
+                  style={{ width: 500 }}
+                  value={this.state.emailChange}
+                  placeholder="Select a user"
+                  optionFilterProp="children"
+                  optionLabelProp="label"
+                  onChange={this.onChangeDrawer}
+                  filterOption={(input, option) =>
+                    option.key.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {(listUser || [])
+                    .filter((el) => el.roles === "user")
+                    .map((items) => (
+                      <Option
+                        key={items.email}
+                        value={items.email}
+                        label={items.email}
+                        style={{ display: "flex", alignItems: "center" }}
+                      >
+                        <Avatar
+                          shape="square"
+                          src={items.urlAvatar}
+                          style={{ marginRight: "10px" }}
+                        />
+                        <span>{items.username}</span>
+
+                        <span style={{ marginLeft: "20px" }}>
+                          | {items.email}
+                        </span>
+                      </Option>
+                    ))}
+                </Select>
+                <Button
+                  style={{ marginLeft: "10px", width: "100px" }}
+                  onClick={this.saveInfor}
+                >
+                  Save
+                </Button>
+              </div>
+              <div
+                style={{
+                  flex: "1",
+                  width: "100%",
+                  flexDirection: "column",
+                  alignSelf: "center",
+                }}
+              >
+                <Table
+                  className="stylesTable"
+                  columns={columnsAdmin}
+                  dataSource={
+                    (listUser || []).filter((el) => el.roles === "mod") || []
+                  }
+                  style={{ background: "white" }}
+                  pagination={false}
+                />
+              </div>
+            </div>
+          </Drawer>
+        ) : null}
+        {visibleRemove ? (
+          <Modal
+            title={
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Icon
+                  type="info-circle"
+                  style={{
+                    color: "blue",
+                    marginRight: "5px",
+                    fontSize: "15px",
+                  }}
+                />
+                <span>Information Of User</span>
+              </div>
+            }
+            visible={visibleRemove}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            width={345}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <div style={{ width: "150px", height: "150px" }}>
+                <Avatar
+                  shape="square"
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "50%",
+                  }}
+                  src={idMemberRemove.urlAvatar}
+                />
+              </div>
+              <span style={{ marginTop: "10px" }}>
+                {idMemberRemove.username}
+              </span>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "300px",
+                  height: "50px",
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>Email</span>
+                </div>
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>{idMemberRemove.email}</span>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "300px",
+                  height: "50px",
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>Roles</span>
+                </div>
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>{idMemberRemove.roles}</span>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "300px",
+                  height: "50px",
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>Phone</span>
+                </div>
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>{idMemberRemove.phone}</span>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "300px",
+                  height: "50px",
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>Address</span>
+                </div>
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>{idMemberRemove.address}</span>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "300px",
+                  height: "50px",
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>City</span>
+                </div>
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>{idMemberRemove.city}</span>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "300px",
+                  height: "50px",
+                  borderBottom: "1px solid black",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>Country</span>
+                </div>
+                <div
+                  style={{
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <span>{idMemberRemove.country}</span>
+                </div>
+              </div>
+            </div>
+          </Modal>
+        ) : null}
       </div>
-      // {/* <DrawerAddMemberSettingComponent
-      //   visibleDrawerMemberSetting={visibleDrawerMemberSetting}
-      //   onCloseDrawerMemberSetting={this.onCloseDrawerMemberSetting}
-      // />
-      // <Modal
-      //   title={
-      //     <div style={{ display: "flex", alignItems: "center" }}>
-      //       <Icon
-      //         type="info-circle"
-      //         style={{ color: "red", marginRight: "5px", fontSize: "15px" }}
-      //       />
-      //       <span>Warning</span>
-      //     </div>
-      //   }
-      //   visible={visibleRemove}
-      //   onOk={this.handleOk}
-      //   onCancel={this.handleCancel}
-      // >
-      //   <p>Are you want to remove this member ?</p>
-      // </Modal> */}
     );
   }
 }
@@ -343,9 +717,7 @@ const MemberFrom = Form.create()(UserInforList);
 
 const mapStateToProps = (state) => {
   return {
-    // orderInfor: state.userOrderHistory.orderDetail,
-    // cartInfor: state.userOrderHistory.cartInfor,
-    // guestCartInfor: state.userOrderHistory.guestCartInfor,
+    listUser: state.modReducers.listUser,
   };
 };
 
@@ -353,6 +725,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getUser: (params) => {
       dispatch(ModTypes.getUserRequest(params));
+    },
+    upRole: (params) => {
+      dispatch(ModTypes.upRoleRequest(params));
+    },
+    downRole: (params) => {
+      dispatch(ModTypes.downRoleRequest(params));
     },
   };
 };

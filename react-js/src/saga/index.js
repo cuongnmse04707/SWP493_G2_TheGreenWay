@@ -100,5 +100,7 @@ export default function* root() {
     // takeLatest(IntroProductTypes.LIST_PRODUCT_SEARCH, IntroProductSagas.getListSearchProduct),
     takeLatest(OrderCartTypes.GET_ORDER_CART_REQUEST, OrderCartSagas.orderCart),
     takeLatest(ModTypes.GET_USER_REQUEST, ModSagas.getUser),
+    takeLatest(ModTypes.UP_ROLE_REQUEST, ModSagas.upRole),
+    takeLatest(ModTypes.DOWN_ROLE_REQUEST, ModSagas.downRole),
   ]);
 }
