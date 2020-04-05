@@ -37,7 +37,7 @@ export const request = (state) => {
 }
 
 export const getProductSucceed = (state, { data }) => {
-  console.log('data', data)
+  // console.log('data', data)
   return {
     ...state,
     productList: data.data,
@@ -45,7 +45,7 @@ export const getProductSucceed = (state, { data }) => {
 }
 
 export const getProductDetailSucceed = (state, { data }) => {
-  console.log('data', data)
+  // console.log('data', data)
   return {
     ...state,
     productDetail: data.data,
@@ -54,19 +54,32 @@ export const getProductDetailSucceed = (state, { data }) => {
 }
 
 export const updateProductSucceed = (state, { data }) => {
-  // console.log('data', data)
+  console.log('data', data)
+  console.log('list product', state.productList)
   return {
     ...state,
-  }
+    productList: state.productList.map((el) => {
+      if (el.ProductID === data.params.idProduct) {
+        return {
+          ...el,
+          ProductName: data.params.ProductName,
+          ProductPrice: data.params.ProductPrice,
+          ImageDetail: data.params.ImageDetail,
+          Quantity: data.params.Quantity,
+          CategoryID: data.params.CategoryID,
+        };
+      }
+      return el;
+    }),
+  };
 }
 
 export const addImageSucceed = (state, { data }) => {
-  // console.log('data123123', data)
-  // console.log(state.imageDetail)
+
   return {
     ...state,
-    imageDetail: [...state.imageDetail,{
-      ImageID : data.data.idImage.MAX,
+    imageDetail: [...state.imageDetail, {
+      ImageID: data.data.idImage.MAX,
       urlImage: data.urlImage
     }]
   }
@@ -76,7 +89,7 @@ export const deleteImageSucceed = (state, { data }) => {
   // console.log('dat12a', data)
   return {
     ...state,
-    imageDetail : state.imageDetail.filter(el => el.ImageID !== data)
+    imageDetail: state.imageDetail.filter(el => el.ImageID !== data)
   }
 }
 

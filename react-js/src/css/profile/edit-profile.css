@@ -330,6 +330,7 @@
 .sideBar-container .logo {
   height: 70px;
   width: 100%;
+  margin-top: 30px;
   background: rgba(255, 255, 255, 0.2);
 }
 

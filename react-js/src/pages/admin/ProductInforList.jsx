@@ -133,7 +133,6 @@ class ProductInforList extends Component {
           console.log('Received values of form: ', values);
           //console.log(this.props.productDetail)
           const params = {
-
             idProduct: this.state.productId,
             CategoryID: values.category,
             ProductName: values.productName,
@@ -142,18 +141,13 @@ class ProductInforList extends Component {
             Quantity: values.productQuantity,
             ImageDetail: this.props.productDetail.ImageDetail,
             CreateDate: this.props.productDetail.CreateDate
-
           }
+          console.log(params)
           this.props.updateProduct({
             params,
             callback: () => {
               console.log(this.props)
-              // this.props.productDetail.CategoryID = values.category
-              // this.props.productDetail.ProductName = values.productName
-              // this.props.productDetail.ProductPrice = values.productPrice
-              // this.props.productDetail.Description = values.productDescription
-              // this.props.productDetail.Quantity = values.productQuantity
-              // console.log(this.props.productDetail)
+
               // this.props.history.push("/admin?page=product-infor");
             }
           })
@@ -264,6 +258,7 @@ class ProductInforList extends Component {
     );
     const { imageUrl } = this.state;
     const { productList, productDetail, imageDetail } = this.props
+    console.log(productList)
     return (
       <div className="admin-product-wrapper">
         <p className="title">Thông tin sản phẩm</p>
@@ -311,7 +306,7 @@ class ProductInforList extends Component {
                           message: 'Vui lòng nhập số lượng sản phẩm',
                         },
                       ],
-                    })(<InputNumber min={1} max={10} />)}
+                    })(<InputNumber min={1} />)}
                   </Form.Item>
                   <Form.Item label="Loại sản phẩm">
                     {getFieldDecorator('category', {
