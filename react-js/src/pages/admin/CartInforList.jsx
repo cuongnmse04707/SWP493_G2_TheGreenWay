@@ -1,13 +1,504 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import {
+  Table,
+  Icon,
+  Button,
+  Modal,
+  Avatar,
+  Input,
+  Form,
+  message,
+  Pagination,
+  Collapse,
+  Drawer,
+  Select,
+  Radio,
+  Tooltip,
+} from "antd";
+import "../../css/user-infor-list.css";
+import "../../css/order-history-detail.css";
+import { connect } from "react-redux";
+import ModTypes from "../../redux/mod-redux";
+import UserOrderHistoryTypes from "../../redux/user-order-history-redux";
+import { get } from "lodash";
+let moment = require("moment");
 
 class CartInforList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibleRemove: false,
+      visibleDrawerMemberSetting: false,
+      idMemberRemove: "",
+      keyFilterValue: "",
+      keyFilterRole: "all",
+      emailChange: "",
+      stateTable: "all",
+    };
+  }
+
+  componentDidMount() {
+    const { getDataOrder } = this.props;
+    getDataOrder();
+  }
+
+  // showModal = (id) => {
+  //   this.setState({
+  //     visibleRemove: true,
+  //     idMemberRemove: id,
+  //   });
+  // };
+
+  // handleCancel = () => {
+  //   this.setState({
+  //     visibleRemove: false,
+  //     idMemberRemove: "",
+  //   });
+  // };
+
+  // handleOk = () => {
+  //   // Remove deleteMember
+  //   const { idMemberRemove } = this.state;
+  //   const { deleteUser } = this.props;
+  //   deleteUser({
+  //     email: idMemberRemove,
+  //     callback: () => {},
+  //   });
+  // };
+
+  onOpenDrawerMemberSetting = (item) => {
+    const { getOrderDetail } = this.props;
+    getOrderDetail(item.OrderID);
+    console.log("Hello");
+    this.setState({
+      visibleDrawerMemberSetting: true,
+    });
+  };
+
+  onCloseDrawerMemberSetting = () => {
+    this.setState({
+      visibleDrawerMemberSetting: false,
+    });
+  };
+
+  // saveInfor = () => {
+  //   const { emailChange } = this.state;
+  //   const { upRole } = this.props;
+  //   if (emailChange === "") {
+  //     return;
+  //   }
+  //   upRole({
+  //     email: emailChange,
+  //     callback: () => {
+  //       this.setState({
+  //         emailChange: "",
+  //       });
+  //     },
+  //   });
+  // };
+
+  getDataTable = (list) => {
+    const { keyFilterValue } = this.state;
+    let data = [...list];
+    if (keyFilterValue) {
+      const rg = new RegExp(keyFilterValue, "i");
+      data = data.filter(
+        (element) => rg.test(element.username) || rg.test(element.email)
+      );
+    }
+
+    return data;
+  };
+
+  onChangeDrawer = (value) => {
+    this.setState({
+      emailChange: value,
+    });
+  };
+
+  onDownRole = (value) => {
+    const { downRole } = this.props;
+    downRole({
+      email: value,
+      callback: (value) => {},
+    });
+  };
+
   render() {
+    const columns = [
+      {
+        title: (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <span>OrderID</span>
+          </div>
+        ),
+        key: "OrderID",
+        render: (text, record) => (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Tooltip title={record.Description}>
+              <div
+                style={{
+                  width: "5px",
+                  height: "33px",
+                  marginTop: "2px",
+                  marginBottom: "2px",
+                  background: `${
+                    record.Description === "Đang Chờ Xử Lý"
+                      ? "blue"
+                      : `${
+                          record.Description === "Đang Giao Hàng"
+                            ? "yellow"
+                            : `${
+                                record.Description === "Giao Hàng Thành Công"
+                                  ? "#10ea10"
+                                  : `red`
+                              }`
+                        }`
+                  }`,
+                  marginRight: "15px",
+                }}
+              />
+            </Tooltip>
+            <span>{record.OrderID}</span>
+          </div>
+        ),
+      },
+      {
+        title: <span>TotalPrice</span>,
+        dataIndex: "TotalPrice",
+        key: "TotalPrice",
+        render: (text) => <span>{text} VNĐ</span>,
+      },
+      {
+        title: <span>CreateDate</span>,
+        dataIndex: "CreateDate",
+        key: "CreateDate",
+        render: (text) => (
+          <span>
+            {text !== "Invalid date" ? moment(text).format("DD/MM/YYYY") : `--`}
+          </span>
+        ),
+      },
+      {
+        title: <span>EndDate</span>,
+        dataIndex: "EndDate",
+        key: "EndDate",
+        render: (text) => (
+          <span>
+            {text !== "Invalid date" ? moment(text).format("DD/MM/YYYY") : `--`}
+          </span>
+        ),
+      },
+      {
+        title: <span>ShipAddress</span>,
+        dataIndex: "ShipAddress",
+        key: "ShipAddress",
+        render: (text) => <span>{text !== "" ? text : `--`}</span>,
+        width: "25%",
+      },
+      {
+        title: (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <span>Action</span>
+          </div>
+        ),
+        width: "10%",
+        key: "action",
+        render: (text, record) => (
+          <Button
+            icon="info-circle"
+            onClick={() => this.onOpenDrawerMemberSetting(record)}
+            // disabled={record.roles === "admin"}
+            style={{ border: "none" }}
+          />
+        ),
+      },
+    ];
+    const columnsOrder = [
+      {
+        title: "Tên Sản Phẩm",
+        dataIndex: "ProductName",
+        render: (text, record) => (
+          <div>
+            <img
+              style={{ height: "30px", width: "30px", borderRadius: "5px" }}
+              src={record.ImageDetail}
+              alt=""
+            />
+            <span style={{ fontSize: "18px", marginLeft: "5%" }}>
+              {record.ProductName}
+            </span>
+          </div>
+        ),
+      },
+      {
+        title: "Tổng số tiền",
+        dataIndex: "age",
+        render: (text, record) => (
+          <div>
+            <span>{record.Price} VNĐ</span>
+          </div>
+        ),
+      },
+      {
+        title: "Số lượng",
+        dataIndex: "address",
+        render: (text, record) => (
+          <div>
+            <span>{record.QuantityProduct}</span>
+          </div>
+        ),
+      },
+    ];
+    const {
+      visibleRemove,
+      visibleDrawerMemberSetting,
+      idMemberRemove,
+      stateTable,
+    } = this.state;
+    const { form, listOrder, cartInfor, orderInfor } = this.props;
+    const { getFieldDecorator } = form;
+    console.log("object :", orderInfor);
+    console.log(cartInfor);
     return (
-      <div>
-        <h1>Cart Infor</h1>
+      <div
+        style={{ flex: 1, display: "flex", flexDirection: "column" }}
+        className="contentComponent"
+      >
+        <Form>
+          <div className="bodyContainer">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div className="textProjectMember">
+                <Radio.Group
+                  defaultValue="all"
+                  size="large"
+                  onChange={(event) => {
+                    // console.log(event.target.value);
+                    this.setState({
+                      stateTable: event.target.value,
+                    });
+                  }}
+                >
+                  <Radio.Button value="all">
+                    Tất cả ( {get(listOrder, "length") || ""} )
+                  </Radio.Button>
+                  <Radio.Button value="Đang Chờ Xử Lý">
+                    Đang Xử Lí ({" "}
+                    {(
+                      (listOrder || []).filter(
+                        (el) => el.Description === "Đang Chờ Xử Lý"
+                      ) || []
+                    ).length || "0"}{" "}
+                    )
+                  </Radio.Button>
+                  <Radio.Button value="Đang Giao Hàng">
+                    Đang Giao Hàng ({" "}
+                    {(
+                      (listOrder || []).filter(
+                        (el) => el.Description === "Đang Giao Hàng"
+                      ) || []
+                    ).length || "0"}{" "}
+                    )
+                  </Radio.Button>
+                  <Radio.Button value="Giao Hàng Thành Công">
+                    Đã Thành Công ({" "}
+                    {(
+                      (listOrder || []).filter(
+                        (el) => el.Description === "Giao Hàng Thành Công"
+                      ) || []
+                    ).length || "0"}{" "}
+                    )
+                  </Radio.Button>
+                  <Radio.Button value="Đơn Hàng Bị Huỷ">
+                    Đã Huỷ ({" "}
+                    {(
+                      (listOrder || []).filter(
+                        (el) => el.Description === "Đơn Hàng Bị Huỷ"
+                      ) || []
+                    ).length || "0"}{" "}
+                    )
+                  </Radio.Button>
+                </Radio.Group>
+              </div>
+            </div>
+            <div className="divSearh">
+              <span style={{ fontSize: "16px" }}>Filter order</span>
+              <div className="FilterName">
+                <Input
+                  placeholder="Search in Nickname or Email address"
+                  bordered="false"
+                  onChange={(event) => {
+                    this.setState({
+                      keyFilterValue: event.target.value,
+                    });
+                  }}
+                  allowClear
+                />
+              </div>
+            </div>
+            <Table
+              className="stylesTable"
+              columns={columns}
+              dataSource={
+                stateTable === "all"
+                  ? listOrder || []
+                  : (listOrder || []).filter(
+                      (el) => el.Description === stateTable
+                    )
+              }
+              style={{ background: "white", marginTop: "10px" }}
+              // pagination={false}
+              pagination={{
+                pageSize: 9,
+                total: (stateTable === "all"
+                  ? listOrder || []
+                  : (listOrder || []).filter(
+                      (el) => el.Description === stateTable
+                    )
+                ).length,
+              }}
+            />
+          </div>
+        </Form>
+        {visibleDrawerMemberSetting ? (
+          <Drawer
+            title="Basic Drawer"
+            placement="right"
+            onClose={this.onCloseDrawerMemberSetting}
+            visible={visibleDrawerMemberSetting}
+            width="50vw"
+          >
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                height: "88vh",
+                flexDirection: "column",
+                alignSelf: "center",
+              }}
+            >
+              <div className="order-detail-wrapper-drawer">
+                <div className="order-infor-container">
+                  <div className="order-infor-left">
+                    <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                      Thông tin giỏ hàng:
+                    </p>
+                    <div style={{ display: "flex" }}>
+                      <span className="mr-4 order-infor-title">
+                        Tổng số tiền:
+                      </span>{" "}
+                      <span>{cartInfor.TotalPrice} VND</span>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      <span className="mr-4 order-infor-title">Tiền mặt:</span>{" "}
+                      <span>{cartInfor.Cash} VND</span>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      <span className="mr-4 order-infor-title">Giấy:</span>{" "}
+                      <span>{cartInfor.QuantityPaper} Kg</span>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      <span className="mr-4 order-infor-title">
+                        Địa chỉ giao hàng:
+                      </span>{" "}
+                      <span>{cartInfor.ShipAddress}</span>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      <span className="mr-4 order-infor-title">
+                        Trạng thái đơn hàng:
+                      </span>{" "}
+                      <span>{cartInfor.Description}</span>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      <span className="mr-4 order-infor-title">Ngày mua:</span>{" "}
+                      <span>
+                        {moment(cartInfor.CreateDate).format("DD/MM/YYYY")}
+                      </span>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      <span className="mr-4 order-infor-title">
+                        Ngày nhận hàng:
+                      </span>{" "}
+                      <span>
+                        {moment(cartInfor.EndDate).format("DD/MM/YYYY")}
+                      </span>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                      <span className="mr-4 order-infor-title">
+                        Ngày chỉnh sửa:
+                      </span>{" "}
+                      <span>
+                        {moment(cartInfor.ModifyDate).format("DD/MM/YYYY")}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="order-infor-right">
+                    <Button type="primary" onClick={this.backToOrderList}>
+                      Quay lại
+                    </Button>
+                  </div>
+                </div>
+                <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  Danh sách sản phẩm:
+                </p>
+                <Table
+                  dataSource={orderInfor}
+                  columns={columnsOrder}
+                  pagination={false}
+                  rowkey="id"
+                ></Table>
+              </div>
+            </div>
+          </Drawer>
+        ) : null}
       </div>
     );
   }
 }
+const CartInforListForm = Form.create()(CartInforList);
 
-export default CartInforList;
+const mapStateToProps = (state) => {
+  return {
+    listOrder: state.modReducers.listOrder || [],
+    orderInfor: state.userOrderHistory.orderDetail || {},
+    cartInfor: state.userOrderHistory.cartInfor || [],
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getDataOrder: (params) => {
+      dispatch(ModTypes.getListOrderRequest(params));
+    },
+    getOrderDetail: (params) => {
+      dispatch(UserOrderHistoryTypes.getUserOrderDetailIdRequest(params));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartInforListForm);

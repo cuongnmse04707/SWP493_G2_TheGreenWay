@@ -47,13 +47,13 @@ let getinfobyid = async (req, res) => {
               return res.status(200).json({
                 success: true,
                 data: arr[0],
-                images: "No Images"
+                images: "No Images",
               });
             } else {
               return res.status(200).json({
                 success: true,
                 data: arr[0],
-                images: arrayImage
+                images: arrayImage,
               });
             }
           }
@@ -107,7 +107,7 @@ let getListProductLike = async (req, res) => {
             const array = await Array.apply(null, results); // chi dung de lay total
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
-            arr.forEach(function(item, index, arrays) {
+            arr.forEach(function (item, index, arrays) {
               item.CreateDate = moment(item.CreateDate)
                 .tz("Asia/Ho_Chi_Minh")
                 .format();
@@ -116,7 +116,7 @@ let getListProductLike = async (req, res) => {
               success: true,
               data: arr,
               resultsize: array[0].Total,
-              totalPage: totalPage // Total page
+              totalPage: totalPage, // Total page
             });
           }
         });
@@ -144,7 +144,7 @@ let likeProduct = async (req, res) => {
         // Chua co thi like
         const empty = {
           UserEmail: email,
-          ProductID: idProduct
+          ProductID: idProduct,
         };
         // Luu vao Database
         connectionDB.query(
@@ -175,7 +175,7 @@ let likeProduct = async (req, res) => {
             // Da ton tai thi tao ma token va gui ve client
             return res.status(200).json({
               success: true,
-              message: "UnLike is Success!"
+              message: "UnLike is Success!",
             });
           }
         });
@@ -199,7 +199,7 @@ let getinfosearchProduct = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products !"
+          message: "No Products !",
         });
       } else {
         // Chay Query de lay total page
@@ -217,7 +217,7 @@ let getinfosearchProduct = async (req, res) => {
               // Chua co thi like
               return res.status(200).json({
                 success: false,
-                message: "No Products !"
+                message: "No Products !",
               });
             } else {
               // Chay Query de lay total page
@@ -225,7 +225,7 @@ let getinfosearchProduct = async (req, res) => {
                 success: true,
                 maxPrice: arr[0].MaxPrice,
                 minPrice: arr[0].MinPrice,
-                categories: array
+                categories: array,
               });
             }
           }
@@ -289,7 +289,7 @@ let searchProduct = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products!"
+          message: "No Products!",
         });
       } else {
         // Chay Query de lay total page
@@ -311,12 +311,12 @@ let searchProduct = async (req, res) => {
             // //Luu vao database
             return res.status(200).json({
               success: true,
-              data: arr.map(el => ({
+              data: arr.map((el) => ({
                 ...el,
-                like: el.UserEmail ? "like" : "unLike"
+                like: el.UserEmail ? "like" : "unLike",
               })),
               resultsize: array[0].Total,
-              totalPage: totalPage // Total page
+              totalPage: totalPage, // Total page
             });
           }
         });
@@ -365,7 +365,7 @@ let fulltextsearchProduct = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products !"
+          message: "No Products !",
         });
       } else {
         // Chay Query de lay total page
@@ -381,12 +381,12 @@ let fulltextsearchProduct = async (req, res) => {
             // //Luu vao database
             return res.status(200).json({
               success: true,
-              data: arr.map(el => ({
+              data: arr.map((el) => ({
                 ...el,
-                like: el.UserEmail ? "like" : "unLike"
+                like: el.UserEmail ? "like" : "unLike",
               })),
               resultsize: array[0].Total,
-              totalPage: totalPage // Total page
+              totalPage: totalPage, // Total page
             });
           }
         });
@@ -433,7 +433,7 @@ let getProductsByCategory = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products!"
+          message: "No Products!",
         });
       } else {
         let sql = `SELECT COUNT(*) AS Total
@@ -454,11 +454,11 @@ let getProductsByCategory = async (req, res) => {
 
             return res.status(200).json({
               success: true,
-              data: arr.map(el => ({
+              data: arr.map((el) => ({
                 ...el,
-                like: el.UserEmail ? "like" : "unLike"
+                like: el.UserEmail ? "like" : "unLike",
               })),
-              totalPage: totalPage // Total page
+              totalPage: totalPage, // Total page
             });
           }
         });
@@ -481,12 +481,12 @@ let getProductAllByCategory = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products!"
+          message: "No Products!",
         });
       } else {
         return res.status(200).json({
           success: true,
-          data: arr
+          data: arr,
         });
       }
     }
@@ -512,7 +512,7 @@ let getProducts = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products!"
+          message: "No Products!",
         });
       } else {
         let sql = `SELECT COUNT(*) AS Total FROM Products`;
@@ -527,6 +527,7 @@ let getProducts = async (req, res) => {
             return res.status(200).json({
               success: true,
               data: arr,
+              // totalPage: totalPage, // Total page
             });
           }
         });
@@ -558,7 +559,7 @@ let getProductsStatus = async (req, res) => {
           return res.status(200).json({
             success: true,
             dataHetHang: arr,
-            dataConHang: array // Total page
+            dataConHang: array, // Total page
           });
         }
       });
@@ -595,7 +596,7 @@ let addNewProduct = async (req, res) => {
         ProductStatus: ProductStatus,
         CreateDate: req.body.CreateDate,
         Quantity: QuantityProduct,
-        ImageDetail: ImageDetail
+        ImageDetail: ImageDetail,
       };
       // Luu vao Database
       connectionDB.query(
@@ -606,12 +607,14 @@ let addNewProduct = async (req, res) => {
             debug(err);
             return res.status(200).json({
               success: false,
-              message: "Add New Product is Unsuccess!"
+              message: "Add New Product is Unsuccess!",
             });
           } else {
-            return res
-              .status(200)
-              .json({ success: true, message: "Add New Product is Success!" });
+            return res.status(200).json({
+              success: true,
+              message: "Add New Product is Success!",
+              idProduct: idProduct,
+            });
           }
         }
       );
@@ -628,7 +631,7 @@ let updateProduct = async (req, res) => {
   const ProductName = req.body.ProductName;
   const ProductPrice = req.body.ProductPrice;
   const Description = req.body.Description;
-  const CreateDate = req.body.CreateDate;
+  const CreateDate = moment(req.body.CreateDate).format("YYYY-MM-DD");
   const Quantity = Number(req.body.Quantity);
   const ImageDetail = req.body.ImageDetail
     ? req.body.ImageDetail
@@ -649,7 +652,7 @@ let updateProduct = async (req, res) => {
     CreateDate,
     Quantity,
     ImageDetail,
-    idProduct
+    idProduct,
   ]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
@@ -686,7 +689,7 @@ let updateQuatityProduct = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Exits Products !"
+          message: "No Exits Products !",
         });
       } else {
         const oldQuatity = Number(arr[0].Quantity);
@@ -699,12 +702,12 @@ let updateQuatityProduct = async (req, res) => {
             if (err) {
               return res.status(200).json({
                 success: false,
-                message: "Update Quatity Product Failed!"
+                message: "Update Quatity Product Failed!",
               });
             } else {
               return res.status(200).json({
                 success: true,
-                message: "Add Product To Cart Success!"
+                message: "Add Product To Cart Success!",
               });
             }
           });
@@ -717,19 +720,19 @@ let updateQuatityProduct = async (req, res) => {
             if (err) {
               return res.status(200).json({
                 success: false,
-                message: "Update Quatity Product Failed!"
+                message: "Update Quatity Product Failed!",
               });
             } else {
               return res.status(200).json({
                 success: true,
-                message: "Add Product To Cart Success!"
+                message: "Add Product To Cart Success!",
               });
             }
           });
         } else {
           return res.status(200).json({
             success: false,
-            message: "The product you want to buy is not enough"
+            message: "The product you want to buy is not enough",
           });
         }
       }
@@ -745,7 +748,7 @@ let addNewImageProduct = async (req, res) => {
   //Convert listImage to array
   const empty = {
     ProductID: idProduct,
-    urlImage: urlImage
+    urlImage: urlImage,
   };
   // Luu vao Database
   connectionDB.query(
@@ -760,21 +763,21 @@ let addNewImageProduct = async (req, res) => {
       } else {
         // SELECT MAX(ImagesOfProduct.ImageID) AS MAX FROM ImagesOfProduct
         //Lay ID day vao Database cho bang Product
-      let sql = `SELECT MAX(ImagesOfProduct.ImageID) AS MAX FROM ImagesOfProduct`;
-      let query = mysql.format(sql);
-      connectionDB.query(query, async (err, results) => {
-        if (err) {
-          return res.status(200).json({ success: false, message: err });
-        } else {
-          //Lay ID day vao Database cho bang Product
-          const array = await Array.apply(null, results);
-          // //Luu vao database
-          return res.status(200).json({
-            success: true,
-            idImage : array[0]
-          });
-        }
-      });
+        let sql = `SELECT MAX(ImagesOfProduct.ImageID) AS MAX FROM ImagesOfProduct`;
+        let query = mysql.format(sql);
+        connectionDB.query(query, async (err, results) => {
+          if (err) {
+            return res.status(200).json({ success: false, message: err });
+          } else {
+            //Lay ID day vao Database cho bang Product
+            const array = await Array.apply(null, results);
+            // //Luu vao database
+            return res.status(200).json({
+              success: true,
+              idImage: array[0],
+            });
+          }
+        });
       }
     }
   );
@@ -846,5 +849,5 @@ module.exports = {
   deleteProduct: deleteProduct,
   getListProductLike: getListProductLike,
   getInfoProductFromCart: getInfoProductFromCart,
-  getProductAllByCategory: getProductAllByCategory
+  getProductAllByCategory: getProductAllByCategory,
 };

@@ -4,7 +4,7 @@ const ProductController = require("../controllers/ProductController");
 const AuthMiddleware = require("../middlewares/AuthMiddleware");
 const ModMiddleware = require("../middlewares/ModMiddleware");
 
-let productRouter = server => {
+let productRouter = (server) => {
   // List Don't Need Protect APIs:
   router.get("/getinfobyid", ProductController.getinfobyid);
   router.get("/getProductsByCategory", ProductController.getProductsByCategory);

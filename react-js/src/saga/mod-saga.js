@@ -80,6 +80,30 @@ const ModSagas = {
       yield put(ModActions.downRoleFailed(error));
     }
   },
+
+  *getOrderList(action) {
+    try {
+      const orderHistoryInfor = yield call(() => {
+        return axios.get(
+          `http://localhost:3001/userorder/showOrderListForMOD`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
+      });
+      if (!orderHistoryInfor.data.success) {
+        yield put(ModActions.getListOrderFailed(orderHistoryInfor.data.data));
+        message.error(orderHistoryInfor.data.message, 3);
+      } else {
+        yield put(ModActions.getListOrderSucceed(orderHistoryInfor.data.data));
+      }
+    } catch (error) {
+      yield put(ModActions.getListOrderFailed(error));
+    }
+  },
 };
 
 export default ModSagas;

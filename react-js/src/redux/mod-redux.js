@@ -14,6 +14,9 @@ const { Types, Creators } = createActions({
   downRoleRequest: ["data"],
   downRoleSucceed: ["data"],
   downRoleFailed: ["error"],
+  getListOrderRequest: ["data"],
+  getListOrderSucceed: ["data"],
+  getListOrderFailed: ["error"],
 });
 
 export const ModTypes = Types;
@@ -22,6 +25,7 @@ export default Creators;
 //TODO: Declare initial state
 export const INITIAL_STATE = {
   listUser: "",
+  listOrder: "",
 };
 
 export const request = (state) => {
@@ -74,6 +78,13 @@ export const failed = (state, { error }) => {
   };
 };
 
+export const getListOrderSuccess = (state, { data }) => {
+  return {
+    ...state,
+    listOrder: data,
+  };
+};
+
 //TODO:Hookup Reducers To Types in Action
 export const reducer = createReducer(INITIAL_STATE, {
   [ModTypes.GET_USER_REQUEST]: request,
@@ -85,4 +96,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [ModTypes.DOWN_ROLE_REQUEST]: request,
   [ModTypes.DOWN_ROLE_SUCCEED]: downRoleSuccee,
   [ModTypes.DOWN_ROLE_FAILED]: failed,
+  [ModTypes.GET_LIST_ORDER_REQUEST]: request,
+  [ModTypes.GET_LIST_ORDER_SUCCEED]: getListOrderSuccess,
+  [ModTypes.GET_LIST_ORDER_FAILED]: failed,
 });

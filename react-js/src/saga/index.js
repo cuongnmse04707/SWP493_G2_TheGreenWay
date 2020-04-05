@@ -12,7 +12,7 @@ import { UserLikeProductTypes } from "../redux/user-product-like-redux";
 import { UserOrderHistoryTypes } from "../redux/user-order-history-redux";
 import { OrderCartTypes } from "../redux/order-card-redux";
 import { ModTypes } from "../redux/mod-redux";
-import {AdminProductTypes } from "../redux/admin-product-redux";
+import { AdminProductTypes } from "../redux/admin-product-redux";
 import LoginSagas from "./login-saga";
 import ResetPassword from "./reset-password";
 import HomePageSagas from "./home-page-saga";
@@ -88,6 +88,10 @@ export default function* root() {
       UserOrderHistorySagas.getOrderDetailInfor
     ),
     takeLatest(
+      UserOrderHistoryTypes.GET_USER_ORDER_DETAIL_ID_REQUEST,
+      UserOrderHistorySagas.getOrderDetailIdInfor
+    ),
+    takeLatest(
       UserOrderHistoryTypes.GET_ORDER_DETAIL_BY_GUEST_REQUEST,
       UserOrderHistorySagas.getOrderDetailInforGuest
     ),
@@ -104,10 +108,26 @@ export default function* root() {
     takeLatest(ModTypes.GET_USER_REQUEST, ModSagas.getUser),
     takeLatest(ModTypes.UP_ROLE_REQUEST, ModSagas.upRole),
     takeLatest(ModTypes.DOWN_ROLE_REQUEST, ModSagas.downRole),
-    takeLatest(AdminProductTypes.GET_PRODUCT_REQUEST, AdminProductSagas.getAdminProductInfor),
-    takeLatest(AdminProductTypes.GET_PRODUCT_DETAIL_ADMIN_REQUEST, AdminProductSagas.getProductDetailInfor),
-    takeLatest(AdminProductTypes.UPDATE_PRODUCT_REQUEST, AdminProductSagas.updateProduct),
-    takeLatest(AdminProductTypes.DELETE_IMAGE_DETAIL_REQUEST, AdminProductSagas.deleteImageDetail),
-    takeLatest(AdminProductTypes.ADD_IMAGE_DETAIL_REQUEST, AdminProductSagas.addImageDetail),
+    takeLatest(
+      AdminProductTypes.GET_PRODUCT_REQUEST,
+      AdminProductSagas.getAdminProductInfor
+    ),
+    takeLatest(
+      AdminProductTypes.GET_PRODUCT_DETAIL_ADMIN_REQUEST,
+      AdminProductSagas.getProductDetailInfor
+    ),
+    takeLatest(
+      AdminProductTypes.UPDATE_PRODUCT_REQUEST,
+      AdminProductSagas.updateProduct
+    ),
+    takeLatest(
+      AdminProductTypes.DELETE_IMAGE_DETAIL_REQUEST,
+      AdminProductSagas.deleteImageDetail
+    ),
+    takeLatest(
+      AdminProductTypes.ADD_IMAGE_DETAIL_REQUEST,
+      AdminProductSagas.addImageDetail
+    ),
+    takeLatest(ModTypes.GET_LIST_ORDER_REQUEST, ModSagas.getOrderList),
   ]);
 }

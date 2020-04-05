@@ -40,7 +40,7 @@ let addNewOrderByUser = async (req, res) => {
         ShipAddress: ShipAddress,
         CreateDate: CreateDate,
         QuantityPaper: QuantityPaper,
-        Cash: Cash
+        Cash: Cash,
       };
       // Luu vao Database
       connectionDB.query("INSERT INTO Orders SET ? ", empty, (err, result) => {
@@ -51,12 +51,12 @@ let addNewOrderByUser = async (req, res) => {
             .json({ success: false, message: "Add New Orders is Unsuccess!" });
         } else {
           // Insert Into OrderDetail Table
-          arrayCart.forEach(function(item, index, arrays) {
+          arrayCart.forEach(function (item, index, arrays) {
             const emptyOrderDetail = {
               OrderID: OrderID,
               ProductID: item.id,
               QuantityProduct: item.quatityBuy,
-              Price: Number(item.quatityBuy) * Number(item.price)
+              Price: Number(item.quatityBuy) * Number(item.price),
             };
             // Luu vao Database
             connectionDB.query(
@@ -67,7 +67,7 @@ let addNewOrderByUser = async (req, res) => {
                   debug(err);
                   return res.status(200).json({
                     success: false,
-                    message: "Add New Orders is Unsuccess!"
+                    message: "Add New Orders is Unsuccess!",
                   });
                 } else {
                   //Next sang viec save database voi OrderStatusDetail
@@ -80,7 +80,7 @@ let addNewOrderByUser = async (req, res) => {
           const emptyOrderStatusDetail = {
             OrderID: OrderID,
             OrderStatusID: "1",
-            ModifyDate: CreateDate
+            ModifyDate: CreateDate,
           };
           // Luu vao Database
           connectionDB.query(
@@ -91,13 +91,13 @@ let addNewOrderByUser = async (req, res) => {
                 debug(err);
                 return res.status(200).json({
                   success: false,
-                  message: "Add New Orders is Unsuccess!"
+                  message: "Add New Orders is Unsuccess!",
                 });
               } else {
                 //Next sang viec save database voi OrderStatusDetail
                 return res.status(200).json({
                   success: true,
-                  message: "Add New Orders is Success!"
+                  message: "Add New Orders is Success!",
                 });
               }
             }
@@ -138,7 +138,7 @@ let showOrderListByEmail = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Order!"
+          message: "No Order!",
         });
       } else {
         let sql = ` SELECT COUNT(*) AS Total
@@ -158,7 +158,7 @@ let showOrderListByEmail = async (req, res) => {
             const array = await Array.apply(null, results);
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
-            arr.forEach(function(item, index, arrays) {
+            arr.forEach(function (item, index, arrays) {
               item.CreateDate = moment(item.CreateDate)
                 .tz("Asia/Ho_Chi_Minh")
                 .format();
@@ -172,7 +172,7 @@ let showOrderListByEmail = async (req, res) => {
             return res.status(200).json({
               success: true,
               data: arr,
-              totalPage: totalPage // Total page
+              totalPage: totalPage, // Total page
             });
           }
         });
@@ -202,7 +202,7 @@ let showOrderByEmail = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "You can't have access this order!"
+          message: "You can't have access this order!",
         });
       } else {
         let sql = ` SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate
@@ -225,7 +225,7 @@ let showOrderByEmail = async (req, res) => {
               // Chua co thi likex
               return res.status(200).json({
                 success: false,
-                message: "You can't have access this order!"
+                message: "You can't have access this order!",
               });
             } else {
               let sql = `SELECT
@@ -249,13 +249,13 @@ let showOrderByEmail = async (req, res) => {
                     // Chua co thi likex
                     return res.status(200).json({
                       success: false,
-                      message: "You can't have access this order!"
+                      message: "You can't have access this order!",
                     });
                   } else {
                     return res.status(200).json({
                       success: true,
                       data: array[0],
-                      cart: arrayOrder
+                      cart: arrayOrder,
                     });
                   }
                 }
@@ -268,12 +268,73 @@ let showOrderByEmail = async (req, res) => {
   });
 };
 
+//Show order by ID
+let showOrderByID = async (req, res) => {
+  // Get Email Of User
+  const idOrder = req.query.idOrder;
+  // Run sql to get orderHistory
+  let sql = ` SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate
+                    FROM Orders
+                    JOIN (SELECT OrderStatusDetail.OrderID,OrderStatus.Description,OrderStatusDetail.ModifyDate
+                          FROM OrderStatus
+                          JOIN OrderStatusDetail
+                          ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
+                    ON Orders.OrderID = OrderStatusDes.OrderID
+                    AND Orders.OrderID = ?`;
+  let query = mysql.format(sql, [idOrder]);
+  connectionDB.query(query, async (err, results) => {
+    if (err) {
+      return res.status(200).json({ success: false, message: err });
+    } else {
+      //Lay ID day vao Database cho bang Product
+      const array = await Array.apply(null, results);
+      if (array.length === 0) {
+        // Chua co thi likex
+        return res.status(200).json({
+          success: false,
+          message: "You can't have access this order!",
+        });
+      } else {
+        let sql = `SELECT
+              OrderDetail.OrderID,OrderDetail.ProductID,Products.ProductName,Products.ImageDetail,OrderDetail.QuantityProduct,OrderDetail.Price
+              FROM
+                  OrderDetail
+              JOIN
+                Products
+              WHERE
+                  Products.ProductID = OrderDetail.ProductID
+              AND
+                OrderDetail.OrderID = ?`;
+        let queryOrder = mysql.format(sql, [idOrder]);
+        connectionDB.query(queryOrder, async (err, resultsOrder) => {
+          if (err) {
+            return res.status(200).json({ success: false, message: err });
+          } else {
+            //Lay ID day vao Database cho bang Product
+            const arrayOrder = await Array.apply(null, resultsOrder);
+            if (arrayOrder.length === 0) {
+              // Chua co thi likex
+              return res.status(200).json({
+                success: false,
+                message: "You can't have access this order!",
+              });
+            } else {
+              return res.status(200).json({
+                success: true,
+                data: array[0],
+                cart: arrayOrder,
+              });
+            }
+          }
+        });
+      }
+    }
+  });
+};
+
 //Show List Order for MOD
 let showOrderListForMOD = async (req, res) => {
   // Get Email Of User
-  const page = req.query.page;
-  const pageSize = 6;
-  const offset = (page - 1) * pageSize;
   // Run sql to get orderHistory
   let sql = `SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate
               FROM Orders
@@ -281,10 +342,8 @@ let showOrderListForMOD = async (req, res) => {
                     FROM OrderStatus
                     JOIN OrderStatusDetail
                     ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
-              ON Orders.OrderID = OrderStatusDes.OrderID
-              LIMIT ?
-              OFFSET ?`;
-  let query = mysql.format(sql, [pageSize, offset]);
+              ON Orders.OrderID = OrderStatusDes.OrderID`;
+  let query = mysql.format(sql);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       return res.status(200).json({ success: false, message: err });
@@ -295,7 +354,7 @@ let showOrderListForMOD = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Order In List!"
+          message: "No Order In List!",
         });
       } else {
         let sql = ` SELECT COUNT(*) AS Total
@@ -312,9 +371,8 @@ let showOrderListForMOD = async (req, res) => {
           } else {
             //Lay ID day vao Database cho bang Product
             const array = await Array.apply(null, results);
-            const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
-            arr.forEach(function(item, index, arrays) {
+            arr.forEach(function (item, index, arrays) {
               item.CreateDate = moment(item.CreateDate)
                 .tz("Asia/Ho_Chi_Minh")
                 .format();
@@ -328,7 +386,6 @@ let showOrderListForMOD = async (req, res) => {
             return res.status(200).json({
               success: true,
               data: arr,
-              totalPage: totalPage // Total page
             });
           }
         });
@@ -370,10 +427,10 @@ let changeStatusOrder = async (req, res) => {
             if (arrP.length === 0) {
               return res.status(200).json({
                 success: false,
-                message: "Error with this order!"
+                message: "Error with this order!",
               });
             } else {
-              await arrP.forEach(function(item, index, arrays) {
+              await arrP.forEach(function (item, index, arrays) {
                 // Luu vao Database
                 let sql = `SELECT Quantity,ProductName FROM Products WHERE ProductID=?`;
                 let query = mysql.format(sql, [item.ProductID]);
@@ -389,23 +446,23 @@ let changeStatusOrder = async (req, res) => {
                         ProductID: item.ProductID,
                         Quantity: Number(
                           arrProduct[0].Quantity - item.QuantityProduct
-                        )
+                        ),
                       });
                     } else {
                       return res.status(200).json({
                         success: false,
-                        message: `Product ${arrProduct[0].ProductName} is out of order!`
+                        message: `Product ${arrProduct[0].ProductName} is out of order!`,
                       });
                     }
                     if (index === arrP.length - 1) {
-                      await arraySave.forEach(function(item, index, arrays) {
+                      await arraySave.forEach(function (item, index, arrays) {
                         // Luu vao Database
                         let sql = `UPDATE Products
                                  SET Quantity=?
                                  WHERE ProductID=?`;
                         let query = mysql.format(sql, [
                           item.Quantity,
-                          item.ProductID
+                          item.ProductID,
                         ]);
                         connectionDB.query(
                           query,
@@ -417,7 +474,7 @@ let changeStatusOrder = async (req, res) => {
                             } else {
                               return res.status(200).json({
                                 success: true,
-                                message: "Change Status Order Success!"
+                                message: "Change Status Order Success!",
                               });
                             }
                           }
@@ -445,14 +502,14 @@ let changeStatusOrder = async (req, res) => {
           } else {
             return res.status(200).json({
               success: true,
-              message: "Change Status Order Success!"
+              message: "Change Status Order Success!",
             });
           }
         });
       }
       return res.status(200).json({
         success: true,
-        message: "Change Status Order Success!"
+        message: "Change Status Order Success!",
       });
     }
   });
@@ -488,7 +545,7 @@ let getListOrderByStatusCode = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Order In List!"
+          message: "No Order In List!",
         });
       } else {
         let sql = ` SELECT COUNT(*) AS Total
@@ -508,7 +565,7 @@ let getListOrderByStatusCode = async (req, res) => {
             const array = await Array.apply(null, results);
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
-            arr.forEach(function(item, index, arrays) {
+            arr.forEach(function (item, index, arrays) {
               item.CreateDate = moment(item.CreateDate)
                 .tz("Asia/Ho_Chi_Minh")
                 .format();
@@ -522,7 +579,7 @@ let getListOrderByStatusCode = async (req, res) => {
             return res.status(200).json({
               success: true,
               data: arr,
-              totalPage: totalPage // Total page
+              totalPage: totalPage, // Total page
             });
           }
         });
@@ -537,5 +594,6 @@ module.exports = {
   showOrderByEmail: showOrderByEmail,
   showOrderListForMOD: showOrderListForMOD,
   changeStatusOrder: changeStatusOrder,
-  getListOrderByStatusCode: getListOrderByStatusCode
+  getListOrderByStatusCode: getListOrderByStatusCode,
+  showOrderByID: showOrderByID,
 };
