@@ -31,7 +31,7 @@ let getinfobyid = async (req, res) => {
           .status(200)
           .json({ success: false, message: "Product is not exist!" });
       } else {
-        let sqlGetImage = `SELECT urlImage FROM ImagesOfProduct WHERE ProductID=?`;
+        let sqlGetImage = `SELECT ImagesOfProduct.ImageID,ImagesOfProduct.urlImage FROM ImagesOfProduct WHERE ProductID= ?`;
         let queryGetImage = mysql.format(sqlGetImage, [idProduct]);
         connectionDB.query(queryGetImage, async (err, results) => {
           if (err) {
@@ -496,7 +496,7 @@ let getProductAllByCategory = async (req, res) => {
 // Get List All Product 1 page have 6 entry
 let getProducts = async (req, res) => {
   //Get ID category
-  let sql = ` SELECT Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes, Products.Quantity
+  let sql = ` SELECT Products.CategoryID, Products.ProductID,Products.ProductName,Products.ProductPrice,Products.ImageDetail,COUNT(LikesOfProduct.UserEmail) AS NumberOfLikes, Products.Quantity
                 FROM Products
                 LEFT JOIN LikesOfProduct
                 ON Products.ProductID=LikesOfProduct.ProductID
@@ -740,7 +740,7 @@ let updateQuatityProduct = async (req, res) => {
 // Add new image ADD tung cai len mot
 let addNewImageProduct = async (req, res) => {
   //Get ID Products
-  const idProduct = req.query.idProduct;
+  const idProduct = req.body.ProductID;
   const urlImage = req.body.urlImage;
   //Convert listImage to array
   const empty = {
@@ -758,9 +758,23 @@ let addNewImageProduct = async (req, res) => {
           .status(200)
           .json({ success: false, message: "Add New Image is Unsuccess!" });
       } else {
-        return res
-          .status(200)
-          .json({ success: true, message: "Add New Image is Success!" });
+        // SELECT MAX(ImagesOfProduct.ImageID) AS MAX FROM ImagesOfProduct
+        //Lay ID day vao Database cho bang Product
+      let sql = `SELECT MAX(ImagesOfProduct.ImageID) AS MAX FROM ImagesOfProduct`;
+      let query = mysql.format(sql);
+      connectionDB.query(query, async (err, results) => {
+        if (err) {
+          return res.status(200).json({ success: false, message: err });
+        } else {
+          //Lay ID day vao Database cho bang Product
+          const array = await Array.apply(null, results);
+          // //Luu vao database
+          return res.status(200).json({
+            success: true,
+            idImage : array[0]
+          });
+        }
+      });
       }
     }
   );
