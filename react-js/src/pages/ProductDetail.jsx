@@ -108,7 +108,7 @@ class ProductDetail extends Component {
   render() {
     const { convensionRate, productInfor, productImages } = this.props;
     let arrayImages = [];
-    console.log('productImages',productImages);
+    console.log('productImages', productImages);
     if (productImages != "No Images") {
       productImages.map(item => {
         arrayImages.push(item.urlImage);
@@ -210,7 +210,9 @@ class ProductDetail extends Component {
                 />
               </div>
               <div className="item-short-decription mt-5">
-                <p>{productInfor.Description}</p>
+              <div
+                dangerouslySetInnerHTML={{ __html: productInfor.Description }}
+              />
               </div>
               <div className="add-to-cart">
                 <div onClick={this.addToCart}>
@@ -233,7 +235,9 @@ class ProductDetail extends Component {
               <span style={{ fontSize: "28px", fontWeight: "bold" }}>
                 Mô tả sản phẩm
               </span>
-              <span>{productInfor.Description}</span>
+              <div
+                dangerouslySetInnerHTML={{ __html: productInfor.Description }}
+              />
             </div>
             <div style={{ height: "auto", width: "100%" }}>
               <div>

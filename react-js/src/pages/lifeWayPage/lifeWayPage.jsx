@@ -117,13 +117,13 @@ class Lifeway extends Component {
                         alt=""
                       />
                     ) : (
-                      <img
-                        onClick={event => this.changeHeart(event, postLikeMuch)}
-                        style={{ height: "35px", width: "35px" }}
-                        src={require("../../images/svgIcon/unLike.svg")}
-                        alt=""
-                      />
-                    )}
+                        <img
+                          onClick={event => this.changeHeart(event, postLikeMuch)}
+                          style={{ height: "35px", width: "35px" }}
+                          src={require("../../images/svgIcon/unLike.svg")}
+                          alt=""
+                        />
+                      )}
                   </div>
                 </div>
               </div>
@@ -192,13 +192,13 @@ class Lifeway extends Component {
                                 alt=""
                               />
                             ) : (
-                              <img
-                                onClick={event => this.changeHeart(event, item)}
-                                style={{ height: "35px", width: "35px" }}
-                                src={require("../../images/svgIcon/unLike.svg")}
-                                alt=""
-                              />
-                            )}
+                                <img
+                                  onClick={event => this.changeHeart(event, item)}
+                                  style={{ height: "35px", width: "35px" }}
+                                  src={require("../../images/svgIcon/unLike.svg")}
+                                  alt=""
+                                />
+                              )}
                           </div>
                         </div>
                       </div>
@@ -231,8 +231,8 @@ class Lifeway extends Component {
                 );
               })
             ) : (
-              <div></div>
-            )}
+                <div></div>
+              )}
           </div>
           <Pagination
             current={this.state.current}

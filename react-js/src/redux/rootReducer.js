@@ -18,6 +18,7 @@ const rootReducer = combineReducers({
   orderCart: require("./order-card-redux").reducer,
   modReducers: require("./mod-redux").reducer,
   adminProduct: require('./admin-product-redux').reducer,
+  adminPost: require('./admin-post-redux').reducer,
 });
 //   sideBar: require('./side-bar-redux').reducer,
 //   userLogin: require('./login-redux').reducer,

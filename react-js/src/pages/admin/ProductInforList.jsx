@@ -57,7 +57,8 @@ class ProductInforList extends Component {
     previewVisible: false,
     previewImage: '',
     fileList: [],
-    productId: ''
+    productId: '',
+    valueDes: ''
   }
 
   handleChange = info => {
@@ -112,6 +113,7 @@ class ProductInforList extends Component {
   }
 
   viewProductDetail = (id) => {
+    this.props.form.resetFields()
     this.setState({
       visible: true,
       productId: id
@@ -126,33 +128,35 @@ class ProductInforList extends Component {
     this.setState({
       visible: false,
     });
+    const {valueDes} = this.state
     this.props.form.validateFieldsAndScroll(
-      ["productName", "productPrice", "productQuantity", "category", "productDescription"],
+      ["productName", "productPrice", "productQuantity", "category"],
       (err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
-          //console.log(this.props.productDetail)
-          const params = {
-            idProduct: this.state.productId,
-            CategoryID: values.category,
-            ProductName: values.productName,
-            ProductPrice: values.productPrice,
-            Description: values.productDescription,
-            Quantity: values.productQuantity,
-            ImageDetail: this.props.productDetail.ImageDetail,
-            CreateDate: this.props.productDetail.CreateDate
-          }
-          console.log(params)
+          // console.log('Received values of form: ', values);
+          // //console.log(this.props.productDetail)
+          // const params =
           this.props.updateProduct({
-            params,
+            params : {
+              idProduct: this.state.productId,
+              CategoryID: values.category,
+              ProductName: values.productName,
+              ProductPrice: values.productPrice,
+              Description: valueDes,
+              Quantity: values.productQuantity,
+              ImageDetail: this.props.productDetail.ImageDetail,
+              CreateDate: this.props.productDetail.CreateDate
+            },
             callback: () => {
-              console.log(this.props)
-
+              // console.log(this.props)
+              this.props.form.resetFields()
               // this.props.history.push("/admin?page=product-infor");
             }
           })
+
         }
       });
+
   }
 
   render() {
@@ -229,7 +233,7 @@ class ProductInforList extends Component {
         dataIndex: "status",
         render: (text, record) => (
           <div>
-            <span>{record.Quantity}</span>
+            <span>{Number(record.Quantity) === 0 ? 'Hết Hàng' : "Còn Hàng"}</span>
           </div>
         )
       },
@@ -258,7 +262,7 @@ class ProductInforList extends Component {
     );
     const { imageUrl } = this.state;
     const { productList, productDetail, imageDetail } = this.props
-    console.log(productList)
+    console.log('chi tiet san pham', imageDetail)
     return (
       <div className="admin-product-wrapper">
         <p className="title">Thông tin sản phẩm</p>
@@ -295,7 +299,7 @@ class ProductInforList extends Component {
                           message: 'Vui lòng nhập giá sản phẩm',
                         },
                       ],
-                    })(<InputNumber min={1} />)}
+                    })(<InputNumber min={0}  type="number" />)}
                   </Form.Item>
                   <Form.Item label="Số lượng">
                     {getFieldDecorator('productQuantity', {
@@ -306,7 +310,7 @@ class ProductInforList extends Component {
                           message: 'Vui lòng nhập số lượng sản phẩm',
                         },
                       ],
-                    })(<InputNumber min={1} />)}
+                    })(<InputNumber min={0} type="number" />)}
                   </Form.Item>
                   <Form.Item label="Loại sản phẩm">
                     {getFieldDecorator('category', {
@@ -335,7 +339,9 @@ class ProductInforList extends Component {
                       },
                     ],
                   })(
-                    <CKEditor data={productDetail.Description} />
+                    <CKEditor  data={productDetail.Description} onChange={(evt)=>{this.setState({
+                      valueDes : evt.editor.getData()
+                    })}}/>
                   )}
                 </Form.Item></Col>
               {/* </Form>
@@ -359,7 +365,7 @@ class ProductInforList extends Component {
                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     beforeUpload={(file) => {
                       //Upload File Base
-                      console.log('File moi up', file)
+                      // console.log('File moi up', file)
                       //Link Image
                       const uploadTask = storage.ref(`images/${file.name}`).put(file);
                       // Set vao state
@@ -400,19 +406,19 @@ class ProductInforList extends Component {
                         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                         listType="picture-card"
                         fileList={
-                          (imageDetail || []).map((item, index) => {
+                          (imageDetail || []).map((item) => {
                             return ({
-                              uid: item.ImageID,
+                              uid: item.ImageID || '1',
                               name: 'image.png',
                               status: 'done',
-                              url: item.urlImage
+                              url: item.urlImage || ''
                             })
                           })
                         }
                         onPreview={this.handlePreview}
                         onRemove={(file) => {
                           // Xoa => Api XOa => Reducer tm
-                          console.log('2', file)
+                          // console.log('2', file)
                           this.props.deleteDetailImage({
                             idImage: file.uid
                           })

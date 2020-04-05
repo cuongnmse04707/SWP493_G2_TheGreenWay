@@ -610,11 +610,9 @@ let addNewProduct = async (req, res) => {
               message: "Add New Product is Unsuccess!",
             });
           } else {
-            return res.status(200).json({
-              success: true,
-              message: "Add New Product is Success!",
-              idProduct: idProduct,
-            });
+            return res
+              .status(200)
+              .json({ success: true, message: "Add New Product is Success!",idProduct:idProduct });
           }
         }
       );

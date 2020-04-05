@@ -4,6 +4,7 @@ import {
   Form,
   Input,
   InputNumber,
+  Button,
   Upload,
   Icon,
   message,
@@ -12,7 +13,10 @@ import {
   Row,
   Col
 } from 'antd';
+import { connect } from "react-redux";
+import AdminProductTypes from "../../redux/admin-product-redux";
 import CKEditor from 'ckeditor4-react';
+import { storage } from "../../firebase";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -50,32 +54,10 @@ class CreateProduct extends Component {
     loading: false,
     previewVisible: false,
     previewImage: '',
-    fileList: [
-      {
-        uid: '-1',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-2',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-3',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-      {
-        uid: '-4',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      },
-    ],
+    fileList: [],
+    data: '',
+    avatarUrl: '',
+    newProductId: "",
   };
 
   handleChange = info => {
@@ -113,6 +95,48 @@ class CreateProduct extends Component {
   handleCategoryChange(value) {
     console.log(`selected ${value}`);
   }
+
+  onEditorChange = (evt) => {
+    this.setState({
+      data: evt.editor.getData()
+    });
+  }
+
+  addNewProduct = () => {
+
+    this.props.form.validateFieldsAndScroll(
+      ["productName", "productPrice", "productQuantity", "category"],
+      (err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values);
+          const params = {
+            CategoryID: values.category,
+            ProductName: values.productName,
+            ProductPrice: values.productPrice,
+            Description: this.state.data,
+            Quantity: values.productQuantity,
+            CreateDate: new Date(),
+            ImageDetail: this.state.avatarUrl
+          }
+          console.log('params', params)
+          this.props.addNewProduct({
+            params,
+            callback: (idProduct) => {
+              console.log('chay vao callback')
+              console.log(idProduct)
+              this.state.fileList.map((item, index) => {
+                const paramsAddImage = {
+                  ProductID: idProduct,
+                  urlImage: item.url
+                }
+                this.props.addNewProductImage(paramsAddImage)
+              })
+
+            }
+          })
+        }
+      });
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -148,8 +172,8 @@ class CreateProduct extends Component {
       <div className="create-product-wrapper">
         <p className="title">Tạo sản phẩm mới</p>
         <div className="admin-create-form-container">
-          <div className="admin-create-form-left">
-          <Row>
+          <div style={{width: "100%"}}>
+            <Row>
               <Form {...formItemLayout} >
                 <Col span={13}>
                   <Form.Item label="Tên sản phẩm">
@@ -171,7 +195,7 @@ class CreateProduct extends Component {
                             message: 'Vui lòng nhập giá sản phẩm',
                           },
                         ],
-                      })(<InputNumber min={1} max={10} value={3} />)}
+                      })(<InputNumber min={1} />)}
                     </Form.Item>
                     <Form.Item label="Số lượng">
                       {getFieldDecorator('productQuantity', {
@@ -181,7 +205,7 @@ class CreateProduct extends Component {
                             message: 'Vui lòng nhập số lượng sản phẩm',
                           },
                         ],
-                      })(<InputNumber min={1} max={10} value={3} />)}
+                      })(<InputNumber min={1} />)}
                     </Form.Item>
                     <Form.Item label="Loại sản phẩm">
                       {getFieldDecorator('category', {
@@ -208,7 +232,10 @@ class CreateProduct extends Component {
                         },
                       ],
                     })(
-                      <CKEditor data="" />
+                      <CKEditor
+                        data=""
+                        onChange={this.onEditorChange}
+                      />
                     )}
                   </Form.Item></Col>
                 {/* </Form>
@@ -230,10 +257,36 @@ class CreateProduct extends Component {
                       className="avatar-uploader"
                       showUploadList={false}
                       action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                      beforeUpload={beforeUpload}
-                      onChange={this.handleChange}
+                      beforeUpload={(file) => {
+                        //Upload File Base
+                        console.log('File moi up', file)
+                        //Link Image
+                        const uploadTask = storage.ref(`images/${file.name}`).put(file);
+                        // Set vao state
+                        uploadTask.on(
+                          "state_changed",
+                          snapshot => {
+                          },
+                          error => {
+                            console.log(error);
+                          },
+                          () => {
+                            storage
+                              .ref("images")
+                              .child(file.name)
+                              .getDownloadURL()
+                              .then(url => {
+                                console.log(url)
+                                this.setState({
+                                  avatarUrl: url
+                                })
+                              });
+                          }
+                        );
+                      }}
+                    // onChange={this.handleChange}
                     >
-                      {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
+                      {this.state.avatarUrl ? <img src={this.state.avatarUrl} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
                     </Upload>)}
                   </Form.Item>
 
@@ -252,9 +305,46 @@ class CreateProduct extends Component {
                           listType="picture-card"
                           fileList={fileList}
                           onPreview={this.handlePreview}
-                          onChange={this.handleImageDetailChange}
+                          onRemove={(file) => {
+                            // Xoa => Api XOa => Reducer tm
+                            this.setState({
+                              fileList: this.state.fileList.filter(el => el.uid !== file.uid)
+                            })
+                          }}
+                          beforeUpload={(file) => {
+                            // Xoa => Api XOa => Reducer tm
+                            console.log('anh detail', file)
+                            //Link Image
+                            const uploadTask = storage.ref(`images/${file.name}`).put(file);
+                            // Set vao state
+                            uploadTask.on(
+                              "state_changed",
+                              snapshot => {
+                              },
+                              error => {
+                                console.log(error);
+                              },
+                              () => {
+                                storage
+                                  .ref("images")
+                                  .child(file.name)
+                                  .getDownloadURL()
+                                  .then(url => {
+                                    console.log(url)
+                                    this.setState({
+                                      fileList: [...this.state.fileList, {
+                                        uid: this.state.fileList.length,
+                                        name: 'image.png',
+                                        status: 'done',
+                                        url: url
+                                      }]
+                                    })
+
+                                  });
+                              })
+                          }}
                         >
-                          {fileList.length >= 4 ? null : uploadImageDetailButton}
+                          {this.state.fileList.length >= 4 ? null : uploadImageDetailButton}
                         </Upload>
                         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                           <img alt="example" style={{ width: '100%' }} src={previewImage} />
@@ -265,11 +355,31 @@ class CreateProduct extends Component {
                 </Col>
               </Form>
             </Row>
+            <Row style={{ display: "flex", justifyContent: "center", margin: "15px 0px 30px 0px" }}>
+              <Button onClick={this.addNewProduct} type="primary">Tạo sản phẩm mới</Button>
+            </Row>
           </div>
         </div>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    idNewProduct: state.adminProduct.idNewProduct
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addNewProduct: (params) => {
+      dispatch(AdminProductTypes.addNewProductRequest(params));
+    },
+    addNewProductImage: (params) => {
+      dispatch(AdminProductTypes.addNewImageDetailRequest(params));
+    },
+  };
+};
 const CreateProductScreen = Form.create()(CreateProduct);
-export default CreateProductScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(CreateProductScreen);

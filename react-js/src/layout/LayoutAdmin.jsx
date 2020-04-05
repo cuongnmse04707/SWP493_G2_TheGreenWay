@@ -8,6 +8,7 @@ import UserInforList from "../pages/admin/UserInforList/UserInforList";
 import ProductInforList from "../pages/admin/ProductInforList";
 import CreateProduct from "../pages/admin/CreateProduct";
 import PostInforList from "../pages/admin/PostInforList";
+import CreatePost from "../pages/admin/CreatePost";
 import CartInforList from "../pages/admin/CartInforList";
 import queryString from "query-string";
 const { Header, Sider, Content } = Layout;
@@ -21,6 +22,7 @@ class LayoutAdmin extends Component {
     showPostInfor: false,
     showCartInfor: false,
     showCreateProduct: false,
+    showCreatePost: false,
   };
 
   componentDidMount() {
@@ -34,6 +36,7 @@ class LayoutAdmin extends Component {
         showPostInfor: false,
         showCartInfor: false,
         showCreateProduct: false,
+        showCreatePost: false,
       });
     } else if (page === "product-infor") {
       this.setState({
@@ -43,6 +46,7 @@ class LayoutAdmin extends Component {
         showPostInfor: false,
         showCartInfor: false,
         showCreateProduct: false,
+        showCreatePost: false,
       });
     } else if (page === "post-infor") {
       this.setState({
@@ -52,6 +56,7 @@ class LayoutAdmin extends Component {
         showPostInfor: true,
         showCartInfor: false,
         showCreateProduct: false,
+        showCreatePost: false,
       });
     } else if (page === "cart-infor") {
       this.setState({
@@ -61,6 +66,7 @@ class LayoutAdmin extends Component {
         showPostInfor: false,
         showCartInfor: true,
         showCreateProduct: false,
+        showCreatePost: false,
       });
     } else if (page === "create-product") {
       this.setState({
@@ -70,6 +76,17 @@ class LayoutAdmin extends Component {
         showPostInfor: false,
         showCartInfor: false,
         showCreateProduct: true,
+        showCreatePost: false,
+      });
+    } else if (page === "create-post") {
+      this.setState({
+        selectedKey: "createPost",
+        showUserInfor: false,
+        showProductInfor: false,
+        showPostInfor: false,
+        showCartInfor: false,
+        showCreateProduct: false,
+        showCreatePost: true,
       });
     }
   }
@@ -88,6 +105,7 @@ class LayoutAdmin extends Component {
       showPostInfor: false,
       showCartInfor: false,
       showCreateProduct: false,
+      showCreatePost: false,
     });
     this.props.history.push("/admin?page=user-infor");
   };
@@ -100,6 +118,7 @@ class LayoutAdmin extends Component {
       showPostInfor: false,
       showCartInfor: false,
       showCreateProduct: false,
+      showCreatePost: false,
     });
     this.props.history.push("/admin?page=product-infor");
   };
@@ -112,6 +131,7 @@ class LayoutAdmin extends Component {
       showPostInfor: false,
       showCartInfor: false,
       showCreateProduct: true,
+      showCreatePost: false,
     });
     this.props.history.push("/admin?page=create-product");
   };
@@ -124,8 +144,22 @@ class LayoutAdmin extends Component {
       showPostInfor: true,
       showCartInfor: false,
       showCreateProduct: false,
+      showCreatePost: false,
     });
     this.props.history.push("/admin?page=post-infor");
+  };
+
+  toCreatePost = () => {
+    this.setState({
+      selectedKey: "createPost",
+      showUserInfor: false,
+      showProductInfor: false,
+      showPostInfor: false,
+      showCartInfor: false,
+      showCreateProduct: false,
+      showCreatePost: true,
+    });
+    this.props.history.push("/admin?page=create-post");
   };
 
   toCartInfor = () => {
@@ -136,6 +170,7 @@ class LayoutAdmin extends Component {
       showPostInfor: false,
       showCartInfor: true,
       showCreateProduct: false,
+      showCreatePost: false,
     });
     this.props.history.push("/admin?page=cart-infor");
   };
@@ -180,7 +215,23 @@ class LayoutAdmin extends Component {
                     Đăng sản phẩm
                   </Menu.Item>
                 </SubMenu>
-                <Menu.Item
+                <SubMenu
+                  key="post"
+                  title={
+                    <span style={{ display: "flex", alignItems: "center" }}>
+                      <Icon type="appstore" />
+                      <span>Quản lí bài viết</span>
+                    </span>
+                  }
+                >
+                  <Menu.Item key="postInfor" onClick={this.toPostInfor}>
+                    Thông tin bài viết
+                  </Menu.Item>
+                  <Menu.Item key="createPost" onClick={this.toCreatePost}>
+                    Đăng bài viết
+                  </Menu.Item>
+                </SubMenu>
+                {/* <Menu.Item
                   key="postInfor"
                   style={{
                     display: "flex",
@@ -191,7 +242,7 @@ class LayoutAdmin extends Component {
                 >
                   <Icon style={{ marginLeft: 0 }} type="audit" />
                   <span style={{ marginLeft: 0 }}>Quản lí bài viết</span>
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item
                   key="cartInfor"
                   style={{
@@ -211,6 +262,7 @@ class LayoutAdmin extends Component {
               {this.state.showProductInfor ? <ProductInforList /> : null}
               {this.state.showCreateProduct ? <CreateProduct /> : null}
               {this.state.showPostInfor ? <PostInforList /> : null}
+              {this.state.showCreatePost ? <CreatePost /> : null}
               {this.state.showCartInfor ? <CartInforList /> : null}
             </div>
           </div>
