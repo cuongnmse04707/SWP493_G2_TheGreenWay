@@ -41,7 +41,8 @@ class lifeWayPageDetail extends Component {
             </div>
           </div>
           <div className="article-content">
-            <span>{postDetailInfor.Content}</span>
+            <span dangerouslySetInnerHTML={{ __html: postDetailInfor.Content }}/>
+
           </div>
           <div className="related-article-title">
             <span>Bài viết liên quan</span>

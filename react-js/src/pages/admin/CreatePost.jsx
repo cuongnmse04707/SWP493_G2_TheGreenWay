@@ -14,40 +14,12 @@ import {
   Col
 } from 'antd';
 import { connect } from "react-redux";
-import AdminProductTypes from "../../redux/admin-product-redux";
+import AdminPostTypes from "../../redux/admin-post-redux";
 import CKEditor from 'ckeditor4-react';
 import { storage } from "../../firebase";
 
 const { TextArea } = Input;
 const { Option } = Select;
-
-function getBase64Avatar(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
-function getBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
-}
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-}
-
 
 class CreatePost extends Component {
   state = {
@@ -57,44 +29,10 @@ class CreatePost extends Component {
     fileList: [],
     data: '',
     avatarUrl: '',
+    postImageDetail: '',
+    imageDetailUrl: '',
     newProductId: "",
   };
-
-  handleChange = info => {
-    if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64Avatar(info.file.originFileObj, imageUrl =>
-        this.setState({
-          imageUrl,
-          loading: false,
-        }),
-      );
-    }
-  };
-
-  handleImageDetailChange = ({ fileList }) => this.setState({ fileList });
-
-  //image detail
-  handleCancel = () => this.setState({ previewVisible: false });
-
-  handlePreview = async file => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-
-    this.setState({
-      previewImage: file.url || file.preview,
-      previewVisible: true,
-    });
-  };
-
-  handleCategoryChange(value) {
-    console.log(`selected ${value}`);
-  }
 
   onEditorChange = (evt) => {
     this.setState({
@@ -103,7 +41,33 @@ class CreatePost extends Component {
   }
 
   addNewPost = () => {
+    this.props.form.validateFieldsAndScroll(
+      ["title"],
+      (err, values) => {
+        if (!err) {
+          const params = {
+            Title: values.title,
+            Content: this.state.data,
+            CreateDate: new Date(),
+            UpdateDate: new Date(),
+            ImageDetail: this.state.avatarUrl
+          }
+          console.log('params', params)
+          this.props.addNewPost({
+            params,
+            callback: () => {
+              this.props.form.resetFields()
+              this.setState({
+                avatarUrl: '',
+                data: ''
+              })
+            }
+          })
+        }
+      });
   }
+
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -127,14 +91,7 @@ class CreatePost extends Component {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    const { previewVisible, previewImage, fileList } = this.state;
-    const uploadImageDetailButton = (
-      <div>
-        <Icon type="plus" />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
-    const { imageUrl } = this.state;
+
     return (
       <div className="create-post-wrapper">
         <p className="title">Tạo bài đăng mới</p>
@@ -155,47 +112,100 @@ class CreatePost extends Component {
                   </Form.Item>
                   <div className="post-image-container">
                     <div className="post-image-avatar">
-                    <Form.Item label="Ảnh đại diện">
-                      {getFieldDecorator('productAvatar', {
-                         rules: [
-                          {
-                            required: true,
-                            message: 'Vui lòng nhập ảnh đại diện',
-                          },
-                        ],
-                      })(<Upload
-                        name="avatar"
-                        listType="picture-card"
-                        className="avatar-uploader"
-                        showUploadList={false}
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-
-                      >
-                        {this.state.avatarUrl ? <img src={this.state.avatarUrl} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
-                      </Upload>)}
-                    </Form.Item>
-                    </div>
-                    <div className="post-image-detail">
-                      <Form.Item label="Ảnh bài viết">
-                        {getFieldDecorator('productAvatar', {
+                      <Form.Item label="Ảnh đại diện">
+                        {getFieldDecorator('postAvatar', {
+                          rules: [
+                            {
+                              required: true,
+                              message: 'Vui lòng nhập ảnh đại diện',
+                            },
+                          ],
                         })(<Upload
                           name="avatar"
                           listType="picture-card"
                           className="avatar-uploader"
                           showUploadList={false}
                           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                          beforeUpload={(file) => {
+                            //Upload File Base
+                            console.log('File moi up', file)
+                            //Link Image
+                            const uploadTask = storage.ref(`images/${file.name}`).put(file);
+                            // Set vao state
+                            uploadTask.on(
+                              "state_changed",
+                              snapshot => {
+                              },
+                              error => {
+                                console.log(error);
+                              },
+                              () => {
+                                storage
+                                  .ref("images")
+                                  .child(file.name)
+                                  .getDownloadURL()
+                                  .then(url => {
+                                    console.log(url)
+                                    this.setState({
+                                      avatarUrl: url
+                                    })
+                                  });
+                              }
+                            );
+                          }}
                         >
                           {this.state.avatarUrl ? <img src={this.state.avatarUrl} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
                         </Upload>)}
                       </Form.Item>
+                    </div>
+                    <div className="post-image-detail">
+                      <Form.Item label="Ảnh bài viết">
+                        {getFieldDecorator('postImageDetail', {
+                        })(<Upload
+                          name="avatar"
+                          listType="picture-card"
+                          className="avatar-uploader"
+                          showUploadList={false}
+                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                          beforeUpload={(file) => {
+                            //Upload File Base
+                            console.log('File moi up', file)
+                            //Link Image
+                            const uploadTask = storage.ref(`images/${file.name}`).put(file);
+                            // Set vao state
+                            uploadTask.on(
+                              "state_changed",
+                              snapshot => {
+                              },
+                              error => {
+                                console.log(error);
+                              },
+                              () => {
+                                storage
+                                  .ref("images")
+                                  .child(file.name)
+                                  .getDownloadURL()
+                                  .then(url => {
+                                    console.log(url)
+                                    this.setState({
+                                      postImageDetail: url,
+                                    })
+                                  });
+                              }
+                            );
+                          }}
+                        >
+                          {this.state.postImageDetail ? <img src={this.state.postImageDetail} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
+                        </Upload>)}
+                      </Form.Item>
                       <span>Link ảnh: </span>
-                      <Input placeholder="Basic usage" />
+                      <Input placeholder="Basic usage" value={this.state.postImageDetail} />
                     </div>
                   </div>
                 </Col>
 
                 <Col span={11}>
-                  <Form.Item label="Mô tả sản phẩm">
+                  <Form.Item label="Nội dung bài viết">
                     {getFieldDecorator('description', {
                       rules: [
                         {
@@ -230,6 +240,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    addNewPost: (params) => {
+      dispatch(AdminPostTypes.addNewPostRequest(params));
+    },
   };
 };
 const CreatePostScreen = Form.create()(CreatePost);

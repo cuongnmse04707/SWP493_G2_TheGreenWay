@@ -119,5 +119,8 @@ export default function* root() {
     takeLatest(AdminProductTypes.ADD_NEW_PRODUCT_REQUEST, AdminProductSagas.addNewProduct),
     takeLatest(AdminProductTypes.ADD_NEW_IMAGE_DETAIL_REQUEST, AdminProductSagas.addNewProductImage),
     takeLatest(AdminPostTypes.GET_LIST_POST_REQUEST, AdminPostSagas.getListPost),
+    takeLatest(AdminPostTypes.ADD_NEW_POST_REQUEST, AdminPostSagas.addNewPost),
+    takeLatest(AdminPostTypes.GET_POST_DETAIL_REQUEST, AdminPostSagas.getPostDetail),
+    takeLatest(AdminPostTypes.UPDATE_POST_REQUEST, AdminPostSagas.updatePost),
   ]);
 }

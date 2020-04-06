@@ -133,7 +133,9 @@ class Lifeway extends Component {
                 <span>{(postLikeMuch || {}).Title}</span>
               </div>
               <div className="post-header-descript">
-                <span>{(postLikeMuch || {}).Content}</span>
+                <span
+                  dangerouslySetInnerHTML={{ __html: (postLikeMuch || {}).Content }}
+                />
               </div>
               <div className="post-header-time">
                 <img src={require("../../images/clock.png")} alt="" />
@@ -214,7 +216,9 @@ class Lifeway extends Component {
                         </span>
                       </div>
                       <div className="post-detail-descript">
-                        <span>{item.Content}</span>
+                        <span
+                          dangerouslySetInnerHTML={{ __html: item.Content }}
+                        />
                       </div>
                       <div className="post-detail-like">
                         <span>Lượt thích : </span>

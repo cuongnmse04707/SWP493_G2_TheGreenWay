@@ -36,20 +36,6 @@ function getBase64(file) {
   });
 }
 
-const beforeUpload = (file) => {
-  console.log('File moi up', file)
-
-  // const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  // if (!isJpgOrPng) {
-  //   message.error('You can only upload JPG/PNG file!');
-  // }
-  // const isLt2M = file.size / 1024 / 1024 < 2;
-  // if (!isLt2M) {
-  //   message.error('Image must smaller than 2MB!');
-  // }
-  // return isJpgOrPng && isLt2M;
-}
-
 class ProductInforList extends Component {
   state = {
     visible: false,
@@ -133,9 +119,6 @@ class ProductInforList extends Component {
       ["productName", "productPrice", "productQuantity", "category"],
       (err, values) => {
         if (!err) {
-          // console.log('Received values of form: ', values);
-          // //console.log(this.props.productDetail)
-          // const params =
           this.props.updateProduct({
             params : {
               idProduct: this.state.productId,
@@ -344,10 +327,6 @@ class ProductInforList extends Component {
                     })}}/>
                   )}
                 </Form.Item></Col>
-              {/* </Form>
-          </div>
-          <div className="admin-create-form-right">
-            <Form {...formItemLayout} > */}
               <Col span={11}>
                 <Form.Item label="Ảnh đại diện">
                   {getFieldDecorator('productAvatar', {
@@ -364,9 +343,6 @@ class ProductInforList extends Component {
                     showUploadList={false}
                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     beforeUpload={(file) => {
-                      //Upload File Base
-                      // console.log('File moi up', file)
-                      //Link Image
                       const uploadTask = storage.ref(`images/${file.name}`).put(file);
                       // Set vao state
                       uploadTask.on(
