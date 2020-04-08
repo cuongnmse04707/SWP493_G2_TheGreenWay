@@ -11,6 +11,7 @@ import PostInforList from "../pages/admin/PostInforList";
 import CreatePost from "../pages/admin/CreatePost";
 import CartInforList from "../pages/admin/CartInforList";
 import queryString from "query-string";
+import { Redirect } from "react-router-dom";
 const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 class LayoutAdmin extends Component {
@@ -176,7 +177,8 @@ class LayoutAdmin extends Component {
   };
   render() {
     const { selectedKey } = this.state;
-    return (
+    const roles = window.localStorage.getItem("roles");
+    return roles == 'admin' || roles == 'mod'  ? (
       <div>
         <NavBar />
         <div style={{ width: "100%", height: "82vh", marginTop: "81px" }}>
@@ -268,6 +270,8 @@ class LayoutAdmin extends Component {
           </div>
         </div>
       </div>
+    ) : (
+      <Redirect to="/" />
     );
   }
 }

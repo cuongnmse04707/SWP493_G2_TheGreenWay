@@ -24,7 +24,7 @@ const LoginSagas = {
           userInfor.data.accessToken
         );
         yield window.localStorage.setItem("email", action.data.email);
-
+        yield window.localStorage.setItem("roles", userInfor.data.roles);
         yield put(LoginActions.loginSucceed(userInfor.data));
       }
     } catch (error) {

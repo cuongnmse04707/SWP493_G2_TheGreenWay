@@ -272,10 +272,12 @@ header.masthead .intro-text .intro-heading {
 }
 
 #portfolio .portfolio-item .portfolio-link img {
-  transition: transform .5s ease;
+  transition: transform 0.5s ease;
 }
 #portfolio .portfolio-item .portfolio-link:hover img {
   transform: scale(1.2);
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
 }
 
 #portfolio .portfolio-item .portfolio-link .portfolio-hover {
@@ -285,6 +287,7 @@ header.masthead .intro-text .intro-heading {
   transition: all ease 0.5s;
   opacity: 0;
   background: rgba(254, 209, 54, 0.9);
+
 }
 
 #portfolio .portfolio-item .portfolio-link .portfolio-hover:hover {
@@ -507,6 +510,7 @@ header.masthead .intro-text .intro-heading {
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
 .timeline > li .timeline-image h4 {
@@ -551,6 +555,11 @@ header.masthead .intro-text .intro-heading {
 .timeline .timeline-body > p,
 .timeline .timeline-body > ul {
   margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5
 }
 
 @media (min-width: 768px) {

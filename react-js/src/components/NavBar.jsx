@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Icon, Dropdown, Menu, Modal, Button } from "antd";
-import { Avatar, Badge } from "antd";
+import { Icon, Dropdown, Menu, Modal, Button,Badge } from "antd";
 import "antd/dist/antd.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -56,6 +55,10 @@ class NavBar extends Component {
     });
   };
 
+  toAdminPage = () => {
+    this.props.history.push("/admin");
+  }
+
   showModalAccount = () => {
     this.props.history.push("/account");
   };
@@ -82,7 +85,9 @@ class NavBar extends Component {
 
   render() {
     const token = window.localStorage.getItem("x-access-token");
-
+    const roles = window.localStorage.getItem("roles");
+    const checkUrl = window.location.pathname.split('/')[1]
+    console.log(checkUrl)
     //menu dropdown
     const menu = (
       <Menu>
@@ -207,6 +212,16 @@ class NavBar extends Component {
                     />
                   </Badge>
                 </li>
+               { roles == 'admin' || roles == 'mod' ? (
+                 <div style={{
+                   display: "flex",
+                   alignItems: "center"
+                 }}>
+                   <Button type="primary" onClick={this.toAdminPage}>Trang Admin ></Button>
+                 </div>
+               ) : (
+                <div></div>
+               )}
               </ul>
             </div>
             <Modal

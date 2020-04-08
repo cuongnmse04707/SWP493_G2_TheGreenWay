@@ -35,7 +35,7 @@ class Review extends Component {
                   />
                 </a>
                 <div className="portfolio-caption">
-                  <h4>Xương Rồng</h4>
+                  <h4>Cây Để Bàn</h4>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 portfolio-item">
@@ -77,7 +77,7 @@ class Review extends Component {
                   />
                 </a>
                 <div className="portfolio-caption">
-                  <h4>Xương Rồng Mini</h4>
+                  <h4>Tiểu Cảnh</h4>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 portfolio-item">
@@ -98,7 +98,7 @@ class Review extends Component {
                   />
                 </a>
                 <div className="portfolio-caption">
-                  <h4>Sen Đá</h4>
+                  <h4>Ống hút tre</h4>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 portfolio-item">
@@ -119,7 +119,7 @@ class Review extends Component {
                   />
                 </a>
                 <div className="portfolio-caption">
-                  <h4>Tiểu Cảnh</h4>
+                  <h4>Đồ tái chế</h4>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 portfolio-item">
@@ -140,7 +140,7 @@ class Review extends Component {
                   />
                 </a>
                 <div className="portfolio-caption">
-                  <h4>Cây Để Bàn</h4>
+                  <h4>Túi Giấy</h4>
                 </div>
               </div>
             </div>

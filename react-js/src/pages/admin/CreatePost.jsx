@@ -199,7 +199,7 @@ class CreatePost extends Component {
                         </Upload>)}
                       </Form.Item>
                       <span>Link ảnh: </span>
-                      <Input placeholder="Basic usage" value={this.state.postImageDetail} />
+                      <Input value={this.state.postImageDetail} />
                     </div>
                   </div>
                 </Col>

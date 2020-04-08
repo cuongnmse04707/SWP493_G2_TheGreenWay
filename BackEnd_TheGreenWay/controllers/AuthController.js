@@ -47,8 +47,9 @@ let register = async (req, res) => {
     username: req.body.username,
     roles: "user",
     urlAvatar:
-      "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fuser-roles-wordpress.png?alt=media&token=35187642-eb12-4c2c-a415-abd60485112c"
-  };
+      "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fuser-roles-wordpress.png?alt=media&token=35187642-eb12-4c2c-a415-abd60485112c",
+    status: 'ok'
+    };
   // Luu vao Database
   connectionDB.query("INSERT INTO Accounts SET ?  ", empty, (err, result) => {
     if (err) {
@@ -65,7 +66,7 @@ let register = async (req, res) => {
 
 let login = async (req, res) => {
   // check email da ton tai chua
-  let sql = `SELECT email, password, roles FROM Accounts WHERE email=? AND password=?`;
+  let sql = `SELECT email, password, roles, status FROM Accounts WHERE email=? AND password=?`;
   let query = mysql.format(sql, [req.body.email, req.body.password]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
@@ -79,26 +80,35 @@ let login = async (req, res) => {
           .status(200)
           .json({ success: false, message: "Email hoặc mật khẩu không đúng" });
       } else {
-        try {
-          const userData = {
-            email: arr[0].email,
-            roles: arr[0].roles
-          };
-          debug(`Thực hiện tạo mã Token, [thời gian sống 1 giờ.]`);
-          const accessToken = await jwtHelper.generateToken(
-            userData,
-            accessTokenSecret,
-            accessTokenLife
-          );
-          debug(`Gửi Token và Refresh Token về cho client...`);
-          return res.status(200).json({
-            success: true,
-            accessToken
-          });
-        } catch (error) {
+        if (arr[0].status === "ok") {
+          try {
+            const userData = {
+              email: arr[0].email,
+              roles: arr[0].roles,
+            };
+            debug(`Thực hiện tạo mã Token, [thời gian sống 1 giờ.]`);
+            const accessToken = await jwtHelper.generateToken(
+              userData,
+              accessTokenSecret,
+              accessTokenLife
+            );
+            debug(`Gửi Token và Refresh Token về cho client...`);
+            return res.status(200).json({
+              success: true,
+              accessToken,
+              roles: arr[0].roles,
+            });
+          } catch (error) {
+            return res.status(200).json({
+              success: false,
+              message: error,
+            });
+          }
+        } else {
           return res.status(200).json({
             success: false,
-            message: error
+            message:
+              "Tài khoản của bạn đã bị khoá. Liên hệ với admin để khắc phục tình trạng này!",
           });
         }
       }
