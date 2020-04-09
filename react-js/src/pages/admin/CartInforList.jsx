@@ -188,11 +188,18 @@ class CartInforList extends Component {
         width: "10%",
         key: "action",
         render: (text, record) => (
-          <Button
-            icon="info-circle"
-            onClick={() => this.onOpenDrawerMemberSetting(record)}
-            style={{ border: "none" }}
-          />
+          <div>
+            <Button
+              icon="info-circle"
+              onClick={() => this.onOpenDrawerMemberSetting(record)}
+              style={{}}
+            />
+            <Button
+              icon="reconciliation"
+              onClick={() => this.onOpenDrawerMemberSetting(record)}
+              style={{ marginLeft: "8px" }}
+            />
+          </div>
         ),
       },
     ];

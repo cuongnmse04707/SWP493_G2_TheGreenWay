@@ -3,10 +3,11 @@ const mysql = require("mysql");
 var config = require("../config/configDB");
 const connectionDB = mysql.createConnection(config.databaseOptions);
 var moment = require("moment-timezone");
+const Cryptr = require("cryptr");
 /**
  * controller user
  */
-
+const cryptr = new Cryptr("thegreenway");
 // get information of user fron database
 let information = async (req, res) => {
   // get email from request after handle of authmiddleware
@@ -27,18 +28,16 @@ let information = async (req, res) => {
           .json({ success: false, message: "Email or Password is not exist!" });
       } else {
         try {
-          arr[0].DOB = moment(arr[0].DOB)
-            .tz("Asia/Ho_Chi_Minh")
-            .format();
+          arr[0].DOB = moment(arr[0].DOB).tz("Asia/Ho_Chi_Minh").format();
           return res.status(200).json({
             success: true,
-            data: arr[0]
+            data: arr[0],
           });
         } catch (error) {
           console.log(error);
           return res.status(200).json({
             success: false,
-            message: error
+            message: error,
           });
         }
       }
@@ -67,18 +66,18 @@ let saveinformation = async (req, res) => {
     address,
     city,
     country,
-    email
+    email,
   ]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       return res.status(200).json({
         success: false,
-        message: "Save Information Of User Is Failed!"
+        message: "Save Information Of User Is Failed!",
       });
     } else {
       return res.status(200).json({
         success: true,
-        message: "Save Information Of User Is Success!"
+        message: "Save Information Of User Is Success!",
       });
     }
   });
@@ -128,19 +127,19 @@ let changepassword = async (req, res) => {
           .json({ success: false, message: "Email or Password is not exist!" });
       } else {
         // Neu co email
-        if (oldpassword === arr[0].password) {
+        if (oldpassword === cryptr.decrypt(arr[0].password)) {
           let sqlChange = `UPDATE Accounts SET password=? WHERE email=?`;
           let queryChange = mysql.format(sqlChange, [newpassword, email]);
           connectionDB.query(queryChange, async (err, result) => {
             if (err) {
               return res.status(200).json({
                 success: false,
-                message: "Thay đổi mật khẩu không thành công"
+                message: "Thay đổi mật khẩu không thành công",
               });
             } else {
               return res.status(200).json({
                 success: true,
-                message: "Thay đổi mật khẩu thành công"
+                message: "Thay đổi mật khẩu thành công",
               });
             }
           });
@@ -158,5 +157,5 @@ module.exports = {
   information: information,
   saveinformation: saveinformation,
   changeavatar: changeavatar,
-  changepassword: changepassword
+  changepassword: changepassword,
 };
