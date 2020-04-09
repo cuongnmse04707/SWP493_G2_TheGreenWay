@@ -74,6 +74,7 @@ let upRow = async (req, res) => {
 
 let downRow = async (req, res) => {
   //Lay thong tin tu database
+  console.log("1");
   const email = req.query.email;
   const role = "user";
   let sql = `UPDATE Accounts SET Accounts.roles=? WHERE Accounts.email=?`;

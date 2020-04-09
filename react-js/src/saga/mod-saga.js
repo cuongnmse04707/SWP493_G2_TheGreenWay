@@ -58,7 +58,7 @@ const ModSagas = {
     try {
       const userInfor = yield call(() => {
         return axios.get(
-          `http://localhost:3001/mod/unlockUser?email=${action.data.email}`,
+          `http://localhost:3001/mod/dowRow?email=${action.data.email}`,
           {
             headers: {
               "Content-Type": "application/json",

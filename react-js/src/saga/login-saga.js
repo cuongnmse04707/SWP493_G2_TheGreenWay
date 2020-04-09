@@ -3,18 +3,27 @@ import LoginActions from "../redux/login-redux";
 import { message } from "antd";
 import "antd/dist/antd.css";
 import axios from "axios";
+const Cryptr = require("cryptr");
+const cryptr = new Cryptr("thegreenway");
 
 const LoginSagas = {
   *loginUser(action) {
+    console.log(action);
     try {
       const userInfor = yield call(() => {
-        return axios.post("http://localhost:3001/auth/login", action.data, {
-          headers: {
-            "Content-Type": "application/json"
+        return axios.post(
+          "http://localhost:3001/auth/login",
+          {
+            email: action.data.email,
+            password: cryptr.encrypt(action.data.password),
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
       });
-      console.log(userInfor);
       if (!userInfor.data.success) {
         yield put(LoginActions.loginFailed(userInfor.data));
         message.error(userInfor.data.message, 3);
@@ -35,13 +44,19 @@ const LoginSagas = {
   *signUpUser(action) {
     try {
       const signUpUser = yield call(() => {
-        return axios.post("http://localhost:3001/auth/register", action.data, {
-          headers: {
-            "Content-Type": "application/json"
+        return axios.post(
+          "http://localhost:3001/auth/register",
+          {
+            ...action.data,
+            password: cryptr.encrypt(action.data.password),
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
       });
-      console.log(signUpUser);
       if (!signUpUser.data.success) {
         yield put(LoginActions.signUpFailed(signUpUser.data));
         message.error(signUpUser.data.message, 3);
@@ -55,7 +70,6 @@ const LoginSagas = {
   },
 
   *forgotEmail(action) {
-    console.log("forgotData", action);
     try {
       const forgotEmail = yield call(() => {
         return axios.post(
@@ -63,12 +77,11 @@ const LoginSagas = {
           action.data,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
-      console.log("okeee", forgotEmail);
       if (!forgotEmail.data.success) {
         yield put(LoginActions.forgotFailed(forgotEmail.data));
         message.error(forgotEmail.data.message, 3);
@@ -79,7 +92,7 @@ const LoginSagas = {
     } catch (error) {
       yield put(LoginActions.forgotFailed(error));
     }
-  }
+  },
 };
 
 export default LoginSagas;

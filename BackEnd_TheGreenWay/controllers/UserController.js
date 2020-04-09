@@ -108,8 +108,8 @@ let changeavatar = async (req, res) => {
 let changepassword = async (req, res) => {
   // get email from request after handle of authmiddleware
   const email = req.jwtDecoded.data.email;
-  const oldpassword = req.body.oldpassword;
-  const newpassword = req.body.newpassword;
+  const oldpassword = cryptr.decrypt(req.body.oldpassword);
+  const newpassword = cryptr.decrypt(req.body.newpassword);
   //Luu thong tin tu database
   //Lay thong tin tu database
   let sql = `SELECT email,password FROM Accounts WHERE email=?`;

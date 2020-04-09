@@ -18,7 +18,6 @@ const accessTokenSecret =
 const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
 const cryptr = new Cryptr("thegreenway");
-
 /**
  * controller login
  */
@@ -27,7 +26,7 @@ let register = async (req, res) => {
   // get email,password
   //const username = req.body.username;
   const email = req.body.email;
-  const password = req.body.password;
+  const password = cryptr.decrypt(req.body.password);
   // validate email
   if (!emailRegex.test(email)) {
     res.status(200).json({
@@ -42,7 +41,7 @@ let register = async (req, res) => {
     });
     return;
   }
-  const passwordString = cryptr.encrypt(req.body.password);
+  const passwordString = cryptr.encrypt(password);
   // Tao new empty
   const empty = {
     email: req.body.email,
@@ -83,7 +82,9 @@ let login = async (req, res) => {
           .status(200)
           .json({ success: false, message: "Email của bạn không đúng" });
       } else {
-        if (cryptr.decrypt(arr[0].password) !== req.body.password) {
+        if (
+          cryptr.decrypt(arr[0].password) !== cryptr.decrypt(req.body.password)
+        ) {
           return res.status(200).json({
             success: false,
             message: "Mật khẩu của bạn không đúng",
@@ -262,7 +263,7 @@ let resetPassword = async (req, res) => {
         // thuc hien ResetPassword
         let sqlForgot = `UPDATE Accounts SET password=? WHERE email=?`;
         let queryForgot = mysql.format(sqlForgot, [
-          cryptr.encrypt(req.body.password),
+          cryptr.encrypt(cryptr.decrypt(req.body.password)),
           req.body.email,
         ]);
         connectionDB.query(queryForgot, async (err, resultForgot) => {

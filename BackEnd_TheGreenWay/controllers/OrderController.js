@@ -458,10 +458,13 @@ let changeStatusOrder = async (req, res) => {
                       await arraySave.forEach(function (item, index, arrays) {
                         // Luu vao Database
                         let sql = `UPDATE Products
-                                 SET Quantity=?
+                                 SET Quantity=?,ProductStatus=?
                                  WHERE ProductID=?`;
+                        const ProductStatus =
+                          item.Quantity > 0 ? "Còn Hàng" : "Hết Hàng";
                         let query = mysql.format(sql, [
                           item.Quantity,
+                          ProductStatus,
                           item.ProductID,
                         ]);
                         connectionDB.query(
