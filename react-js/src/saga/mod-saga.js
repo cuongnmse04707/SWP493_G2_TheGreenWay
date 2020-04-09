@@ -58,7 +58,7 @@ const ModSagas = {
     try {
       const userInfor = yield call(() => {
         return axios.get(
-          `http://localhost:3001/mod/dowRow?email=${action.data.email}`,
+          `http://localhost:3001/mod/unlockUser?email=${action.data.email}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -78,6 +78,60 @@ const ModSagas = {
     } catch (error) {
       message.error("You don't have permission !");
       yield put(ModActions.downRoleFailed(error));
+    }
+  },
+
+  *unlockUser(action) {
+    try {
+      const userInfor = yield call(() => {
+        return axios.get(
+          `http://localhost:3001/mod/unlockUser?email=${action.data.email}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
+      });
+      // console.log("variable: ", userInfor.data.success);
+      if (!userInfor.data.success) {
+        yield put(ModActions.unlockFailed(userInfor.data));
+        message.error("You don't have permission !");
+      } else {
+        message.success("UnLock is Success !");
+        yield put(ModActions.unlockSucceed(action.data.email));
+      }
+    } catch (error) {
+      message.error("You don't have permission !");
+      yield put(ModActions.unlockFailed(error));
+    }
+  },
+
+  *lockUser(action) {
+    try {
+      const userInfor = yield call(() => {
+        return axios.get(
+          `http://localhost:3001/mod/lockUser?email=${action.data.email}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
+      });
+      // console.log("variable: ", userInfor.data.success);
+      if (!userInfor.data.success) {
+        yield put(ModActions.lockFailed(userInfor.data));
+        message.error("You don't have permission !");
+      } else {
+        message.success("Lock is Success !");
+        yield put(ModActions.lockSucceed(action.data.email));
+      }
+    } catch (error) {
+      message.error("You don't have permission !");
+      yield put(ModActions.lockFailed(error));
     }
   },
 

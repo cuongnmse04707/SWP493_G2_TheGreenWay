@@ -42,30 +42,6 @@ class CartInforList extends Component {
     getDataOrder();
   }
 
-  // showModal = (id) => {
-  //   this.setState({
-  //     visibleRemove: true,
-  //     idMemberRemove: id,
-  //   });
-  // };
-
-  // handleCancel = () => {
-  //   this.setState({
-  //     visibleRemove: false,
-  //     idMemberRemove: "",
-  //   });
-  // };
-
-  // handleOk = () => {
-  //   // Remove deleteMember
-  //   const { idMemberRemove } = this.state;
-  //   const { deleteUser } = this.props;
-  //   deleteUser({
-  //     email: idMemberRemove,
-  //     callback: () => {},
-  //   });
-  // };
-
   onOpenDrawerMemberSetting = (item) => {
     const { getOrderDetail } = this.props;
     getOrderDetail(item.OrderID);
@@ -80,22 +56,6 @@ class CartInforList extends Component {
       visibleDrawerMemberSetting: false,
     });
   };
-
-  // saveInfor = () => {
-  //   const { emailChange } = this.state;
-  //   const { upRole } = this.props;
-  //   if (emailChange === "") {
-  //     return;
-  //   }
-  //   upRole({
-  //     email: emailChange,
-  //     callback: () => {
-  //       this.setState({
-  //         emailChange: "",
-  //       });
-  //     },
-  //   });
-  // };
 
   getDataTable = (list) => {
     const { keyFilterValue } = this.state;
@@ -186,6 +146,10 @@ class CartInforList extends Component {
         title: <span>CreateDate</span>,
         dataIndex: "CreateDate",
         key: "CreateDate",
+        sorter: {
+          compare: (a, b) => new Date(a.CreateDate) - new Date(b.CreateDate),
+          multiple: 2,
+        },
         render: (text) => (
           <span>
             {text !== "Invalid date" ? moment(text).format("DD/MM/YYYY") : `--`}
@@ -227,7 +191,6 @@ class CartInforList extends Component {
           <Button
             icon="info-circle"
             onClick={() => this.onOpenDrawerMemberSetting(record)}
-            // disabled={record.roles === "admin"}
             style={{ border: "none" }}
           />
         ),
@@ -366,10 +329,15 @@ class CartInforList extends Component {
               columns={columns}
               dataSource={
                 stateTable === "all"
-                  ? listOrder || []
-                  : (listOrder || []).filter(
-                      (el) => el.Description === stateTable
+                  ? (listOrder || []).sort(
+                      (a, b) => new Date(b.CreateDate) - new Date(a.CreateDate)
                     )
+                  : (listOrder || [])
+                      .filter((el) => el.Description === stateTable)
+                      .sort(
+                        (a, b) =>
+                          new Date(b.CreateDate) - new Date(a.CreateDate)
+                      )
               }
               style={{ background: "white", marginTop: "10px" }}
               // pagination={false}
@@ -458,7 +426,10 @@ class CartInforList extends Component {
                     </div>
                   </div>
                   <div className="order-infor-right">
-                    <Button type="primary" onClick={this.backToOrderList}>
+                    <Button
+                      type="primary"
+                      onClick={this.onCloseDrawerMemberSetting}
+                    >
                       Quay lại
                     </Button>
                   </div>

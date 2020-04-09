@@ -91,11 +91,12 @@ let downRow = async (req, res) => {
   });
 };
 
-let deleteUser = async (req, res) => {
+let lockUser = async (req, res) => {
   //Lay thong tin tu database
   const email = req.query.email;
-  let sql = `DELETE FROM Accounts WHERE Accounts.email = ?`;
-  let query = mysql.format(sql, [email]);
+  const status = "lock";
+  let sql = `UPDATE Accounts SET Accounts.status=? WHERE Accounts.email=?`;
+  let query = mysql.format(sql, [status, email]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       // chua ton tai thi bao loi
@@ -104,7 +105,26 @@ let deleteUser = async (req, res) => {
       // Da ton tai thi tao ma token va gui ve client
       return res
         .status(200)
-        .json({ success: true, message: "Delete User success !" });
+        .json({ success: true, message: "Lock User success !" });
+    }
+  });
+};
+
+let unlockUser = async (req, res) => {
+  //Lay thong tin tu database
+  const email = req.query.email;
+  const status = "ok";
+  let sql = `UPDATE Accounts SET Accounts.status=? WHERE Accounts.email=?`;
+  let query = mysql.format(sql, [status, email]);
+  connectionDB.query(query, async (err, result) => {
+    if (err) {
+      // chua ton tai thi bao loi
+      return res.status(200).json({ success: false, message: err });
+    } else {
+      // Da ton tai thi tao ma token va gui ve client
+      return res
+        .status(200)
+        .json({ success: true, message: "unLock User success !" });
     }
   });
 };
@@ -113,5 +133,6 @@ module.exports = {
   getListUser: getListUser,
   downRow: downRow,
   upRow: upRow,
-  deleteUser: deleteUser,
+  lockUser: lockUser,
+  unlockUser: unlockUser,
 };

@@ -118,6 +118,22 @@ class UserInforList extends Component {
     });
   };
 
+  lockUser = (value) => {
+    const { lockUser } = this.props;
+    lockUser({
+      email: value,
+      callback: (value) => {},
+    });
+  };
+
+  unLockUser = (value) => {
+    const { unlockUser } = this.props;
+    unlockUser({
+      email: value,
+      callback: (value) => {},
+    });
+  };
+
   render() {
     const columns = [
       {
@@ -133,7 +149,7 @@ class UserInforList extends Component {
           </div>
         ),
         key: "name",
-        width: "20%",
+        width: "15%",
         render: (text, record) => (
           <div style={{ display: "flex", alignItems: "center" }}>
             <Avatar shape="square" src={record.urlAvatar || ``} />
@@ -145,13 +161,51 @@ class UserInforList extends Component {
         title: <span>Email Address</span>,
         dataIndex: "email",
         key: "email",
-        width: "25%",
+        width: "15%",
+      },
+      {
+        title: <span>Status</span>,
+        dataIndex: "status",
+        key: "status",
+        render: (text, record) => (
+          <div>{text === "ok" ? <span>Active</span> : <span>Lock</span>}</div>
+        ),
       },
       {
         title: <span>Role</span>,
         dataIndex: "roles",
         key: "role",
         width: "10%",
+        render: (text, record) => (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                height: "20px",
+                paddingLeft: "5px",
+                paddingRight: "5px",
+                background: `${
+                  record.roles === "admin"
+                    ? "#FF4500"
+                    : record.roles === "mod"
+                    ? "blue"
+                    : "#00BFFF"
+                }`,
+                width: "auto",
+                color: "white",
+                borderRadius: "5px",
+              }}
+            >
+              <span style={{ textTransform: "uppercase" }}>{text}</span>
+            </div>
+          </div>
+        ),
       },
       {
         title: <span>DOB</span>,
@@ -180,18 +234,39 @@ class UserInforList extends Component {
               alignItems: "center",
             }}
           >
-            <span>Infor</span>
+            <span>Action</span>
           </div>
         ),
         width: "10%",
         key: "action",
         render: (text, record) => (
-          <Button
-            icon="info-circle"
-            onClick={() => this.showModal(record)}
-            // disabled={record.roles === "admin"}
-            style={{ border: "none" }}
-          />
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <Button
+              icon="info-circle"
+              onClick={() => this.showModal(record)}
+              // disabled={record.roles === "admin"}
+              style={{ border: "none" }}
+            />
+            {record.roles === "admin" ? null : (
+              <div>
+                {record.status === "ok" ? (
+                  <Button
+                    icon="lock"
+                    onClick={() => this.lockUser(record.email)}
+                    // disabled={record.roles === "admin"}
+                    style={{ marginLeft: "8px" }}
+                  />
+                ) : (
+                  <Button
+                    icon="unlock"
+                    onClick={() => this.unLockUser(record.email)}
+                    // disabled={record.roles === "admin"}
+                    style={{ marginLeft: "8px" }}
+                  />
+                )}
+              </div>
+            )}
+          </div>
         ),
       },
     ];
@@ -225,6 +300,36 @@ class UserInforList extends Component {
         title: <span>Role</span>,
         dataIndex: "roles",
         key: "role",
+        render: (text, record) => (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                height: "20px",
+                paddingLeft: "5px",
+                paddingRight: "5px",
+                background: `${
+                  record.roles === "admin"
+                    ? "#FF4500"
+                    : record.roles === "mod"
+                    ? "blue"
+                    : "#00BFFF"
+                }`,
+                width: "auto",
+                color: "white",
+                borderRadius: "5px",
+              }}
+            >
+              <span style={{ textTransform: "uppercase" }}>{text}</span>
+            </div>
+          </div>
+        ),
       },
       {
         title: (
@@ -240,12 +345,14 @@ class UserInforList extends Component {
         ),
         key: "action",
         render: (text, record) => (
-          <Button
-            icon="delete"
-            onClick={() => this.onDownRole(record.email)}
-            // disabled={record.roles === "admin"}
-            style={{ border: "none" }}
-          />
+          <div>
+            <Button
+              icon="delete"
+              onClick={() => this.onDownRole(record.email)}
+              // disabled={record.roles === "admin"}
+              style={{ border: "none" }}
+            />
+          </div>
         ),
       },
     ];
@@ -303,41 +410,40 @@ class UserInforList extends Component {
               style={{ marginTop: "10px" }}
               expandIconPosition={"right"}
             >
-              <Panel header="Admin" key="1">
+              <Panel header="Account Active" key="1">
                 <div>
                   <Table
                     className="stylesTable"
                     columns={columns}
-                    dataSource={this.getDataTable(
-                      (listUser || []).filter((el) => el.roles === "admin") ||
-                        []
-                    )}
+                    dataSource={this.getDataTable([
+                      ...(listUser || []).filter(
+                        (el) => el.roles === "admin" && el.status === "ok"
+                      ),
+                      ...(listUser || []).filter(
+                        (el) => el.roles === "mod" && el.status === "ok"
+                      ),
+                      ...(listUser || []).filter(
+                        (el) => el.roles === "user" && el.status === "ok"
+                      ),
+                    ])}
                     style={{ background: "white" }}
                     pagination={false}
                   />
                 </div>
               </Panel>
-              <Panel header="List MOD" key="2">
+              <Panel header="Account Lock" key="2">
                 <div>
                   <Table
                     className="stylesTable"
                     columns={columns}
-                    dataSource={this.getDataTable(
-                      (listUser || []).filter((el) => el.roles === "mod") || []
-                    )}
-                    style={{ background: "white" }}
-                    pagination={false}
-                  />
-                </div>
-              </Panel>
-              <Panel header="List User" key="3">
-                <div>
-                  <Table
-                    className="stylesTable"
-                    columns={columns}
-                    dataSource={this.getDataTable(
-                      (listUser || []).filter((el) => el.roles === "user") || []
-                    )}
+                    dataSource={this.getDataTable([
+                      ...(listUser || []).filter(
+                        (el) => el.roles === "mod" && el.status !== "ok"
+                      ),
+                      ...(listUser || []).filter(
+                        (el) => el.roles === "user" && el.status !== "ok"
+                      ),
+                    ])}
                     style={{ background: "white" }}
                     pagination={false}
                   />
@@ -386,7 +492,7 @@ class UserInforList extends Component {
                   }
                 >
                   {(listUser || [])
-                    .filter((el) => el.roles === "user")
+                    .filter((el) => el.roles === "user" && el.status === "ok")
                     .map((items) => (
                       <Option
                         key={items.email}
@@ -426,7 +532,9 @@ class UserInforList extends Component {
                   className="stylesTable"
                   columns={columnsAdmin}
                   dataSource={
-                    (listUser || []).filter((el) => el.roles === "mod") || []
+                    (listUser || []).filter(
+                      (el) => el.roles === "mod" && el.status === "ok"
+                    ) || []
                   }
                   style={{ background: "white" }}
                   pagination={false}
@@ -731,6 +839,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     downRole: (params) => {
       dispatch(ModTypes.downRoleRequest(params));
+    },
+    lockUser: (params) => {
+      dispatch(ModTypes.lockRequest(params));
+    },
+    unlockUser: (params) => {
+      dispatch(ModTypes.unlockRequest(params));
     },
   };
 };

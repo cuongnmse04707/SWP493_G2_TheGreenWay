@@ -13,7 +13,8 @@ let modRouter = (server) => {
   router.use(AdminMiddleware.isAuth);
   router.get("/upRow", ModController.upRow);
   router.get("/dowRow", ModController.downRow);
-  router.delete("/deleteUser", ModController.deleteUser);
+  router.get("/lockUser", ModController.lockUser);
+  router.get("/unlockUser", ModController.unlockUser);
   return server.use("/mod", router);
 };
 

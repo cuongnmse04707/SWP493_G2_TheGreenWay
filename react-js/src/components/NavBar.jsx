@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Icon, Dropdown, Menu, Modal, Button,Badge } from "antd";
+import { Icon, Dropdown, Menu, Modal, Button, Badge } from "antd";
 import "antd/dist/antd.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -8,7 +8,7 @@ class NavBar extends Component {
   state = {
     userName: "",
     urlAvatar: "",
-    visibleLogout: false
+    visibleLogout: false,
   };
 
   componentDidMount() {
@@ -18,7 +18,7 @@ class NavBar extends Component {
     }
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     let numberOfTotal = 0;
-    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    cart.map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
     this.props.setDataCart(numberOfTotal);
   }
 
@@ -29,7 +29,7 @@ class NavBar extends Component {
     ) {
       this.setState({
         userName: this.props.userInformation.username,
-        urlAvatar: this.props.userInformation.urlAvatar
+        urlAvatar: this.props.userInformation.urlAvatar,
       });
     }
   }
@@ -38,26 +38,26 @@ class NavBar extends Component {
     this.props.history.push("/login");
   };
 
-  handleLogoutCancel = e => {
+  handleLogoutCancel = (e) => {
     this.setState({
-      visibleLogout: false
+      visibleLogout: false,
     });
   };
 
-  handleLogoutOk = e => {
+  handleLogoutOk = (e) => {
     window.localStorage.clear();
     window.location.href = "/";
   };
 
   showLogoutModal = () => {
     this.setState({
-      visibleLogout: true
+      visibleLogout: true,
     });
   };
 
   toAdminPage = () => {
-    this.props.history.push("/admin");
-  }
+    this.props.history.push("/admin?page=user-infor");
+  };
 
   showModalAccount = () => {
     this.props.history.push("/account");
@@ -86,8 +86,8 @@ class NavBar extends Component {
   render() {
     const token = window.localStorage.getItem("x-access-token");
     const roles = window.localStorage.getItem("roles");
-    const checkUrl = window.location.pathname.split('/')[1]
-    console.log(checkUrl)
+    const checkUrl = window.location.pathname.split("/")[1];
+    console.log(checkUrl);
     //menu dropdown
     const menu = (
       <Menu>
@@ -158,7 +158,7 @@ class NavBar extends Component {
                         style={{
                           width: "40px",
                           height: "40px",
-                          borderRadius: "50%"
+                          borderRadius: "50%",
                         }}
                         src={this.props.userInformation.urlAvatar}
                         // alt=""
@@ -172,7 +172,7 @@ class NavBar extends Component {
                           style={{
                             color: "#000 !important",
                             fontSize: "16px",
-                            marginLeft: "10px"
+                            marginLeft: "10px",
                           }}
                           className="ant-dropdown-link"
                           href="#"
@@ -204,7 +204,7 @@ class NavBar extends Component {
                       style={{
                         height: "32px",
                         width: "32px",
-                        marginRight: "10px"
+                        marginRight: "10px",
                       }}
                       src={require("../images/svgIcon/sales.svg")}
                       alt=""
@@ -212,16 +212,20 @@ class NavBar extends Component {
                     />
                   </Badge>
                 </li>
-               { roles == 'admin' || roles == 'mod' ? (
-                 <div style={{
-                   display: "flex",
-                   alignItems: "center"
-                 }}>
-                   <Button type="primary" onClick={this.toAdminPage}>Trang Admin ></Button>
-                 </div>
-               ) : (
-                <div></div>
-               )}
+                {roles == "admin" || roles == "mod" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button type="primary" onClick={this.toAdminPage}>
+                      Trang Admin >
+                    </Button>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </ul>
             </div>
             <Modal
@@ -238,21 +242,21 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     userInformation: state.homePage.userInformation,
-    stateCartNumber: state.homePage.stateCartNumber
+    stateCartNumber: state.homePage.stateCartNumber,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getUserInfor: () => {
       dispatch(HomePageTypes.getInforRequest());
     },
-    setDataCart: param => {
+    setDataCart: (param) => {
       dispatch(HomePageTypes.updateStateCart(param));
-    }
+    },
   };
 };
 

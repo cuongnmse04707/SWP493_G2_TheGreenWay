@@ -5,6 +5,7 @@ var config = require("../config/configDB");
 const nodemailer = require("nodemailer");
 const connectionDB = mysql.createConnection(config.databaseOptions);
 var moment = require("moment-timezone");
+const Cryptr = require("cryptr");
 // Biến cục bộ trên server này sẽ lưu trữ tạm danh sách token
 // Trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB // luu de con refresherToken
 // let tokenList = {};
@@ -16,6 +17,7 @@ const accessTokenSecret =
 // Regex email, password
 const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
+const cryptr = new Cryptr("thegreenway");
 
 /**
  * controller login
@@ -30,26 +32,27 @@ let register = async (req, res) => {
   if (!emailRegex.test(email)) {
     res.status(200).json({
       success: false,
-      message: "Invalid email adress"
+      message: "Invalid email adress",
     });
   } else if (!passwordRegex.test(password)) {
     // validate password
     res.status(200).json({
       success: false,
-      message: "Invalid password"
+      message: "Invalid password",
     });
     return;
   }
+  const passwordString = cryptr.encrypt(req.body.password);
   // Tao new empty
   const empty = {
     email: req.body.email,
-    password: req.body.password,
+    password: passwordString,
     username: req.body.username,
     roles: "user",
     urlAvatar:
       "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fuser-roles-wordpress.png?alt=media&token=35187642-eb12-4c2c-a415-abd60485112c",
-    status: 'ok'
-    };
+    status: "ok",
+  };
   // Luu vao Database
   connectionDB.query("INSERT INTO Accounts SET ?  ", empty, (err, result) => {
     if (err) {
@@ -66,8 +69,8 @@ let register = async (req, res) => {
 
 let login = async (req, res) => {
   // check email da ton tai chua
-  let sql = `SELECT email, password, roles, status FROM Accounts WHERE email=? AND password=?`;
-  let query = mysql.format(sql, [req.body.email, req.body.password]);
+  let sql = `SELECT email, password, roles, status FROM Accounts WHERE email=?`;
+  let query = mysql.format(sql, [req.body.email]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       // chua ton tai thi bao loi
@@ -78,8 +81,14 @@ let login = async (req, res) => {
       if (arr.length === 0) {
         return res
           .status(200)
-          .json({ success: false, message: "Email hoặc mật khẩu không đúng" });
+          .json({ success: false, message: "Email của bạn không đúng" });
       } else {
+        if (cryptr.decrypt(arr[0].password) !== req.body.password) {
+          return res.status(200).json({
+            success: false,
+            message: "Mật khẩu của bạn không đúng",
+          });
+        }
         if (arr[0].status === "ok") {
           try {
             const userData = {
@@ -136,7 +145,7 @@ let forgotpassword = async (req, res) => {
         try {
           // tao ma token forgotPassword
           const userData = {
-            email: req.body.email
+            email: req.body.email,
           };
           const accessToken = await jwtHelper.generateToken(
             userData,
@@ -148,8 +157,8 @@ let forgotpassword = async (req, res) => {
             service: "gmail",
             auth: {
               user: `nguyencuong.3061997@gmail.com`,
-              pass: `manhcuong@vickyrius1997`
-            }
+              pass: `manhcuong@vickyrius1997`,
+            },
           });
           // tao mailOptions
           const mailOptions = {
@@ -160,7 +169,7 @@ let forgotpassword = async (req, res) => {
               "Bạn đang nhận được điều này bởi vì bạn (hoặc người khác) đã yêu cầu đặt lại mật khẩu cho tài khoản của bạn.\n\n" +
               "Vui lòng nhấp vào liên kết sau hoặc dán liên kết này vào trình duyệt của bạn để hoàn tất quy trình trong vòng mười giờ sau khi nhận được:\n\n" +
               `http://localhost:3000/forgot?${accessToken}?${req.body.email}` +
-              "\n\nNếu bạn không yêu cầu điều này, xin vui lòng bỏ qua email này và mật khẩu của bạn sẽ không thay đổi.\n"
+              "\n\nNếu bạn không yêu cầu điều này, xin vui lòng bỏ qua email này và mật khẩu của bạn sẽ không thay đổi.\n",
           };
           // Thao tac Update/Luu vao userToken table
           // Kiem tra email da co trong bang userToken chua
@@ -182,7 +191,7 @@ let forgotpassword = async (req, res) => {
                     if (err) {
                       return res.status(200).json({
                         success: false,
-                        message: "Save DB userToken is Faild"
+                        message: "Save DB userToken is Faild",
                       });
                     } else {
                     }
@@ -193,13 +202,13 @@ let forgotpassword = async (req, res) => {
                 let sqlForgot = `UPDATE AccountsToken SET token=? WHERE email=?`;
                 let queryForgot = mysql.format(sqlForgot, [
                   accessToken,
-                  req.body.email
+                  req.body.email,
                 ]);
                 connectionDB.query(queryForgot, async (err, resultForgot) => {
                   if (err) {
                     return res.status(200).json({
                       success: false,
-                      message: "Update DB userToken is Faild"
+                      message: "Update DB userToken is Faild",
                     });
                   } else {
                   }
@@ -212,19 +221,19 @@ let forgotpassword = async (req, res) => {
             if (err) {
               return res.status(200).json({
                 success: false,
-                message: err
+                message: err,
               });
             } else {
               return res.status(200).json({
                 success: true,
-                message: `Chúng tôi sẽ gửi hướng dẫn đến email này nếu liên kết với tài khoản.`
+                message: `Chúng tôi sẽ gửi hướng dẫn đến email này nếu liên kết với tài khoản.`,
               });
             }
           });
         } catch (error) {
           res.status(200).json({
             success: false,
-            message: error
+            message: error,
           });
         }
       }
@@ -247,14 +256,14 @@ let resetPassword = async (req, res) => {
         // Khong ton tai email can resetPassword
         return res.status(200).json({
           success: false,
-          message: "Tài khoản không cần đặt lại mật khẩu"
+          message: "Tài khoản không cần đặt lại mật khẩu",
         });
       } else {
         // thuc hien ResetPassword
         let sqlForgot = `UPDATE Accounts SET password=? WHERE email=?`;
         let queryForgot = mysql.format(sqlForgot, [
-          req.body.password,
-          req.body.email
+          cryptr.encrypt(req.body.password),
+          req.body.email,
         ]);
         connectionDB.query(queryForgot, async (err, resultForgot) => {
           if (err) {
@@ -269,7 +278,7 @@ let resetPassword = async (req, res) => {
               if (err) {
                 return res.status(200).json({
                   success: false,
-                  message: "Error with reset password"
+                  message: "Error with reset password",
                 });
               } else {
                 return res
@@ -288,5 +297,5 @@ module.exports = {
   login: login,
   register: register,
   forgotpassword: forgotpassword,
-  resetPassword: resetPassword
+  resetPassword: resetPassword,
 };
