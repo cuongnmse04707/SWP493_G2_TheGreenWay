@@ -138,7 +138,6 @@ let addnewpost = async (req, res) => {
       //Lay ID day vao Database cho bang Product
       const arr = await Array.apply(null, result);
       const idPost = Number(arr[0].IDPost) + 1; // Vi IDProduct là NVARCHAR
-      console.log(idPost)
       // //Luu vao database
       const ImageDetail = req.body.ImageDetail
         ? req.body.ImageDetail

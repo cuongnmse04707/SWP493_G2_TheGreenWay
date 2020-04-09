@@ -36,6 +36,7 @@ export const failed = (state, { error }) => {
   console.log(error)
   return {
     ...state,
+    likeProductList: []
   }
 }
 

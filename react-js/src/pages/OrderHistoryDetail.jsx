@@ -69,6 +69,7 @@ class OrderHistoryDetail extends Component {
     ];
 
     const { orderInfor, cartInfor } = this.props;
+    const token = window.localStorage.getItem('token')
     return (
       <div>
         <NavBar />
@@ -115,11 +116,15 @@ class OrderHistoryDetail extends Component {
                 <span>{moment(cartInfor.ModifyDate).format("DD/MM/YYYY")}</span>
               </div>
             </div>
-            <div className="order-infor-right">
-              <Button type="primary" onClick={this.backToOrderList}>
-                Quay lại
+            {!token ? (
+              <div className="order-infor-right">
+                <Button type="primary" onClick={this.backToOrderList}>
+                  Quay lại
               </Button>
-            </div>
+              </div>
+            ) : (
+                <div></div>
+              )}
           </div>
           <p style={{ fontSize: "18px", fontWeight: "bold" }}>
             Danh sách sản phẩm:
