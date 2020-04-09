@@ -158,6 +158,37 @@ const ModSagas = {
       yield put(ModActions.getListOrderFailed(error));
     }
   },
+
+  // changeStatusOrder
+  *changeStatusOrder(action) {
+    try {
+      const params = {
+        idOrder: action.data.idOrder,
+        OrderStatusCode: `${action.data.status}`,
+      };
+      const orderHistoryInfor = yield call(() => {
+        return axios.put(
+          `http://localhost:3001/userorder/changeStatusOrder`,
+          params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
+      });
+      if (!orderHistoryInfor.data.success) {
+        yield put(ModActions.changeStatusFailed(orderHistoryInfor.data.data));
+        message.error(orderHistoryInfor.data.message, 3);
+      } else {
+        action.data.callback();
+        yield put(ModActions.changeStatusSucceed(action));
+      }
+    } catch (error) {
+      yield put(ModActions.changeStatusFailed(error));
+    }
+  },
 };
 
 export default ModSagas;

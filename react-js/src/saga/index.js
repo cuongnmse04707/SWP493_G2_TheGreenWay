@@ -113,6 +113,8 @@ export default function* root() {
     takeLatest(ModTypes.GET_LIST_ORDER_REQUEST, ModSagas.getOrderList),
     takeLatest(ModTypes.LOCK_REQUEST, ModSagas.lockUser),
     takeLatest(ModTypes.UNLOCK_REQUEST, ModSagas.unlockUser),
+    takeLatest(ModTypes.CHANGE_STATUS_REQUEST, ModSagas.changeStatusOrder),
+    //
     takeLatest(
       AdminProductTypes.GET_PRODUCT_REQUEST,
       AdminProductSagas.getAdminProductInfor

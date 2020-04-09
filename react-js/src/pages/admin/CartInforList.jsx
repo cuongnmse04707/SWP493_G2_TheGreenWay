@@ -20,6 +20,7 @@ import "../../css/order-history-detail.css";
 import { connect } from "react-redux";
 import ModTypes from "../../redux/mod-redux";
 import UserOrderHistoryTypes from "../../redux/user-order-history-redux";
+import ModalChangeOrderStatus from "./ModalChangeOrderStatus";
 import { get } from "lodash";
 let moment = require("moment");
 
@@ -34,6 +35,8 @@ class CartInforList extends Component {
       keyFilterRole: "all",
       emailChange: "",
       stateTable: "all",
+      visibleModalChangeStatusOrder: false,
+      orderChange: {},
     };
   }
 
@@ -62,9 +65,7 @@ class CartInforList extends Component {
     let data = [...list];
     if (keyFilterValue) {
       const rg = new RegExp(keyFilterValue, "i");
-      data = data.filter(
-        (element) => rg.test(element.username) || rg.test(element.email)
-      );
+      data = data.filter((element) => rg.test(element.OrderID));
     }
 
     return data;
@@ -82,6 +83,35 @@ class CartInforList extends Component {
       email: value,
       callback: (value) => {},
     });
+  };
+
+  onOpenModal = (value) => {
+    this.setState({
+      visibleModalChangeStatusOrder: true,
+      orderChange: value,
+    });
+  };
+
+  onCloseModal = () => {
+    this.setState({
+      visibleModalChangeStatusOrder: false,
+      orderChange: {},
+    });
+  };
+
+  changOrderStatus = (idOrder, value) => {
+    const { changeStatusOrder } = this.props;
+    if (value) {
+      changeStatusOrder({
+        idOrder: idOrder,
+        status: value,
+        callback: () => {
+          this.onCloseModal();
+        },
+      });
+    } else {
+      this.onCloseModal();
+    }
   };
 
   render() {
@@ -196,7 +226,7 @@ class CartInforList extends Component {
             />
             <Button
               icon="reconciliation"
-              onClick={() => this.onOpenDrawerMemberSetting(record)}
+              onClick={() => this.onOpenModal(record)}
               style={{ marginLeft: "8px" }}
             />
           </div>
@@ -244,11 +274,11 @@ class CartInforList extends Component {
       visibleDrawerMemberSetting,
       idMemberRemove,
       stateTable,
+      visibleModalChangeStatusOrder,
+      orderChange,
     } = this.state;
     const { form, listOrder, cartInfor, orderInfor } = this.props;
     const { getFieldDecorator } = form;
-    console.log("object :", orderInfor);
-    console.log(cartInfor);
     return (
       <div
         style={{ flex: 1, display: "flex", flexDirection: "column" }}
@@ -336,15 +366,20 @@ class CartInforList extends Component {
               columns={columns}
               dataSource={
                 stateTable === "all"
-                  ? (listOrder || []).sort(
-                      (a, b) => new Date(b.CreateDate) - new Date(a.CreateDate)
-                    )
-                  : (listOrder || [])
-                      .filter((el) => el.Description === stateTable)
-                      .sort(
+                  ? this.getDataTable(
+                      (listOrder || []).sort(
                         (a, b) =>
                           new Date(b.CreateDate) - new Date(a.CreateDate)
                       )
+                    )
+                  : this.getDataTable(
+                      (listOrder || [])
+                        .filter((el) => el.Description === stateTable)
+                        .sort(
+                          (a, b) =>
+                            new Date(b.CreateDate) - new Date(a.CreateDate)
+                        )
+                    )
               }
               style={{ background: "white", marginTop: "10px" }}
               // pagination={false}
@@ -454,6 +489,14 @@ class CartInforList extends Component {
             </div>
           </Drawer>
         ) : null}
+        {visibleModalChangeStatusOrder ? (
+          <ModalChangeOrderStatus
+            visibleModalChangeStatusOrder={visibleModalChangeStatusOrder}
+            onCloseModal={this.onCloseModal}
+            orderChange={orderChange}
+            changOrderStatus={this.changOrderStatus}
+          />
+        ) : null}
       </div>
     );
   }
@@ -472,6 +515,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getDataOrder: (params) => {
       dispatch(ModTypes.getListOrderRequest(params));
+    },
+    changeStatusOrder: (params) => {
+      dispatch(ModTypes.changeStatusRequest(params));
     },
     getOrderDetail: (params) => {
       dispatch(UserOrderHistoryTypes.getUserOrderDetailIdRequest(params));

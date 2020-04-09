@@ -410,7 +410,12 @@ class UserInforList extends Component {
               style={{ marginTop: "10px" }}
               expandIconPosition={"right"}
             >
-              <Panel header="Account Active" key="1">
+              <Panel
+                header={`Account Active (${
+                  (listUser || []).filter((el) => el.status === "ok").length
+                })`}
+                key="1"
+              >
                 <div>
                   <Table
                     className="stylesTable"
@@ -431,7 +436,12 @@ class UserInforList extends Component {
                   />
                 </div>
               </Panel>
-              <Panel header="Account Lock" key="2">
+              <Panel
+                header={`Account Lock (${
+                  (listUser || []).filter((el) => el.status !== "ok").length
+                })`}
+                key="2"
+              >
                 <div>
                   <Table
                     className="stylesTable"

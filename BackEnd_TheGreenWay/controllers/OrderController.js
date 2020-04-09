@@ -398,7 +398,7 @@ let showOrderListForMOD = async (req, res) => {
 let changeStatusOrder = async (req, res) => {
   // Get Email Of User
   const email = req.jwtDecoded.data.email;
-  const idOrder = req.query.idOrder;
+  const idOrder = req.body.idOrder;
   const OrderStatusCode = req.body.OrderStatusCode;
   var arraySave = [];
   // Run sql to get orderHistory
@@ -487,14 +487,11 @@ let changeStatusOrder = async (req, res) => {
             }
           }
         });
-      }
-      if (OrderStatusCode === "3" || OrderStatusCode === "4") {
+      } else if (OrderStatusCode === "3" || OrderStatusCode === "4") {
         let sql = ` UPDATE Orders 
                     SET Orders.EndDate=?
                     WHERE Orders.OrderID=?`;
-        const day = new Date();
-        const today =
-          day.getFullYear() + "-" + day.getMonth() + "-" + day.getDate();
+        const today = moment().format(`YYYY-MM-DD`);
         let query = mysql.format(sql, [today, idOrder]);
         connectionDB.query(query, async (err, result) => {
           if (err) {
@@ -506,11 +503,12 @@ let changeStatusOrder = async (req, res) => {
             });
           }
         });
+      } else {
+        return res.status(200).json({
+          success: true,
+          message: "Change Status Order Success!",
+        });
       }
-      return res.status(200).json({
-        success: true,
-        message: "Change Status Order Success!",
-      });
     }
   });
 };

@@ -129,7 +129,10 @@ let changepassword = async (req, res) => {
         // Neu co email
         if (oldpassword === cryptr.decrypt(arr[0].password)) {
           let sqlChange = `UPDATE Accounts SET password=? WHERE email=?`;
-          let queryChange = mysql.format(sqlChange, [newpassword, email]);
+          let queryChange = mysql.format(sqlChange, [
+            cryptr.encrypt(newpassword),
+            email,
+          ]);
           connectionDB.query(queryChange, async (err, result) => {
             if (err) {
               return res.status(200).json({
