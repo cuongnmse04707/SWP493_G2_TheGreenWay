@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import '../../css/admin-post-infor.css';
+import React, { Component } from "react";
+import "../../css/admin-post-infor.css";
 import { connect } from "react-redux";
 import AdminPostTypes from "../../redux/admin-post-redux";
-import CKEditor from 'ckeditor4-react';
+import CKEditor from "ckeditor4-react";
 import { storage } from "../../firebase";
+import { get } from "lodash";
 import {
   Form,
   Input,
@@ -18,7 +19,7 @@ import {
   Col,
   Table,
   Pagination,
-} from 'antd';
+} from "antd";
 
 const { TextArea } = Input;
 var moment = require("moment");
@@ -26,78 +27,78 @@ class PostInforList extends Component {
   state = {
     loading: false,
     current: 1,
-    postId: '',
-    avatarUrl: ''
+    postId: "",
+    avatarUrl: "",
   };
 
   componentDidMount() {
     const params = {
-      page: 1
+      page: 1,
     };
-    this.props.getPostList(params)
+    this.props.getPostList(params);
   }
 
-  onSelectPageChange = page => {
+  onSelectPageChange = (page) => {
     this.setState({
-      current: page
+      current: page,
     });
     const params = {
-      page: page
+      page: page,
     };
-    this.props.getPostList(params)
+    this.props.getPostList(params);
   };
 
-  handleModalCancel = e => {
+  handleModalCancel = (e) => {
     console.log(e);
     this.setState({
       visible: false,
-    })
-  }
+    });
+  };
 
   viewPosttDetail = (id) => {
-    this.props.form.resetFields()
+    this.props.form.resetFields();
     this.setState({
       visible: true,
-      postId: id
+      postId: id,
     });
     const params = {
       idPost: id,
-    }
-    this.props.getPostDetail(params)
-  }
+    };
+    this.props.getPostDetail(params);
+  };
 
   onEditorChange = (evt) => {
     this.setState({
-      data: evt.editor.getData()
+      data: evt.editor.getData(),
     });
-  }
+  };
 
   updatePostInfor = () => {
     this.setState({
       visible: false,
     });
-    this.props.form.validateFieldsAndScroll(
-      ["title"],
-      (err, values) => {
-        if (!err) {
-          const params = {
-            idPost: this.state.postId,
-            Title: values.title,
-            Content: this.state.data ? this.state.data : this.props.postDetail.Content,
-            CreateDate: this.props.postDetail.CreateDate,
-            UpdateDate: new Date(),
-            ImageDetail: this.props.postDetail.ImageDetail,
-          }
-          console.log(params)
-          this.props.updatePost({
-            params
-          })
-        }
-      });
-  }
+    this.props.form.validateFieldsAndScroll(["title"], (err, values) => {
+      if (!err) {
+        const params = {
+          idPost: this.state.postId,
+          Title: values.title,
+          Content: this.state.data
+            ? this.state.data
+            : this.props.postDetail.Content,
+          CreateDate: this.props.postDetail.CreateDate,
+          UpdateDate: new Date(),
+          ImageDetail: this.props.postDetail.ImageDetail,
+        };
+        console.log(params);
+        this.props.updatePost({
+          params,
+        });
+      }
+    });
+  };
 
   render() {
-    const { listPost, totalPage, postDetail } = this.props
+    const { listPost, totalPage, postDetail } = this.props;
 
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -105,19 +106,19 @@ class PostInforList extends Component {
         xs: { span: 24 },
         sm: { span: 24 },
         md: { span: 24 },
-        lg: { span: 14 }
+        lg: { span: 14 },
       },
       wrapperCol: {
         xs: { span: 22 },
         sm: { span: 22 },
         md: { span: 22 },
-        lg: { span: 22 }
-      }
+        lg: { span: 22 },
+      },
     };
 
     const uploadAvatarButton = (
       <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
+        <Icon type={this.state.loading ? "loading" : "plus"} />
         <div className="ant-upload-text">Upload</div>
       </div>
     );
@@ -130,10 +131,10 @@ class PostInforList extends Component {
           <div>
             <span>{record.PostID}</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Tiêu Đề',
+        title: "Tiêu Đề",
         dataIndex: "Title",
         render: (text, record) => (
           <div>
@@ -146,7 +147,7 @@ class PostInforList extends Component {
               {record.Title}
             </span>
           </div>
-        )
+        ),
       },
       {
         title: "Lượt thích",
@@ -155,7 +156,7 @@ class PostInforList extends Component {
           <div>
             <span>{record.NumberOfLikes}</span>
           </div>
-        )
+        ),
       },
       {
         title: "Ngày tạo",
@@ -164,171 +165,216 @@ class PostInforList extends Component {
           <div>
             <span>{moment(record.CreateDate).format("DD/MM/YYYY")}</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Tùy chọn',
-        dataIndex: 'address',
+        title: "Tùy chọn",
+        dataIndex: "address",
         render: (text, record) => (
           <div>
-            <Button type="primary" className="mr-3" onClick={() => { this.viewPosttDetail(record.PostID) }}>Chỉnh sửa</Button>
+            <Button
+              type="primary"
+              className="mr-3"
+              onClick={() => {
+                this.viewPosttDetail(record.PostID);
+              }}
+            >
+              Chỉnh sửa
+            </Button>
           </div>
-        )
+        ),
       },
     ];
+    console.log(postDetail.Content);
     return (
       <div className="admin-post-wrapper">
         <p className="title">Thông tin bài viết</p>
         <div className="admin-product-table">
-          <Table dataSource={listPost} columns={columns} pagination={false} rowkey="id" />
+          <Table
+            dataSource={listPost}
+            columns={columns}
+            pagination={false}
+            rowkey="id"
+          />
         </div>
         <Pagination
           current={this.state.current}
           onChange={this.onSelectPageChange}
           total={totalPage * 10}
-          style={{ display: "flex", justifyContent: "flex-end", margin: "20px" }}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            margin: "20px",
+          }}
         />
-        <Modal
-          visible={this.state.visible}
-          onOk={this.updatePostInfor}
-          onCancel={this.handleModalCancel}
-          width={"80%"}
-        >
-          <div style={{ width: "100%" }}>
-            <Row>
-              <Form {...formItemLayout} >
-                <Col span={13}>
-                  <Form.Item label="Tiêu đề">
-                    {getFieldDecorator('title', {
-                      initialValue: postDetail.Title,
-                      rules: [
-                        {
-                          required: true,
-                          message: 'Vui lòng nhập tiêu đề',
-                        },
-                      ],
-                    })(<TextArea rows={4} />)}
-                  </Form.Item>
-                  <div className="post-image-container">
-                    <div className="post-image-avatar">
-                      <Form.Item label="Ảnh đại diện">
-                        {getFieldDecorator('postAvatar', {
-                          rules: [
-                            {
-                              required: true,
-                              message: 'Vui lòng nhập ảnh đại diện',
-                            },
-                          ],
-                        })(<Upload
-                          name="avatar"
-                          listType="picture-card"
-                          className="avatar-uploader"
-                          showUploadList={false}
-                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                          beforeUpload={(file) => {
-                            //Upload File Base
-                            console.log('File moi up', file)
-                            //Link Image
-                            const uploadTask = storage.ref(`images/${file.name}`).put(file);
-                            // Set vao state
-                            uploadTask.on(
-                              "state_changed",
-                              snapshot => {
+        {postDetail.Content !== undefined ? (
+          <Modal
+            visible={this.state.visible}
+            onOk={this.updatePostInfor}
+            onCancel={this.handleModalCancel}
+            width={"80%"}
+          >
+            <div style={{ width: "100%" }}>
+              <Row>
+                <Form {...formItemLayout}>
+                  <Col span={13}>
+                    <Form.Item label="Tiêu đề">
+                      {getFieldDecorator("title", {
+                        initialValue: postDetail.Title,
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập tiêu đề",
+                          },
+                        ],
+                      })(<TextArea rows={4} />)}
+                    </Form.Item>
+                    <div className="post-image-container">
+                      <div className="post-image-avatar">
+                        <Form.Item label="Ảnh đại diện">
+                          {getFieldDecorator("postAvatar", {
+                            rules: [
+                              {
+                                required: true,
+                                message: "Vui lòng nhập ảnh đại diện",
                               },
-                              error => {
-                                console.log(error);
-                              },
-                              () => {
-                                storage
-                                  .ref("images")
-                                  .child(file.name)
-                                  .getDownloadURL()
-                                  .then(url => {
-                                    console.log(url)
-                                    this.props.changeAvatarImage(url)
-                                  });
-                              }
-                            );
-                          }}
-                        >
-                          {postDetail.ImageDetail ? <img src={postDetail.ImageDetail} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
-                        </Upload>)}
-                      </Form.Item>
+                            ],
+                          })(
+                            <Upload
+                              name="avatar"
+                              listType="picture-card"
+                              className="avatar-uploader"
+                              showUploadList={false}
+                              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                              beforeUpload={(file) => {
+                                //Upload File Base
+                                console.log("File moi up", file);
+                                //Link Image
+                                const uploadTask = storage
+                                  .ref(`images/${file.name}`)
+                                  .put(file);
+                                // Set vao state
+                                uploadTask.on(
+                                  "state_changed",
+                                  (snapshot) => {},
+                                  (error) => {
+                                    console.log(error);
+                                  },
+                                  () => {
+                                    storage
+                                      .ref("images")
+                                      .child(file.name)
+                                      .getDownloadURL()
+                                      .then((url) => {
+                                        console.log(url);
+                                        this.props.changeAvatarImage(url);
+                                      });
+                                  }
+                                );
+                              }}
+                            >
+                              {postDetail.ImageDetail ? (
+                                <img
+                                  src={postDetail.ImageDetail}
+                                  alt="avatar"
+                                  style={{ width: "100%" }}
+                                />
+                              ) : (
+                                uploadAvatarButton
+                              )}
+                            </Upload>
+                          )}
+                        </Form.Item>
+                      </div>
+                      <div className="post-image-detail">
+                        <Form.Item label="Ảnh bài viết">
+                          {getFieldDecorator(
+                            "postImageDetail",
+                            {}
+                          )(
+                            <Upload
+                              name="avatar"
+                              listType="picture-card"
+                              className="avatar-uploader"
+                              showUploadList={false}
+                              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                              beforeUpload={(file) => {
+                                //Upload File Base
+                                console.log("File moi up", file);
+                                //Link Image
+                                const uploadTask = storage
+                                  .ref(`images/${file.name}`)
+                                  .put(file);
+                                // Set vao state
+                                uploadTask.on(
+                                  "state_changed",
+                                  (snapshot) => {},
+                                  (error) => {
+                                    console.log(error);
+                                  },
+                                  () => {
+                                    storage
+                                      .ref("images")
+                                      .child(file.name)
+                                      .getDownloadURL()
+                                      .then((url) => {
+                                        console.log(url);
+                                        this.setState({
+                                          postImageDetail: url,
+                                        });
+                                      });
+                                  }
+                                );
+                              }}
+                            >
+                              {this.state.postImageDetail ? (
+                                <img
+                                  src={this.state.postImageDetail}
+                                  alt="avatar"
+                                  style={{ width: "100%" }}
+                                />
+                              ) : (
+                                uploadAvatarButton
+                              )}
+                            </Upload>
+                          )}
+                        </Form.Item>
+                        <span>Link ảnh: </span>
+                        <Input
+                          placeholder="Basic usage"
+                          value={this.state.postImageDetail}
+                        />
+                      </div>
                     </div>
-                    <div className="post-image-detail">
-                      <Form.Item label="Ảnh bài viết">
-                        {getFieldDecorator('postImageDetail', {
-                        })(<Upload
-                          name="avatar"
-                          listType="picture-card"
-                          className="avatar-uploader"
-                          showUploadList={false}
-                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                          beforeUpload={(file) => {
-                            //Upload File Base
-                            console.log('File moi up', file)
-                            //Link Image
-                            const uploadTask = storage.ref(`images/${file.name}`).put(file);
-                            // Set vao state
-                            uploadTask.on(
-                              "state_changed",
-                              snapshot => {
-                              },
-                              error => {
-                                console.log(error);
-                              },
-                              () => {
-                                storage
-                                  .ref("images")
-                                  .child(file.name)
-                                  .getDownloadURL()
-                                  .then(url => {
-                                    console.log(url)
-                                    this.setState({
-                                      postImageDetail: url,
-                                    })
-                                  });
-                              }
-                            );
-                          }}
-                        >
-                          {this.state.postImageDetail ? <img src={this.state.postImageDetail} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
-                        </Upload>)}
-                      </Form.Item>
-                      <span>Link ảnh: </span>
-                      <Input placeholder="Basic usage" value={this.state.postImageDetail} />
-                    </div>
-                  </div>
-                </Col>
+                  </Col>
 
-                <Col span={11}>
-                  <Form.Item label="Nội dung bài viết">
-                    {getFieldDecorator('description', {
-                      rules: [
-                        {
-                          required: true,
-                          message: 'Vui lòng nhập mô tả bài viết',
-                        },
-                      ],
-                    })(
-                      <CKEditor
-                        data={postDetail.Content}
-                        onChange={this.onEditorChange}
-                      />
-                    )}
-                  </Form.Item>
-
-                </Col>
-              </Form>
-            </Row>
-          </div>
-
-        </Modal>
+                  <Col span={11}>
+                    <Form.Item label="Nội dung bài viết">
+                      {getFieldDecorator("description", {
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập mô tả bài viết",
+                          },
+                        ],
+                      })(
+                        <CKEditor
+                          data={get(postDetail, "Content")}
+                          onChange={this.onEditorChange}
+                        />
+                      )}
+                    </Form.Item>
+                  </Col>
+                </Form>
+              </Row>
+            </div>
+          </Modal>
+        ) : null}
       </div>
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     listPost: state.adminPost.listPost,
     totalPage: state.adminPost.totalPage,
@@ -336,7 +382,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getPostList: (params) => {
       dispatch(AdminPostTypes.getListPostRequest(params));
@@ -353,4 +399,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 const PostInforListScreen = Form.create()(PostInforList);
-export default connect(mapStateToProps, mapDispatchToProps)(PostInforListScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PostInforListScreen);

@@ -125,6 +125,7 @@ let showOrderListByEmail = async (req, res) => {
                     ON OrderStatus.OrderStatusID = OrderStatusDetail.OrderStatusID) OrderStatusDes
               ON Orders.OrderID = OrderStatusDes.OrderID
               AND Orders.UserEmail= ?
+              ORDER BY Orders.OrderID DESC
               LIMIT ?
               OFFSET ?`;
   let query = mysql.format(sql, [email, pageSize, offset]);

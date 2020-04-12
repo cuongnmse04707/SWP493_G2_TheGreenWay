@@ -38,7 +38,7 @@ class UserOrderHistory extends Component {
       {
         title: "OrderId",
         dataIndex: "index",
-        defaultSortOrder: "descend",
+        // defaultSortOrder: "descend",
         sorter: (a, b) => a.OrderID - b.OrderID,
         render: (text, record) => (
           <div>
