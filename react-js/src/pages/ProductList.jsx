@@ -17,6 +17,7 @@ class ProductList extends Component {
   };
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     let numberOfTotal = 0;
     cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));

@@ -28,6 +28,7 @@ class RecycleProductDetailList extends Component {
   }
 
   onSelectPageChange = page => {
+    window.scrollTo(500, 500);
     const { checkSearch, valueSearch, valueSearchHigh } = this.state;
     if (checkSearch) {
       if (valueSearchHigh) {

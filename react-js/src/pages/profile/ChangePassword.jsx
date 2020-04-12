@@ -114,7 +114,7 @@ class ChangePassword extends Component {
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue("newPassword")) {
-      callback("Two passwords that you enter is inconsistent!");
+      callback("Mật khẩu không khớp!");
     } else {
       callback();
     }
@@ -126,7 +126,6 @@ class ChangePassword extends Component {
       ["oldPassword", "newPassword", "confirmPassword"],
       (err, fieldsValues) => {
         if (!err) {
-          console.log("Password Information", fieldsValues);
           this.props.changePass({
             oldpassword: fieldsValues.oldPassword,
             newpassword: fieldsValues.newPassword

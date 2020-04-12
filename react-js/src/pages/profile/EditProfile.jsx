@@ -23,8 +23,10 @@ import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 
 const dateFormat = "YYYY/MM/DD";
-const phoneRegex = /(09|01[2|6|8|9])+([0-9]{8})\b/;
+const phoneRegex = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
+const userNameRegex = /^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
+const addressRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
 
 class EditProfile extends Component {
   state = {
@@ -57,51 +59,6 @@ class EditProfile extends Component {
   showPasswordModal = () => {
     this.setState({
       visiblePassModal: true
-    });
-  };
-
-  handleChangePassSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll(
-      ["oldPassword", "newPassword", "confirmPassword"],
-      (err, fieldsValues) => {
-        if (!err) {
-          this.props.changePass({
-            oldpassword: fieldsValues.oldPassword,
-            newpassword: fieldsValues.newPassword
-          });
-        }
-      }
-    );
-  };
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue("newPassword")) {
-      callback("Two passwords that you enter is inconsistent!");
-    } else {
-      callback();
-    }
-  };
-
-  handleChangePassSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll(
-      ["oldPassword", "newPassword", "confirmPassword"],
-      (err, fieldsValues) => {
-        if (!err) {
-          this.props.changePass({
-            oldpassword: fieldsValues.oldPassword,
-            newpassword: fieldsValues.newPassword
-          });
-        }
-      }
-    );
-  };
-
-  handleChangePassCancel = e => {
-    this.setState({
-      visiblePassModal: false
     });
   };
 
@@ -173,13 +130,12 @@ class EditProfile extends Component {
           }
           this.props.editUserProfile({
             email: values.email,
-            username: values.username,
+            username: values.username.replace(/\s+/g, ' ').trim(),
             phone: values.phone,
             DOB: values.DOB,
             city: values.city,
             address: values.address,
             country: values.country
-            // urlAvatar: this.state.url
           });
         }
       }
@@ -194,7 +150,7 @@ class EditProfile extends Component {
     if (e.target.files[0]) {
       const image = e.target.files[0];
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         document
           .querySelector("#profileDisplay")
           .setAttribute("src", e.target.result);
@@ -203,7 +159,7 @@ class EditProfile extends Component {
       const uploadTask = storage.ref(`images/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
-        snapshot => {},
+        snapshot => { },
         error => {
           console.log(error);
         },
@@ -257,6 +213,19 @@ class EditProfile extends Component {
                         {
                           required: true,
                           message: "Vui lòng nhập tên người dùng"
+                        },
+                        {
+                          min: 6,
+                          message: "Tên người dùng phải dài ít nhất 6 kí tự"
+                        },
+                        {
+                          max: 32,
+                          message: "Tên người dùng không dài quá 32 kí tự"
+                        },
+                        {
+                          pattern: userNameRegex,
+                          message:
+                            "Tên người dùng không được chưa kí tự đặc biệt"
                         }
                       ]
                     })(<Input />)}
@@ -274,24 +243,36 @@ class EditProfile extends Component {
                   </Form.Item>
                   <Form.Item label="Địa chỉ">
                     {getFieldDecorator("address", {
-                      initialValue: userInformation.address
+                      initialValue: userInformation.address,
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Thành Phố">
                     {getFieldDecorator("city", {
-                      initialValue: userInformation.city
+                      initialValue: userInformation.city,
+                      rules: [
+                        {
+                          pattern: addressRegex,
+                          message: "Tên thành phố không chứa số hoặc kí tự đặc biệt"
+                        }
+                      ]
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Quốc gia">
                     {getFieldDecorator("country", {
-                      initialValue: userInformation.country
+                      initialValue: userInformation.country,
+                      rules: [
+                        {
+                          pattern: addressRegex,
+                          message: "Tên quốc gia không chứa số hoặc kí tự đặc biệt"
+                        }
+                      ]
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Ngày sinh">
                     {getFieldDecorator("DOB", {
                       initialValue:
                         userInformation.DOB &&
-                        userInformation.DOB !== "Invalid date"
+                          userInformation.DOB !== "Invalid date"
                           ? moment(userInformation.DOB)
                           : null
                     })(
@@ -302,6 +283,7 @@ class EditProfile extends Component {
                           d.isAfter(new Date()) ||
                           d.isSameOrBefore("1900-01-01")
                         }
+                        placeholder="Chọn ngày"
                         format={"DD/MM/YYYY"}
                       />
                     )}

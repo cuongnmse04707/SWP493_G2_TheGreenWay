@@ -4,6 +4,7 @@ import "antd/dist/antd.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import HomePageTypes from "../redux/home-page-redux";
+import LifeWayTypes from "../redux/life-way-redux";
 class NavBar extends Component {
   state = {
     userName: "",
@@ -20,18 +21,6 @@ class NavBar extends Component {
     let numberOfTotal = 0;
     cart.map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
     this.props.setDataCart(numberOfTotal);
-  }
-
-  componentDidUpdate(nextProps) {
-    if (
-      this.props.userInformation &&
-      nextProps.userInformation !== this.props.userInformation
-    ) {
-      this.setState({
-        userName: this.props.userInformation.username,
-        urlAvatar: this.props.userInformation.urlAvatar,
-      });
-    }
   }
 
   toLogin = () => {
@@ -75,8 +64,15 @@ class NavBar extends Component {
     this.props.history.push("/product");
   };
 
-  toLifeWay = () => {
-    this.props.history.push("/life-way");
+  toLifeWay = async () => {
+    window.scrollTo(0, 0);
+    const params = {
+      page: 1
+    };
+    await this.props.getPostInfor(params);
+    await this.props.getPostLikeMuch();
+    await this.props.setCheckSearchFalse();
+    await this.props.history.push("/life-way");
   };
 
   toCart = () => {
@@ -87,7 +83,7 @@ class NavBar extends Component {
     const token = window.localStorage.getItem("x-access-token");
     const roles = window.localStorage.getItem("roles");
     const checkUrl = window.location.pathname.split("/")[1];
-    console.log(checkUrl);
+    const { userInformation } = this.props
     //menu dropdown
     const menu = (
       <Menu>
@@ -160,8 +156,8 @@ class NavBar extends Component {
                           height: "40px",
                           borderRadius: "50%",
                         }}
-                        src={this.props.userInformation.urlAvatar}
-                        // alt=""
+                        src={userInformation.urlAvatar}
+                      // alt=""
                       />
                       <Dropdown
                         style={{ width: "500px" }}
@@ -177,21 +173,21 @@ class NavBar extends Component {
                           className="ant-dropdown-link"
                           href="#"
                         >
-                          {this.state.userName} <Icon type="down" />
+                          {userInformation.username} <Icon type="down" />
                         </a>
                       </Dropdown>
                     </li>
                   </div>
                 ) : (
-                  <li className="nav-item">
-                    <a
-                      className="nav-link js-scroll-trigger"
-                      onClick={this.toLogin}
-                    >
-                      Đăng nhập/Đăng ký
+                    <li className="nav-item">
+                      <a
+                        className="nav-link js-scroll-trigger"
+                        onClick={this.toLogin}
+                      >
+                        Đăng nhập/Đăng ký
                     </a>
-                  </li>
-                )}
+                    </li>
+                  )}
                 <li className="shopping-cart-item">
                   {/* <div className="number-product">
                     <p>0</p>
@@ -224,8 +220,8 @@ class NavBar extends Component {
                     </Button>
                   </div>
                 ) : (
-                  <div></div>
-                )}
+                    <div></div>
+                  )}
               </ul>
             </div>
             <Modal
@@ -257,6 +253,15 @@ const mapDispatchToProps = (dispatch) => {
     setDataCart: (param) => {
       dispatch(HomePageTypes.updateStateCart(param));
     },
+    getPostInfor: params => {
+      dispatch(LifeWayTypes.getLifeWayRequest(params));
+    },
+    getPostLikeMuch: () => {
+      dispatch(LifeWayTypes.getPostLikeMuch());
+    },
+    setCheckSearchFalse: () => {
+      dispatch(LifeWayTypes.setCheckSearchFalse());
+    }
   };
 };
 

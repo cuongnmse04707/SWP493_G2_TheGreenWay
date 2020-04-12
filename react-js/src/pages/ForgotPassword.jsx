@@ -8,6 +8,7 @@ import { withRouter } from "react-router";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
 class ForgotPassword extends Component {
   state = {
     className: "login-container",
@@ -72,19 +73,24 @@ class ForgotPassword extends Component {
                 </div>
                 <div className="forgot-form-container">
                   <Form className="login-form">
-                    <Form.Item {...formItemLayout} label="Password" hasFeedback>
+                    <Form.Item {...formItemLayout} label="Mật khẩu" hasFeedback>
                       {getFieldDecorator("password", {
                         rules: [
                           {
                             required: true,
                             message: "Vui lòng nhập mật khẩu!"
+                          },
+                          {
+                            pattern: passwordRegex,
+                            message:
+                              "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa"
                           }
                         ]
                       })(<Input.Password />)}
                     </Form.Item>
                     <Form.Item
                       {...formItemLayout}
-                      label="Confirm Password"
+                      label="Xác nhận mật khẩu"
                       hasFeedback
                     >
                       {getFieldDecorator("confirm", {

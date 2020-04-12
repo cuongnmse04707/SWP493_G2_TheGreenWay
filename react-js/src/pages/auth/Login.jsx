@@ -10,7 +10,7 @@ import { withRouter } from "react-router";
 
 const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
-
+const userNameRegex = /^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
 message.config({
   top: 100
 });
@@ -95,7 +95,7 @@ class Login extends Component {
       (err, values) => {
         if (!err) {
           this.props.userRegister({
-            username: values.username,
+            username: values.username.replace(/\s+/g, ' ').trim(),
             email: values.reEmail,
             password: values.rePassword
           });
@@ -155,18 +155,23 @@ class Login extends Component {
                           {
                             max: 32,
                             message: "Tên người dùng không dài quá 32 kí tự"
+                          },
+                          {
+                            pattern: userNameRegex,
+                            message:
+                              "Tên người dùng không được chưa kí tự đặc biệt"
                           }
                         ]
                       })(
                         <Input
-                          prefix={
-                            <Icon
-                              type="user"
-                              style={{ color: "rgba(0,0,0,.25)" }}
-                            />
-                          }
-                          placeholder="Username"
-                        />
+                        prefix={
+                          <Icon
+                            type="user"
+                            style={{ color: "rgba(0,0,0,.25)" }}
+                          />
+                        }
+                        placeholder="Tên người dùng"
+                      />
                       )}
                     </Form.Item>
                     <Form.Item>
@@ -180,7 +185,7 @@ class Login extends Component {
                           {
                             pattern: emailRegex,
                             message:
-                              "Vui lòng nhập đúng định dạng email của bạn"
+                              "Vui lòng nhập đúng định dạng email"
                           }
                         ]
                       })(
@@ -218,7 +223,7 @@ class Login extends Component {
                             />
                           }
                           type="password"
-                          placeholder="Password"
+                          placeholder="Mật khẩu"
                         />
                       )}
                     </Form.Item>
@@ -282,7 +287,7 @@ class Login extends Component {
                             />
                           }
                           type="password"
-                          placeholder="Password"
+                          placeholder="Mật khẩu"
                         />
                       )}
                     </Form.Item>
@@ -292,7 +297,7 @@ class Login extends Component {
                         href=""
                         onClick={this.showModal}
                       >
-                        Bạn đã quên email hoặc mật khẩu?
+                        Bạn đã quên mật khẩu?
                       </p>
                     </Form.Item>
                     <button
@@ -338,7 +343,7 @@ class Login extends Component {
               </div>
             </div>
             <Modal
-              title="Enter your email to get new password"
+              title="Nhập email của bạn để đặt lại mật khẩu"
               visible={this.state.visible}
               onOk={this.handleOk}
               onCancel={this.handleCancel}
@@ -356,7 +361,7 @@ class Login extends Component {
                         />
                       }
                       type="text"
-                      placeholder="example abc@gmail.com"
+                      placeholder="Ví dụ abc@gmail.com"
                     />
                   )}
                 </Form.Item>

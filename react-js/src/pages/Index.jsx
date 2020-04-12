@@ -14,7 +14,9 @@ class Index extends Component {
     direction: null
   };
 
-  componentDidMount() { }
+  componentDidMount() {
+    window.scrollTo(0, 0);
+   }
 
   handleSelect = (selectedIndex, e) => {
     this.setState({

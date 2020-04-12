@@ -16,7 +16,9 @@ const { Types, Creators } = createActions({
   getLifeWaySearchSucceed: ["data"],
   getPostLikeMuch: ["data"],
   getPostLikeMuchSucceed: ["data"],
-  getPostLikeMuchFailed: ["error"]
+  getPostLikeMuchFailed: ["error"],
+  setCheckSearchTrue: ['data'],
+  setCheckSearchFalse: ['data']
 });
 
 export const LifeWayTypes = Types;
@@ -28,7 +30,8 @@ export const INITIAL_STATE = {
   postDetailInfor: [],
   totalPostPage: 0,
   resultSearch: null,
-  postLikeMuch: {}
+  postLikeMuch: {},
+  checkSearch: false
 };
 
 export const request = state => {
@@ -115,6 +118,20 @@ export const getPostLikeMuchP = (state, { data }) => {
   };
 };
 
+export const checkSearchTrue = (state, { data }) => {
+  return {
+    ...state,
+    checkSearch: true
+  };
+};
+
+export const checkSearchFalse = (state, { data }) => {
+  return {
+    ...state,
+    checkSearch: false
+  };
+};
+
 //TODO:Hookup Reducers To Types in Action
 export const reducer = createReducer(INITIAL_STATE, {
   [LifeWayTypes.GET_LIFE_WAY_REQUEST]: request,
@@ -131,5 +148,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [LifeWayTypes.GET_LIFE_WAY_SEARCH_REQUEST_FAILED]: searchFail,
   [LifeWayTypes.GET_POST_LIKE_MUCH]: request,
   [LifeWayTypes.GET_POST_LIKE_MUCH_SUCCEED]: getPostLikeMuchP,
-  [LifeWayTypes.GET_POST_LIKE_MUCH_FAILED]: failed
+  [LifeWayTypes.GET_POST_LIKE_MUCH_FAILED]: failed,
+  [LifeWayTypes.SET_CHECK_SEARCH_TRUE]: checkSearchTrue,
+  [LifeWayTypes.SET_CHECK_SEARCH_FALSE]: checkSearchFalse
 });

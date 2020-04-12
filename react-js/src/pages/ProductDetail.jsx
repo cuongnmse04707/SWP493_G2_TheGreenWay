@@ -24,7 +24,7 @@ class ProductDetail extends Component {
 
   componentDidMount() {
     console.log(1)
-    window.scrollTo(0, 0);
+
     const productId = window.location.pathname.split("/")[2];
     this.props.getProductDetail(productId);
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
@@ -106,6 +106,7 @@ class ProductDetail extends Component {
   };
 
   render() {
+    window.scrollTo(0, 0);
     const { convensionRate, productInfor, productImages } = this.props;
     let arrayImages = [];
     console.log('productImages', productImages);

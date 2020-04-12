@@ -3,8 +3,8 @@
   margin: 3% 5%;
 }
 
-.ant-form-item-label{
-  text-align: left !important;
+.admin-product-wrapper .ant-form-item-label{
+  text-align: left ;
 }
 
 .admin-product-wrapper .title {

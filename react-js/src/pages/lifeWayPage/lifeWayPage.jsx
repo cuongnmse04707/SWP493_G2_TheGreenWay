@@ -19,11 +19,13 @@ class Lifeway extends Component {
   };
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     const params = {
       page: 1
     };
     this.props.getPostInfor(params);
     this.props.getPostLikeMuch();
+    this.props.setCheckSearchFalse()
   }
 
   onChange(date, dateString) {
@@ -35,14 +37,17 @@ class Lifeway extends Component {
   };
 
   onSelectPageChange = page => {
-    const { checkSearch, searchText } = this.state;
+    window.scrollTo(600, 600);
+    const { searchText } = this.state;
+    const { checkSearch } = this.props;
     if (checkSearch) {
       this.setState({
         current: page
       });
-      this.setState({
-        checkSearch: true
-      });
+      // this.setState({
+      //   checkSearch: true
+      // });
+      this.props.setCheckSearchTrue()
       this.props.searchDefaultPost({
         value: searchText,
         page: page
@@ -70,17 +75,19 @@ class Lifeway extends Component {
       current: 1
     });
     if (searchText) {
-      this.setState({
-        checkSearch: true
-      });
+      // this.setState({
+      //   checkSearch: true
+      // });
+      this.props.setCheckSearchTrue()
       this.props.searchDefaultPost({
         value: searchText,
         page: 1
       });
     } else {
-      this.setState({
-        checkSearch: false
-      });
+      // this.setState({
+      //   checkSearch: false
+      // });
+      this.props.setCheckSearchFalse()
       const params = {
         page: 1
       };
@@ -98,7 +105,7 @@ class Lifeway extends Component {
 
   render() {
     const { postInfor, totalPage, postLikeMuch, resultSearch } = this.props;
-
+    console.log(postInfor)
     return (
       <div>
         <NavBar />
@@ -256,7 +263,8 @@ const mapStateToProps = state => {
     totalPage: state.lifeWay.totalPostPage,
     postDetailInfor: state.lifeWay.postDetailInfor,
     resultSearch: state.lifeWay.resultSearch,
-    postLikeMuch: state.lifeWay.postLikeMuch
+    postLikeMuch: state.lifeWay.postLikeMuch,
+    checkSearch: state.lifeWay.checkSearch,
   };
 };
 
@@ -276,6 +284,12 @@ const mapDispatchToProps = dispatch => {
     },
     searchDefaultPost: params => {
       dispatch(LifeWayTypes.getLifeWaySearchRequest(params));
+    },
+    setCheckSearchTrue: () => {
+      dispatch(LifeWayTypes.setCheckSearchTrue());
+    },
+    setCheckSearchFalse: () => {
+      dispatch(LifeWayTypes.setCheckSearchFalse());
     }
   };
 };
