@@ -111,35 +111,42 @@ class ProductInforList extends Component {
   }
 
   updateProductInfor = () => {
-    this.setState({
-      visible: false,
-    });
     const {valueDes} = this.state
-    this.props.form.validateFieldsAndScroll(
-      ["productName", "productPrice", "productQuantity", "category"],
-      (err, values) => {
-        if (!err) {
-          this.props.updateProduct({
-            params : {
-              idProduct: this.state.productId,
-              CategoryID: values.category,
-              ProductName: values.productName,
-              ProductPrice: values.productPrice,
-              Description: valueDes,
-              Quantity: values.productQuantity,
-              ImageDetail: this.props.productDetail.ImageDetail,
-              CreateDate: this.props.productDetail.CreateDate
-            },
-            callback: () => {
-              // console.log(this.props)
-              this.props.form.resetFields()
-              // this.props.history.push("/admin?page=product-infor");
-            }
-          })
-
-        }
+    if(this.props.productDetail.ImageDetail == '') {
+      message.error('Vui lòng chọn ảnh đại diện sản phẩm',2)
+    } else if(this.props.imageDetail.length != 4){
+      message.error('Vui lòng chọn ảnh chi tiết sản phẩm',2)
+    } else if(valueDes == ''){
+      message.error('Vui lòng nhập mô tả sản phẩm',2)
+    } else {
+      this.setState({
+        visible: false,
       });
+      this.props.form.validateFieldsAndScroll(
+        ["productName", "productPrice", "productQuantity", "category"],
+        (err, values) => {
+          if (!err) {
+            this.props.updateProduct({
+              params : {
+                idProduct: this.state.productId,
+                CategoryID: values.category,
+                ProductName: values.productName,
+                ProductPrice: values.productPrice,
+                Description: valueDes,
+                Quantity: values.productQuantity,
+                ImageDetail: this.props.productDetail.ImageDetail,
+                CreateDate: this.props.productDetail.CreateDate
+              },
+              callback: () => {
+                // console.log(this.props)
+                this.props.form.resetFields()
+                // this.props.history.push("/admin?page=product-infor");
+              }
+            })
 
+          }
+        });
+    }
   }
 
   render() {

@@ -126,7 +126,7 @@ class RecycleProductList extends Component {
                     fontWeight: "normal"
                   }}
                 >
-                  <span onClick={this.handleClick}>{item.ProductName}</span>
+                  <span onClick={event => this.handleClick(event, item)}>{item.ProductName}</span>
                 </div>
                 <div className="item-infor">
                   <div className="item-price">
