@@ -26,7 +26,6 @@ class OrderSuccess extends Component {
   }
   render() {
     const guestToken = window.localStorage.getItem('token')
-    console.log(guestToken)
     return (
       <div>
         <NavBar />

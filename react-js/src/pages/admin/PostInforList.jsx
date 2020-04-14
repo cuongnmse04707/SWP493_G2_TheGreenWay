@@ -9,12 +9,10 @@ import {
   Form,
   Input,
   Button,
-  InputNumber,
   Upload,
   Icon,
   message,
   Modal,
-  Select,
   Row,
   Col,
   Table,
@@ -49,7 +47,6 @@ class PostInforList extends Component {
   };
 
   handleModalCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
@@ -94,7 +91,6 @@ class PostInforList extends Component {
             UpdateDate: new Date(),
             ImageDetail: this.props.postDetail.ImageDetail,
           };
-          console.log(params);
           this.props.updatePost({
             params,
           });
@@ -191,7 +187,6 @@ class PostInforList extends Component {
         ),
       },
     ];
-    console.log(postDetail.Content);
     return (
       <div className="admin-post-wrapper">
         <p className="title">Thông tin bài viết</p>
@@ -253,8 +248,6 @@ class PostInforList extends Component {
                               showUploadList={false}
                               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                               beforeUpload={(file) => {
-                                //Upload File Base
-                                console.log("File moi up", file);
                                 //Link Image
                                 const uploadTask = storage
                                   .ref(`images/${file.name}`)
@@ -264,7 +257,6 @@ class PostInforList extends Component {
                                   "state_changed",
                                   (snapshot) => { },
                                   (error) => {
-                                    console.log(error);
                                   },
                                   () => {
                                     storage
@@ -272,7 +264,6 @@ class PostInforList extends Component {
                                       .child(file.name)
                                       .getDownloadURL()
                                       .then((url) => {
-                                        console.log(url);
                                         this.props.changeAvatarImage(url);
                                       });
                                   }
@@ -305,8 +296,6 @@ class PostInforList extends Component {
                               showUploadList={false}
                               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                               beforeUpload={(file) => {
-                                //Upload File Base
-                                console.log("File moi up", file);
                                 //Link Image
                                 const uploadTask = storage
                                   .ref(`images/${file.name}`)
@@ -316,7 +305,6 @@ class PostInforList extends Component {
                                   "state_changed",
                                   (snapshot) => { },
                                   (error) => {
-                                    console.log(error);
                                   },
                                   () => {
                                     storage
@@ -324,7 +312,6 @@ class PostInforList extends Component {
                                       .child(file.name)
                                       .getDownloadURL()
                                       .then((url) => {
-                                        console.log(url);
                                         this.setState({
                                           postImageDetail: url,
                                         });

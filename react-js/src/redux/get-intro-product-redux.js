@@ -97,7 +97,6 @@ export const getLikeProduct = (state, { data }) => {
 };
 
 export const searchDefault = (state, data) => {
-  // console.log(data);
   return {
     ...state,
     introProduct: data.data.data,

@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "../../css/life-way.css";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
-import { Input, DatePicker, Pagination } from "antd";
+import { Input, Pagination } from "antd";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import LifeWayTypes from "../../redux/life-way-redux";
@@ -29,7 +27,6 @@ class Lifeway extends Component {
   }
 
   onChange(date, dateString) {
-    console.log(date, dateString);
   }
 
   toPostDetail = id => {
@@ -44,9 +41,6 @@ class Lifeway extends Component {
       this.setState({
         current: page
       });
-      // this.setState({
-      //   checkSearch: true
-      // });
       this.props.setCheckSearchTrue()
       this.props.searchDefaultPost({
         value: searchText,
@@ -75,18 +69,12 @@ class Lifeway extends Component {
       current: 1
     });
     if (searchText) {
-      // this.setState({
-      //   checkSearch: true
-      // });
       this.props.setCheckSearchTrue()
       this.props.searchDefaultPost({
         value: searchText,
         page: 1
       });
     } else {
-      // this.setState({
-      //   checkSearch: false
-      // });
       this.props.setCheckSearchFalse()
       const params = {
         page: 1
@@ -105,7 +93,6 @@ class Lifeway extends Component {
 
   render() {
     const { postInfor, totalPage, postLikeMuch, resultSearch } = this.props;
-    console.log(postInfor)
     return (
       <div>
         <NavBar />

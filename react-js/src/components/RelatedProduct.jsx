@@ -41,8 +41,6 @@ class RelatedProduct extends Component {
 
   addToShoppingCart = (event, item) => {
     event.stopPropagation();
-    // console.log("item :", item);
-    // const quatityBuy = 5;
     const product = {
       ...item,
       quatityBuy: 1

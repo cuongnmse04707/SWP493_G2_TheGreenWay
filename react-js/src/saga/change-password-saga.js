@@ -30,7 +30,6 @@ const ChangePassSagas = {
       } else {
         yield put(ChangeActions.changeSucceed(passInfor.data));
         message.success(passInfor.data.message, 2);
-        console.log(passInfor.data.message);
       }
     } catch (error) {
       yield put(ChangeActions.changeFailed(error));

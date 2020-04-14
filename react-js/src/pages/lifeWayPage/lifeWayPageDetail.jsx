@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "../../css/life-way-detail.css";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
-import { Input, DatePicker, Pagination } from "antd";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import LifeWayTypes from "../../redux/life-way-redux";
@@ -10,7 +9,6 @@ import RelatedPost from "../../components/RelatedPost";
 
 var moment = require("moment");
 
-const { Search } = Input;
 class lifeWayPageDetail extends Component {
   componentDidMount() {
     this.props.getPostDetailInfor(window.location.pathname.split("/")[2]);

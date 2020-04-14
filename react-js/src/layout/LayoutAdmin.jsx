@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Menu, Icon, Button } from "antd";
-// import "antd/dist/antd.css";
+import { Menu, Icon } from "antd";
 import "../css/layout-admin.css";
 import { withRouter } from "react-router";
 import NavBar from "../components/NavBar";
@@ -10,9 +9,9 @@ import CreateProduct from "../pages/admin/CreateProduct";
 import PostInforList from "../pages/admin/PostInforList";
 import CreatePost from "../pages/admin/CreatePost";
 import CartInforList from "../pages/admin/CartInforList";
+import ConversionPaper from "../pages/admin/ConversionPaper";
 import queryString from "query-string";
 import { Redirect } from "react-router-dom";
-const { Header, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 class LayoutAdmin extends Component {
   state = {
@@ -24,11 +23,11 @@ class LayoutAdmin extends Component {
     showCartInfor: false,
     showCreateProduct: false,
     showCreatePost: false,
+    showConversionPaper: false
   };
 
   componentDidMount() {
     const page = queryString.parse(this.props.history.location.search).page;
-    // console.log(page)
     if (page === "user-infor") {
       this.setState({
         selectedKey: "userInfor",
@@ -38,6 +37,7 @@ class LayoutAdmin extends Component {
         showCartInfor: false,
         showCreateProduct: false,
         showCreatePost: false,
+        showConversionPaper: false
       });
     } else if (page === "product-infor") {
       this.setState({
@@ -48,6 +48,7 @@ class LayoutAdmin extends Component {
         showCartInfor: false,
         showCreateProduct: false,
         showCreatePost: false,
+        showConversionPaper: false
       });
     } else if (page === "post-infor") {
       this.setState({
@@ -58,6 +59,7 @@ class LayoutAdmin extends Component {
         showCartInfor: false,
         showCreateProduct: false,
         showCreatePost: false,
+        showConversionPaper: false
       });
     } else if (page === "cart-infor") {
       this.setState({
@@ -68,6 +70,7 @@ class LayoutAdmin extends Component {
         showCartInfor: true,
         showCreateProduct: false,
         showCreatePost: false,
+        showConversionPaper: false
       });
     } else if (page === "create-product") {
       this.setState({
@@ -78,6 +81,7 @@ class LayoutAdmin extends Component {
         showCartInfor: false,
         showCreateProduct: true,
         showCreatePost: false,
+        showConversionPaper: false
       });
     } else if (page === "create-post") {
       this.setState({
@@ -88,6 +92,18 @@ class LayoutAdmin extends Component {
         showCartInfor: false,
         showCreateProduct: false,
         showCreatePost: true,
+        showConversionPaper: false
+      });
+    } else if (page === "conversion-paper") {
+      this.setState({
+        selectedKey: "conversionPaper",
+        showUserInfor: false,
+        showProductInfor: false,
+        showPostInfor: false,
+        showCartInfor: false,
+        showCreateProduct: false,
+        showCreatePost: false,
+        showConversionPaper: true
       });
     }
   }
@@ -107,6 +123,7 @@ class LayoutAdmin extends Component {
       showCartInfor: false,
       showCreateProduct: false,
       showCreatePost: false,
+      showConversionPaper: false
     });
     this.props.history.push("/admin?page=user-infor");
   };
@@ -120,6 +137,7 @@ class LayoutAdmin extends Component {
       showCartInfor: false,
       showCreateProduct: false,
       showCreatePost: false,
+      showConversionPaper: false
     });
     this.props.history.push("/admin?page=product-infor");
   };
@@ -133,6 +151,7 @@ class LayoutAdmin extends Component {
       showCartInfor: false,
       showCreateProduct: true,
       showCreatePost: false,
+      showConversionPaper: false
     });
     this.props.history.push("/admin?page=create-product");
   };
@@ -146,6 +165,7 @@ class LayoutAdmin extends Component {
       showCartInfor: false,
       showCreateProduct: false,
       showCreatePost: false,
+      showConversionPaper: false
     });
     this.props.history.push("/admin?page=post-infor");
   };
@@ -159,6 +179,7 @@ class LayoutAdmin extends Component {
       showCartInfor: false,
       showCreateProduct: false,
       showCreatePost: true,
+      showConversionPaper: false
     });
     this.props.history.push("/admin?page=create-post");
   };
@@ -172,13 +193,57 @@ class LayoutAdmin extends Component {
       showCartInfor: true,
       showCreateProduct: false,
       showCreatePost: false,
+      showConversionPaper: false
     });
     this.props.history.push("/admin?page=cart-infor");
   };
+
+  toConversionPaper = () => {
+    this.setState({
+      selectedKey: "conversionPaper",
+      showUserInfor: false,
+      showProductInfor: false,
+      showPostInfor: false,
+      showCartInfor: false,
+      showCreateProduct: false,
+      showCreatePost: false,
+      showConversionPaper: true
+    });
+    this.props.history.push("/admin?page=conversion-paper");
+  };
+
+  parentProp = (key) => {
+    if (key == "productInfor") {
+      this.setState({
+        selectedKey: "inforProduct",
+        showUserInfor: false,
+        showProductInfor: true,
+        showPostInfor: false,
+        showCartInfor: false,
+        showCreateProduct: false,
+        showCreatePost: false,
+        showConversionPaper: false
+      });
+      this.props.history.push("/admin?page=product-infor");
+    }
+    if (key == "postInfor") {
+      this.setState({
+        selectedKey: "postInfor",
+        showUserInfor: false,
+        showProductInfor: false,
+        showPostInfor: true,
+        showCartInfor: false,
+        showCreateProduct: false,
+        showCreatePost: false,
+        showConversionPaper: false
+      });
+      this.props.history.push("/admin?page=post-infor");
+    }
+  }
   render() {
     const { selectedKey } = this.state;
     const roles = window.localStorage.getItem("roles");
-    return roles == 'admin' || roles == 'mod'  ? (
+    return roles == 'admin' || roles == 'mod' ? (
       <div>
         <NavBar />
         <div style={{ width: "100%", height: "82vh", marginTop: "81px" }}>
@@ -221,7 +286,7 @@ class LayoutAdmin extends Component {
                   key="post"
                   title={
                     <span style={{ display: "flex", alignItems: "center" }}>
-                      <Icon type="appstore" />
+                      <Icon type="read" />
                       <span>Quản lí bài viết</span>
                     </span>
                   }
@@ -233,18 +298,6 @@ class LayoutAdmin extends Component {
                     Đăng bài viết
                   </Menu.Item>
                 </SubMenu>
-                {/* <Menu.Item
-                  key="postInfor"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    height: "44px",
-                  }}
-                  onClick={this.toPostInfor}
-                >
-                  <Icon style={{ marginLeft: 0 }} type="audit" />
-                  <span style={{ marginLeft: 0 }}>Quản lí bài viết</span>
-                </Menu.Item> */}
                 <Menu.Item
                   key="cartInfor"
                   style={{
@@ -257,22 +310,35 @@ class LayoutAdmin extends Component {
                   <Icon style={{ marginLeft: 0 }} type="reconciliation" />
                   <span style={{ marginLeft: 0 }}>Quản lí đơn hàng</span>
                 </Menu.Item>
+                <Menu.Item
+                  key="conversionPaper"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    height: "44px",
+                  }}
+                  onClick={this.toConversionPaper}
+                >
+                  <Icon style={{ marginLeft: 0 }} type="area-chart" />
+                  <span style={{ marginLeft: 0 }}>Quản lí tỉ giá giấy</span>
+                </Menu.Item>
               </Menu>
             </div>
             <div className="component-container">
               {this.state.showUserInfor ? <UserInforList /> : null}
               {this.state.showProductInfor ? <ProductInforList /> : null}
-              {this.state.showCreateProduct ? <CreateProduct /> : null}
+              {this.state.showCreateProduct ? <CreateProduct parent={this.parentProp} /> : null}
               {this.state.showPostInfor ? <PostInforList /> : null}
-              {this.state.showCreatePost ? <CreatePost /> : null}
+              {this.state.showCreatePost ? <CreatePost parent={this.parentProp}/> : null}
               {this.state.showCartInfor ? <CartInforList /> : null}
+              {this.state.showConversionPaper ? <ConversionPaper /> : null}
             </div>
           </div>
         </div>
       </div>
     ) : (
-      <Redirect to="/" />
-    );
+        <Redirect to="/" />
+      );
   }
 }
 

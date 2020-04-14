@@ -20,7 +20,6 @@ const EditProfileSagas = {
           }
         );
       });
-      //   console.log(action.data);
       if (!editInfor.data.success) {
         yield put(EditActions.editFailed(editInfor.data));
         message.error(editInfor.data.message, 3);
@@ -48,7 +47,6 @@ const EditProfileSagas = {
           }
         );
       });
-      console.log(changeAvatarInfor);
       if (!changeAvatarInfor.data.success) {
         yield put(EditActions.uploadFailed(changeAvatarInfor.data));
         message.error("Lưu ảnh đại diện không thành công", 3);

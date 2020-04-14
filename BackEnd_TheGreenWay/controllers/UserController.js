@@ -34,7 +34,6 @@ let information = async (req, res) => {
             data: arr[0],
           });
         } catch (error) {
-          console.log(error);
           return res.status(200).json({
             success: false,
             message: error,

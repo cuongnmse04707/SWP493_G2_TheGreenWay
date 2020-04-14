@@ -22,7 +22,6 @@ const ResetPassword = {
           }
         );
       });
-      console.log(resetInfor);
       if (!resetInfor.data.success) {
         yield put(ForgotActions.resetFailed(resetInfor.data));
         message.error(resetInfor.data.message, 3);

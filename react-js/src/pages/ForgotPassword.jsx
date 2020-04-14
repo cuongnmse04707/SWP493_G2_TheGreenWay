@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import ForgotTypes from "../redux/forgot-password-redux";
 import { withRouter } from "react-router";
 import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
 class ForgotPassword extends Component {
@@ -38,9 +37,6 @@ class ForgotPassword extends Component {
     e.preventDefault();
     this.props.form.validateFields(["password", "confirm"], (err, values) => {
       if (!err) {
-        console.log(values);
-        console.log(window.location.search.split("?")[1]);
-        console.log(window.location.search.split("?")[2]);
         this.props.resetPassword({
           password: values.password,
           token: window.location.search.split("?")[1],

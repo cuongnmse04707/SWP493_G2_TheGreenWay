@@ -1,17 +1,10 @@
 import React, { Component } from "react";
 import {
   Table,
-  Icon,
   Button,
-  Modal,
-  Avatar,
   Input,
   Form,
-  message,
-  Pagination,
-  Collapse,
   Drawer,
-  Select,
   Radio,
   Tooltip,
 } from "antd";
@@ -48,7 +41,6 @@ class CartInforList extends Component {
   onOpenDrawerMemberSetting = (item) => {
     const { getOrderDetail } = this.props;
     getOrderDetail(item.OrderID);
-    console.log("Hello");
     this.setState({
       visibleDrawerMemberSetting: true,
     });
@@ -298,7 +290,6 @@ class CartInforList extends Component {
                   defaultValue="all"
                   size="large"
                   onChange={(event) => {
-                    // console.log(event.target.value);
                     this.setState({
                       stateTable: event.target.value,
                     });

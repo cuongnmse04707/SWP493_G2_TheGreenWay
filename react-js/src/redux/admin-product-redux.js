@@ -60,7 +60,6 @@ export const request = (state) => {
 }
 
 export const getProductSucceed = (state, { data }) => {
-  // console.log('data', data)
   return {
     ...state,
     productList: data.data,
@@ -68,7 +67,6 @@ export const getProductSucceed = (state, { data }) => {
 }
 
 export const getProductDetailSucceed = (state, { data }) => {
-  // console.log('data', data)
   return {
     ...state,
     productDetail: data.data,
@@ -107,7 +105,6 @@ export const addImageSucceed = (state, { data }) => {
 }
 
 export const deleteImageSucceed = (state, { data }) => {
-  // console.log('dat12a', data)
   return {
     ...state,
     imageDetail: state.imageDetail.filter(el => el.ImageID !== data)
@@ -115,7 +112,6 @@ export const deleteImageSucceed = (state, { data }) => {
 }
 
 export const addNewProductSucceed = (state, { data }) => {
-  console.log('new product', data)
   return {
     ...state,
     idNewProduct: data.idProduct
@@ -123,7 +119,6 @@ export const addNewProductSucceed = (state, { data }) => {
 }
 
 export const addNewProductImageDetailSucceed = (state, { data }) => {
-  console.log('new image product', data)
   return {
     ...state,
   }
@@ -140,7 +135,6 @@ export const changeAvatarImage = (state, { data }) => {
 }
 
 export const failed = (state, { error }) => {
-  console.log(error)
   return {
     ...state,
   }

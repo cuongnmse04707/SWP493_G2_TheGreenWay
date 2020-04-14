@@ -24,7 +24,6 @@ export const request = (state) => {
 }
 
 export const changeSucceed = (state, {data}) => {
-  console.log(data)
   return {
     ...state,
     notifyMessage: data.message,
@@ -41,7 +40,6 @@ export const updateNotify = (state) => {
 }
 
 export const failed = (state, { error }) => {
-  console.log(error)
   return {
     ...state,
   }

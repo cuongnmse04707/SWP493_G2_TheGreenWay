@@ -45,7 +45,6 @@ class SearchComponent extends Component {
   };
 
   handleChange = value => {
-    // console.log("ghi vao", value);
     if (value === undefined) {
       this.setState({
         textSearch: value,
@@ -64,7 +63,6 @@ class SearchComponent extends Component {
     const { Option } = Select;
     const { size, checkData, textSearch } = this.state;
     const { onSearchFullText, listProductSearch } = this.props;
-    // console.log(textSearch);
     return (
       <div>
         <div
@@ -100,21 +98,17 @@ class SearchComponent extends Component {
                 optionLabelProp="label"
                 value={textSearch}
                 onFocus={value => {
-                  console.log("Forcus", value);
                   this.setState({
                     checkData: true
                   });
                 }}
                 onClick={() => {
-                  console.log("3");
                   this.setState({
                     checkData: true
                   });
                 }}
                 onSearch={value => {
-                  console.log("2");
                   if (checkData) {
-                    // console.log("1");
                     this.setState({
                       textSearch: value
                     });
@@ -125,15 +119,9 @@ class SearchComponent extends Component {
                     checkData: true
                   });
                 }}
-                // onBlur={() => {
-                //   this.setState({
-                //     checkData: false,
-                //   });
-                // }}
                 onChange={this.handleChange}
                 filterOption={(input, option) => {
                   if (option.key === "0") {
-                    // console.log(option);
                     return 1;
                   }
                   return (

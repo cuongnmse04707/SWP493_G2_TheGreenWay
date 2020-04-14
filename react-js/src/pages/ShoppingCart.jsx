@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import "../css/shopping-cart.css";
-import { Table, Button } from "antd";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { InputNumber, Modal, Select, Input, message } from "antd";
+import { InputNumber, Modal,  message,Table } from "antd";
 import { connect } from "react-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
-
-const { Option } = Select;
 
 class ShoppingCart extends Component {
   state = {
@@ -39,7 +36,6 @@ class ShoppingCart extends Component {
 
   getQuantity = (elementItem, value) => {
     if(value == '' || value == null) value = 1
-    console.log('value',value)
     // Check san pham goi API o day
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const indexNumber = cart.findIndex(
@@ -70,7 +66,6 @@ class ShoppingCart extends Component {
   componentDidUpdate() {}
 
   handleOk = e => {
-    // console.log(e);
     const { idRemove } = this.state;
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     localStorage.setItem(

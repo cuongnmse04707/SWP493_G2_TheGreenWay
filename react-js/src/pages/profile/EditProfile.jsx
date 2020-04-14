@@ -56,12 +56,6 @@ class EditProfile extends Component {
     this.props.getUserInfor();
   }
 
-  showPasswordModal = () => {
-    this.setState({
-      visiblePassModal: true
-    });
-  };
-
   handleChange = e => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
@@ -78,7 +72,6 @@ class EditProfile extends Component {
           this.setState({ progress });
         },
         error => {
-          console.log(error);
         },
         () => {
           if (this.state.progress === 100) {
@@ -161,7 +154,6 @@ class EditProfile extends Component {
         "state_changed",
         snapshot => { },
         error => {
-          console.log(error);
         },
         () => {
           storage
@@ -177,7 +169,6 @@ class EditProfile extends Component {
   };
 
   render() {
-    const token = window.localStorage.getItem("x-access-token");
     const { getFieldDecorator } = this.props.form;
     const { userInformation } = this.props;
     const formItemLayout = {

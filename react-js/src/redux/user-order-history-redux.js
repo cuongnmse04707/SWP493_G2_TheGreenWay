@@ -36,7 +36,6 @@ export const request = (state) => {
 };
 
 export const getUserOrderSucceed = (state, { data }) => {
-  console.log("user data", data);
   return {
     ...state,
     orderCardList: data.data,
@@ -45,7 +44,6 @@ export const getUserOrderSucceed = (state, { data }) => {
 };
 
 export const getUserOrderDetailSucceed = (state, { data }) => {
-  console.log("guest data", data);
   return {
     ...state,
     orderDetail: data.cart,
@@ -62,7 +60,6 @@ export const getUserOrderDetailIdSucceed = (state, { data }) => {
 };
 
 export const getOrderDetailByGuestSucceed = (state, { data }) => {
-  console.log("guest Infor", data);
   return {
     ...state,
     orderDetail: data.cart,
@@ -71,7 +68,6 @@ export const getOrderDetailByGuestSucceed = (state, { data }) => {
 };
 
 export const failed = (state, { error }) => {
-  console.log(error);
   return {
     ...state,
   };

@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-import { Layout, Menu, Button, message } from "antd";
+import { Layout, Menu, message } from "antd";
 import { connect } from "react-redux";
-import userImage from "../images/account.png";
-import passImage from "../images/lock.png";
-import cartImage from "../images/shopping-cart.png";
-import likeProductImage from "../images/like.png";
 import { withRouter } from "react-router";
 import { storage } from "../firebase";
 import HomePageTypes from "../redux/home-page-redux";
@@ -85,7 +81,6 @@ class SideBar extends Component {
   changeImage = e => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
-      console.log(this.state);
       const reader = new FileReader();
       reader.onload = function(e) {
         document
@@ -93,14 +88,12 @@ class SideBar extends Component {
           .setAttribute("src", e.target.result);
       };
       reader.readAsDataURL(e.target.files[0]);
-      console.log(e.target.files[0]);
 
       const uploadTask = storage.ref(`images/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
         snapshot => {},
         error => {
-          console.log(error);
         },
         () => {
           storage
@@ -108,7 +101,6 @@ class SideBar extends Component {
             .child(image.name)
             .getDownloadURL()
             .then(url => {
-              console.log(url);
               this.setState({ url });
             });
         }
@@ -121,7 +113,6 @@ class SideBar extends Component {
       this.props.changeAvatar({
         urlAvatar: this.state.url
       });
-      console.log("da vao day");
       window.localStorage.setItem("abc", "a");
       window.localStorage.setItem("abc1", "a");
     } else {

@@ -22,13 +22,11 @@ export const request = (state) => {
 }
 
 export const getOrderCartSucceed = (state, {data}) => {
-  console.log(data)
   return {
     ...state,
   }
 }
 export const failed = (state, { error }) => {
-  console.log(error)
   return {
     ...state,
   }

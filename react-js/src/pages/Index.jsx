@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import Review from "../components/Review";
 import { withRouter } from "react-router";
-import { Icon, Dropdown, Menu } from "antd";
 import "antd/dist/antd.css";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { Carousel } from "react-bootstrap";
 import PostIntro from '../components/PostIntro';
 class Index extends Component {
   state = {

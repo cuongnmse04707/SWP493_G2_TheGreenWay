@@ -5,7 +5,6 @@ import axios from "axios";
 
 const ProductLikeSagas = {
   *getProductLikeInfor(action) {
-    console.log(action)
     try {
       const productLikeInfor = yield call(() => {
         return axios.get(`http://localhost:3001/product/getListProductLike?page=${action.data.page}`, {
@@ -15,7 +14,6 @@ const ProductLikeSagas = {
           },
         });
       });
-      console.log('post infor',productLikeInfor);
       if (!productLikeInfor.data.success) {
         yield put(UserProductLikeActions.getProductLikeRequestFailed(productLikeInfor.data));
         message.error(productLikeInfor.data.message, 3);

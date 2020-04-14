@@ -30,7 +30,6 @@ export const getProductDetailSucceed = (state, {data}) => {
   }
 }
 export const failed = (state, { error }) => {
-  console.log(error)
   return {
     ...state,
   }

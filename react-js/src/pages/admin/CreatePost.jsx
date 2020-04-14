@@ -3,12 +3,10 @@ import '../../css/create-post.css'
 import {
   Form,
   Input,
-  InputNumber,
   Button,
   Upload,
   Icon,
   message,
-  Modal,
   Select,
   Row,
   Col
@@ -19,7 +17,6 @@ import CKEditor from 'ckeditor4-react';
 import { storage } from "../../firebase";
 
 const { TextArea } = Input;
-const { Option } = Select;
 
 class CreatePost extends Component {
   state = {
@@ -40,6 +37,10 @@ class CreatePost extends Component {
     });
   }
 
+  toListPost = () => {
+    this.props.parent('postInfor')
+  }
+
   addNewPost = () => {
     if (this.state.avatarUrl == '') {
       message.error('Vui lòng nhập ảnh đại diện bài viết')
@@ -57,7 +58,6 @@ class CreatePost extends Component {
               UpdateDate: new Date(),
               ImageDetail: this.state.avatarUrl
             }
-            console.log('params', params)
             this.props.addNewPost({
               params,
               callback: () => {
@@ -66,12 +66,15 @@ class CreatePost extends Component {
                   avatarUrl: '',
                   data: ''
                 })
+
+                this.toListPost()
               }
             })
           }
         });
     }
   }
+
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -132,8 +135,6 @@ class CreatePost extends Component {
                           showUploadList={false}
                           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                           beforeUpload={(file) => {
-                            //Upload File Base
-                            console.log('File moi up', file)
                             //Link Image
                             const uploadTask = storage.ref(`images/${file.name}`).put(file);
                             // Set vao state
@@ -142,7 +143,6 @@ class CreatePost extends Component {
                               snapshot => {
                               },
                               error => {
-                                console.log(error);
                               },
                               () => {
                                 storage
@@ -150,7 +150,6 @@ class CreatePost extends Component {
                                   .child(file.name)
                                   .getDownloadURL()
                                   .then(url => {
-                                    console.log(url)
                                     this.setState({
                                       avatarUrl: url
                                     })
@@ -173,8 +172,6 @@ class CreatePost extends Component {
                           showUploadList={false}
                           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                           beforeUpload={(file) => {
-                            //Upload File Base
-                            console.log('File moi up', file)
                             //Link Image
                             const uploadTask = storage.ref(`images/${file.name}`).put(file);
                             // Set vao state
@@ -183,7 +180,6 @@ class CreatePost extends Component {
                               snapshot => {
                               },
                               error => {
-                                console.log(error);
                               },
                               () => {
                                 storage
@@ -191,7 +187,6 @@ class CreatePost extends Component {
                                   .child(file.name)
                                   .getDownloadURL()
                                   .then(url => {
-                                    console.log(url)
                                     this.setState({
                                       postImageDetail: url,
                                     })

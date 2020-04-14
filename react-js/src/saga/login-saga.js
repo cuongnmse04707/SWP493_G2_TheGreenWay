@@ -8,7 +8,6 @@ const cryptr = new Cryptr("thegreenway");
 
 const LoginSagas = {
   *loginUser(action) {
-    console.log(action);
     try {
       const userInfor = yield call(() => {
         return axios.post(

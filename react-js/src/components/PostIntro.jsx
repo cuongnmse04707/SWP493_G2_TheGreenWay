@@ -14,7 +14,6 @@ class PostIntro extends Component {
   }
 
   toPostDetail = id => {
-    console.log(id)
     this.props.history.push(`/life-way-detail/${id}`);
   };
 
@@ -24,7 +23,6 @@ class PostIntro extends Component {
 
   render() {
     const { listPost } = this.props
-    console.log(listPost)
     return (
       <div>
         <div style={{ backgroundColor: "#AFEEEE" }}>

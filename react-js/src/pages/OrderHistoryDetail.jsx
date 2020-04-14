@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../css/order-history-detail.css";
 import { connect } from "react-redux";
 import NavBar from "../components/NavBar";
-import { InputNumber, Modal, Select, Input, Table, Button } from "antd";
+import {Table, Button } from "antd";
 import UserOrderHistoryTypes from "../redux/user-order-history-redux";
 import queryString from "query-string";
 
@@ -10,15 +10,12 @@ var moment = require("moment");
 class OrderHistoryDetail extends Component {
   componentDidMount() {
     const id = queryString.parse(this.props.history.location.search);
-    console.log("1");
     if (id.token) {
       const params = {
         token: id.token
       };
-      console.log("a1");
       this.props.getOrderDetailByGuest(params);
     } else {
-      console.log("a2");
       const params = {
         idOrder: id.idOrder
       };

@@ -44,7 +44,6 @@ export const request = (state) => {
 }
 
 export const getPostSucceed = (state, { data }) => {
-  console.log('post data', data)
   return {
     ...state,
     listPost: data.data,
@@ -53,7 +52,6 @@ export const getPostSucceed = (state, { data }) => {
 }
 
 export const addNewPostSucceed = (state, { data }) => {
-  console.log('data', data)
   return {
     ...state,
   }
@@ -61,7 +59,6 @@ export const addNewPostSucceed = (state, { data }) => {
 
 
 export const getPostDetailSucceed = (state, { data }) => {
-  console.log('post data', data)
   return {
     ...state,
     postDetail: data.data
@@ -70,7 +67,6 @@ export const getPostDetailSucceed = (state, { data }) => {
 }
 
 export const updatePostSucceed = (state, { data }) => {
-  console.log('post data', data)
   return {
     ...state,
     listPost: state.listPost.map((el) => {
@@ -88,7 +84,6 @@ export const updatePostSucceed = (state, { data }) => {
 }
 
 export const changeAvatarImage = (state, { data }) => {
-  console.log(data)
   return {
     ...state,
     postDetail: {
@@ -100,7 +95,6 @@ export const changeAvatarImage = (state, { data }) => {
 
 
 export const failed = (state, { error }) => {
-  console.log(error)
   return {
     ...state,
   }

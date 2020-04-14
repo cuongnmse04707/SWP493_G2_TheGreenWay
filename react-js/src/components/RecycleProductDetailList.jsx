@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Typography, message, Pagination } from "antd";
+import {message, Pagination } from "antd";
 import "../css/product-list.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -148,8 +148,6 @@ class RecycleProductDetailList extends Component {
 
   addToShoppingCart = (event, item) => {
     event.stopPropagation();
-    // console.log("item :", item);
-    // const quatityBuy = 5;
     const product = {
       ...item,
       quatityBuy: 1

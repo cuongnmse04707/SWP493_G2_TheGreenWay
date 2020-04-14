@@ -23,7 +23,6 @@ export const request = (state) => {
 }
 
 export const getProductLikeSucceed = (state, {data}) => {
-  console.log('response data',data)
   return {
     ...state,
     likeProductList: data.data,
@@ -33,7 +32,6 @@ export const getProductLikeSucceed = (state, {data}) => {
 
 
 export const failed = (state, { error }) => {
-  console.log(error)
   return {
     ...state,
     likeProductList: []

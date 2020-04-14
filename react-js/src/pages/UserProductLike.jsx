@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import UserLikeProductTypes from "../redux/user-product-like-redux";
 import ProductDetailTypes from "../redux/product-detail-redux";
 
-const { Column, ColumnGroup } = Table;
 class UserProductLike extends Component {
   state = {
     current: 1,
@@ -19,7 +18,6 @@ class UserProductLike extends Component {
   }
 
   onSelectPageChange = (page) => {
-    console.log(page)
     this.setState({
       current: page
     });
@@ -30,7 +28,6 @@ class UserProductLike extends Component {
   }
 
   toDetailProduct = (record) => {
-    console.log(record)
     const params = {
       idCategory: record.CategoryID,
       id: record.ProductID
@@ -77,7 +74,6 @@ class UserProductLike extends Component {
     ];
 
     const { likeProductInfor } = this.props
-    console.log(likeProductInfor)
     return (
       <div className="user-like">
         <div className="like-product-wrapper">

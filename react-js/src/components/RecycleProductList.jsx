@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../css/product-list.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
-import { Typography, message } from "antd";
+import {message } from "antd";
 import IntroProductTypes from "../redux/get-intro-product-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
@@ -35,8 +35,6 @@ class RecycleProductList extends Component {
 
   addToShoppingCart = (event, item) => {
     event.stopPropagation();
-    // console.log("item :", item);
-    // const quatityBuy = 5;
     const product = {
       ...item,
       quatityBuy: 1

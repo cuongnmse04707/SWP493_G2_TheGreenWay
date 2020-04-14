@@ -50,21 +50,17 @@ class ConfirmPayment extends Component {
   };
 
   onPaperChange = value => {
-    console.log(value);
     this.setState({
       QuantityPaper: value
     });
-    console.log(this.props.convensionRate);
     const sotienthieu =
       this.state.totalCash - value * this.props.convensionRate;
     this.setState({
       remainingAmout: this.state.totalCash - value * this.props.convensionRate
     });
-    console.log(this.state.totalCash - value * this.props.convensionRate);
   };
 
   handleSelectChange = value => {
-    console.log(`selected ${value}`);
   };
 
   handleOptionChange = value => {
@@ -111,7 +107,6 @@ class ConfirmPayment extends Component {
                 quatityBuy: ele.quatityBuy == null?  "0" : ele.quatityBuy
               }))
             };
-            console.log(params)
             this.props.sendOrderCart({
               params,
               method: "user",
@@ -124,7 +119,6 @@ class ConfirmPayment extends Component {
         }
       );
     } else {
-      console.log('la guest')
       this.props.form.validateFields((err, values) => {
         if (!err) {
           var totalPaper = Math.floor(
@@ -133,13 +127,10 @@ class ConfirmPayment extends Component {
           var totalMoney = this.state.totalCash;
           var cash = 0;
           var check = this.state.paymentOption;
-          console.log(this.state.paymentOption)
           const cart = JSON.parse(window.localStorage.getItem("cart"));
           if (this.state.paymentOption === "1") {
             totalPaper = 0;
             cash = totalMoney;
-            console.log('vao day')
-            console.log(cash)
           }
           if (this.state.paymentOption === "2") {
           }
@@ -166,12 +157,10 @@ class ConfirmPayment extends Component {
               quatityBuy: ele.quatityBuy
             }))
           };
-          console.log(params)
           this.props.sendOrderCart({
             params,
             method: "guest",
             callbackA: token => {
-              console.log(token);
               window.localStorage.setItem('token', token)
               window.localStorage.removeItem("cart");
               this.props.history.push("/order-success");

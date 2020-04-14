@@ -64,8 +64,6 @@ class ProductInforList extends Component {
   };
 
   handleImageDetailChange = ({ fileList }) => {
-    console.log(fileList)
-    console.log(this.props.imageDetail)
     this.setState({ fileList })
   };
 
@@ -84,7 +82,6 @@ class ProductInforList extends Component {
   };
 
   handleCategoryChange(value) {
-    console.log(`selected ${value}`);
   }
 
   componentDidMount() {
@@ -92,7 +89,6 @@ class ProductInforList extends Component {
   }
 
   handleModalCancel = e => {
-    console.log(e);
     this.setState({
       visible: false,
     })
@@ -138,9 +134,7 @@ class ProductInforList extends Component {
                 CreateDate: this.props.productDetail.CreateDate
               },
               callback: () => {
-                // console.log(this.props)
                 this.props.form.resetFields()
-                // this.props.history.push("/admin?page=product-infor");
               }
             })
 
@@ -252,7 +246,6 @@ class ProductInforList extends Component {
     );
     const { imageUrl } = this.state;
     const { productList, productDetail, imageDetail } = this.props
-    console.log('chi tiet san pham', imageDetail)
     return (
       <div className="admin-product-wrapper">
         <p className="title">Thông tin sản phẩm</p>
@@ -357,7 +350,6 @@ class ProductInforList extends Component {
                         snapshot => {
                         },
                         error => {
-                          console.log(error);
                         },
                         () => {
                           storage
@@ -400,16 +392,12 @@ class ProductInforList extends Component {
                         }
                         onPreview={this.handlePreview}
                         onRemove={(file) => {
-                          // Xoa => Api XOa => Reducer tm
-                          // console.log('2', file)
                           this.props.deleteDetailImage({
                             idImage: file.uid
                           })
 
                         }}
                         beforeUpload={(file) => {
-                          // Xoa => Api XOa => Reducer tm
-                          console.log('taimoi', file)
                           //Link Image
                           const uploadTask = storage.ref(`images/${file.name}`).put(file);
                           // Set vao state
@@ -418,7 +406,6 @@ class ProductInforList extends Component {
                             snapshot => {
                             },
                             error => {
-                              console.log(error);
                             },
                             () => {
                               storage

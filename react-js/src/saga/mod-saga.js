@@ -39,7 +39,6 @@ const ModSagas = {
           }
         );
       });
-      // console.log("variable: ", userInfor.data.success);
       if (!userInfor.data.success) {
         yield put(ModActions.upRoleFailed(userInfor.data));
         message.error("You don't have permission !");
@@ -67,7 +66,6 @@ const ModSagas = {
           }
         );
       });
-      // console.log("variable: ", userInfor.data.success);
       if (!userInfor.data.success) {
         yield put(ModActions.downRoleFailed(userInfor.data));
         message.error("You don't have permission !");
@@ -94,7 +92,6 @@ const ModSagas = {
           }
         );
       });
-      // console.log("variable: ", userInfor.data.success);
       if (!userInfor.data.success) {
         yield put(ModActions.unlockFailed(userInfor.data));
         message.error("You don't have permission !");
@@ -121,7 +118,6 @@ const ModSagas = {
           }
         );
       });
-      // console.log("variable: ", userInfor.data.success);
       if (!userInfor.data.success) {
         yield put(ModActions.lockFailed(userInfor.data));
         message.error("You don't have permission !");

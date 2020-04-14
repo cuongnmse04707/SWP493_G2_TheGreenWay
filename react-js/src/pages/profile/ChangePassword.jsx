@@ -5,26 +5,15 @@ import { connect } from "react-redux";
 import HomePageTypes from "../../redux/home-page-redux";
 import EditTypes from "../../redux/edit-profile";
 import ChangePassTypes from "../../redux/change-password-redux";
-import LayoutProfile from "../../layout/LayoutProfile";
 import {
   Form,
   Input,
   Button,
-  DatePicker,
-  Modal,
   Col,
-  message,
   Row,
-  Icon
 } from "antd";
-import { storage } from "../../firebase";
-import moment from "moment";
 import { Redirect } from "react-router-dom";
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
 
-const dateFormat = "YYYY/MM/DD";
-const phoneRegex = /(09|01[2|6|8|9])+([0-9]{8})\b/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
 
 class ChangePassword extends Component {
@@ -101,7 +90,6 @@ class ChangePassword extends Component {
       ["oldPassword", "newPassword", "confirmPassword"],
       (err, fieldsValues) => {
         if (!err) {
-          console.log("Password Information", fieldsValues);
           this.props.changePass({
             oldpassword: fieldsValues.oldPassword,
             newpassword: fieldsValues.newPassword
@@ -139,128 +127,6 @@ class ChangePassword extends Component {
     this.setState({
       visiblePassModal: false
     });
-  };
-
-  handleChange = e => {
-    if (e.target.files[0]) {
-      const image = e.target.files[0];
-      console.log(image);
-      this.setState({
-        progressClass: "ml-2"
-      });
-      const uploadTask = storage.ref(`images/${image.name}`).put(image);
-      uploadTask.on(
-        "state_changed",
-        snapshot => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          console.log(progress);
-          this.setState({ progress });
-        },
-        error => {
-          console.log(error);
-        },
-        () => {
-          if (this.state.progress === 100) {
-            setTimeout(() => {
-              this.setState({
-                progressClass: "ml-2 progress-bar"
-              });
-            }, 1000);
-          }
-          storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL()
-            .then(url => {
-              console.log(url);
-              this.setState({ url });
-            });
-        }
-      );
-    }
-  };
-
-  handleUpload = () => {
-    if (this.state.url) {
-      this.props.changeAvatar({
-        urlAvatar: this.state.url
-      });
-    } else {
-      message.error("Vui lòng chọn ảnh");
-    }
-  };
-
-  handleUpdateAccountSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll(
-      [
-        "username",
-        "phone",
-        "email",
-        "DOB",
-        "city",
-        "address",
-        "country",
-        "password"
-      ],
-      (err, values) => {
-        if (!err) {
-          if (values.DOB) {
-            values.DOB = values.DOB.format("YYYY-MM-DD");
-          }
-          console.log(values);
-          this.props.editUserProfile({
-            email: values.email,
-            username: values.username,
-            phone: values.phone,
-            DOB: values.DOB,
-            city: values.city,
-            address: values.address,
-            country: values.country
-            // urlAvatar: this.state.url
-          });
-        }
-      }
-    );
-  };
-
-  clickImage(e) {
-    document.querySelector("#profileImage").click();
-  }
-  changeImage = e => {
-    if (e.target.files[0]) {
-      const image = e.target.files[0];
-      console.log(this.state);
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        document
-          .querySelector("#profileDisplay")
-          .setAttribute("src", e.target.result);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-      console.log(e.target.files[0]);
-
-      const uploadTask = storage.ref(`images/${image.name}`).put(image);
-      uploadTask.on(
-        "state_changed",
-        snapshot => {},
-        error => {
-          console.log(error);
-        },
-        () => {
-          storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL()
-            .then(url => {
-              console.log(url);
-              this.setState({ url });
-            });
-        }
-      );
-    }
   };
 
   render() {

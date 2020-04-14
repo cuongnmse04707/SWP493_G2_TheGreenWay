@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Typography, message, Pagination } from "antd";
+import { message, Pagination } from "antd";
 import "../css/product-list.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -72,7 +72,6 @@ class PlantProductDetailList extends Component {
   handleClick = (event, id) => {
     event.stopPropagation();
     this.props.history.push(`/product-detail/${id}`);
-    console.log('vao day')
   };
 
   onChangeCheckSearch = value => {
@@ -149,8 +148,6 @@ class PlantProductDetailList extends Component {
 
   addToShoppingCart = (event, item) => {
     event.stopPropagation();
-    // console.log("item :", item);
-    // const quatityBuy = 5;
     const product = {
       ...item,
       quatityBuy: 1

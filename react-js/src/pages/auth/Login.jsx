@@ -5,8 +5,6 @@ import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import LoginTypes from "../../redux/login-redux";
 import { withRouter } from "react-router";
-// import NavBar from "../../components/NavBar";
-// import Footer from "../../components/Footer";
 
 const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;

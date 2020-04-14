@@ -4,7 +4,6 @@ import { Table, Button, Pagination } from "antd";
 import UserOrderHistoryTypes from "../redux/user-order-history-redux";
 import { connect } from "react-redux";
 
-const { Column, ColumnGroup } = Table;
 var moment = require("moment");
 class UserOrderHistory extends Component {
   state = {
@@ -19,12 +18,10 @@ class UserOrderHistory extends Component {
   }
 
   toDetailCart = (record) => {
-    console.log(record)
     this.props.history.push(`/order-detail/order?idOrder=${record.OrderID}`)
   }
 
   onSelectPageChange = page => {
-    console.log(page);
     this.setState({
       current: page
     });
@@ -163,7 +160,6 @@ class UserOrderHistory extends Component {
       }
     ];
     const { orderHistoryInfor } = this.props;
-    console.log(orderHistoryInfor);
     return (
       <div className="user-order">
         <div className="user-order-wrapper">

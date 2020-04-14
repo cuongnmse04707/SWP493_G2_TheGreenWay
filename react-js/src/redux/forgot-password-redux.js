@@ -24,7 +24,6 @@ export const request = (state) => {
 }
 
 export const resetSucceed = (state, {data}) => {
-  console.log(data)
   return {
     ...state,
     notifyMessage: data.message,

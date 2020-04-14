@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import "../css/about-us.css";
 import { Modal, Radio, Icon, Tooltip } from "antd";
 
 class ModalChangeOrderStatus extends Component {

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Icon, Dropdown, Menu, Modal, Button, Badge } from "antd";
-import "antd/dist/antd.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import HomePageTypes from "../redux/home-page-redux";
@@ -189,9 +188,6 @@ class NavBar extends Component {
                     </li>
                   )}
                 <li className="shopping-cart-item">
-                  {/* <div className="number-product">
-                    <p>0</p>
-                  </div> */}
                   <Badge
                     count={this.props.stateCartNumber}
                     style={{ marginRight: "8px", marginTop: "4px" }}

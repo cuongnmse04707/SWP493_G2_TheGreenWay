@@ -152,7 +152,6 @@ let likeProduct = async (req, res) => {
           empty,
           (err, result) => {
             if (err) {
-              console.log(empty);
               return res
                 .status(200)
                 .json({ success: false, message: "ERROR!" });

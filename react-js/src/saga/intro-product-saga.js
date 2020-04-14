@@ -5,7 +5,6 @@ import axios from "axios";
 
 const IntroProductSagas = {
   *getIntroProduct(action) {
-    console.log(action);
     try {
       const productInfor = yield call(() => {
         return axios.get(
@@ -52,7 +51,6 @@ const IntroProductSagas = {
           }
         );
       });
-      console.log(productInfor);
       if (!productInfor.data.success) {
         yield put(
           IntroProductActions.getRecycleProductRequestFailed(productInfor.data)
@@ -155,7 +153,6 @@ const IntroProductSagas = {
           }
         );
       });
-      console.log("variable: ", productInfor);
       if (!productInfor.data.success) {
         yield put(IntroProductActions.searchDefaultFailed(productInfor));
         message.error(productInfor.data.message, 3);
@@ -187,8 +184,6 @@ const IntroProductSagas = {
         ProductName: newtext.toLowerCase()
       };
     }
-
-    console.log("variable: ", params);
     try {
       const productInfor = yield call(() => {
         return axios.post(

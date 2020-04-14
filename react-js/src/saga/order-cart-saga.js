@@ -43,7 +43,6 @@ const OrderCartSagas = {
             }
           );
         });
-        console.log(orderInfor)
         if (!orderInfor.data.success) {
           yield put(OrderCartctions.getOrderCartRequestFailed(orderInfor.data));
           message.error(orderInfor.data.message, 3);

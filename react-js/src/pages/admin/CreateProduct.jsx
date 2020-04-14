@@ -15,10 +15,10 @@ import {
 } from 'antd';
 import { connect } from "react-redux";
 import AdminProductTypes from "../../redux/admin-product-redux";
+import { withRouter } from "react-router";
 import CKEditor from 'ckeditor4-react';
 import { storage } from "../../firebase";
 
-const { TextArea } = Input;
 const { Option } = Select;
 
 function getBase64Avatar(img, callback) {
@@ -93,13 +93,16 @@ class CreateProduct extends Component {
   };
 
   handleCategoryChange(value) {
-    console.log(`selected ${value}`);
   }
 
   onEditorChange = (evt) => {
     this.setState({
       data: evt.editor.getData()
     });
+  }
+
+  toListProduct = () => {
+    this.props.parent('productInfor')
   }
 
   addNewProduct = () => {
@@ -123,11 +126,9 @@ class CreateProduct extends Component {
               CreateDate: new Date(),
               ImageDetail: this.state.avatarUrl
             }
-            console.log('params', params)
             this.props.addNewProduct({
               params,
               callback: (idProduct) => {
-                console.log(idProduct)
                 this.state.fileList.map((item, index) => {
                   const paramsAddImage = {
                     ProductID: idProduct,
@@ -135,6 +136,7 @@ class CreateProduct extends Component {
                   }
                   this.props.addNewProductImage(paramsAddImage)
                 })
+                this.toListProduct()
               }
             })
           }
@@ -175,6 +177,7 @@ class CreateProduct extends Component {
     return (
       <div className="create-product-wrapper">
         <p className="title">Tạo sản phẩm mới</p>
+        <Button type="primary" onClick={this.toListProduct}>Click</Button>
         <div className="admin-create-form-container">
           <div style={{ width: "100%" }}>
             <Row>
@@ -258,8 +261,6 @@ class CreateProduct extends Component {
                       showUploadList={false}
                       action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                       beforeUpload={(file) => {
-                        //Upload File Base
-                        console.log('File moi up', file)
                         //Link Image
                         const uploadTask = storage.ref(`images/${file.name}`).put(file);
                         // Set vao state
@@ -268,7 +269,6 @@ class CreateProduct extends Component {
                           snapshot => {
                           },
                           error => {
-                            console.log(error);
                           },
                           () => {
                             storage
@@ -276,7 +276,6 @@ class CreateProduct extends Component {
                               .child(file.name)
                               .getDownloadURL()
                               .then(url => {
-                                console.log(url)
                                 this.setState({
                                   avatarUrl: url
                                 })
@@ -312,8 +311,6 @@ class CreateProduct extends Component {
                             })
                           }}
                           beforeUpload={(file) => {
-                            // Xoa => Api XOa => Reducer tm
-                            console.log('anh detail', file)
                             //Link Image
                             const uploadTask = storage.ref(`images/${file.name}`).put(file);
                             // Set vao state
@@ -322,7 +319,6 @@ class CreateProduct extends Component {
                               snapshot => {
                               },
                               error => {
-                                console.log(error);
                               },
                               () => {
                                 storage
@@ -330,7 +326,6 @@ class CreateProduct extends Component {
                                   .child(file.name)
                                   .getDownloadURL()
                                   .then(url => {
-                                    console.log(url)
                                     this.setState({
                                       fileList: [...this.state.fileList, {
                                         uid: this.state.fileList.length,
@@ -381,5 +376,6 @@ const mapDispatchToProps = dispatch => {
     },
   };
 };
+CreateProduct = withRouter(CreateProduct)
 const CreateProductScreen = Form.create()(CreateProduct);
 export default connect(mapStateToProps, mapDispatchToProps)(CreateProductScreen);

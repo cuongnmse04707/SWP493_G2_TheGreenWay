@@ -36,7 +36,6 @@ export const request = (state) => {
 };
 
 export const loginSucceed = (state, { data }) => {
-  console.log(data);
   return {
     ...state,
     loginSuccess: data.success,
@@ -45,7 +44,6 @@ export const loginSucceed = (state, { data }) => {
 };
 
 export const signUpSucceed = (state, { data }) => {
-  console.log(data);
   return {
     ...state,
     loginSuccess: false,
@@ -79,7 +77,6 @@ export const updateNotify = (state) => {
 };
 
 export const failed = (state, { error }) => {
-  console.log(error);
   return {
     ...state,
     forgotMessage: error,

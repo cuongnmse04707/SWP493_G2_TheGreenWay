@@ -5,7 +5,6 @@ import axios from "axios";
 
 const OrderHistorySagas = {
   *getOrderHistoryInfor(action) {
-    console.log(action);
     try {
       const orderHistoryInfor = yield call(() => {
         return axios.get(
@@ -18,7 +17,6 @@ const OrderHistorySagas = {
           }
         );
       });
-      console.log("order history infor", orderHistoryInfor);
       if (!orderHistoryInfor.data.success) {
         yield put(
           UserOrderHistoryActions.getUserOrderRequestFailed(
@@ -37,10 +35,8 @@ const OrderHistorySagas = {
   },
 
   *getOrderDetailInfor(action) {
-    console.log(action);
     try {
       const params = action.data;
-      console.log(params);
       const orderDetailInfor = yield call(() => {
         return axios.get(
           `http://localhost:3001/userorder/showOrderByEmail?idOrder=${action.data.idOrder}`,
@@ -52,7 +48,6 @@ const OrderHistorySagas = {
           }
         );
       });
-      console.log("user infor", orderDetailInfor);
       if (!orderDetailInfor.data.success) {
         yield put(
           UserOrderHistoryActions.getUserOrderDetailRequestFailed(
@@ -85,7 +80,6 @@ const OrderHistorySagas = {
           }
         );
       });
-      // console.log("user infor", orderDetailInfor);
       if (!orderDetailInfor.data.success) {
         yield put(
           UserOrderHistoryActions.getUserOrderDetailIdRequestFailed(
@@ -108,10 +102,8 @@ const OrderHistorySagas = {
   },
 
   *getOrderDetailInforGuest(action) {
-    console.log(action);
     try {
       const params = action.data;
-      console.log(params);
       const orderDetailInfor = yield call(() => {
         return axios.post(
           `http://localhost:3001/guest/showOrderByToken`,
@@ -123,7 +115,6 @@ const OrderHistorySagas = {
           }
         );
       });
-      console.log("guest infor data", orderDetailInfor);
       if (!orderDetailInfor.data.success) {
         yield put(
           UserOrderHistoryActions.getOrderDetailByGuestRequestFailed(

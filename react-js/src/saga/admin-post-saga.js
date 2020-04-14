@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const AdminPostSagas = {
   *getListPost(action) {
-    console.log(action)
+
     try {
       const postInfor = yield call(() => {
         return axios.get(
@@ -20,7 +20,6 @@ const AdminPostSagas = {
           }
         );
       });
-      console.log('postInfor', postInfor)
       if (!postInfor.data.success) {
         yield put(AdminPostActions.getListPostFailed(postInfor.data));
         message.error(postInfor.data.message, 3);
@@ -33,7 +32,7 @@ const AdminPostSagas = {
   },
 
   *addNewPost(action) {
-    console.log(action)
+
     try {
       const addPostInfor = yield call(() => {
         return axios.post(
@@ -46,7 +45,6 @@ const AdminPostSagas = {
           }
         );
       });
-      console.log('addPostInfor', addPostInfor)
       if (!addPostInfor.data.success) {
         yield put(AdminPostActions.addNewPostFailed(addPostInfor.data));
         message.error(addPostInfor.data.message, 3);
@@ -61,7 +59,7 @@ const AdminPostSagas = {
   },
 
   *getPostDetail(action) {
-    console.log(action)
+
     try {
       const postDetail = yield call(() => {
         return axios.get(
@@ -74,7 +72,6 @@ const AdminPostSagas = {
           }
         );
       });
-      console.log('postDetail', postDetail)
       if (!postDetail.data.success) {
         yield put(AdminPostActions.getPostDetailFailed(postDetail.data));
         message.error(postDetail.data.message, 3);
@@ -87,7 +84,7 @@ const AdminPostSagas = {
   },
 
   *updatePost(action) {
-    console.log(action)
+
     try {
       const updatePost = yield call(() => {
         return axios.put(
@@ -100,7 +97,6 @@ const AdminPostSagas = {
           }
         );
       });
-      console.log('updatePost', updatePost)
       if (!updatePost.data.success) {
         yield put(AdminPostActions.updatePostFailed(updatePost.data));
         message.error(updatePost.data.message, 3);

@@ -7,8 +7,6 @@ import {
   Avatar,
   Input,
   Form,
-  message,
-  Pagination,
   Collapse,
   Drawer,
   Select,
@@ -51,19 +49,9 @@ class UserInforList extends Component {
     });
   };
 
-  // handleOk = () => {
-  //   // Remove deleteMember
-  //   const { idMemberRemove } = this.state;
-  //   const { deleteUser } = this.props;
-  //   deleteUser({
-  //     email: idMemberRemove,
-  //     callback: () => {},
-  //   });
-  // };
 
   onOpenDrawerMemberSetting = (event) => {
     event.preventDefault();
-    console.log("1");
     this.setState({
       visibleDrawerMemberSetting: true,
     });

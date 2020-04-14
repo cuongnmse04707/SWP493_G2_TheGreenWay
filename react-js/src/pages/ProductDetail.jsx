@@ -3,7 +3,7 @@ import { withRouter } from "react-router";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import "../css/product-detail.css";
-import { InputNumber, message, Carousel, Upload, Icon, Modal } from "antd";
+import { InputNumber, message, Carousel, Upload, Modal } from "antd";
 import RelatedProduct from "../components/RelatedProduct";
 import { connect } from "react-redux";
 import ProductDetailTypes from "../redux/product-detail-redux";
@@ -23,8 +23,6 @@ class ProductDetail extends Component {
   };
 
   componentDidMount() {
-    console.log(1)
-
     const productId = window.location.pathname.split("/")[2];
     this.props.getProductDetail(productId);
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
@@ -102,14 +100,12 @@ class ProductDetail extends Component {
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async file => {
-    console.log("1");
   };
 
   render() {
     window.scrollTo(0, 0);
     const { convensionRate, productInfor, productImages } = this.props;
     let arrayImages = [];
-    console.log('productImages', productImages);
     if (productImages != "No Images") {
       productImages.map(item => {
         arrayImages.push(item.urlImage);

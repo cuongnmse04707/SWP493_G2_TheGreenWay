@@ -24,11 +24,6 @@ class Footer extends Component {
                       <i className="fa fa-facebook-f"></i>
                     </a>
                   </li>
-                  {/* <li className="list-inline-item">
-                    <a href="#">
-                      <i className="fa fa-linkedin-in"></i>
-                    </a>
-                  </li> */}
                 </ul>
               </div>
               <div className="col-md-4">
