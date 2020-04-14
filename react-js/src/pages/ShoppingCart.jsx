@@ -38,6 +38,8 @@ class ShoppingCart extends Component {
   };
 
   getQuantity = (elementItem, value) => {
+    if(value == '' || value == null) value = 1
+    console.log('value',value)
     // Check san pham goi API o day
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const indexNumber = cart.findIndex(
@@ -160,8 +162,8 @@ class ShoppingCart extends Component {
             type="number"
             min={1}
             max={record.Quantity}
-            value={record.quatityBuy}
-            onChange={value => this.getQuantity(record, value)}
+            value={record.quatityBuy || 1}
+            onChange={value   => this.getQuantity(record, value)}
           />
         )
       },

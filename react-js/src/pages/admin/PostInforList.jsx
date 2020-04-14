@@ -74,27 +74,33 @@ class PostInforList extends Component {
   };
 
   updatePostInfor = () => {
-    this.setState({
-      visible: false,
-    });
-    this.props.form.validateFieldsAndScroll(["title"], (err, values) => {
-      if (!err) {
-        const params = {
-          idPost: this.state.postId,
-          Title: values.title,
-          Content: this.state.data
-            ? this.state.data
-            : this.props.postDetail.Content,
-          CreateDate: this.props.postDetail.CreateDate,
-          UpdateDate: new Date(),
-          ImageDetail: this.props.postDetail.ImageDetail,
-        };
-        console.log(params);
-        this.props.updatePost({
-          params,
-        });
-      }
-    });
+    if (this.props.postDetail.ImageDetail = '') {
+      message.error('Vui lòng chọn ảnh đại diện bài viết', 2)
+    } else if (this.state.data == '') {
+      message.error('Vui lòng nhập nội dung bài viết', 2)
+    } else {
+      this.setState({
+        visible: false,
+      });
+      this.props.form.validateFieldsAndScroll(["title"], (err, values) => {
+        if (!err) {
+          const params = {
+            idPost: this.state.postId,
+            Title: values.title,
+            Content: this.state.data
+              ? this.state.data
+              : this.props.postDetail.Content,
+            CreateDate: this.props.postDetail.CreateDate,
+            UpdateDate: new Date(),
+            ImageDetail: this.props.postDetail.ImageDetail,
+          };
+          console.log(params);
+          this.props.updatePost({
+            params,
+          });
+        }
+      });
+    }
   };
 
   render() {
@@ -256,7 +262,7 @@ class PostInforList extends Component {
                                 // Set vao state
                                 uploadTask.on(
                                   "state_changed",
-                                  (snapshot) => {},
+                                  (snapshot) => { },
                                   (error) => {
                                     console.log(error);
                                   },
@@ -280,8 +286,8 @@ class PostInforList extends Component {
                                   style={{ width: "100%" }}
                                 />
                               ) : (
-                                uploadAvatarButton
-                              )}
+                                  uploadAvatarButton
+                                )}
                             </Upload>
                           )}
                         </Form.Item>
@@ -308,7 +314,7 @@ class PostInforList extends Component {
                                 // Set vao state
                                 uploadTask.on(
                                   "state_changed",
-                                  (snapshot) => {},
+                                  (snapshot) => { },
                                   (error) => {
                                     console.log(error);
                                   },
@@ -334,8 +340,8 @@ class PostInforList extends Component {
                                   style={{ width: "100%" }}
                                 />
                               ) : (
-                                uploadAvatarButton
-                              )}
+                                  uploadAvatarButton
+                                )}
                             </Upload>
                           )}
                         </Form.Item>

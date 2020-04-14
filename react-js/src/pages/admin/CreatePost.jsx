@@ -41,32 +41,37 @@ class CreatePost extends Component {
   }
 
   addNewPost = () => {
-    this.props.form.validateFieldsAndScroll(
-      ["title"],
-      (err, values) => {
-        if (!err) {
-          const params = {
-            Title: values.title,
-            Content: this.state.data,
-            CreateDate: new Date(),
-            UpdateDate: new Date(),
-            ImageDetail: this.state.avatarUrl
-          }
-          console.log('params', params)
-          this.props.addNewPost({
-            params,
-            callback: () => {
-              this.props.form.resetFields()
-              this.setState({
-                avatarUrl: '',
-                data: ''
-              })
+    if (this.state.avatarUrl == '') {
+      message.error('Vui lòng nhập ảnh đại diện bài viết')
+    } else if (this.state.data == '') {
+      message.error('Vui lòng nhập nội dung bài viết')
+    } else {
+      this.props.form.validateFieldsAndScroll(
+        ["title"],
+        (err, values) => {
+          if (!err) {
+            const params = {
+              Title: values.title,
+              Content: this.state.data,
+              CreateDate: new Date(),
+              UpdateDate: new Date(),
+              ImageDetail: this.state.avatarUrl
             }
-          })
-        }
-      });
+            console.log('params', params)
+            this.props.addNewPost({
+              params,
+              callback: () => {
+                this.props.form.resetFields()
+                this.setState({
+                  avatarUrl: '',
+                  data: ''
+                })
+              }
+            })
+          }
+        });
+    }
   }
-
 
   render() {
     const { getFieldDecorator } = this.props.form;

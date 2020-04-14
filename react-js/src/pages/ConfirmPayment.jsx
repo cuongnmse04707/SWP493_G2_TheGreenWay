@@ -23,6 +23,9 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 var moment = require("moment");
+const phoneRegex = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
+const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const addressRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
 
 class ConfirmPayment extends Component {
   state = {
@@ -73,9 +76,7 @@ class ConfirmPayment extends Component {
   orderSuccess = () => {
     const token = window.localStorage.getItem("x-access-token");
     if (token) {
-      this.props.form.validateFieldsAndScroll(
-        ["address", "paymentOption"],
-        (err, fieldsValues) => {
+      this.props.form.validateFieldsAndScroll((err, fieldsValues) => {
           if (!err) {
             var totalPaper = Math.floor(
               this.state.totalCash / this.props.convensionRate
@@ -95,7 +96,7 @@ class ConfirmPayment extends Component {
               cash = this.state.remainingAmout;
             }
             const params = {
-              PaymentID: fieldsValues.paymentOption,
+              PaymentID: fieldsValues.paymentMethod,
               ConversionID: this.props.convensionId,
               TotalPrice: totalMoney,
               ShipAddress: fieldsValues.address,
@@ -107,9 +108,10 @@ class ConfirmPayment extends Component {
                 id: ele.ProductID,
                 quatity: ele.Quantity,
                 price: ele.ProductPrice,
-                quatityBuy: ele.quatityBuy
+                quatityBuy: ele.quatityBuy == null?  "0" : ele.quatityBuy
               }))
             };
+            console.log(params)
             this.props.sendOrderCart({
               params,
               method: "user",
@@ -137,7 +139,7 @@ class ConfirmPayment extends Component {
             totalPaper = 0;
             cash = totalMoney;
             console.log('vao day')
-              console.log(cash)
+            console.log(cash)
           }
           if (this.state.paymentOption === "2") {
           }
@@ -149,7 +151,7 @@ class ConfirmPayment extends Component {
             Name: values.fullname,
             Phone: values.phone,
             Email: values.email,
-            PaymentID: values.paymentOption,
+            PaymentID: values.paymentMethod,
             ConversionID: this.props.convensionId,
             TotalPrice: totalMoney,
             ShipAddress: values.address,
@@ -164,6 +166,7 @@ class ConfirmPayment extends Component {
               quatityBuy: ele.quatityBuy
             }))
           };
+          console.log(params)
           this.props.sendOrderCart({
             params,
             method: "guest",
@@ -179,8 +182,6 @@ class ConfirmPayment extends Component {
     }
   };
 
-  //http://localhost:3000/order-detail/order?idOrder=6
-  //http://localhost:3000/order-detail/order?token=6
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -200,7 +201,7 @@ class ConfirmPayment extends Component {
     const token = window.localStorage.getItem("x-access-token");
     const cart = JSON.parse(window.localStorage.getItem("cart"));
     const { totalCash } = this.state;
-    const { convensionRate } = this.props;
+    const { convensionRate, userInformation } = this.props;
     return (
       <div>
         <NavBar />
@@ -216,22 +217,44 @@ class ConfirmPayment extends Component {
                   <Form {...formItemLayout} className="mt-4">
                     <Form.Item label="Họ và tên">
                       {getFieldDecorator("fullname", {
-                        initialValue: this.props.userInformation.username
+                        initialValue: userInformation.username,
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập tên người dùng"
+                          }
+                        ]
                       })(<Input />)}
                     </Form.Item>
                     <Form.Item label="Số điện thoại">
                       {getFieldDecorator("phone", {
-                        initialValue: this.props.userInformation.phone
+                        initialValue: userInformation.phone,
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập số điện thoại người dùng"
+                          },
+                          {
+                            pattern: phoneRegex,
+                            message: "Nhập đúng định dạng số điện thoại"
+                          }
+                        ]
                       })(<Input />)}
                     </Form.Item>
 
                     <Form.Item label="Nhập địa chỉ giao hàng:">
                       {getFieldDecorator("address", {
-                        initialValue: this.props.userInformation.address
+                        initialValue: userInformation.address,
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập địa chỉ muốn giao hàng"
+                          }
+                        ]
                       })(<TextArea rows={4} />)}
                     </Form.Item>
                     <Form.Item label="Lựa chọn phương thức thanh toán">
-                      {getFieldDecorator("paymentOption", {
+                      {getFieldDecorator("paymentMethod", {
                         initialValue: "1"
                       })(
                         <Select style={{ width: 200 }} {...this.props}>
@@ -243,67 +266,71 @@ class ConfirmPayment extends Component {
                   </Form>
                 </div>
               ) : (
-                <div>
-                  <Form {...formItemLayout} className="mt-4">
-                    <Form.Item label="Họ và tên">
-                      {getFieldDecorator("fullname", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập tên người dùng"
-                          }
-                        ]
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Số điện thoại">
-                      {getFieldDecorator("phone", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập số điện thoại người dùng"
-                          }
-                        ]
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Email">
-                      {getFieldDecorator("email", {
-                        rules: [
-                          {
-                            required: true,
-                            message:
-                              "Vui lòng địa chỉ email của bạn muốn giao hàng"
-                          }
-                        ]
-                      })(<Input style={{ width: "100%" }} />)}
-                    </Form.Item>
-                    <Form.Item label="Quận/Huyện/Thị xã">
-                      {getFieldDecorator("city1", {})(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Xã">
-                      {getFieldDecorator("city2", {})(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Địa chỉ">
-                      {getFieldDecorator("address", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng địa chỉ muốn giao hàng"
-                          }
-                        ]
-                      })(<TextArea rows={4} />)}
-                    </Form.Item>
-                    <Form.Item label="Lựa chọn phương thức thanh toán">
-                      {getFieldDecorator("paymentOption", {
-                      })(
-                        <Select {...this.props} defaultValue="1" style={{ width: 200 }}>
-                          <Option value="1">Ship COD</Option>
-                          <Option value="2">Chuyển Khoản</Option>
-                        </Select>
-                      )}
-                    </Form.Item>
-                  </Form>
-                </div>
-              )}
+                  <div>
+                    <Form {...formItemLayout} className="mt-4">
+                      <Form.Item label="Họ và tên">
+                        {getFieldDecorator("fullname", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập tên người dùng"
+                            }
+                          ]
+                        })(<Input />)}
+                      </Form.Item>
+                      <Form.Item label="Số điện thoại">
+                        {getFieldDecorator("phone", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập số điện thoại người dùng"
+                            },
+                            {
+                              pattern: phoneRegex,
+                              message: "Nhập đúng định dạng số điện thoại"
+                            }
+                          ]
+                        })(<Input />)}
+                      </Form.Item>
+                      <Form.Item label="Email">
+                        {getFieldDecorator("email", {
+                          rules: [
+                            {
+                              required: true,
+                              message:
+                                "Vui lòng nhập địa chỉ email"
+                            },
+                            {
+                              pattern: emailRegex,
+                              message:
+                                "Vui lòng nhập đúng định dạng email"
+                            }
+                          ]
+                        })(<Input style={{ width: "100%" }} />)}
+                      </Form.Item>
+                      <Form.Item label="Nhập địa chỉ giao hàng:">
+                        {getFieldDecorator("address", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập địa chỉ muốn giao hàng"
+                            }
+                          ]
+                        })(<TextArea rows={4} />)}
+                      </Form.Item>
+                      <Form.Item label="Lựa chọn phương thức thanh toán">
+                        {getFieldDecorator("paymentMethod", {
+                          initialValue: "1"
+                        })(
+                          <Select {...this.props} value="1" style={{ width: 200 }}>
+                            <Option value="1">Ship COD</Option>
+                            <Option value="2">Chuyển Khoản</Option>
+                          </Select>
+                        )}
+                      </Form.Item>
+                    </Form>
+                  </div>
+                )}
             </div>
             <div className="bill-infor-wrapper">
               <div className="bill-infor-container">
@@ -377,8 +404,8 @@ class ConfirmPayment extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="show-option-payment"></div>
-                  )}
+                      <div className="show-option-payment"></div>
+                    )}
                 </div>
                 <p className="change-shopping-cart">Thay đổi sản phẩm</p>
                 <div className="button-check-out" onClick={this.orderSuccess}>

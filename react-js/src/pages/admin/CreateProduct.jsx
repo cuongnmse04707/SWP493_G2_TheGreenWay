@@ -103,39 +103,43 @@ class CreateProduct extends Component {
   }
 
   addNewProduct = () => {
-
-    this.props.form.validateFieldsAndScroll(
-      ["productName", "productPrice", "productQuantity", "category"],
-      (err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-          const params = {
-            CategoryID: values.category,
-            ProductName: values.productName,
-            ProductPrice: values.productPrice,
-            Description: this.state.data,
-            Quantity: values.productQuantity,
-            CreateDate: new Date(),
-            ImageDetail: this.state.avatarUrl
-          }
-          console.log('params', params)
-          this.props.addNewProduct({
-            params,
-            callback: (idProduct) => {
-              console.log('chay vao callback')
-              console.log(idProduct)
-              this.state.fileList.map((item, index) => {
-                const paramsAddImage = {
-                  ProductID: idProduct,
-                  urlImage: item.url
-                }
-                this.props.addNewProductImage(paramsAddImage)
-              })
-
+    if (this.state.avatarUrl == '') {
+      message.error('Vui lòng nhập ảnh đại diện sản phẩm', 2)
+    } else if (this.state.fileList.length != 4) {
+      message.error('Vui lòng nhập ảnh chi tiết', 2)
+    } else if (this.state.data == '') {
+      message.error('Vui lòng nhập mô tả sản phẩm', 2)
+    } else {
+      this.props.form.validateFieldsAndScroll(
+        ["productName", "productPrice", "productQuantity", "category"],
+        (err, values) => {
+          if (!err) {
+            const params = {
+              CategoryID: values.category,
+              ProductName: values.productName,
+              ProductPrice: values.productPrice,
+              Description: this.state.data,
+              Quantity: values.productQuantity,
+              CreateDate: new Date(),
+              ImageDetail: this.state.avatarUrl
             }
-          })
-        }
-      });
+            console.log('params', params)
+            this.props.addNewProduct({
+              params,
+              callback: (idProduct) => {
+                console.log(idProduct)
+                this.state.fileList.map((item, index) => {
+                  const paramsAddImage = {
+                    ProductID: idProduct,
+                    urlImage: item.url
+                  }
+                  this.props.addNewProductImage(paramsAddImage)
+                })
+              }
+            })
+          }
+        });
+    }
   }
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -172,7 +176,7 @@ class CreateProduct extends Component {
       <div className="create-product-wrapper">
         <p className="title">Tạo sản phẩm mới</p>
         <div className="admin-create-form-container">
-          <div style={{width: "100%"}}>
+          <div style={{ width: "100%" }}>
             <Row>
               <Form {...formItemLayout} >
                 <Col span={13}>
@@ -238,10 +242,6 @@ class CreateProduct extends Component {
                       />
                     )}
                   </Form.Item></Col>
-                {/* </Form>
-          </div>
-          <div className="admin-create-form-right">
-            <Form {...formItemLayout} > */}
                 <Col span={11}>
                   <Form.Item label="Ảnh đại diện">
                     {getFieldDecorator('productAvatar', {
