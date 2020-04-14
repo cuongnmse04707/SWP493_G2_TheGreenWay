@@ -108,6 +108,15 @@ let changeavatar = async (req, res) => {
 let changepassword = async (req, res) => {
   // get email from request after handle of authmiddleware
   const email = req.jwtDecoded.data.email;
+  try {
+    cryptr.decrypt(req.body.oldpassword);
+    cryptr.decrypt(req.body.newpassword);
+  } catch (e) {
+    return res.status(200).json({
+      success: false,
+      message: "Mật khẩu cũ/mới của bạn không đúng định dạng",
+    });
+  }
   const oldpassword = cryptr.decrypt(req.body.oldpassword);
   const newpassword = cryptr.decrypt(req.body.newpassword);
   //Luu thong tin tu database

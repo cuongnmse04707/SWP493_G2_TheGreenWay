@@ -594,7 +594,7 @@ let addNewProduct = async (req, res) => {
         ProductPrice: req.body.ProductPrice,
         Description: req.body.Description,
         ProductStatus: ProductStatus,
-        CreateDate: req.body.CreateDate,
+        CreateDate: moment(req.body.CreateDate).format("YYYY-MM-DD"),
         Quantity: QuantityProduct,
         ImageDetail: ImageDetail,
       };
@@ -612,7 +612,11 @@ let addNewProduct = async (req, res) => {
           } else {
             return res
               .status(200)
-              .json({ success: true, message: "Add New Product is Success!",idProduct:idProduct });
+              .json({
+                success: true,
+                message: "Add New Product is Success!",
+                idProduct: idProduct,
+              });
           }
         }
       );

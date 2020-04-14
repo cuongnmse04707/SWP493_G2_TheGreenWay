@@ -104,18 +104,18 @@ let getpostbyid = async (req, res) => {
                 success: true,
                 data: {
                   ...arr[0],
-                  like: arr[0].UserEmail ? "like" : "unLike"
+                  like: arr[0].UserEmail ? "like" : "unLike",
                 },
-                images: "No Images"
+                images: "No Images",
               });
             } else {
               return res.status(200).json({
                 success: true,
                 data: {
                   ...arr[0],
-                  like: arr[0].UserEmail ? "like" : "unLike"
+                  like: arr[0].UserEmail ? "like" : "unLike",
                 },
-                images: arrayImage
+                images: arrayImage,
               });
             }
           }
@@ -150,7 +150,7 @@ let addnewpost = async (req, res) => {
         Content: req.body.Content,
         CreateDate: req.body.CreateDate,
         UpdateDate: req.body.UpdateDate,
-        ImageDetail: ImageDetail
+        ImageDetail: ImageDetail,
       };
       // Luu vao Database
       connectionDB.query("INSERT INTO Posts SET ? ", empty, (err, result) => {
@@ -177,7 +177,7 @@ let addNewImagePost = async (req, res) => {
   //Convert listImage to array
   const empty = {
     PostID: idPost,
-    urlImage: urlImage
+    urlImage: urlImage,
   };
   // Luu vao Database
   connectionDB.query(
@@ -240,7 +240,7 @@ let updatePost = async (req, res) => {
     CreateDate,
     UpdateDate,
     ImageDetail,
-    idPost
+    idPost,
   ]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
@@ -294,7 +294,7 @@ let likePost = async (req, res) => {
         // Chua co thi like
         const empty = {
           UserEmail: email,
-          PostID: idPost
+          PostID: idPost,
         };
         // Luu vao Database
         connectionDB.query(
@@ -324,7 +324,7 @@ let likePost = async (req, res) => {
             // Da ton tai thi tao ma token va gui ve client
             return res.status(200).json({
               success: true,
-              message: "UnLike is Success!"
+              message: "UnLike is Success!",
             });
           }
         });
@@ -412,7 +412,7 @@ let getListPost = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Post !"
+          message: "No Post !",
         });
       } else {
         let sql = `SELECT COUNT(*) AS Total FROM Posts`;
@@ -425,7 +425,7 @@ let getListPost = async (req, res) => {
             const array = await Array.apply(null, results);
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
-            arr.forEach(function(item, index, arrays) {
+            arr.forEach(function (item, index, arrays) {
               item.CreateDate = moment(item.CreateDate)
                 .tz("Asia/Ho_Chi_Minh")
                 .format();
@@ -436,11 +436,11 @@ let getListPost = async (req, res) => {
             // Sua Date
             return res.status(200).json({
               success: true,
-              data: arr.map(el => ({
+              data: arr.map((el) => ({
                 ...el,
-                like: el.UserEmail ? "like" : "unLike"
+                like: el.UserEmail ? "like" : "unLike",
               })),
-              totalPage: totalPage // Total page
+              totalPage: totalPage, // Total page
             });
           }
         });
@@ -525,8 +525,8 @@ let getMuchLike = async (req, res) => {
         success: true,
         data: {
           ...arr[0],
-          like: arr[0].UserEmail ? "like" : "unLike"
-        }
+          like: arr[0].UserEmail ? "like" : "unLike",
+        },
       });
     }
   });
@@ -621,7 +621,7 @@ let fulltextsearchPost = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Post!"
+          message: "No Post!",
         });
       } else {
         // Chay Query de lay total page
@@ -638,7 +638,7 @@ let fulltextsearchPost = async (req, res) => {
             const array = await Array.apply(null, results); // chi dung de lay total
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
-            arr.forEach(function(item, index, arrays) {
+            arr.forEach(function (item, index, arrays) {
               item.CreateDate = moment(item.CreateDate)
                 .tz("Asia/Ho_Chi_Minh")
                 .format();
@@ -648,12 +648,12 @@ let fulltextsearchPost = async (req, res) => {
             });
             return res.status(200).json({
               success: true,
-              data: arr.map(el => ({
+              data: arr.map((el) => ({
                 ...el,
-                like: el.UserEmail ? "like" : "unLike"
+                like: el.UserEmail ? "like" : "unLike",
               })),
               resultsize: array[0].Total,
-              totalPage: totalPage // Total page
+              totalPage: totalPage, // Total page
             });
           }
         });
@@ -691,7 +691,7 @@ let getListPostLike = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Post In List !"
+          message: "No Post In List !",
         });
       } else {
         // Chay Query de lay total page
@@ -710,7 +710,7 @@ let getListPostLike = async (req, res) => {
             const array = await Array.apply(null, results); // chi dung de lay total
             const totalPage = Math.ceil(array[0].Total / pageSize);
             // //Luu vao database
-            arr.forEach(function(item, index, arrays) {
+            arr.forEach(function (item, index, arrays) {
               item.CreateDate = moment(item.CreateDate)
                 .tz("Asia/Ho_Chi_Minh")
                 .format();
@@ -722,7 +722,7 @@ let getListPostLike = async (req, res) => {
               success: true,
               data: arr,
               resultsize: array[0].Total,
-              totalPage: totalPage // Total page
+              totalPage: totalPage, // Total page
             });
           }
         });
@@ -742,5 +742,5 @@ module.exports = {
   getListPost: getListPost,
   fulltextsearchPost: fulltextsearchPost,
   getListPostLike: getListPostLike,
-  getMuchLike: getMuchLike
+  getMuchLike: getMuchLike,
 };

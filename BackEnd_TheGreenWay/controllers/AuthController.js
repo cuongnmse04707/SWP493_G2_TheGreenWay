@@ -25,6 +25,13 @@ let register = async (req, res) => {
   debug(req.body);
   // get email,password
   //const username = req.body.username;
+  try {
+    cryptr.decrypt(req.body.password);
+  } catch (e) {
+    return res
+      .status(200)
+      .json({ success: false, message: "Mật khẩu của bạn không đúng" });
+  }
   const email = req.body.email;
   const password = cryptr.decrypt(req.body.password);
   // validate email
@@ -82,6 +89,13 @@ let login = async (req, res) => {
           .status(200)
           .json({ success: false, message: "Email của bạn không đúng" });
       } else {
+        try {
+          cryptr.decrypt(req.body.password);
+        } catch (e) {
+          return res
+            .status(200)
+            .json({ success: false, message: "Mật khẩu của bạn không đúng" });
+        }
         if (
           cryptr.decrypt(arr[0].password) !== cryptr.decrypt(req.body.password)
         ) {
@@ -261,6 +275,13 @@ let resetPassword = async (req, res) => {
         });
       } else {
         // thuc hien ResetPassword
+        try {
+          cryptr.decrypt(req.body.password);
+        } catch (e) {
+          return res
+            .status(200)
+            .json({ success: false, message: "Mật khẩu của bạn không đúng" });
+        }
         let sqlForgot = `UPDATE Accounts SET password=? WHERE email=?`;
         let queryForgot = mysql.format(sqlForgot, [
           cryptr.encrypt(cryptr.decrypt(req.body.password)),
