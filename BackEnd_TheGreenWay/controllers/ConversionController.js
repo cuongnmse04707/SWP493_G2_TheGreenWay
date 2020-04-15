@@ -32,7 +32,7 @@ let getInfoConversionbyID = async (req, res) => {
           .format();
         return res.status(200).json({
           success: true,
-          data: arr[0]
+          data: arr[0],
         });
       }
     }
@@ -53,9 +53,9 @@ let addNewConversion = async (req, res) => {
       const empty = {
         ConversionID: ConversionID,
         PaperPrice: Number(req.body.PaperPrice),
-        CreatedAt: req.body.CreatedAt,
-        ModifyDate: req.body.ModifyDate,
-        Status: req.body.Status
+        CreatedAt: moment(req.body.CreatedAt).format("YYYY-MM-DD"),
+        ModifyDate: moment(req.body.ModifyDate).format("YYYY-MM-DD"),
+        Status: req.body.Status,
       };
       // Luu vao Database khi chi co 1 cai dc Hoat Dong thoi
       connectionDB.query(
@@ -66,7 +66,7 @@ let addNewConversion = async (req, res) => {
             debug(err);
             return res.status(200).json({
               success: false,
-              message: "Add New Conversion is Unsuccess!"
+              message: "Add New Conversion is Unsuccess!",
             });
           } else {
             if (req.body.Status === "Đang Hoạt Động") {
@@ -78,19 +78,19 @@ let addNewConversion = async (req, res) => {
                 if (err) {
                   return res.status(200).json({
                     success: false,
-                    message: "Add New Conversion is Unsuccess!"
+                    message: "Add New Conversion is Unsuccess!",
                   });
                 } else {
                   return res.status(200).json({
                     success: true,
-                    message: "Add New Conversion is Success!"
+                    message: "Add New Conversion is Success!",
                   });
                 }
               });
             } else {
               return res.status(200).json({
                 success: true,
-                message: "Add New Conversion is Success!"
+                message: "Add New Conversion is Success!",
               });
             }
           }
@@ -106,8 +106,8 @@ let updateConversion = async (req, res) => {
   const idConversion = req.query.idConversion;
   //Get Information Post
   const PaperPrice = Number(req.body.PaperPrice);
-  const CreatedAt = req.body.CreatedAt;
-  const ModifyDate = req.body.ModifyDate;
+  const CreatedAt = moment(req.body.CreatedAt).format("YYYY-MM-DD");
+  const ModifyDate = moment(req.body.ModifyDate).format("YYYY-MM-DD");
   const Status = req.body.Status;
   //Update Post
   let sql = `UPDATE ConversionPaper 
@@ -118,7 +118,7 @@ let updateConversion = async (req, res) => {
     CreatedAt,
     ModifyDate,
     Status,
-    idConversion
+    idConversion,
   ]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
@@ -135,12 +135,12 @@ let updateConversion = async (req, res) => {
           if (err) {
             return res.status(200).json({
               success: false,
-              message: "Update Conversion is Unsuccess!"
+              message: "Update Conversion is Unsuccess!",
             });
           } else {
             return res.status(200).json({
               success: true,
-              message: "Update Conversion is Success!"
+              message: "Update Conversion is Success!",
             });
           }
         });
@@ -179,7 +179,7 @@ let getConversionWorking = async (req, res) => {
           .format();
         return res.status(200).json({
           success: true,
-          data: arr[0]
+          data: arr[0],
         });
       }
     }
@@ -224,7 +224,7 @@ let getListConversion = async (req, res) => {
               arr[0].ModifyDate = moment(arr[0].ModifyDate)
                 .tz("Asia/Ho_Chi_Minh")
                 .format();
-              array.forEach(function(item, index, arrays) {
+              array.forEach(function (item, index, arrays) {
                 item.CreateDate = moment(item.CreateDate)
                   .tz("Asia/Ho_Chi_Minh")
                   .format();
@@ -235,7 +235,7 @@ let getListConversion = async (req, res) => {
               return res.status(200).json({
                 success: true,
                 ConversionWorking: arr[0],
-                ConversionNotWorking: array
+                ConversionNotWorking: array,
               });
             }
           }
@@ -250,5 +250,5 @@ module.exports = {
   addNewConversion: addNewConversion,
   updateConversion: updateConversion,
   getConversionWorking: getConversionWorking,
-  getListConversion: getListConversion
+  getListConversion: getListConversion,
 };
