@@ -33,7 +33,8 @@ const LoginSagas = {
         );
         yield window.localStorage.setItem("email", action.data.email);
         yield window.localStorage.setItem("roles", userInfor.data.roles);
-        window.localStorage.removeItem("token");
+        yield window.localStorage.removeItem("token");
+        yield action.data.callback();
         yield put(LoginActions.loginSucceed(userInfor.data));
       }
     } catch (error) {

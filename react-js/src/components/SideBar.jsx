@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Menu, message } from "antd";
+import { Layout, Menu, message, Spin, Icon } from "antd";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { storage } from "../firebase";
@@ -30,7 +30,8 @@ class SideBar extends Component {
     progress: 0,
     progressClass: "ml-2 progress-bar",
     visiblePassModal: false,
-    loading: false
+    loading: false,
+    stateLoading: false,
   };
 
   componentDidMount() {
@@ -52,11 +53,11 @@ class SideBar extends Component {
         email: this.props.userInformation.email,
         roles: this.props.userInformation.roles,
         DOB: this.props.userInformation.DOB,
-        phone: this.props.userInformation.phone
+        phone: this.props.userInformation.phone,
       });
       if (this.state.DOB) {
         this.setState({
-          DOB: this.state.DOB.slice(0, 10)
+          DOB: this.state.DOB.slice(0, 10),
         });
       }
     }
@@ -65,7 +66,7 @@ class SideBar extends Component {
     ) {
       this.props.updateNotify();
       this.setState({
-        visiblePassModal: false
+        visiblePassModal: false,
       });
       window.location.href = "/account";
     }
@@ -75,14 +76,19 @@ class SideBar extends Component {
     window.localStorage.removeItem("token");
     this.props.history.push("/");
   };
+
   clickImage(e) {
     document.querySelector("#profileImage").click();
   }
-  changeImage = e => {
+
+  changeImage = (e) => {
     if (e.target.files[0]) {
+      this.setState({
+        stateLoading: true,
+      });
       const image = e.target.files[0];
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         document
           .querySelector("#profileDisplay")
           .setAttribute("src", e.target.result);
@@ -92,35 +98,45 @@ class SideBar extends Component {
       const uploadTask = storage.ref(`images/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
-        snapshot => {},
-        error => {
-        },
+        (snapshot) => {},
+        (error) => {},
         () => {
           storage
             .ref("images")
             .child(image.name)
             .getDownloadURL()
-            .then(url => {
+            .then((url) => {
               this.setState({ url });
+              this.setState({
+                stateLoading: false,
+              });
+              // if (this.state.url) {
+              this.props.changeAvatar({
+                urlAvatar: url,
+              });
             });
         }
       );
     }
   };
 
-  handleUpload = () => {
-    if (this.state.url) {
-      this.props.changeAvatar({
-        urlAvatar: this.state.url
-      });
-      window.localStorage.setItem("abc", "a");
-      window.localStorage.setItem("abc1", "a");
-    } else {
-      message.error("Vui lòng chọn ảnh");
-    }
-  };
+  // handleUpload = () => {
+  //   if (this.state.url) {
+  //     this.props.changeAvatar({
+  //       urlAvatar: this.state.url,
+  //     });
+  //     window.localStorage.setItem("abc", "a");
+  //     window.localStorage.setItem("abc1", "a");
+  //   } else {
+  //     message.error("Vui lòng chọn ảnh");
+  //   }
+  // };
 
   render() {
+    const antIcon = (
+      <Icon type="loading-3-quarters" style={{ fontSize: 90 }} spin />
+    );
+    const { stateLoading } = this.state;
     return (
       <Sider
         trigger={null}
@@ -134,6 +150,24 @@ class SideBar extends Component {
             // className="form-group text-center user-avatar"
             style={{ position: "relative", marginTop: "30px" }}
           >
+            {stateLoading ? (
+              <div
+                style={{
+                  zIndex: "200",
+                  background: "#d9d9d98f",
+                  height: "100%",
+                  width: "100%",
+                  position: "absolute",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: "50%",
+                }}
+              >
+                <Spin indicator={antIcon} />
+              </div>
+            ) : null}
+
             <span className="img-div">
               <div
                 className="text-center img-placeholder"
@@ -161,17 +195,12 @@ class SideBar extends Component {
           <div className="user-information">
             <p>{this.state.userName}</p>
           </div>
-          <div className="button-container">
-            <button className="btn-upload" onClick={this.handleUpload}>
-              Cập nhật ảnh đại diện
-            </button>
-          </div>
 
           <Menu
             theme="dark"
             mode="inline"
             defaultSelectedKeys={[
-              `/${this.props.location.pathname.split("/")[1]}`
+              `/${this.props.location.pathname.split("/")[1]}`,
             ]}
           >
             <Menu.Item
@@ -233,30 +262,30 @@ class SideBar extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   collapsed: state.sideBar.collapsed,
   userInformation: state.homePage.userInformation,
   notifyMessage: state.editProfile.notifyMessage,
-  notifyPasswordMessage: state.changePass.notifyMessage
+  notifyPasswordMessage: state.changePass.notifyMessage,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getUserInfor: () => {
       dispatch(HomePageTypes.getInforRequest());
     },
-    editUserProfile: data => {
+    editUserProfile: (data) => {
       dispatch(EditTypes.editRequest(data));
     },
-    changePass: data => {
+    changePass: (data) => {
       dispatch(ChangePassTypes.changeRequest(data));
     },
-    changeAvatar: data => {
+    changeAvatar: (data) => {
       dispatch(EditTypes.uploadRequest(data));
     },
     updateNotify: () => {
       dispatch(EditTypes.updateNotify());
-    }
+    },
   };
 };
 SideBar = withRouter(SideBar);

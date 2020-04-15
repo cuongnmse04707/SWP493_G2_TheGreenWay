@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../../css/login.css";
-import { Form, Icon, Input, Modal, message } from "antd";
+import { Form, Icon, Input, Modal, message, Spin } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import LoginTypes from "../../redux/login-redux";
@@ -10,7 +10,7 @@ const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
 const userNameRegex = /^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
 message.config({
-  top: 100
+  top: 100,
 });
 
 class Login extends Component {
@@ -23,79 +23,90 @@ class Login extends Component {
     reEmail: "",
     rePassword: "",
     logEmail: "",
-    logPassword: ""
+    logPassword: "",
+    statusLoading: false,
   };
+
+  // componentDidMount() {
+  //   this._animation = lottie.loadAnimation({
+  //     container: document.getElementById("animationDOM"), // render vao dau
+  //     renderer: "svg",
+  //     animationData: animationFile, //
+  //     loop: true,
+  //     autoplay: true,
+  //   });
+  // }
 
   handleSignInClick = () => {
     if (this.state.className === "login-container") {
       this.setState({
-        className: "login-container right-panel-active"
+        className: "login-container right-panel-active",
       });
     } else {
       this.setState({
-        className: "login-container"
+        className: "login-container",
       });
     }
   };
 
   showModal = () => {
     this.setState({
-      visible: true
+      visible: true,
     });
   };
 
-  handleOk = e => {
+  handleOk = (e) => {
     e.preventDefault();
     this.props.form.validateFields(["resetEmail"], (err, values) => {
       if (!err) {
         this.props.forgotPassword({
-          email: values.resetEmail
+          email: values.resetEmail,
         });
         this.props.form.resetFields();
       }
     });
   };
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.setState({
-      visible: false
+      visible: false,
     });
   };
 
-  componentDidUpdate() {
-    //if login succeed => redirect to homepage
-    if (this.props.loginSuccess) {
-      // this.props.history.push("/");
-      setTimeout(() => {
-        this.props.history.push("/");
-      }, 1000);
-    }
+  // componentDidUpdate() {
+  //   //if login succeed => redirect to homepage
+  //   if (this.props.loginSuccess) {
+  //     // this.props.history.push("/");
+  //     setTimeout(() => {
+  //       this.props.history.push("/");
+  //     }, 1000);
+  //   }
 
-    if (this.props.registerSuccess) {
-      this.props.updateNotify();
-      this.setState({
-        className: "login-container"
-      });
-    }
+  //   if (this.props.registerSuccess) {
+  //     this.props.updateNotify();
+  //     this.setState({
+  //       className: "login-container",
+  //     });
+  //   }
 
-    if (this.props.forgotSuccess) {
-      this.props.updateNotify();
-      this.setState({
-        visible: false
-      });
-    }
-  }
+  //   if (this.props.forgotSuccess) {
+  //     this.props.updateNotify();
+  //     this.setState({
+  //       visible: false,
+  //     });
+  //   }
+  // }
 
-  handleSignUpSubmit = e => {
+  handleSignUpSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields(
       ["username", "reEmail", "rePassword"],
       (err, values) => {
         if (!err) {
           this.props.userRegister({
-            username: values.username.replace(/\s+/g, ' ').trim(),
+            username: values.username.replace(/\s+/g, " ").trim(),
             email: values.reEmail,
-            password: values.rePassword
+            password: values.rePassword,
           });
           this.props.form.resetFields();
         }
@@ -103,17 +114,29 @@ class Login extends Component {
     );
   };
 
-  handleSignInSubmit = e => {
-    e.preventDefault();
+  handleSignInSubmit = (e) => {
+    // e.preventDefault();
+
     this.props.form.validateFields(
       ["logEmail", "logPassword"],
       (err, values) => {
         if (!err) {
-          this.props.userLogin({
-            email: values.logEmail,
-            password: values.logPassword
+          this.setState({
+            statusLoading: true,
           });
-          this.props.form.resetFields();
+          setTimeout(() => {
+            this.props.userLogin({
+              email: values.logEmail,
+              password: values.logPassword,
+              callback: () => {
+                this.setState({
+                  statusLoading: false,
+                });
+                this.props.form.resetFields();
+                this.props.history.push("/");
+              },
+            });
+          }, 200);
         }
       }
     );
@@ -121,8 +144,28 @@ class Login extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { statusLoading } = this.state;
+    const antIcon = (
+      <Icon type="loading-3-quarters" style={{ fontSize: 100 }} spin />
+    );
     return (
       <div>
+        {statusLoading ? (
+          <div
+            style={{
+              zIndex: "200",
+              background: "#d9d9d98f",
+              height: "100vh",
+              width: "100vw",
+              position: "absolute",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Spin indicator={antIcon} />
+          </div>
+        ) : null}
         {/* <NavBar /> */}
         <div className="login-wrapper">
           {/* <Menu/> */}
@@ -144,32 +187,32 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập tên người dùng"
+                            message: "Vui lòng nhập tên người dùng",
                           },
                           {
                             min: 6,
-                            message: "Tên người dùng phải dài ít nhất 6 kí tự"
+                            message: "Tên người dùng phải dài ít nhất 6 kí tự",
                           },
                           {
                             max: 32,
-                            message: "Tên người dùng không dài quá 32 kí tự"
+                            message: "Tên người dùng không dài quá 32 kí tự",
                           },
                           {
                             pattern: userNameRegex,
                             message:
-                              "Tên người dùng không được chưa kí tự đặc biệt"
-                          }
-                        ]
+                              "Tên người dùng không được chưa kí tự đặc biệt",
+                          },
+                        ],
                       })(
                         <Input
-                        prefix={
-                          <Icon
-                            type="user"
-                            style={{ color: "rgba(0,0,0,.25)" }}
-                          />
-                        }
-                        placeholder="Tên người dùng"
-                      />
+                          prefix={
+                            <Icon
+                              type="user"
+                              style={{ color: "rgba(0,0,0,.25)" }}
+                            />
+                          }
+                          placeholder="Tên người dùng"
+                        />
                       )}
                     </Form.Item>
                     <Form.Item>
@@ -178,14 +221,13 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập email của bạn"
+                            message: "Vui lòng nhập email của bạn",
                           },
                           {
                             pattern: emailRegex,
-                            message:
-                              "Vui lòng nhập đúng định dạng email"
-                          }
-                        ]
+                            message: "Vui lòng nhập đúng định dạng email",
+                          },
+                        ],
                       })(
                         <Input
                           prefix={
@@ -204,14 +246,14 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập mật khẩu của bạn"
+                            message: "Vui lòng nhập mật khẩu của bạn",
                           },
                           {
                             pattern: passwordRegex,
                             message:
-                              "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa"
-                          }
-                        ]
+                              "Mật khẩu phải dài từ 8-10 kí tự, chứa số, kí tự đặc biệt, chữ thường và in hoa",
+                          },
+                        ],
                       })(
                         <Input.Password
                           prefix={
@@ -252,9 +294,9 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập email của bạn"
-                          }
-                        ]
+                            message: "Vui lòng nhập email của bạn",
+                          },
+                        ],
                       })(
                         <Input
                           prefix={
@@ -273,9 +315,9 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập mật khẩu của bạn"
-                          }
-                        ]
+                            message: "Vui lòng nhập mật khẩu của bạn",
+                          },
+                        ],
                       })(
                         <Input.Password
                           prefix={
@@ -349,7 +391,7 @@ class Login extends Component {
               <Form className="login-form">
                 <Form.Item>
                   {getFieldDecorator("resetEmail", {
-                    rules: [{ required: true, message: "Vui lòng nhập email" }]
+                    rules: [{ required: true, message: "Vui lòng nhập email" }],
                   })(
                     <Input
                       prefix={
@@ -372,31 +414,31 @@ class Login extends Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     errorCode: state.userLogin.errorCode,
     forgotMessage: state.userLogin.forgotMessage,
     loginSuccess: state.userLogin.loginSuccess,
     registerSuccess: state.userLogin.registerSuccess,
     forgotSuccess: state.userLogin.forgotSuccess,
-    notifyMessage: state.userLogin.notifyMessage
+    notifyMessage: state.userLogin.notifyMessage,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    userLogin: userInfor => {
+    userLogin: (userInfor) => {
       dispatch(LoginTypes.loginRequest(userInfor));
     },
-    userRegister: reInfor => {
+    userRegister: (reInfor) => {
       dispatch(LoginTypes.signUpRequest(reInfor));
     },
-    forgotPassword: email => {
+    forgotPassword: (email) => {
       dispatch(LoginTypes.forgotRequest(email));
     },
     updateNotify: () => {
       dispatch(LoginTypes.updateNotify());
-    }
+    },
   };
 };
 
