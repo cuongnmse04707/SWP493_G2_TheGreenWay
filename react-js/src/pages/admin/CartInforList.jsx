@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Table,
-  Button,
-  Input,
-  Form,
-  Drawer,
-  Radio,
-  Tooltip,
-} from "antd";
+import { Table, Button, Input, Form, Drawer, Radio, Tooltip } from "antd";
 import "../../css/user-infor-list.css";
 import "../../css/order-history-detail.css";
 import { connect } from "react-redux";
@@ -377,9 +369,19 @@ class CartInforList extends Component {
               pagination={{
                 pageSize: 9,
                 total: (stateTable === "all"
-                  ? listOrder || []
-                  : (listOrder || []).filter(
-                      (el) => el.Description === stateTable
+                  ? this.getDataTable(
+                      (listOrder || []).sort(
+                        (a, b) =>
+                          new Date(b.CreateDate) - new Date(a.CreateDate)
+                      )
+                    )
+                  : this.getDataTable(
+                      (listOrder || [])
+                        .filter((el) => el.Description === stateTable)
+                        .sort(
+                          (a, b) =>
+                            new Date(b.CreateDate) - new Date(a.CreateDate)
+                        )
                     )
                 ).length,
               }}

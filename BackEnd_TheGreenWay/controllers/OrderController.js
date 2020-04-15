@@ -403,100 +403,121 @@ let changeStatusOrder = async (req, res) => {
   const OrderStatusCode = req.body.OrderStatusCode;
   var arraySave = [];
   // Run sql to get orderHistory
-  let sql = ` UPDATE OrderStatusDetail
-              SET OrderStatusID=?,MODEmail=?,ModifyDate=?
-              WHERE OrderStatusDetail.OrderID=?`;
-  const day = new Date();
-  const today = day.getFullYear() + "-" + day.getMonth() + "-" + day.getDate();
-  let query = mysql.format(sql, [OrderStatusCode, email, today, idOrder]);
-  connectionDB.query(query, async (err, result) => {
-    if (err) {
-      return res.status(200).json({ success: false, message: err });
-    } else {
-      //Lay ID day vao Database cho bang Product
-      //Reduce Product
-      //Get InforProduct
-      if (OrderStatusCode === "2") {
-        let sql = `SELECT ProductID,QuantityProduct FROM OrderDetail WHERE OrderDetail.OrderID=?`;
-        let query = mysql.format(sql, [idOrder]);
-        connectionDB.query(query, async (err, resultP) => {
-          if (err) {
-            return res.status(200).json({ success: false, message: err });
-          } else {
-            //Lay ID day vao Database cho bang Product
-            const arrP = await Array.apply(null, resultP);
-            if (arrP.length === 0) {
-              return res.status(200).json({
-                success: false,
-                message: "Error with this order!",
-              });
-            } else {
-              await arrP.forEach(function (item, index, arrays) {
-                // Luu vao Database
-                let sql = `SELECT Quantity,ProductName FROM Products WHERE ProductID=?`;
-                let query = mysql.format(sql, [item.ProductID]);
-                connectionDB.query(query, async (err, resultProduct) => {
-                  if (err) {
-                    return res
-                      .status(200)
-                      .json({ success: false, message: err });
-                  } else {
-                    const arrProduct = await Array.apply(null, resultProduct);
-                    if (arrProduct[0].Quantity - item.QuantityProduct >= 0) {
-                      arraySave.push({
-                        ProductID: item.ProductID,
-                        Quantity: Number(
-                          arrProduct[0].Quantity - item.QuantityProduct
-                        ),
-                      });
-                    } else {
-                      return res.status(200).json({
-                        success: false,
-                        message: `Product ${arrProduct[0].ProductName} is out of order!`,
-                      });
-                    }
-                    if (index === arrP.length - 1) {
-                      await arraySave.forEach(function (item, index, arrays) {
-                        // Luu vao Database
-                        let sql = `UPDATE Products
-                                 SET Quantity=?,ProductStatus=?
-                                 WHERE ProductID=?`;
-                        const ProductStatus =
-                          item.Quantity > 0 ? "Còn Hàng" : "Hết Hàng";
+  if (OrderStatusCode === "2") {
+    let sql = `SELECT ProductID,QuantityProduct FROM OrderDetail WHERE OrderDetail.OrderID=?`;
+    let query = mysql.format(sql, [idOrder]);
+    connectionDB.query(query, async (err, resultP) => {
+      if (err) {
+        return res.status(200).json({ success: false, message: err });
+      } else {
+        //Lay ID day vao Database cho bang Product
+        const arrP = await Array.apply(null, resultP);
+        if (arrP.length === 0) {
+          return res.status(200).json({
+            success: false,
+            message: "Error with this order!",
+          });
+        } else {
+          await arrP.forEach(function (item, index, arrays) {
+            // Luu vao Database
+            let sql = `SELECT Quantity,ProductName FROM Products WHERE ProductID=?`;
+            let query = mysql.format(sql, [item.ProductID]);
+            connectionDB.query(query, async (err, resultProduct) => {
+              if (err) {
+                return res.status(200).json({ success: false, message: err });
+              } else {
+                const arrProduct = await Array.apply(null, resultProduct);
+                if (arrProduct[0].Quantity - item.QuantityProduct >= 0) {
+                  arraySave.push({
+                    ProductID: item.ProductID,
+                    Quantity: Number(
+                      arrProduct[0].Quantity - item.QuantityProduct
+                    ),
+                  });
+                } else {
+                  return res.status(200).json({
+                    success: false,
+                    message: `Product ${arrProduct[0].ProductName} is out of order!`,
+                  });
+                }
+                if (index === arrP.length - 1) {
+                  await arraySave.forEach(function (item, index, arrays) {
+                    // Luu vao Database
+                    let sql = `UPDATE Products
+                             SET Quantity=?,ProductStatus=?
+                             WHERE ProductID=?`;
+                    const ProductStatus =
+                      item.Quantity > 0 ? "Còn Hàng" : "Hết Hàng";
+                    let query = mysql.format(sql, [
+                      item.Quantity,
+                      ProductStatus,
+                      item.ProductID,
+                    ]);
+                    connectionDB.query(query, async (err, resultProductNew) => {
+                      if (err) {
+                        return res
+                          .status(200)
+                          .json({ success: false, message: err });
+                      } else {
+                        let sql = ` UPDATE OrderStatusDetail
+                                    SET OrderStatusID=?,MODEmail=?,ModifyDate=?
+                                    WHERE OrderStatusDetail.OrderID=?`;
+                        const day = new Date();
+                        const today =
+                          day.getFullYear() +
+                          "-" +
+                          day.getMonth() +
+                          "-" +
+                          day.getDate();
                         let query = mysql.format(sql, [
-                          item.Quantity,
-                          ProductStatus,
-                          item.ProductID,
+                          OrderStatusCode,
+                          email,
+                          today,
+                          idOrder,
                         ]);
-                        connectionDB.query(
-                          query,
-                          async (err, resultProductNew) => {
-                            if (err) {
-                              return res
-                                .status(200)
-                                .json({ success: false, message: err });
-                            } else {
-                              return res.status(200).json({
-                                success: true,
-                                message: "Change Status Order Success!",
-                              });
-                            }
+                        connectionDB.query(query, async (err, result) => {
+                          if (err) {
+                            return res
+                              .status(200)
+                              .json({ success: false, message: err });
+                          } else {
+                            return res.status(200).json({
+                              success: true,
+                              message: "Change Status Order Success!",
+                            });
                           }
-                        );
-                      });
-                    }
-                  }
-                });
-              });
-            }
-          }
-        });
-      } else if (OrderStatusCode === "3" || OrderStatusCode === "4") {
-        let sql = ` UPDATE Orders 
-                    SET Orders.EndDate=?
-                    WHERE Orders.OrderID=?`;
-        const today = moment().format(`YYYY-MM-DD`);
-        let query = mysql.format(sql, [today, idOrder]);
+                        });
+                        // return res.status(200).json({
+                        //   success: true,
+                        //   message: "Change Status Order Success!",
+                        // });
+                      }
+                    });
+                  });
+                }
+              }
+            });
+          });
+        }
+      }
+    });
+  } else if (OrderStatusCode === "3" || OrderStatusCode === "4") {
+    let sql = ` UPDATE Orders 
+                SET Orders.EndDate=?
+                WHERE Orders.OrderID=?`;
+    const today = moment().format(`YYYY-MM-DD`);
+    let query = mysql.format(sql, [today, idOrder]);
+    connectionDB.query(query, async (err, result) => {
+      if (err) {
+        return res.status(200).json({ success: false, message: err });
+      } else {
+        let sql = ` UPDATE OrderStatusDetail
+        SET OrderStatusID=?,MODEmail=?,ModifyDate=?
+        WHERE OrderStatusDetail.OrderID=?`;
+        const day = new Date();
+        const today =
+          day.getFullYear() + "-" + day.getMonth() + "-" + day.getDate();
+        let query = mysql.format(sql, [OrderStatusCode, email, today, idOrder]);
         connectionDB.query(query, async (err, result) => {
           if (err) {
             return res.status(200).json({ success: false, message: err });
@@ -507,14 +528,14 @@ let changeStatusOrder = async (req, res) => {
             });
           }
         });
-      } else {
-        return res.status(200).json({
-          success: true,
-          message: "Change Status Order Success!",
-        });
       }
-    }
-  });
+    });
+  } else {
+    return res.status(200).json({
+      success: true,
+      message: "Change Status Order Success!",
+    });
+  }
 };
 
 //Change Status Order by MOD
