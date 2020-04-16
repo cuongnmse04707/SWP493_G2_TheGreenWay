@@ -26,6 +26,7 @@ const LoginSagas = {
       if (!userInfor.data.success) {
         yield put(LoginActions.loginFailed(userInfor.data));
         message.error(userInfor.data.message, 3);
+        yield action.data.callback(false);
       } else {
         yield window.localStorage.setItem(
           "x-access-token",
@@ -34,11 +35,12 @@ const LoginSagas = {
         yield window.localStorage.setItem("email", action.data.email);
         yield window.localStorage.setItem("roles", userInfor.data.roles);
         yield window.localStorage.removeItem("token");
-        yield action.data.callback();
+        yield action.data.callback(true);
         yield put(LoginActions.loginSucceed(userInfor.data));
       }
     } catch (error) {
       yield put(LoginActions.loginFailed(error));
+      yield action.data.callback(false);
     }
   },
 

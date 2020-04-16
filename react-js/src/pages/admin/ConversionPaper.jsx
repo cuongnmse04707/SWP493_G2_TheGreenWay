@@ -6,7 +6,7 @@ import {
   Form,
   Collapse,
   Select,
-  InputNumber
+  InputNumber,
 } from "antd";
 import "../../css/conversion-paper.css";
 import { connect } from "react-redux";
@@ -19,63 +19,57 @@ class ConversionPaper extends Component {
   state = {
     visible: false,
     visibleAddNew: false,
-    newRate: '',
-    status: 'Không Hoạt Động'
+    newRate: "",
+    status: "Không Hoạt Động",
   };
 
   componentDidMount() {
-    this.props.getListConversion()
+    this.props.getListConversion();
   }
 
   applyNewRate = (record) => {
-    this.props.applyNewRate(
-      {
-        params: {
-          ...record,
-          Status: "Đang Hoạt Động"
-        },
-        callback: () => {
-          this.props.getListConversion()
-        }
-      }
-    )
-  }
+    this.props.applyNewRate({
+      params: {
+        ...record,
+        Status: "Đang Hoạt Động",
+      },
+      callback: () => {
+        this.props.getListConversion();
+      },
+    });
+  };
 
   editCoversion = (id) => {
     this.setState({
       visible: true,
     });
-    this.props.getConversionDetail(id)
+    this.props.getConversionDetail(id);
   };
 
-  updateConversion = e => {
-    this.props.form.validateFieldsAndScroll(
-      ["rate"],
-      (err, values) => {
-        if (!err) {
-          this.setState({
-            visible: false,
-          });
-          this.props.applyNewRate(
-            {
-              params: {
-                ConversionID: this.props.conversionDetail.ConversionID,
-                PaperPrice: values.rate,
-                Status: this.props.conversionDetail.Status,
-                CreatedAt: this.props.conversionDetail.CreatedAt,
-                ModifyDate: new Date()
-              },
-              callback: () => {
-                this.props.form.resetFields()
-                this.props.getListConversion()
-              }
-            }
-          )
-        }
-      });
+  updateConversion = (e) => {
+    this.props.form.validateFieldsAndScroll(["rate"], (err, values) => {
+      if (!err) {
+        this.setState({
+          visible: false,
+        });
+        this.props.applyNewRate({
+          params: {
+            ConversionID: this.props.conversionDetail.ConversionID,
+            PaperPrice: values.rate,
+            Status: this.props.conversionDetail.Status,
+            CreatedAt: this.props.conversionDetail.CreatedAt,
+            ModifyDate: new Date(),
+          },
+          callback: () => {
+            this.props.form.resetFields();
+            this.props.getListConversion();
+          },
+        });
+      }
+    });
   };
 
-  addNewConversion = e => {
+  addNewConversion = (e) => {
     this.props.form.validateFieldsAndScroll(
       ["newRate", "status"],
       (err, values) => {
@@ -87,92 +81,92 @@ class ConversionPaper extends Component {
             PaperPrice: values.newRate,
             CreatedAt: new Date(),
             ModifyDate: new Date(),
-            Status: values.status
-          }
-          this.props.addNewConversion(
-            {
-              params,
-              callback: () => {
-                this.props.form.resetFields()
-                this.props.getListConversion()
-              }
-            }
-          )
+            Status: values.status,
+          };
+          this.props.addNewConversion({
+            params,
+            callback: () => {
+              this.props.form.resetFields();
+              this.props.getListConversion();
+            },
+          });
         }
-      });
+      }
+    );
   };
 
-  handleCancel = e => {
-    this.props.form.resetFields()
+  handleCancel = (e) => {
+    this.props.form.resetFields();
     this.setState({
       visible: false,
     });
   };
 
-  handleAddNewCancel = e => {
-    this.props.form.resetFields()
+  handleAddNewCancel = (e) => {
+    this.props.form.resetFields();
     this.setState({
       visibleAddNew: false,
     });
   };
 
   showModalAddNew = () => {
-    this.props.form.resetFields()
+    this.props.form.resetFields();
     this.setState({
       visibleAddNew: true,
     });
-  }
+  };
 
   render() {
     const columnsWorking = [
       {
-        title: 'ConversionID',
-        dataIndex: 'conversionId',
+        title: "ConversionID",
+        dataIndex: "conversionId",
         render: (text, record) => (
           <div>
             <span>{record.ConversionID}</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Tỉ giá/ 1kg',
-        dataIndex: 'rate',
+        title: "Tỉ giá/ 1kg",
+        dataIndex: "rate",
         render: (text, record) => (
           <div>
             <span>{record.PaperPrice} VNĐ</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Trạng thái',
-        dataIndex: 'status',
+        title: "Trạng thái",
+        dataIndex: "status",
         render: (text, record) => (
           <div>
             <Button type="primary">{record.Status}</Button>
           </div>
-        )
+        ),
       },
       {
-        title: 'Ngày tạo',
-        dataIndex: 'createdDate',
+        title: "Ngày tạo",
+        dataIndex: "createdDate",
         render: (text, record) => (
           <div>
             <span>{moment(record.CreatedAt).format("DD/MM/YYYY")}</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Ngày chỉnh sửa',
-        dataIndex: 'modifyDate',
+        title: "Ngày chỉnh sửa",
+        dataIndex: "modifyDate",
         render: (text, record) => (
           <div>
             <span>{moment(record.ModifyDate).format("DD/MM/YYYY")}</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Cập nhật',
-        dataIndex: 'update',
+        title: "Cập nhật",
+        dataIndex: "update",
+        width: "20%",
         render: (text, record) => (
           <div>
             <div
@@ -186,68 +180,69 @@ class ConversionPaper extends Component {
                 color: "white",
                 borderRadius: "4px",
                 marginRight: "10px",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
               onClick={() => {
-                this.editCoversion(record.ConversionID)
+                this.editCoversion(record.ConversionID);
               }}
             >
               <span>Chỉnh sửa</span>
             </div>
           </div>
-        )
-      }
+        ),
+      },
     ];
 
     const columnsNotWorking = [
       {
-        title: 'ConversionID',
-        dataIndex: 'conversionId',
+        title: "ConversionID",
+        dataIndex: "conversionId",
         render: (text, record) => (
           <div>
             <span>{record.ConversionID}</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Tỉ giá/ 1kg',
-        dataIndex: 'rate',
+        title: "Tỉ giá/ 1kg",
+        dataIndex: "rate",
         render: (text, record) => (
           <div>
             <span>{record.PaperPrice} VNĐ</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Trạng thái',
-        dataIndex: 'status',
+        title: "Trạng thái",
+        dataIndex: "status",
         render: (text, record) => (
           <div>
             <Button type="danger">{record.Status}</Button>
           </div>
-        )
+        ),
       },
       {
-        title: 'Ngày tạo',
-        dataIndex: 'createdDate',
+        title: "Ngày tạo",
+        dataIndex: "createdDate",
         render: (text, record) => (
           <div>
             <span>{moment(record.CreatedAt).format("DD/MM/YYYY")}</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Ngày chỉnh sửa',
-        dataIndex: 'modifyDate',
+        title: "Ngày chỉnh sửa",
+        dataIndex: "modifyDate",
         render: (text, record) => (
           <div>
             <span>{moment(record.ModifyDate).format("DD/MM/YYYY")}</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Cập nhật',
-        dataIndex: 'update',
+        title: "Cập nhật",
+        width: "20%",
+        dataIndex: "update",
         render: (text, record) => (
           <div
             style={{
@@ -266,10 +261,10 @@ class ConversionPaper extends Component {
                 color: "white",
                 borderRadius: "4px",
                 marginRight: "10px",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
               onClick={() => {
-                this.editCoversion(record.ConversionID)
+                this.editCoversion(record.ConversionID);
               }}
             >
               <span>Chỉnh sửa</span>
@@ -284,44 +279,56 @@ class ConversionPaper extends Component {
                 width: "auto",
                 color: "white",
                 borderRadius: "4px",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
-              onClick={() => { this.applyNewRate(record) }}
+              onClick={() => {
+                this.applyNewRate(record);
+              }}
             >
               <span>Áp dụng</span>
             </div>
           </div>
         ),
-      }
+      },
     ];
-    const { listWorking, listNotWorking, conversionDetail } = this.props
+    const { listWorking, listNotWorking, conversionDetail } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
         sm: { span: 24 },
         md: { span: 24 },
-        lg: { span: 6 }
+        lg: { span: 6 },
       },
       wrapperCol: {
         xs: { span: 23 },
         sm: { span: 23 },
         md: { span: 23 },
-        lg: { span: 14 }
-      }
+        lg: { span: 14 },
+      },
     };
     return (
       <div className="conversion-wrapper">
         <div className="title">
           <p>Tỉ giá chuyển đổi: số tiền/ 1kg giấy</p>
-          <Button type="primary" onClick={this.showModalAddNew}>+ Thêm tỉ giá</Button>
+          <Button type="primary" onClick={this.showModalAddNew}>
+            + Thêm tỉ giá
+          </Button>
         </div>
-        <Collapse defaultActiveKey={['1']} expandIconPosition={"right"}>
+        <Collapse defaultActiveKey={["1"]} expandIconPosition={"right"}>
           <Panel header="Tỉ giá đang áp dụng" key="1">
-            <Table dataSource={listWorking} columns={columnsWorking} pagination={false} />
+            <Table
+              dataSource={listWorking}
+              columns={columnsWorking}
+              pagination={false}
+            />
           </Panel>
           <Panel header="Tỉ giá không áp dụng" key="2">
-            <Table dataSource={listNotWorking} columns={columnsNotWorking} pagination={false} />
+            <Table
+              dataSource={listNotWorking}
+              columns={columnsNotWorking}
+              pagination={false}
+            />
           </Panel>
         </Collapse>
         <Modal
@@ -337,9 +344,9 @@ class ConversionPaper extends Component {
                 rules: [
                   {
                     required: true,
-                    message: "Vui lòng nhập số tiền"
-                  }
-                ]
+                    message: "Vui lòng nhập số tiền",
+                  },
+                ],
               })(<InputNumber min={1} />)}
             </Form.Item>
           </Form>
@@ -358,18 +365,20 @@ class ConversionPaper extends Component {
                 rules: [
                   {
                     required: true,
-                    message: "Vui lòng nhập số tiền"
-                  }
-                ]
+                    message: "Vui lòng nhập số tiền",
+                  },
+                ],
               })(<InputNumber min={1} />)}
             </Form.Item>
             <Form.Item label="Trạng Thái: ">
               {getFieldDecorator("status", {
                 initialValue: "Không Hoạt Động",
-              })(<Select style={{ width: 200 }} {...this.props}>
-                <Option value="Đang Hoạt Động">Đang Hoạt Động</Option>
-                <Option value="Không Hoạt Động<">Không Hoạt Động</Option>
-              </Select>)}
+              })(
+                <Select style={{ width: 200 }} {...this.props}>
+                  <Option value="Đang Hoạt Động">Đang Hoạt Động</Option>
+                  <Option value="Không Hoạt Động<">Không Hoạt Động</Option>
+                </Select>
+              )}
             </Form.Item>
           </Form>
         </Modal>
@@ -382,7 +391,7 @@ const mapStateToProps = (state) => {
   return {
     listWorking: state.convension.conversionListWorking,
     listNotWorking: state.convension.conversionListNotWorking,
-    conversionDetail: state.convension.conversionDetail
+    conversionDetail: state.convension.conversionDetail,
   };
 };
 
@@ -399,8 +408,11 @@ const mapDispatchToProps = (dispatch) => {
     },
     addNewConversion: (params) => {
       dispatch(ConvensionTypes.addConvensionRequest(params));
-    }
+    },
   };
 };
 const ConversionPaperScreen = Form.create()(ConversionPaper);
-export default connect(mapStateToProps, mapDispatchToProps)(ConversionPaperScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ConversionPaperScreen);

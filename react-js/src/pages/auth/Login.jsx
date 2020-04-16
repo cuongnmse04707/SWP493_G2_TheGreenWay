@@ -128,12 +128,19 @@ class Login extends Component {
             this.props.userLogin({
               email: values.logEmail,
               password: values.logPassword,
-              callback: () => {
-                this.setState({
-                  statusLoading: false,
-                });
-                this.props.form.resetFields();
-                this.props.history.push("/");
+              callback: (value) => {
+                if (value) {
+                  this.setState({
+                    statusLoading: false,
+                  });
+                  this.props.form.resetFields();
+                  this.props.history.push("/");
+                } else {
+                  this.setState({
+                    statusLoading: false,
+                  });
+                  this.props.form.resetFields();
+                }
               },
             });
           }, 200);
