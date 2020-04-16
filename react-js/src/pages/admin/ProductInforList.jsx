@@ -110,7 +110,12 @@ class ProductInforList extends Component {
     if (this.props.productDetail.ImageDetail == "") {
       message.error("Vui lòng chọn ảnh đại diện sản phẩm", 2);
     } else if (this.props.imageDetail.length != 4) {
-      message.error("Vui lòng chọn ảnh chi tiết sản phẩm", 2);
+      message.error(
+        `Vui lòng chọn thêm ${
+          4 - this.props.imageDetail.length
+        } ảnh chi tiết sản phẩm !`,
+        2
+      );
     } else if (valueDes == "") {
       message.error("Vui lòng nhập mô tả sản phẩm", 2);
     } else {
