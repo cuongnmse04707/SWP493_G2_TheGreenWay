@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import AdminProductTypes from "../../redux/admin-product-redux";
 import CKEditor from "ckeditor4-react";
 import { storage } from "../../firebase";
+import { get } from "lodash";
 
 const { Option } = Select;
 
@@ -271,184 +272,110 @@ class ProductInforList extends Component {
             rowkey="id"
           />
         </div>
-        <Modal
-          visible={this.state.visible}
-          onOk={this.updateProductInfor}
-          onCancel={this.handleModalCancel}
-          width={"80%"}
-        >
-          <Row>
-            <Form {...formItemLayout}>
-              <Col span={13}>
-                <Form.Item label="Tên sản phẩm">
-                  {getFieldDecorator("productName", {
-                    initialValue: productDetail.ProductName,
-                    rules: [
-                      {
-                        required: true,
-                        message: "Vui lòng nhập tên sản phẩm",
-                      },
-                    ],
-                  })(<Input />)}
-                </Form.Item>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <Form.Item label="Giá sản phẩm">
-                    {getFieldDecorator("productPrice", {
-                      initialValue: productDetail.ProductPrice,
+        {productDetail.Description !== undefined ? (
+          <Modal
+            visible={this.state.visible}
+            onOk={this.updateProductInfor}
+            onCancel={this.handleModalCancel}
+            width={"80%"}
+          >
+            <Row>
+              <Form {...formItemLayout}>
+                <Col span={13}>
+                  <Form.Item label="Tên sản phẩm">
+                    {getFieldDecorator("productName", {
+                      initialValue: productDetail.ProductName,
                       rules: [
                         {
                           required: true,
-                          message: "Vui lòng nhập giá sản phẩm",
+                          message: "Vui lòng nhập tên sản phẩm",
                         },
                       ],
-                    })(<InputNumber min={0} type="number" />)}
+                    })(<Input />)}
                   </Form.Item>
-                  <Form.Item label="Số lượng">
-                    {getFieldDecorator("productQuantity", {
-                      initialValue: productDetail.Quantity,
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Form.Item label="Giá sản phẩm">
+                      {getFieldDecorator("productPrice", {
+                        initialValue: productDetail.ProductPrice,
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập giá sản phẩm",
+                          },
+                        ],
+                      })(<InputNumber min={0} type="number" />)}
+                    </Form.Item>
+                    <Form.Item label="Số lượng">
+                      {getFieldDecorator("productQuantity", {
+                        initialValue: productDetail.Quantity,
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập số lượng sản phẩm",
+                          },
+                        ],
+                      })(<InputNumber min={0} type="number" />)}
+                    </Form.Item>
+                    <Form.Item label="Loại sản phẩm">
+                      {getFieldDecorator("category", {
+                        initialValue: productDetail.CategoryID,
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập loại sản phẩm",
+                          },
+                        ],
+                      })(
+                        <Select
+                          {...this.props}
+                          style={{ width: 160 }}
+                          onChange={this.handleCategoryChange}
+                        >
+                          <Option value="1">Cây văn phòng</Option>
+                          <Option value="2">Đồ tái chế</Option>
+                        </Select>
+                      )}
+                    </Form.Item>
+                  </div>
+                  <Form.Item label="Mô tả sản phẩm">
+                    {getFieldDecorator("productDescription", {
+                      // initialValue: productDetail.Description,
                       rules: [
                         {
                           required: true,
-                          message: "Vui lòng nhập số lượng sản phẩm",
-                        },
-                      ],
-                    })(<InputNumber min={0} type="number" />)}
-                  </Form.Item>
-                  <Form.Item label="Loại sản phẩm">
-                    {getFieldDecorator("category", {
-                      initialValue: productDetail.CategoryID,
-                      rules: [
-                        {
-                          required: true,
-                          message: "Vui lòng nhập loại sản phẩm",
+                          message: "Vui lòng nhập mô tả sản phẩm",
                         },
                       ],
                     })(
-                      <Select
-                        {...this.props}
-                        style={{ width: 160 }}
-                        onChange={this.handleCategoryChange}
-                      >
-                        <Option value="1">Cây văn phòng</Option>
-                        <Option value="2">Đồ tái chế</Option>
-                      </Select>
-                    )}
-                  </Form.Item>
-                </div>
-                <Form.Item label="Mô tả sản phẩm">
-                  {getFieldDecorator("productDescription", {
-                    initialValue: productDetail.Description,
-                    rules: [
-                      {
-                        required: true,
-                        message: "Vui lòng nhập mô tả sản phẩm",
-                      },
-                    ],
-                  })(
-                    <CKEditor
-                      data={productDetail.Description}
-                      onChange={(evt) => {
-                        this.setState({
-                          valueDes: evt.editor.getData(),
-                        });
-                      }}
-                    />
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={11}>
-                <Form.Item label="Ảnh đại diện">
-                  {getFieldDecorator("productAvatar", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Vui lòng nhập tên sản phẩm",
-                      },
-                    ],
-                  })(
-                    <Upload
-                      name="avatar"
-                      listType="picture-card"
-                      className="avatar-uploader"
-                      showUploadList={false}
-                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                      beforeUpload={(file) => {
-                        const isJpgOrPng =
-                          file.type === "image/jpeg" ||
-                          file.type === "image/png";
-                        if (isJpgOrPng) {
-                          const isLt2M = file.size / 1024 / 1024 < 3;
-                          if (!isLt2M) {
-                            message.error("Image must smaller than 3MB!");
-                          } else {
-                            const uploadTask = storage
-                              .ref(`images/${file.name}`)
-                              .put(file);
-                            // Set vao state
-                            uploadTask.on(
-                              "state_changed",
-                              (snapshot) => {},
-                              (error) => {},
-                              () => {
-                                storage
-                                  .ref("images")
-                                  .child(file.name)
-                                  .getDownloadURL()
-                                  .then((url) => {
-                                    this.props.changeAvatarImage(url);
-                                  });
-                              }
-                            );
-                          }
-                        } else {
-                          message.error(
-                            "File upload phải có đuôi .jpg hoặc .png"
-                          );
-                        }
-                      }}
-                    >
-                      {productDetail.ImageDetail ? (
-                        <img
-                          src={productDetail.ImageDetail}
-                          alt="avatar"
-                          style={{ width: "100%" }}
-                        />
-                      ) : (
-                        uploadAvatarButton
-                      )}
-                    </Upload>
-                  )}
-                </Form.Item>
-
-                <Form.Item label="Ảnh chi tiết">
-                  {getFieldDecorator("imageDetail", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Vui lòng nhập mô tả sản phẩm",
-                      },
-                    ],
-                  })(
-                    <div className="clearfix">
-                      <Upload
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                        listType="picture-card"
-                        fileList={(imageDetail || []).map((item) => {
-                          return {
-                            uid: item.ImageID || "1",
-                            name: "image.png",
-                            status: "done",
-                            url: item.urlImage || "",
-                          };
-                        })}
-                        onPreview={this.handlePreview}
-                        onRemove={(file) => {
-                          this.props.deleteDetailImage({
-                            idImage: file.uid,
+                      <CKEditor
+                        data={get(productDetail, "Description")}
+                        onChange={(evt) => {
+                          this.setState({
+                            valueDes: evt.editor.getData(),
                           });
                         }}
+                      />
+                    )}
+                  </Form.Item>
+                </Col>
+                <Col span={11}>
+                  <Form.Item label="Ảnh đại diện">
+                    {getFieldDecorator("productAvatar", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Vui lòng nhập tên sản phẩm",
+                        },
+                      ],
+                    })(
+                      <Upload
+                        name="avatar"
+                        listType="picture-card"
+                        className="avatar-uploader"
+                        showUploadList={false}
+                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                         beforeUpload={(file) => {
                           const isJpgOrPng =
                             file.type === "image/jpeg" ||
@@ -458,7 +385,6 @@ class ProductInforList extends Component {
                             if (!isLt2M) {
                               message.error("Image must smaller than 3MB!");
                             } else {
-                              //Link Image
                               const uploadTask = storage
                                 .ref(`images/${file.name}`)
                                 .put(file);
@@ -473,11 +399,7 @@ class ProductInforList extends Component {
                                     .child(file.name)
                                     .getDownloadURL()
                                     .then((url) => {
-                                      this.props.addDetailImage({
-                                        ProductID: this.props.productDetail
-                                          .ProductID,
-                                        urlImage: url,
-                                      });
+                                      this.props.changeAvatarImage(url);
                                     });
                                 }
                               );
@@ -489,28 +411,109 @@ class ProductInforList extends Component {
                           }
                         }}
                       >
-                        {(imageDetail || []).length >= 4
-                          ? null
-                          : uploadImageDetailButton}
+                        {productDetail.ImageDetail ? (
+                          <img
+                            src={productDetail.ImageDetail}
+                            alt="avatar"
+                            style={{ width: "100%" }}
+                          />
+                        ) : (
+                          uploadAvatarButton
+                        )}
                       </Upload>
-                      <Modal
-                        visible={previewVisible}
-                        footer={null}
-                        onCancel={this.handleCancel}
-                      >
-                        <img
-                          alt="example"
-                          style={{ width: "100%" }}
-                          src={previewImage}
-                        />
-                      </Modal>
-                    </div>
-                  )}
-                </Form.Item>
-              </Col>
-            </Form>
-          </Row>
-        </Modal>
+                    )}
+                  </Form.Item>
+
+                  <Form.Item label="Ảnh chi tiết">
+                    {getFieldDecorator("imageDetail", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Vui lòng nhập mô tả sản phẩm",
+                        },
+                      ],
+                    })(
+                      <div className="clearfix">
+                        <Upload
+                          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                          listType="picture-card"
+                          fileList={(imageDetail || []).map((item) => {
+                            return {
+                              uid: item.ImageID || "1",
+                              name: "image.png",
+                              status: "done",
+                              url: item.urlImage || "",
+                            };
+                          })}
+                          onPreview={this.handlePreview}
+                          onRemove={(file) => {
+                            this.props.deleteDetailImage({
+                              idImage: file.uid,
+                            });
+                          }}
+                          beforeUpload={(file) => {
+                            const isJpgOrPng =
+                              file.type === "image/jpeg" ||
+                              file.type === "image/png";
+                            if (isJpgOrPng) {
+                              const isLt2M = file.size / 1024 / 1024 < 3;
+                              if (!isLt2M) {
+                                message.error("Image must smaller than 3MB!");
+                              } else {
+                                //Link Image
+                                const uploadTask = storage
+                                  .ref(`images/${file.name}`)
+                                  .put(file);
+                                // Set vao state
+                                uploadTask.on(
+                                  "state_changed",
+                                  (snapshot) => {},
+                                  (error) => {},
+                                  () => {
+                                    storage
+                                      .ref("images")
+                                      .child(file.name)
+                                      .getDownloadURL()
+                                      .then((url) => {
+                                        this.props.addDetailImage({
+                                          ProductID: this.props.productDetail
+                                            .ProductID,
+                                          urlImage: url,
+                                        });
+                                      });
+                                  }
+                                );
+                              }
+                            } else {
+                              message.error(
+                                "File upload phải có đuôi .jpg hoặc .png"
+                              );
+                            }
+                          }}
+                        >
+                          {(imageDetail || []).length >= 4
+                            ? null
+                            : uploadImageDetailButton}
+                        </Upload>
+                        <Modal
+                          visible={previewVisible}
+                          footer={null}
+                          onCancel={this.handleCancel}
+                        >
+                          <img
+                            alt="example"
+                            style={{ width: "100%" }}
+                            src={previewImage}
+                          />
+                        </Modal>
+                      </div>
+                    )}
+                  </Form.Item>
+                </Col>
+              </Form>
+            </Row>
+          </Modal>
+        ) : null}
       </div>
     );
   }
