@@ -71,10 +71,10 @@ class PostInforList extends Component {
   };
 
   updatePostInfor = () => {
-    if (this.props.postDetail.ImageDetail = '') {
-      message.error('Vui lòng chọn ảnh đại diện bài viết', 2)
-    } else if (this.state.data == '') {
-      message.error('Vui lòng nhập nội dung bài viết', 2)
+    if ((this.props.postDetail.ImageDetail = "")) {
+      message.error("Vui lòng chọn ảnh đại diện bài viết", 2);
+    } else if (this.state.data == "") {
+      message.error("Vui lòng nhập nội dung bài viết", 2);
     } else {
       this.setState({
         visible: false,
@@ -248,26 +248,40 @@ class PostInforList extends Component {
                               showUploadList={false}
                               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                               beforeUpload={(file) => {
-                                //Link Image
-                                const uploadTask = storage
-                                  .ref(`images/${file.name}`)
-                                  .put(file);
-                                // Set vao state
-                                uploadTask.on(
-                                  "state_changed",
-                                  (snapshot) => { },
-                                  (error) => {
-                                  },
-                                  () => {
-                                    storage
-                                      .ref("images")
-                                      .child(file.name)
-                                      .getDownloadURL()
-                                      .then((url) => {
-                                        this.props.changeAvatarImage(url);
-                                      });
+                                const isJpgOrPng =
+                                  file.type === "image/jpeg" ||
+                                  file.type === "image/png";
+                                if (isJpgOrPng) {
+                                  const isLt2M = file.size / 1024 / 1024 < 3;
+                                  if (!isLt2M) {
+                                    message.error(
+                                      "Image must smaller than 3MB!"
+                                    );
+                                  } else {
+                                    const uploadTask = storage
+                                      .ref(`images/${file.name}`)
+                                      .put(file);
+                                    // Set vao state
+                                    uploadTask.on(
+                                      "state_changed",
+                                      (snapshot) => {},
+                                      (error) => {},
+                                      () => {
+                                        storage
+                                          .ref("images")
+                                          .child(file.name)
+                                          .getDownloadURL()
+                                          .then((url) => {
+                                            this.props.changeAvatarImage(url);
+                                          });
+                                      }
+                                    );
                                   }
-                                );
+                                } else {
+                                  message.error(
+                                    "File upload phải có định dạng .jpg hoặc .png"
+                                  );
+                                }
                               }}
                             >
                               {postDetail.ImageDetail ? (
@@ -277,8 +291,8 @@ class PostInforList extends Component {
                                   style={{ width: "100%" }}
                                 />
                               ) : (
-                                  uploadAvatarButton
-                                )}
+                                uploadAvatarButton
+                              )}
                             </Upload>
                           )}
                         </Form.Item>
@@ -296,28 +310,43 @@ class PostInforList extends Component {
                               showUploadList={false}
                               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                               beforeUpload={(file) => {
-                                //Link Image
-                                const uploadTask = storage
-                                  .ref(`images/${file.name}`)
-                                  .put(file);
-                                // Set vao state
-                                uploadTask.on(
-                                  "state_changed",
-                                  (snapshot) => { },
-                                  (error) => {
-                                  },
-                                  () => {
-                                    storage
-                                      .ref("images")
-                                      .child(file.name)
-                                      .getDownloadURL()
-                                      .then((url) => {
-                                        this.setState({
-                                          postImageDetail: url,
-                                        });
-                                      });
+                                const isJpgOrPng =
+                                  file.type === "image/jpeg" ||
+                                  file.type === "image/png";
+                                if (isJpgOrPng) {
+                                  const isLt2M = file.size / 1024 / 1024 < 3;
+                                  if (!isLt2M) {
+                                    message.error(
+                                      "Image must smaller than 3MB!"
+                                    );
+                                  } else {
+                                    //Link Image
+                                    const uploadTask = storage
+                                      .ref(`images/${file.name}`)
+                                      .put(file);
+                                    // Set vao state
+                                    uploadTask.on(
+                                      "state_changed",
+                                      (snapshot) => {},
+                                      (error) => {},
+                                      () => {
+                                        storage
+                                          .ref("images")
+                                          .child(file.name)
+                                          .getDownloadURL()
+                                          .then((url) => {
+                                            this.setState({
+                                              postImageDetail: url,
+                                            });
+                                          });
+                                      }
+                                    );
                                   }
-                                );
+                                } else {
+                                  message.error(
+                                    "File upload phải có định dạng .jpg hoặc .png"
+                                  );
+                                }
                               }}
                             >
                               {this.state.postImageDetail ? (
@@ -327,8 +356,8 @@ class PostInforList extends Component {
                                   style={{ width: "100%" }}
                                 />
                               ) : (
-                                  uploadAvatarButton
-                                )}
+                                uploadAvatarButton
+                              )}
                             </Upload>
                           )}
                         </Form.Item>

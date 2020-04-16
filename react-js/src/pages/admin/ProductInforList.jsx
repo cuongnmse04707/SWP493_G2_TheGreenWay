@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import '../../css/admin-product-infor.css';
+import React, { Component } from "react";
+import "../../css/admin-product-infor.css";
 import {
   Form,
   Input,
@@ -13,17 +13,17 @@ import {
   Row,
   Col,
   Table,
-} from 'antd';
+} from "antd";
 import { connect } from "react-redux";
 import AdminProductTypes from "../../redux/admin-product-redux";
-import CKEditor from 'ckeditor4-react';
+import CKEditor from "ckeditor4-react";
 import { storage } from "../../firebase";
 
 const { Option } = Select;
 
 function getBase64Avatar(img, callback) {
   const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
+  reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
 }
 
@@ -32,7 +32,7 @@ function getBase64(file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 }
 
@@ -41,36 +41,36 @@ class ProductInforList extends Component {
     visible: false,
     loading: false,
     previewVisible: false,
-    previewImage: '',
+    previewImage: "",
     fileList: [],
-    productId: '',
-    valueDes: ''
-  }
+    productId: "",
+    valueDes: "",
+  };
 
-  handleChange = info => {
-    if (info.file.status === 'uploading') {
+  handleChange = (info) => {
+    if (info.file.status === "uploading") {
       this.setState({ loading: true });
       return;
     }
-    if (info.file.status === 'done') {
+    if (info.file.status === "done") {
       // Get this url from response in real world.
-      getBase64Avatar(info.file.originFileObj, imageUrl =>
+      getBase64Avatar(info.file.originFileObj, (imageUrl) =>
         this.setState({
           imageUrl,
           loading: false,
-        }),
+        })
       );
     }
   };
 
   handleImageDetailChange = ({ fileList }) => {
-    this.setState({ fileList })
+    this.setState({ fileList });
   };
 
   //image detail
   handleCancel = () => this.setState({ previewVisible: false });
 
-  handlePreview = async file => {
+  handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -81,39 +81,38 @@ class ProductInforList extends Component {
     });
   };
 
-  handleCategoryChange(value) {
-  }
+  handleCategoryChange(value) {}
 
   componentDidMount() {
-    this.props.getProductList()
+    this.props.getProductList();
   }
 
-  handleModalCancel = e => {
+  handleModalCancel = (e) => {
     this.setState({
       visible: false,
-    })
-  }
+    });
+  };
 
   viewProductDetail = (id) => {
-    this.props.form.resetFields()
+    this.props.form.resetFields();
     this.setState({
       visible: true,
-      productId: id
+      productId: id,
     });
     const params = {
-      idProduct: id
-    }
-    this.props.getProductDetail(params)
-  }
+      idProduct: id,
+    };
+    this.props.getProductDetail(params);
+  };
 
   updateProductInfor = () => {
-    const {valueDes} = this.state
-    if(this.props.productDetail.ImageDetail == '') {
-      message.error('Vui lòng chọn ảnh đại diện sản phẩm',2)
-    } else if(this.props.imageDetail.length != 4){
-      message.error('Vui lòng chọn ảnh chi tiết sản phẩm',2)
-    } else if(valueDes == ''){
-      message.error('Vui lòng nhập mô tả sản phẩm',2)
+    const { valueDes } = this.state;
+    if (this.props.productDetail.ImageDetail == "") {
+      message.error("Vui lòng chọn ảnh đại diện sản phẩm", 2);
+    } else if (this.props.imageDetail.length != 4) {
+      message.error("Vui lòng chọn ảnh chi tiết sản phẩm", 2);
+    } else if (valueDes == "") {
+      message.error("Vui lòng nhập mô tả sản phẩm", 2);
     } else {
       this.setState({
         visible: false,
@@ -123,7 +122,7 @@ class ProductInforList extends Component {
         (err, values) => {
           if (!err) {
             this.props.updateProduct({
-              params : {
+              params: {
                 idProduct: this.state.productId,
                 CategoryID: values.category,
                 ProductName: values.productName,
@@ -131,17 +130,17 @@ class ProductInforList extends Component {
                 Description: valueDes,
                 Quantity: values.productQuantity,
                 ImageDetail: this.props.productDetail.ImageDetail,
-                CreateDate: this.props.productDetail.CreateDate
+                CreateDate: this.props.productDetail.CreateDate,
               },
               callback: () => {
-                this.props.form.resetFields()
-              }
-            })
-
+                this.props.form.resetFields();
+              },
+            });
           }
-        });
+        }
+      );
     }
-  }
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -150,14 +149,14 @@ class ProductInforList extends Component {
         xs: { span: 24 },
         sm: { span: 24 },
         md: { span: 24 },
-        lg: { span: 14 }
+        lg: { span: 14 },
       },
       wrapperCol: {
         xs: { span: 22 },
         sm: { span: 22 },
         md: { span: 22 },
-        lg: { span: 22 }
-      }
+        lg: { span: 22 },
+      },
     };
     const columns = [
       {
@@ -167,10 +166,10 @@ class ProductInforList extends Component {
           <div>
             <span>{record.ProductID}</span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Tên Sản Phẩm',
+        title: "Tên Sản Phẩm",
         dataIndex: "ProductName",
         render: (text, record) => (
           <div>
@@ -183,7 +182,7 @@ class ProductInforList extends Component {
               {record.ProductName}
             </span>
           </div>
-        )
+        ),
       },
       {
         title: "Giá Tiền",
@@ -192,7 +191,7 @@ class ProductInforList extends Component {
           <div>
             <span>{record.ProductPrice} VNĐ</span>
           </div>
-        )
+        ),
       },
       {
         title: "Lượt thích",
@@ -201,7 +200,7 @@ class ProductInforList extends Component {
           <div>
             <span>{record.NumberOfLikes}</span>
           </div>
-        )
+        ),
       },
       {
         title: "Số lượng",
@@ -210,30 +209,40 @@ class ProductInforList extends Component {
           <div>
             <span>{record.Quantity}</span>
           </div>
-        )
+        ),
       },
       {
         title: "Trạng thái",
         dataIndex: "status",
         render: (text, record) => (
           <div>
-            <span>{Number(record.Quantity) === 0 ? 'Hết Hàng' : "Còn Hàng"}</span>
+            <span>
+              {Number(record.Quantity) === 0 ? "Hết Hàng" : "Còn Hàng"}
+            </span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Tùy chọn',
-        dataIndex: 'address',
+        title: "Tùy chọn",
+        dataIndex: "address",
         render: (text, record) => (
           <div>
-            <Button type="primary" className="mr-3" onClick={() => { this.viewProductDetail(record.ProductID) }}>Chỉnh sửa</Button>
+            <Button
+              type="primary"
+              className="mr-3"
+              onClick={() => {
+                this.viewProductDetail(record.ProductID);
+              }}
+            >
+              Chỉnh sửa
+            </Button>
           </div>
-        )
+        ),
       },
     ];
     const uploadAvatarButton = (
       <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
+        <Icon type={this.state.loading ? "loading" : "plus"} />
         <div className="ant-upload-text">Upload</div>
       </div>
     );
@@ -245,12 +254,17 @@ class ProductInforList extends Component {
       </div>
     );
     const { imageUrl } = this.state;
-    const { productList, productDetail, imageDetail } = this.props
+    const { productList, productDetail, imageDetail } = this.props;
     return (
       <div className="admin-product-wrapper">
         <p className="title">Thông tin sản phẩm</p>
         <div className="admin-product-table">
-          <Table dataSource={productList} columns={columns} pagination={{ pageSize: 5 }} rowkey="id" />
+          <Table
+            dataSource={productList}
+            columns={columns}
+            pagination={{ pageSize: 5 }}
+            rowkey="id"
+          />
         </div>
         <Modal
           visible={this.state.visible}
@@ -259,53 +273,59 @@ class ProductInforList extends Component {
           width={"80%"}
         >
           <Row>
-            <Form {...formItemLayout} >
+            <Form {...formItemLayout}>
               <Col span={13}>
                 <Form.Item label="Tên sản phẩm">
-                  {getFieldDecorator('productName', {
+                  {getFieldDecorator("productName", {
                     initialValue: productDetail.ProductName,
                     rules: [
                       {
                         required: true,
-                        message: 'Vui lòng nhập tên sản phẩm',
+                        message: "Vui lòng nhập tên sản phẩm",
                       },
                     ],
                   })(<Input />)}
                 </Form.Item>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <Form.Item label="Giá sản phẩm">
-                    {getFieldDecorator('productPrice', {
+                    {getFieldDecorator("productPrice", {
                       initialValue: productDetail.ProductPrice,
                       rules: [
                         {
                           required: true,
-                          message: 'Vui lòng nhập giá sản phẩm',
+                          message: "Vui lòng nhập giá sản phẩm",
                         },
                       ],
-                    })(<InputNumber min={0}  type="number" />)}
+                    })(<InputNumber min={0} type="number" />)}
                   </Form.Item>
                   <Form.Item label="Số lượng">
-                    {getFieldDecorator('productQuantity', {
+                    {getFieldDecorator("productQuantity", {
                       initialValue: productDetail.Quantity,
                       rules: [
                         {
                           required: true,
-                          message: 'Vui lòng nhập số lượng sản phẩm',
+                          message: "Vui lòng nhập số lượng sản phẩm",
                         },
                       ],
                     })(<InputNumber min={0} type="number" />)}
                   </Form.Item>
                   <Form.Item label="Loại sản phẩm">
-                    {getFieldDecorator('category', {
+                    {getFieldDecorator("category", {
                       initialValue: productDetail.CategoryID,
                       rules: [
                         {
                           required: true,
-                          message: 'Vui lòng nhập loại sản phẩm',
+                          message: "Vui lòng nhập loại sản phẩm",
                         },
                       ],
                     })(
-                      <Select {...this.props} style={{ width: 160 }} onChange={this.handleCategoryChange}>
+                      <Select
+                        {...this.props}
+                        style={{ width: 160 }}
+                        onChange={this.handleCategoryChange}
+                      >
                         <Option value="1">Cây văn phòng</Option>
                         <Option value="2">Đồ tái chế</Option>
                       </Select>
@@ -313,66 +333,96 @@ class ProductInforList extends Component {
                   </Form.Item>
                 </div>
                 <Form.Item label="Mô tả sản phẩm">
-                  {getFieldDecorator('productDescription', {
+                  {getFieldDecorator("productDescription", {
                     initialValue: productDetail.Description,
                     rules: [
                       {
                         required: true,
-                        message: 'Vui lòng nhập mô tả sản phẩm',
+                        message: "Vui lòng nhập mô tả sản phẩm",
                       },
                     ],
                   })(
-                    <CKEditor  data={productDetail.Description} onChange={(evt)=>{this.setState({
-                      valueDes : evt.editor.getData()
-                    })}}/>
+                    <CKEditor
+                      data={productDetail.Description}
+                      onChange={(evt) => {
+                        this.setState({
+                          valueDes: evt.editor.getData(),
+                        });
+                      }}
+                    />
                   )}
-                </Form.Item></Col>
+                </Form.Item>
+              </Col>
               <Col span={11}>
                 <Form.Item label="Ảnh đại diện">
-                  {getFieldDecorator('productAvatar', {
+                  {getFieldDecorator("productAvatar", {
                     rules: [
                       {
                         required: true,
-                        message: 'Vui lòng nhập tên sản phẩm',
+                        message: "Vui lòng nhập tên sản phẩm",
                       },
                     ],
-                  })(<Upload
-                    name="avatar"
-                    listType="picture-card"
-                    className="avatar-uploader"
-                    showUploadList={false}
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                    beforeUpload={(file) => {
-                      const uploadTask = storage.ref(`images/${file.name}`).put(file);
-                      // Set vao state
-                      uploadTask.on(
-                        "state_changed",
-                        snapshot => {
-                        },
-                        error => {
-                        },
-                        () => {
-                          storage
-                            .ref("images")
-                            .child(file.name)
-                            .getDownloadURL()
-                            .then(url => {
-                              this.props.changeAvatarImage(url)
-                            });
+                  })(
+                    <Upload
+                      name="avatar"
+                      listType="picture-card"
+                      className="avatar-uploader"
+                      showUploadList={false}
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      beforeUpload={(file) => {
+                        const isJpgOrPng =
+                          file.type === "image/jpeg" ||
+                          file.type === "image/png";
+                        if (isJpgOrPng) {
+                          const isLt2M = file.size / 1024 / 1024 < 3;
+                          if (!isLt2M) {
+                            message.error("Image must smaller than 3MB!");
+                          } else {
+                            const uploadTask = storage
+                              .ref(`images/${file.name}`)
+                              .put(file);
+                            // Set vao state
+                            uploadTask.on(
+                              "state_changed",
+                              (snapshot) => {},
+                              (error) => {},
+                              () => {
+                                storage
+                                  .ref("images")
+                                  .child(file.name)
+                                  .getDownloadURL()
+                                  .then((url) => {
+                                    this.props.changeAvatarImage(url);
+                                  });
+                              }
+                            );
+                          }
+                        } else {
+                          message.error(
+                            "File upload phải có đuôi .jpg hoặc .png"
+                          );
                         }
-                      );
-                    }}
-                  >
-                    {productDetail.ImageDetail ? <img src={productDetail.ImageDetail} alt="avatar" style={{ width: '100%' }} /> : uploadAvatarButton}
-                  </Upload>)}
+                      }}
+                    >
+                      {productDetail.ImageDetail ? (
+                        <img
+                          src={productDetail.ImageDetail}
+                          alt="avatar"
+                          style={{ width: "100%" }}
+                        />
+                      ) : (
+                        uploadAvatarButton
+                      )}
+                    </Upload>
+                  )}
                 </Form.Item>
 
                 <Form.Item label="Ảnh chi tiết">
-                  {getFieldDecorator('imageDetail', {
+                  {getFieldDecorator("imageDetail", {
                     rules: [
                       {
                         required: true,
-                        message: 'Vui lòng nhập mô tả sản phẩm',
+                        message: "Vui lòng nhập mô tả sản phẩm",
                       },
                     ],
                   })(
@@ -380,51 +430,74 @@ class ProductInforList extends Component {
                       <Upload
                         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                         listType="picture-card"
-                        fileList={
-                          (imageDetail || []).map((item) => {
-                            return ({
-                              uid: item.ImageID || '1',
-                              name: 'image.png',
-                              status: 'done',
-                              url: item.urlImage || ''
-                            })
-                          })
-                        }
+                        fileList={(imageDetail || []).map((item) => {
+                          return {
+                            uid: item.ImageID || "1",
+                            name: "image.png",
+                            status: "done",
+                            url: item.urlImage || "",
+                          };
+                        })}
                         onPreview={this.handlePreview}
                         onRemove={(file) => {
                           this.props.deleteDetailImage({
-                            idImage: file.uid
-                          })
-
+                            idImage: file.uid,
+                          });
                         }}
                         beforeUpload={(file) => {
-                          //Link Image
-                          const uploadTask = storage.ref(`images/${file.name}`).put(file);
-                          // Set vao state
-                          uploadTask.on(
-                            "state_changed",
-                            snapshot => {
-                            },
-                            error => {
-                            },
-                            () => {
-                              storage
-                                .ref("images")
-                                .child(file.name)
-                                .getDownloadURL()
-                                .then(url => {
-                                  this.props.addDetailImage({
-                                    ProductID: this.props.productDetail.ProductID,
-                                    urlImage: url,
-                                  })
-                                });
-                            })
+                          const isJpgOrPng =
+                            file.type === "image/jpeg" ||
+                            file.type === "image/png";
+                          if (isJpgOrPng) {
+                            const isLt2M = file.size / 1024 / 1024 < 3;
+                            if (!isLt2M) {
+                              message.error("Image must smaller than 3MB!");
+                            } else {
+                              //Link Image
+                              const uploadTask = storage
+                                .ref(`images/${file.name}`)
+                                .put(file);
+                              // Set vao state
+                              uploadTask.on(
+                                "state_changed",
+                                (snapshot) => {},
+                                (error) => {},
+                                () => {
+                                  storage
+                                    .ref("images")
+                                    .child(file.name)
+                                    .getDownloadURL()
+                                    .then((url) => {
+                                      this.props.addDetailImage({
+                                        ProductID: this.props.productDetail
+                                          .ProductID,
+                                        urlImage: url,
+                                      });
+                                    });
+                                }
+                              );
+                            }
+                          } else {
+                            message.error(
+                              "File upload phải có đuôi .jpg hoặc .png"
+                            );
+                          }
                         }}
                       >
-                        {(imageDetail || []).length >= 4 ? null : uploadImageDetailButton}
+                        {(imageDetail || []).length >= 4
+                          ? null
+                          : uploadImageDetailButton}
                       </Upload>
-                      <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                      <Modal
+                        visible={previewVisible}
+                        footer={null}
+                        onCancel={this.handleCancel}
+                      >
+                        <img
+                          alt="example"
+                          style={{ width: "100%" }}
+                          src={previewImage}
+                        />
                       </Modal>
                     </div>
                   )}
@@ -437,15 +510,15 @@ class ProductInforList extends Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     productList: state.adminProduct.productList,
     productDetail: state.adminProduct.productDetail,
-    imageDetail: state.adminProduct.imageDetail
+    imageDetail: state.adminProduct.imageDetail,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getProductList: () => {
       dispatch(AdminProductTypes.getProductRequest());
@@ -468,4 +541,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 const ProductInforListScreen = Form.create()(ProductInforList);
-export default connect(mapStateToProps, mapDispatchToProps)(ProductInforListScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProductInforListScreen);

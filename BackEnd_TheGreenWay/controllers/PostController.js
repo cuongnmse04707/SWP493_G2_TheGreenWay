@@ -148,8 +148,8 @@ let addnewpost = async (req, res) => {
         ModEmail: email,
         Title: req.body.Title,
         Content: req.body.Content,
-        CreateDate: req.body.CreateDate,
-        UpdateDate: req.body.UpdateDate,
+        CreateDate: moment(req.body.CreateDate).format("YYYY-MM-DD"),
+        UpdateDate: moment(req.body.UpdateDate).format("YYYY-MM-DD"),
         ImageDetail: ImageDetail,
       };
       // Luu vao Database
@@ -225,8 +225,8 @@ let updatePost = async (req, res) => {
   //Get Information Post
   const Title = req.body.Title;
   const Content = req.body.Content;
-  const CreateDate = req.body.CreateDate;
-  const UpdateDate = req.body.UpdateDate;
+  const CreateDate = moment(req.body.CreateDate).format("YYYY-MM-DD");
+  const UpdateDate = moment(req.body.UpdateDate).format("YYYY-MM-DD");
   const ImageDetail = req.body.ImageDetail
     ? req.body.ImageDetail
     : "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fmaxresdefault.jpg?alt=media&token=2aa6af8d-44a0-43fc-bdaa-73f38bd006dd";
@@ -244,6 +244,7 @@ let updatePost = async (req, res) => {
   ]);
   connectionDB.query(query, async (err, result) => {
     if (err) {
+      debug(err);
       return res
         .status(200)
         .json({ success: false, message: "Update Post Failed!" });
@@ -266,7 +267,7 @@ let deletePost = async (req, res) => {
     if (err) {
       return res
         .status(200)
-        .json({ success: false, message: "Remove Post Failed!" });
+        .json({ success: false, message: "Remove Post Failed 123!" });
     } else {
       return res
         .status(200)

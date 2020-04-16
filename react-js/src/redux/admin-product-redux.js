@@ -1,78 +1,78 @@
-import { createReducer, createActions } from "reduxsauce"
-import ColumnGroup from "antd/lib/table/ColumnGroup"
+import { createReducer, createActions } from "reduxsauce";
+import ColumnGroup from "antd/lib/table/ColumnGroup";
 
 // TODO:Declare Action and type
 const { Types, Creators } = createActions({
   //get list product
-  getProductRequest: ['data'],
-  getProductRequestFailed: ['error'],
-  getProductSucceed: ['data'],
+  getProductRequest: ["data"],
+  getProductRequestFailed: ["error"],
+  getProductSucceed: ["data"],
 
   //get product detail
-  getProductDetailAdminRequest: ['data'],
-  getProductDetailAdminRequestFailed: ['error'],
-  getProductDetailAdminSucceed: ['data'],
+  getProductDetailAdminRequest: ["data"],
+  getProductDetailAdminRequestFailed: ["error"],
+  getProductDetailAdminSucceed: ["data"],
 
   //update product infor
-  updateProductRequest: ['data'],
-  updateProductRequestFailed: ['error'],
-  updateProductSucceed: ['data'],
+  updateProductRequest: ["data"],
+  updateProductRequestFailed: ["error"],
+  updateProductSucceed: ["data"],
 
   //change avatar image of product
-  changeAvatarImage: ['data'],
+  changeAvatarImage: ["data"],
 
   //add new image detail of product
-  addImageDetailRequest: ['data'],
-  addImageDetailRequestFailed: ['data'],
-  addImageDetailSucceed: ['data'],
+  addImageDetailRequest: ["data"],
+  addImageDetailRequestFailed: ["data"],
+  addImageDetailSucceed: ["data"],
 
   //delete image detail of product
-  deleteImageDetailRequest: ['data'],
-  deleteImageDetailRequestFailed: ['data'],
-  deleteImageDetailSucceed: ['data'],
+  deleteImageDetailRequest: ["data"],
+  deleteImageDetailRequestFailed: ["data"],
+  deleteImageDetailSucceed: ["data"],
 
   //add new product
-  addNewProductRequest: ['data'],
-  addNewProductRequestFailed: ['error'],
-  addNewProductSucceed: ['data'],
+  addNewProductRequest: ["data"],
+  addNewProductRequestFailed: ["error"],
+  addNewProductSucceed: ["data"],
 
   //add new product image detail
-  addNewImageDetailRequest: ['data'],
-  addNewImageDetailRequestFailed: ['error'],
-  addNewImageDetailSucceed: ['data'],
-})
+  addNewImageDetailRequest: ["data"],
+  addNewImageDetailRequestFailed: ["error"],
+  addNewImageDetailSucceed: ["data"],
+});
 
-export const AdminProductTypes = Types
-export default Creators
+export const AdminProductTypes = Types;
+export default Creators;
 
 //TODO: Declare initial state
 export const INITIAL_STATE = {
   productList: [],
-  productDetail: '',
+  productDetail: "",
   imageDetail: [],
-  idNewProduct: '',
-}
+  idNewProduct: "",
+};
 
 export const request = (state) => {
   return {
     ...state,
-  }
-}
+  };
+};
 
 export const getProductSucceed = (state, { data }) => {
   return {
     ...state,
     productList: data.data,
-  }
-}
+  };
+};
 
 export const getProductDetailSucceed = (state, { data }) => {
   return {
     ...state,
     productDetail: data.data,
-    imageDetail: data.images === 'No Images' ? [] : data.images ,
-  }
-}
+    imageDetail: data.images === "No Images" ? [] : data.images,
+  };
+};
 
 export const updateProductSucceed = (state, { data }) => {
   return {
@@ -91,54 +91,57 @@ export const updateProductSucceed = (state, { data }) => {
       return el;
     }),
   };
-}
+};
 
 export const addImageSucceed = (state, { data }) => {
-
+  console.log(data);
   return {
     ...state,
-    imageDetail: [...state.imageDetail, {
-      ImageID: data.data.idImage.MAX,
-      urlImage: data.urlImage
-    }]
-  }
-}
+    imageDetail: [
+      ...state.imageDetail,
+      {
+        ImageID: data.data.idImage.MAX,
+        urlImage: data.urlImage,
+      },
+    ],
+  };
+};
 
 export const deleteImageSucceed = (state, { data }) => {
   return {
     ...state,
-    imageDetail: state.imageDetail.filter(el => el.ImageID !== data)
-  }
-}
+    imageDetail: state.imageDetail.filter((el) => el.ImageID !== data),
+  };
+};
 
 export const addNewProductSucceed = (state, { data }) => {
   return {
     ...state,
-    idNewProduct: data.idProduct
-  }
-}
+    idNewProduct: data.idProduct,
+  };
+};
 
 export const addNewProductImageDetailSucceed = (state, { data }) => {
   return {
     ...state,
-  }
-}
+  };
+};
 
 export const changeAvatarImage = (state, { data }) => {
   return {
     ...state,
     productDetail: {
       ...state.productDetail,
-      ImageDetail: data
-    }
-  }
-}
+      ImageDetail: data,
+    },
+  };
+};
 
 export const failed = (state, { error }) => {
   return {
     ...state,
-  }
-}
+  };
+};
 
 //TODO:Hookup Reducers To Types in Action
 export const reducer = createReducer(INITIAL_STATE, {
@@ -164,4 +167,4 @@ export const reducer = createReducer(INITIAL_STATE, {
   [AdminProductTypes.ADD_NEW_IMAGE_DETAIL_REQUEST]: request,
   [AdminProductTypes.ADD_NEW_IMAGE_DETAIL_SUCCEED]: addNewProductImageDetailSucceed,
   [AdminProductTypes.ADD_NEW_IMAGE_DETAIL_REQUEST_FAILED]: failed,
-})
+});

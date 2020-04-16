@@ -5,17 +5,18 @@ import axios from "axios";
 
 const AdminProductSagas = {
   *getAdminProductInfor(action) {
-
     try {
       const productInfor = yield call(() => {
         return axios.get(`http://localhost:3001/product/getProducts`, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
       });
       if (!productInfor.data.success) {
-        yield put(AdminProductActions.getProductRequestFailed(productInfor.data));
+        yield put(
+          AdminProductActions.getProductRequestFailed(productInfor.data)
+        );
         message.error(productInfor.data.message, 3);
       } else {
         yield put(AdminProductActions.getProductSucceed(productInfor.data));
@@ -26,21 +27,29 @@ const AdminProductSagas = {
   },
 
   *getProductDetailInfor(action) {
-
     try {
       const productInfor = yield call(() => {
-        return axios.get(`http://localhost:3001/product/getinfobyid?idProduct=${action.data.idProduct}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': window.localStorage.getItem("x-access-token"),
-          },
-        });
+        return axios.get(
+          `http://localhost:3001/product/getinfobyid?idProduct=${action.data.idProduct}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
       });
       if (!productInfor.data.success) {
-        yield put(AdminProductActions.getProductDetailAminRequestFailed(productInfor.data));
+        yield put(
+          AdminProductActions.getProductDetailAminRequestFailed(
+            productInfor.data
+          )
+        );
         message.error(productInfor.data.message, 3);
       } else {
-        yield put(AdminProductActions.getProductDetailAdminSucceed(productInfor.data));
+        yield put(
+          AdminProductActions.getProductDetailAdminSucceed(productInfor.data)
+        );
       }
     } catch (error) {
       yield put(AdminProductActions.getProductDetailRequestAdminFailed(error));
@@ -50,16 +59,22 @@ const AdminProductSagas = {
   *updateProduct(action) {
     try {
       const productInfor = yield call(() => {
-        return axios.put(`http://localhost:3001/product/updateProduct?idProduct=${action.data.params.idProduct}`, action.data.params,{
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': window.localStorage.getItem("x-access-token"),
-          },
-        });
+        return axios.put(
+          `http://localhost:3001/product/updateProduct?idProduct=${action.data.params.idProduct}`,
+          action.data.params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
       });
-      action.data.callback()
+      action.data.callback();
       if (!productInfor.data.success) {
-        yield put(AdminProductActions.updateProductRequestFailed(productInfor.data));
+        yield put(
+          AdminProductActions.updateProductRequestFailed(productInfor.data)
+        );
         message.error(productInfor.data.message, 3);
       } else {
         action.data.callback();
@@ -72,21 +87,27 @@ const AdminProductSagas = {
   },
 
   *deleteImageDetail(action) {
-
     try {
       const deleteImage = yield call(() => {
-        return axios.delete(`http://localhost:3001/product/removeImageProduct?idImage=${action.data.idImage}`,{
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': window.localStorage.getItem("x-access-token"),
-          },
-        });
+        return axios.delete(
+          `http://localhost:3001/product/removeImageProduct?idImage=${action.data.idImage}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
       });
       if (!deleteImage.data.success) {
-        yield put(AdminProductActions.deleteImageDetailRequestFailed(deleteImage.data));
+        yield put(
+          AdminProductActions.deleteImageDetailRequestFailed(deleteImage.data)
+        );
         message.error(deleteImage.data.message, 3);
       } else {
-        yield put(AdminProductActions.deleteImageDetailSucceed(action.data.idImage));
+        yield put(
+          AdminProductActions.deleteImageDetailSucceed(action.data.idImage)
+        );
         message.success(deleteImage.data.message, 3);
       }
     } catch (error) {
@@ -95,26 +116,33 @@ const AdminProductSagas = {
   },
 
   *addImageDetail(action) {
-
     try {
       const addImage = yield call(() => {
-        return axios.post(`http://localhost:3001/product/addNewImageProduct`,action.data,{
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': window.localStorage.getItem("x-access-token"),
-          },
-        });
+        return axios.post(
+          `http://localhost:3001/product/addNewImageProduct`,
+          action.data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
       });
+      console.log("addImage.data.success", addImage.data);
       if (!addImage.data.success) {
-        yield put(AdminProductActions.addImageDetailRequestFailed(addImage.data));
+        yield put(
+          AdminProductActions.addImageDetailRequestFailed(addImage.data)
+        );
         message.error(addImage.data.message, 3);
       } else {
-        action.data.callback();
-        yield put(AdminProductActions.addImageDetailSucceed({
-          ...action.data,
-          ...addImage
-        }));
-        message.success('Thêm ảnh thành công', 3);
+        yield put(
+          AdminProductActions.addImageDetailSucceed({
+            ...action.data,
+            ...addImage,
+          })
+        );
+        message.success("Thêm ảnh thành công", 3);
       }
     } catch (error) {
       yield put(AdminProductActions.addImageDetailRequestFailed(error));
@@ -122,23 +150,28 @@ const AdminProductSagas = {
   },
 
   *addNewProduct(action) {
-
     try {
       const addProduct = yield call(() => {
-        return axios.post(`http://localhost:3001/product/addNewProduct`,action.data.params,{
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': window.localStorage.getItem("x-access-token"),
-          },
-        });
+        return axios.post(
+          `http://localhost:3001/product/addNewProduct`,
+          action.data.params,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
       });
       if (!addProduct.data.success) {
-        yield put(AdminProductActions.addNewProductRequestFailed(addProduct.data));
+        yield put(
+          AdminProductActions.addNewProductRequestFailed(addProduct.data)
+        );
         message.error(addProduct.data.message, 3);
       } else {
         action.data.callback(addProduct.data.idProduct);
         yield put(AdminProductActions.addNewProductSucceed(addProduct.data));
-        message.success('Thêm sản phẩm thành công', 3);
+        message.success("Thêm sản phẩm thành công", 3);
       }
     } catch (error) {
       yield put(AdminProductActions.addNewProductRequestFailed(error));
@@ -146,27 +179,33 @@ const AdminProductSagas = {
   },
 
   *addNewProductImage(action) {
-
     try {
       const imageProduct = yield call(() => {
-        return axios.post(`http://localhost:3001/product/addNewImageProduct`,action.data,{
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': window.localStorage.getItem("x-access-token"),
-          },
-        });
+        return axios.post(
+          `http://localhost:3001/product/addNewImageProduct`,
+          action.data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
       });
       if (!imageProduct.data.success) {
-        yield put(AdminProductActions.addNewImageDetailRequestFailed(imageProduct.data));
-    message.error(imageProduct.data.message, 3);
+        yield put(
+          AdminProductActions.addNewImageDetailRequestFailed(imageProduct.data)
+        );
+        message.error(imageProduct.data.message, 3);
       } else {
-        yield put(AdminProductActions.addNewImageDetailSucceed(imageProduct.data));
+        yield put(
+          AdminProductActions.addNewImageDetailSucceed(imageProduct.data)
+        );
       }
     } catch (error) {
       yield put(AdminProductActions.addNewImageDetailRequestFailed(error));
     }
   },
-
 };
 
 export default AdminProductSagas;
