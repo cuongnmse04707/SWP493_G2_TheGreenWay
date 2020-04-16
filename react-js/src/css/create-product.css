@@ -18,6 +18,11 @@
   display: flex;
 }
 
+.admin-create-form-container .ant-upload.ant-upload-select-picture-card > .ant-upload img{
+  height: 129px;
+  width: 129px;
+}
+
 .admin-create-form-left {
   display: flex;
   flex: 1.3;

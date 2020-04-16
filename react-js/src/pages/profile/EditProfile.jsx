@@ -18,11 +18,7 @@ import {
 } from "antd";
 import { storage } from "../../firebase";
 import moment from "moment";
-import { Redirect } from "react-router-dom";
-import NavBar from "../../components/NavBar";
-import Footer from "../../components/Footer";
 
-const dateFormat = "YYYY/MM/DD";
 const phoneRegex = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
 const userNameRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
@@ -56,53 +52,7 @@ class EditProfile extends Component {
     this.props.getUserInfor();
   }
 
-  handleChange = (e) => {
-    if (e.target.files[0]) {
-      const image = e.target.files[0];
-      this.setState({
-        progressClass: "ml-2",
-      });
-      const uploadTask = storage.ref(`images/${image.name}`).put(image);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          this.setState({ progress });
-        },
-        (error) => {},
-        () => {
-          if (this.state.progress === 100) {
-            setTimeout(() => {
-              this.setState({
-                progressClass: "ml-2 progress-bar",
-              });
-            }, 1000);
-          }
-          storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL()
-            .then((url) => {
-              this.setState({ url });
-            });
-        }
-      );
-    }
-  };
-
-  handleUpload = () => {
-    if (this.state.url) {
-      this.props.changeAvatar({
-        urlAvatar: this.state.url,
-      });
-    } else {
-      message.error("Vui lòng chọn ảnh");
-    }
-  };
-
-  handleUpdateAccountSubmit = (e) => {
+  handleUpdateAccountSubmit = e => {
     e.stopPropagation();
     this.props.form.validateFieldsAndScroll(
       [
@@ -134,37 +84,6 @@ class EditProfile extends Component {
     );
   };
 
-  clickImage(e) {
-    document.querySelector("#profileImage").click();
-  }
-
-  changeImage = (e) => {
-    if (e.target.files[0]) {
-      const image = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document
-          .querySelector("#profileDisplay")
-          .setAttribute("src", e.target.result);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-      const uploadTask = storage.ref(`images/${image.name}`).put(image);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {},
-        (error) => {},
-        () => {
-          storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL()
-            .then((url) => {
-              this.setState({ url });
-            });
-        }
-      );
-    }
-  };
 
   render() {
     const { getFieldDecorator } = this.props.form;

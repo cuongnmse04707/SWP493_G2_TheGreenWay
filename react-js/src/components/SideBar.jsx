@@ -120,17 +120,6 @@ class SideBar extends Component {
     }
   };
 
-  // handleUpload = () => {
-  //   if (this.state.url) {
-  //     this.props.changeAvatar({
-  //       urlAvatar: this.state.url,
-  //     });
-  //     window.localStorage.setItem("abc", "a");
-  //     window.localStorage.setItem("abc1", "a");
-  //   } else {
-  //     message.error("Vui lòng chọn ảnh");
-  //   }
-  // };
 
   render() {
     const antIcon = (
@@ -147,7 +136,6 @@ class SideBar extends Component {
         <div className="sideBar-container">
           <div className="logo" />
           <div
-            // className="form-group text-center user-avatar"
             style={{ position: "relative", marginTop: "30px" }}
           >
             {stateLoading ? (

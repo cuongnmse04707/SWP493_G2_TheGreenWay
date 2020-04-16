@@ -6,9 +6,10 @@ import axios from 'axios'
 
 const HomePageSagas = {
   *userInformation() {
+    console.log('123')
     try {
-      const userInfor = yield call(async() => {
-         return await axios.get('http://localhost:3001/user/information',{
+      const userInfor = yield call(async () => {
+        return await axios.get('http://localhost:3001/user/information', {
           headers: {
             'Content-Type': 'application/json',
             'x-access-token': window.localStorage.getItem("x-access-token"),
@@ -22,6 +23,7 @@ const HomePageSagas = {
         yield put(HomePageActions.getInforSucceed(userInfor.data.data))
       }
     } catch (error) {
+      window.localStorage.clear()
       yield put(HomePageActions.getInforFailed(error))
     }
   },

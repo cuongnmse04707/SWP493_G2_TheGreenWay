@@ -106,7 +106,7 @@ class ProductDetail extends Component {
     window.scrollTo(0, 0);
     const { convensionRate, productInfor, productImages } = this.props;
     let arrayImages = [];
-    if (productImages != "No Images") {
+    if (productImages !== "No Images") {
       productImages.map(item => {
         arrayImages.push(item.urlImage);
       });

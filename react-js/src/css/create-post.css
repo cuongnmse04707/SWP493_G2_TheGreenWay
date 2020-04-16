@@ -26,3 +26,13 @@
   height: 232px;
   width: 232px;
 }
+
+.post-image-container .post-image-avatar .avatar-uploader .ant-upload.ant-upload-select-picture-card img{
+  height: 232px;
+  width: 232px;
+}
+
+.post-image-container .post-image-detail .avatar-uploader .ant-upload.ant-upload-select-picture-card img{
+  height: 129px;
+  width: 129px;
+}

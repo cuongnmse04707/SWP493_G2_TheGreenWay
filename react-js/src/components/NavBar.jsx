@@ -204,7 +204,7 @@ class NavBar extends Component {
                     />
                   </Badge>
                 </li>
-                {roles == "admin" || roles == "mod" ? (
+                {roles === "admin" || roles === "mod" ? (
                   <div
                     style={{
                       display: "flex",

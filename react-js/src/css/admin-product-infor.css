@@ -16,3 +16,11 @@
 /* .ant-modal {
   width: 80% !important;
 } */
+.product-avatar-container .ant-upload.ant-upload-select-picture-card > .ant-upload img{
+  height: 129px;
+  width: 129px;
+}
+
+.product-editor .cke_chrome {
+  margin-right: 8% !important;
+}

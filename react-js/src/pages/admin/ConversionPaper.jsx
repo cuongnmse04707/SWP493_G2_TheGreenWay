@@ -119,8 +119,9 @@ class ConversionPaper extends Component {
   render() {
     const columnsWorking = [
       {
-        title: "ConversionID",
-        dataIndex: "conversionId",
+        title: 'ConversionID',
+        width: "10%",
+        dataIndex: 'conversionId',
         render: (text, record) => (
           <div>
             <span>{record.ConversionID}</span>
@@ -128,8 +129,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Tỉ giá/ 1kg",
-        dataIndex: "rate",
+        title: 'Tỉ giá/ 1kg',
+        width: "18%",
+        dataIndex: 'rate',
         render: (text, record) => (
           <div>
             <span>{record.PaperPrice} VNĐ</span>
@@ -137,8 +139,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Trạng thái",
-        dataIndex: "status",
+        title: 'Trạng thái',
+        width: "18%",
+        dataIndex: 'status',
         render: (text, record) => (
           <div>
             <Button type="primary">{record.Status}</Button>
@@ -146,8 +149,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Ngày tạo",
-        dataIndex: "createdDate",
+        title: 'Ngày tạo',
+        width: "18%",
+        dataIndex: 'createdDate',
         render: (text, record) => (
           <div>
             <span>{moment(record.CreatedAt).format("DD/MM/YYYY")}</span>
@@ -155,8 +159,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Ngày chỉnh sửa",
-        dataIndex: "modifyDate",
+        title: 'Ngày chỉnh sửa',
+        width: "18%",
+        dataIndex: 'modifyDate',
         render: (text, record) => (
           <div>
             <span>{moment(record.ModifyDate).format("DD/MM/YYYY")}</span>
@@ -164,9 +169,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Cập nhật",
-        dataIndex: "update",
-        width: "20%",
+        title: 'Cập nhật',
+        width: "18%",
+        dataIndex: 'update',
         render: (text, record) => (
           <div>
             <div
@@ -195,8 +200,9 @@ class ConversionPaper extends Component {
 
     const columnsNotWorking = [
       {
-        title: "ConversionID",
-        dataIndex: "conversionId",
+        title: 'ConversionID',
+        width: "10%",
+        dataIndex: 'conversionId',
         render: (text, record) => (
           <div>
             <span>{record.ConversionID}</span>
@@ -204,8 +210,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Tỉ giá/ 1kg",
-        dataIndex: "rate",
+        title: 'Tỉ giá/ 1kg',
+        width: "18%",
+        dataIndex: 'rate',
         render: (text, record) => (
           <div>
             <span>{record.PaperPrice} VNĐ</span>
@@ -213,8 +220,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Trạng thái",
-        dataIndex: "status",
+        title: 'Trạng thái',
+        width: "18%",
+        dataIndex: 'status',
         render: (text, record) => (
           <div>
             <Button type="danger">{record.Status}</Button>
@@ -222,8 +230,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Ngày tạo",
-        dataIndex: "createdDate",
+        title: 'Ngày tạo',
+        width: "18%",
+        dataIndex: 'createdDate',
         render: (text, record) => (
           <div>
             <span>{moment(record.CreatedAt).format("DD/MM/YYYY")}</span>
@@ -231,8 +240,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Ngày chỉnh sửa",
-        dataIndex: "modifyDate",
+        title: 'Ngày chỉnh sửa',
+        width: "18%",
+        dataIndex: 'modifyDate',
         render: (text, record) => (
           <div>
             <span>{moment(record.ModifyDate).format("DD/MM/YYYY")}</span>
@@ -240,9 +250,9 @@ class ConversionPaper extends Component {
         ),
       },
       {
-        title: "Cập nhật",
-        width: "20%",
-        dataIndex: "update",
+        title: 'Cập nhật',
+        width: "18%",
+        dataIndex: 'update',
         render: (text, record) => (
           <div
             style={{
@@ -344,10 +354,10 @@ class ConversionPaper extends Component {
                 rules: [
                   {
                     required: true,
-                    message: "Vui lòng nhập số tiền",
-                  },
-                ],
-              })(<InputNumber min={1} />)}
+                    message: "Vui lòng nhập số tiền"
+                  }
+                ]
+              })(<InputNumber type="number" min={1} />)}
             </Form.Item>
           </Form>
         </Modal>
@@ -365,10 +375,10 @@ class ConversionPaper extends Component {
                 rules: [
                   {
                     required: true,
-                    message: "Vui lòng nhập số tiền",
-                  },
-                ],
-              })(<InputNumber min={1} />)}
+                    message: "Vui lòng nhập số tiền"
+                  }
+                ]
+              })(<InputNumber type="number" min={1} />)}
             </Form.Item>
             <Form.Item label="Trạng Thái: ">
               {getFieldDecorator("status", {

@@ -17,7 +17,7 @@ class ForgotPassword extends Component {
   componentDidUpdate() {
     if (
       this.props.resetMessage ||
-      this.props.notifyMessage == `Tài khoản không cần đặt lại mật khẩu`
+      this.props.notifyMessage === `Tài khoản không cần đặt lại mật khẩu`
     ) {
       this.props.updateNotify();
       this.props.history.push("/login");
