@@ -14,7 +14,7 @@ import {
   Progress,
   message,
   Row,
-  Col
+  Col,
 } from "antd";
 import { storage } from "../../firebase";
 import moment from "moment";
@@ -25,7 +25,7 @@ import Footer from "../../components/Footer";
 const dateFormat = "YYYY/MM/DD";
 const phoneRegex = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
-const userNameRegex = /^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
+const userNameRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
 const addressRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
 
 class EditProfile extends Component {
@@ -49,35 +49,34 @@ class EditProfile extends Component {
     progress: 0,
     progressClass: "ml-2 progress-bar",
     visiblePassModal: false,
-    loading: false
+    loading: false,
   };
 
   componentDidMount() {
     this.props.getUserInfor();
   }
 
-  handleChange = e => {
+  handleChange = (e) => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
       this.setState({
-        progressClass: "ml-2"
+        progressClass: "ml-2",
       });
       const uploadTask = storage.ref(`images/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
-        snapshot => {
+        (snapshot) => {
           const progress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
           this.setState({ progress });
         },
-        error => {
-        },
+        (error) => {},
         () => {
           if (this.state.progress === 100) {
             setTimeout(() => {
               this.setState({
-                progressClass: "ml-2 progress-bar"
+                progressClass: "ml-2 progress-bar",
               });
             }, 1000);
           }
@@ -85,7 +84,7 @@ class EditProfile extends Component {
             .ref("images")
             .child(image.name)
             .getDownloadURL()
-            .then(url => {
+            .then((url) => {
               this.setState({ url });
             });
         }
@@ -96,14 +95,14 @@ class EditProfile extends Component {
   handleUpload = () => {
     if (this.state.url) {
       this.props.changeAvatar({
-        urlAvatar: this.state.url
+        urlAvatar: this.state.url,
       });
     } else {
       message.error("Vui lòng chọn ảnh");
     }
   };
 
-  handleUpdateAccountSubmit = e => {
+  handleUpdateAccountSubmit = (e) => {
     e.stopPropagation();
     this.props.form.validateFieldsAndScroll(
       [
@@ -114,7 +113,7 @@ class EditProfile extends Component {
         "city",
         "address",
         "country",
-        "password"
+        "password",
       ],
       (err, values) => {
         if (!err) {
@@ -123,12 +122,12 @@ class EditProfile extends Component {
           }
           this.props.editUserProfile({
             email: values.email,
-            username: values.username.replace(/\s+/g, ' ').trim(),
+            username: values.username.replace(/\s+/g, " ").trim(),
             phone: values.phone,
             DOB: values.DOB,
             city: values.city,
             address: values.address,
-            country: values.country
+            country: values.country,
           });
         }
       }
@@ -139,7 +138,7 @@ class EditProfile extends Component {
     document.querySelector("#profileImage").click();
   }
 
-  changeImage = e => {
+  changeImage = (e) => {
     if (e.target.files[0]) {
       const image = e.target.files[0];
       const reader = new FileReader();
@@ -152,15 +151,14 @@ class EditProfile extends Component {
       const uploadTask = storage.ref(`images/${image.name}`).put(image);
       uploadTask.on(
         "state_changed",
-        snapshot => { },
-        error => {
-        },
+        (snapshot) => {},
+        (error) => {},
         () => {
           storage
             .ref("images")
             .child(image.name)
             .getDownloadURL()
-            .then(url => {
+            .then((url) => {
               this.setState({ url });
             });
         }
@@ -176,14 +174,14 @@ class EditProfile extends Component {
         xs: { span: 24 },
         sm: { span: 24 },
         md: { span: 24 },
-        lg: { span: 6 }
+        lg: { span: 6 },
       },
       wrapperCol: {
         xs: { span: 23 },
         sm: { span: 23 },
         md: { span: 23 },
-        lg: { span: 14 }
-      }
+        lg: { span: 14 },
+      },
     };
     return (
       <div className="edit-profile-wrapper">
@@ -194,7 +192,7 @@ class EditProfile extends Component {
                 <Form {...formItemLayout} className="mt-4">
                   <Form.Item label="E-mail">
                     {getFieldDecorator("email", {
-                      initialValue: userInformation.email
+                      initialValue: userInformation.email,
                     })(<Input disabled={true} />)}
                   </Form.Item>
                   <Form.Item label="Tên Tài Khoản">
@@ -203,22 +201,22 @@ class EditProfile extends Component {
                       rules: [
                         {
                           required: true,
-                          message: "Vui lòng nhập tên người dùng"
+                          message: "Vui lòng nhập tên người dùng",
                         },
                         {
                           min: 6,
-                          message: "Tên người dùng phải dài ít nhất 6 kí tự"
+                          message: "Tên người dùng phải dài ít nhất 6 kí tự",
                         },
                         {
                           max: 32,
-                          message: "Tên người dùng không dài quá 32 kí tự"
+                          message: "Tên người dùng không dài quá 32 kí tự",
                         },
                         {
                           pattern: userNameRegex,
                           message:
-                            "Tên người dùng không được chưa kí tự đặc biệt"
-                        }
-                      ]
+                            "Tên người dùng không được chưa kí tự đặc biệt và số",
+                        },
+                      ],
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Số Điện Thoại">
@@ -227,9 +225,9 @@ class EditProfile extends Component {
                       rules: [
                         {
                           pattern: phoneRegex,
-                          message: "Nhập đúng định dạng số điện thoại"
-                        }
-                      ]
+                          message: "Nhập đúng định dạng số điện thoại",
+                        },
+                      ],
                     })(<Input style={{ width: "100%" }} />)}
                   </Form.Item>
                   <Form.Item label="Địa chỉ">
@@ -243,9 +241,10 @@ class EditProfile extends Component {
                       rules: [
                         {
                           pattern: addressRegex,
-                          message: "Tên thành phố không chứa số hoặc kí tự đặc biệt"
-                        }
-                      ]
+                          message:
+                            "Tên thành phố không chứa số hoặc kí tự đặc biệt",
+                        },
+                      ],
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Quốc gia">
@@ -254,22 +253,23 @@ class EditProfile extends Component {
                       rules: [
                         {
                           pattern: addressRegex,
-                          message: "Tên quốc gia không chứa số hoặc kí tự đặc biệt"
-                        }
-                      ]
+                          message:
+                            "Tên quốc gia không chứa số hoặc kí tự đặc biệt",
+                        },
+                      ],
                     })(<Input />)}
                   </Form.Item>
                   <Form.Item label="Ngày sinh">
                     {getFieldDecorator("DOB", {
                       initialValue:
                         userInformation.DOB &&
-                          userInformation.DOB !== "Invalid date"
+                        userInformation.DOB !== "Invalid date"
                           ? moment(userInformation.DOB)
-                          : null
+                          : null,
                     })(
                       <DatePicker
                         style={{ width: "100%" }}
-                        disabledDate={d =>
+                        disabledDate={(d) =>
                           !d ||
                           d.isAfter(new Date()) ||
                           d.isSameOrBefore("1900-01-01")
@@ -302,32 +302,32 @@ class EditProfile extends Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     userInformation: state.homePage.userInformation,
     notifyMessage: state.editProfile.notifyMessage,
     notifyPasswordMessage: state.changePass.notifyMessage,
-    editMessage: state.editProfile.editMessage
+    editMessage: state.editProfile.editMessage,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getUserInfor: () => {
       dispatch(HomePageTypes.getInforRequest());
     },
-    editUserProfile: data => {
+    editUserProfile: (data) => {
       dispatch(EditTypes.editRequest(data));
     },
-    changePass: data => {
+    changePass: (data) => {
       dispatch(ChangePassTypes.changeRequest(data));
     },
-    changeAvatar: data => {
+    changeAvatar: (data) => {
       dispatch(EditTypes.uploadRequest(data));
     },
     updateNotify: () => {
       dispatch(EditTypes.updateNotify());
-    }
+    },
   };
 };
 
