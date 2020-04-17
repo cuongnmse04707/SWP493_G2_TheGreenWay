@@ -25,7 +25,7 @@ let getPayment = async (req, res) => {
       } else {
         return res.status(200).json({
           success: true,
-          data: arr
+          data: arr,
         });
       }
     }
@@ -45,7 +45,7 @@ let addNewPayment = async (req, res) => {
       const PaymentID = arr[0].PaymentID + 1;
       const empty = {
         PaymentID: PaymentID,
-        Description: req.body.Description
+        Description: req.body.Description,
       };
       // Luu vao Database khi chi co 1 cai dc Hoat Dong thoi
       connectionDB.query(
@@ -53,19 +53,15 @@ let addNewPayment = async (req, res) => {
         empty,
         (err, result) => {
           if (err) {
-            return res
-              .status(200)
-              .json({
-                success: false,
-                message: "Add New PaymentMethod is Unsuccess!"
-              });
+            return res.status(200).json({
+              success: false,
+              message: "Add New PaymentMethod is Unsuccess!",
+            });
           } else {
-            return res
-              .status(200)
-              .json({
-                success: true,
-                message: "Add New PaymentMethod is Success!"
-              });
+            return res.status(200).json({
+              success: true,
+              message: "Add New PaymentMethod is Success!",
+            });
           }
         }
       );
@@ -121,5 +117,5 @@ module.exports = {
   getPayment: getPayment,
   addNewPayment: addNewPayment,
   updatePayment: updatePayment,
-  detelePayment: detelePayment
+  detelePayment: detelePayment,
 };

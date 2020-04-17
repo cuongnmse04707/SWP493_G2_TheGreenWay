@@ -10,7 +10,7 @@ import {
   Row,
   Col,
   Spin,
-} from 'antd';
+} from "antd";
 import { connect } from "react-redux";
 import AdminPostTypes from "../../redux/admin-post-redux";
 import CKEditor from "ckeditor4-react";
@@ -31,7 +31,7 @@ class CreatePost extends Component {
     newProductId: "",
     avatarLoading: false,
     postImageLoading: false,
-    addPostLoading: false
+    addPostLoading: false,
   };
 
   onEditorChange = (evt) => {
@@ -95,10 +95,8 @@ class CreatePost extends Component {
           }
         });
       } else {
-        message.error("Mô tả không được để trống", 2)
+        message.error("Mô tả không được để trống", 2);
       }
-
-
     }
   };
 
@@ -129,239 +127,249 @@ class CreatePost extends Component {
     const antIcon = (
       <Icon type="loading-3-quarters" style={{ fontSize: 60 }} spin />
     );
-    const { avatarLoading, avatarUrl, postImageLoading, addPostLoading } = this.state
+    const {
+      avatarLoading,
+      avatarUrl,
+      postImageLoading,
+      addPostLoading,
+    } = this.state;
     return (
-        <div className="create-post-wrapper">
-          <p className="title">Tạo bài đăng mới</p>
-          <div className="admin-form-post-container">
-            <div style={{ width: "100%" }}>
-              <Row>
-                <Form {...formItemLayout}>
-                  <Col span={13}>
-                    <Form.Item label="Tiêu đề">
-                      {getFieldDecorator("title", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập tiêu đề",
-                          },
-                        ],
-                      })(<TextArea rows={4} />)}
-                    </Form.Item>
-                    <div className="post-image-container">
-                      <div className="post-image-avatar">
-                        <Form.Item label="Ảnh đại diện">
-                          {getFieldDecorator("postAvatar", {
-                            rules: [
-                              {
-                                required: true,
-                                message: "Vui lòng nhập ảnh đại diện",
-                              },
-                            ],
-                          })(
-                            <Upload
-                              name="avatar"
-                              listType="picture-card"
-                              className="avatar-uploader"
-                              showUploadList={false}
-                              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                              beforeUpload={(file) => {
-                                const isJpgOrPng =
-                                  file.type === "image/jpeg" ||
-                                  file.type === "image/png";
-                                if (isJpgOrPng) {
-                                  const isLt2M = file.size / 1024 / 1024 < 3;
-                                  if (!isLt2M) {
-                                    message.error("Image must smaller than 3MB!");
-                                  } else {
-                                    //Link Image
-                                    this.setState({
-                                      avatarLoading: true
-                                    })
-                                    const uploadTask = storage
-                                      .ref(`images/${file.name}`)
-                                      .put(file);
-                                    // Set vao state
-                                    uploadTask.on(
-                                      "state_changed",
-                                      (snapshot) => { },
-                                      (error) => { },
-                                      () => {
-                                        storage
-                                          .ref("images")
-                                          .child(file.name)
-                                          .getDownloadURL()
-                                          .then((url) => {
-                                            this.setState({
-                                              avatarUrl: url,
-                                            });
-                                            this.setState({
-                                              avatarLoading: false
-                                            })
-                                          });
-                                      }
-                                    );
-                                  }
+      <div className="create-post-wrapper">
+        <p className="title">Tạo bài đăng mới</p>
+        <div className="admin-form-post-container">
+          <div style={{ width: "100%" }}>
+            <Row>
+              <Form {...formItemLayout}>
+                <Col span={13}>
+                  <Form.Item label="Tiêu đề">
+                    {getFieldDecorator("title", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Vui lòng nhập tiêu đề",
+                        },
+                      ],
+                    })(<TextArea rows={4} />)}
+                  </Form.Item>
+                  <div className="post-image-container">
+                    <div className="post-image-avatar">
+                      <Form.Item label="Ảnh đại diện">
+                        {getFieldDecorator("postAvatar", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập ảnh đại diện",
+                            },
+                          ],
+                        })(
+                          <Upload
+                            name="avatar"
+                            listType="picture-card"
+                            className="avatar-uploader"
+                            showUploadList={false}
+                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                            beforeUpload={(file) => {
+                              const isJpgOrPng =
+                                file.type === "image/jpeg" ||
+                                file.type === "image/png";
+                              if (isJpgOrPng) {
+                                const isLt2M = file.size / 1024 / 1024 < 3;
+                                if (!isLt2M) {
+                                  message.error("Image must smaller than 3MB!");
                                 } else {
-                                  message.error(
-                                    "File upload phải có đuôi .jpg hoặc .png"
+                                  //Link Image
+                                  this.setState({
+                                    avatarLoading: true,
+                                  });
+                                  const uploadTask = storage
+                                    .ref(`images/${file.name}`)
+                                    .put(file);
+                                  // Set vao state
+                                  uploadTask.on(
+                                    "state_changed",
+                                    (snapshot) => {},
+                                    (error) => {},
+                                    () => {
+                                      storage
+                                        .ref("images")
+                                        .child(file.name)
+                                        .getDownloadURL()
+                                        .then((url) => {
+                                          this.setState({
+                                            avatarUrl: url,
+                                          });
+                                          this.setState({
+                                            avatarLoading: false,
+                                          });
+                                        });
+                                    }
                                   );
                                 }
-                              }}
-                            >
-                              {avatarLoading ? (
-                                <div
-                                  style={{
-                                    zIndex: "200",
-                                    background: "#d9d9d98f",
-                                    height: avatarUrl ? "249px" : "232px",
-                                    width: "232px",
-                                    position: "absolute",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    marginLeft: "-9px",
-                                    marginTop: avatarUrl ? "-9px" : "-94px",
-                                    borderRadius: "4px"
-                                  }}
-                                >
-                                  <Spin indicator={antIcon} />
-                                </div>
-                              ) : null}
-                              {this.state.avatarUrl ? (
-                                <img
-                                  src={this.state.avatarUrl}
-                                  alt="avatar"
-                                  style={{ width: "100%" }}
-                                />
-                              ) : (
-                                  uploadAvatarButton
-                                )}
-                            </Upload>
-                          )}
-
-                        </Form.Item>
-                      </div>
-                      <div className="post-image-detail">
-                        <Form.Item label="Ảnh bài viết">
-                          {getFieldDecorator(
-                            "postImageDetail",
-                            {}
-                          )(
-                            <Upload
-                              name="avatar"
-                              listType="picture-card"
-                              className="avatar-uploader"
-                              showUploadList={false}
-                              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                              beforeUpload={(file) => {
-                                const isJpgOrPng =
-                                  file.type === "image/jpeg" ||
-                                  file.type === "image/png";
-                                if (isJpgOrPng) {
-                                  const isLt2M = file.size / 1024 / 1024 < 3;
-                                  if (!isLt2M) {
-                                    message.error("Image must smaller than 3MB!");
-                                  } else {
-                                    //Link Image
-                                    this.setState({
-                                      postImageLoading: true
-                                    })
-                                    const uploadTask = storage
-                                      .ref(`images/${file.name}`)
-                                      .put(file);
-                                    // Set vao state
-                                    uploadTask.on(
-                                      "state_changed",
-                                      (snapshot) => { },
-                                      (error) => { },
-                                      () => {
-                                        storage
-                                          .ref("images")
-                                          .child(file.name)
-                                          .getDownloadURL()
-                                          .then((url) => {
-                                            this.setState({
-                                              postImageDetail: url,
-                                            });
-                                            this.setState({
-                                              postImageLoading: false
-                                            })
-                                          });
-                                      }
-                                    );
-                                  }
-                                } else {
-                                  message.error(
-                                    "File upload phải có đuôi .jpg hoặc .png"
-                                  );
-                                }
-                              }}
-                            >
-                              {postImageLoading ? (
-                                <div
-                                  style={{
-                                    zIndex: "200",
-                                    background: "#d9d9d98f",
-                                    height: this.state.postImageDetail ? "145px" : "129px",
-                                    width: this.state.postImageDetail ? "146px" : "129px",
-                                    position: "absolute",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    marginLeft: "-9px",
-                                    marginTop: this.state.postImageDetail ? "-8px" : "-43px",
-                                    borderRadius: "4px"
-                                  }}
-                                >
-                                  <Spin indicator={antIcon} />
-                                </div>
-                              ) : null}
-                              {this.state.postImageDetail ? (
-                                <img
-                                  src={this.state.postImageDetail}
-                                  alt="avatar"
-                                />
-                              ) : (
-                                  uploadAvatarButton
-                                )}
-                            </Upload>
-                          )}
-                        </Form.Item>
-                        <span>Link ảnh: </span>
-                        <Input value={this.state.postImageDetail} />
-                      </div>
+                              } else {
+                                message.error(
+                                  "File upload phải có đuôi .jpg hoặc .png"
+                                );
+                              }
+                            }}
+                          >
+                            {avatarLoading ? (
+                              <div
+                                style={{
+                                  zIndex: "200",
+                                  background: "#d9d9d98f",
+                                  height: avatarUrl ? "249px" : "232px",
+                                  width: "232px",
+                                  position: "absolute",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  marginLeft: "-9px",
+                                  marginTop: avatarUrl ? "-9px" : "-94px",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <Spin indicator={antIcon} />
+                              </div>
+                            ) : null}
+                            {this.state.avatarUrl ? (
+                              <img
+                                src={this.state.avatarUrl}
+                                alt="avatar"
+                                style={{ width: "100%" }}
+                              />
+                            ) : (
+                              uploadAvatarButton
+                            )}
+                          </Upload>
+                        )}
+                      </Form.Item>
                     </div>
-                  </Col>
+                    <div className="post-image-detail">
+                      <Form.Item label="Ảnh bài viết">
+                        {getFieldDecorator(
+                          "postImageDetail",
+                          {}
+                        )(
+                          <Upload
+                            name="avatar"
+                            listType="picture-card"
+                            className="avatar-uploader"
+                            showUploadList={false}
+                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                            beforeUpload={(file) => {
+                              const isJpgOrPng =
+                                file.type === "image/jpeg" ||
+                                file.type === "image/png";
+                              if (isJpgOrPng) {
+                                const isLt2M = file.size / 1024 / 1024 < 3;
+                                if (!isLt2M) {
+                                  message.error("Image must smaller than 3MB!");
+                                } else {
+                                  //Link Image
+                                  this.setState({
+                                    postImageLoading: true,
+                                  });
+                                  const uploadTask = storage
+                                    .ref(`images/${file.name}`)
+                                    .put(file);
+                                  // Set vao state
+                                  uploadTask.on(
+                                    "state_changed",
+                                    (snapshot) => {},
+                                    (error) => {},
+                                    () => {
+                                      storage
+                                        .ref("images")
+                                        .child(file.name)
+                                        .getDownloadURL()
+                                        .then((url) => {
+                                          this.setState({
+                                            postImageDetail: url,
+                                          });
+                                          this.setState({
+                                            postImageLoading: false,
+                                          });
+                                        });
+                                    }
+                                  );
+                                }
+                              } else {
+                                message.error(
+                                  "File upload phải có đuôi .jpg hoặc .png"
+                                );
+                              }
+                            }}
+                          >
+                            {postImageLoading ? (
+                              <div
+                                style={{
+                                  zIndex: "200",
+                                  background: "#d9d9d98f",
+                                  height: this.state.postImageDetail
+                                    ? "145px"
+                                    : "129px",
+                                  width: this.state.postImageDetail
+                                    ? "146px"
+                                    : "129px",
+                                  position: "absolute",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  marginLeft: "-9px",
+                                  marginTop: this.state.postImageDetail
+                                    ? "-8px"
+                                    : "-43px",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <Spin indicator={antIcon} />
+                              </div>
+                            ) : null}
+                            {this.state.postImageDetail ? (
+                              <img
+                                src={this.state.postImageDetail}
+                                alt="avatar"
+                              />
+                            ) : (
+                              uploadAvatarButton
+                            )}
+                          </Upload>
+                        )}
+                      </Form.Item>
+                      <span>Link ảnh: </span>
+                      <Input value={this.state.postImageDetail} />
+                    </div>
+                  </div>
+                </Col>
 
-                  <Col span={11}>
-                    <Form.Item label="Nội dung bài viết">
-                      {getFieldDecorator("description", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập mô tả bài viết",
-                          },
-                        ],
-                      })(<CKEditor data="" onChange={this.onEditorChange} />)}
-                    </Form.Item>
-                  </Col>
-                </Form>
-              </Row>
-              <Row
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  margin: "15px 0px 30px 0px",
-                }}
-              >
-                <Button onClick={this.addNewPost} type="primary">
-                  Tạo bài đăng mới
+                <Col span={11}>
+                  <Form.Item label="Nội dung bài viết">
+                    {getFieldDecorator("description", {
+                      rules: [
+                        {
+                          required: true,
+                          message: "Vui lòng nhập mô tả bài viết",
+                        },
+                      ],
+                    })(<CKEditor data="" onChange={this.onEditorChange} />)}
+                  </Form.Item>
+                </Col>
+              </Form>
+            </Row>
+            <Row
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "15px 0px 30px 0px",
+              }}
+            >
+              <Button onClick={this.addNewPost} type="primary">
+                Tạo bài đăng mới
               </Button>
-              </Row>
-            </div>
+            </Row>
           </div>
         </div>
+      </div>
     );
   }
 }

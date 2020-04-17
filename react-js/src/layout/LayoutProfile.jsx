@@ -17,20 +17,24 @@ class LayoutProfile extends Component {
         <Layout
           className="content-layout-left"
           style={
-
             this.props.collapsed
-              ? { marginLeft: "100px", transition: "all 0.4s", background: "#fff", }
+              ? {
+                  marginLeft: "100px",
+                  transition: "all 0.4s",
+                  background: "#fff",
+                }
               : {
-                marginLeft: "200px", transition: "all 0.4s",
-                background: "#fff",
-              }
+                  marginLeft: "200px",
+                  transition: "all 0.4s",
+                  background: "#fff",
+                }
           }
         >
           <NavBar />
           <Content
             style={{
               height: "100vh",
-              background: '#fff'
+              background: "#fff",
             }}
           >
             {this.props.children}
@@ -38,13 +42,13 @@ class LayoutProfile extends Component {
         </Layout>
       </Layout>
     ) : (
-        <Redirect to="/" />
-      );
+      <Redirect to="/" />
+    );
   }
 }
 
-const mapStateToProps = state => ({
- // collapsed: state.sideBar.collapsed
+const mapStateToProps = (state) => ({
+  // collapsed: state.sideBar.collapsed
 });
 
 export default connect(mapStateToProps, null)(LayoutProfile);

@@ -11,8 +11,8 @@ const ProductDetailSagas = {
           `http://localhost:3001/product/getinfobyid?idProduct=${action.data}`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -31,7 +31,7 @@ const ProductDetailSagas = {
     } catch (error) {
       yield put(ProductDetailActions.getProductDetailRequestFailed(error));
     }
-  }
+  },
 };
 
 export default ProductDetailSagas;

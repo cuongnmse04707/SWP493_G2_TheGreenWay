@@ -1,22 +1,21 @@
-import { put, call } from 'redux-saga/effects'
-import AdminPostActions from '../redux/admin-post-redux'
-import { message } from 'antd';
-import 'antd/dist/antd.css';
-import axios from 'axios'
+import { put, call } from "redux-saga/effects";
+import AdminPostActions from "../redux/admin-post-redux";
+import { message } from "antd";
+import "antd/dist/antd.css";
+import axios from "axios";
 
 const AdminPostSagas = {
   *getListPost(action) {
-
     try {
       const postInfor = yield call(() => {
         return axios.get(
           `http://localhost:3001/post/getListPost?page=${
-          action.data.page
+            action.data.page
           }&email=${window.localStorage.getItem("email") || ""}`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -32,16 +31,16 @@ const AdminPostSagas = {
   },
 
   *addNewPost(action) {
-
     try {
       const addPostInfor = yield call(() => {
         return axios.post(
-          `http://localhost:3001/post/addnewpost`,action.data.params,
+          `http://localhost:3001/post/addnewpost`,
+          action.data.params,
           {
             headers: {
               "Content-Type": "application/json",
-              'x-access-token': window.localStorage.getItem("x-access-token"),
-            }
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
           }
         );
       });
@@ -49,9 +48,9 @@ const AdminPostSagas = {
         yield put(AdminPostActions.addNewPostFailed(addPostInfor.data));
         message.error(addPostInfor.data.message, 3);
       } else {
-        action.data.callback()
+        action.data.callback();
         yield put(AdminPostActions.addNewPostSucceed(addPostInfor.data));
-        message.success('Đăng bài thành công', 3);
+        message.success("Đăng bài thành công", 3);
       }
     } catch (error) {
       yield put(AdminPostActions.addNewPostFailed(error));
@@ -59,7 +58,6 @@ const AdminPostSagas = {
   },
 
   *getPostDetail(action) {
-
     try {
       const postDetail = yield call(() => {
         return axios.get(
@@ -67,8 +65,8 @@ const AdminPostSagas = {
           {
             headers: {
               "Content-Type": "application/json",
-              'x-access-token': window.localStorage.getItem("x-access-token"),
-            }
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
           }
         );
       });
@@ -77,6 +75,7 @@ const AdminPostSagas = {
         message.error(postDetail.data.message, 3);
       } else {
         yield put(AdminPostActions.getPostDetailSucceed(postDetail.data));
+        action.data.callback();
       }
     } catch (error) {
       yield put(AdminPostActions.getPostDetailFailed(error));
@@ -84,16 +83,16 @@ const AdminPostSagas = {
   },
 
   *updatePost(action) {
-
     try {
       const updatePost = yield call(() => {
         return axios.put(
-          `http://localhost:3001/post/updatePost?idPost=${action.data.params.idPost}`,action.data.params,
+          `http://localhost:3001/post/updatePost?idPost=${action.data.params.idPost}`,
+          action.data.params,
           {
             headers: {
               "Content-Type": "application/json",
-              'x-access-token': window.localStorage.getItem("x-access-token"),
-            }
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
           }
         );
       });
@@ -102,12 +101,12 @@ const AdminPostSagas = {
         message.error(updatePost.data.message, 3);
       } else {
         yield put(AdminPostActions.updatePostSucceed(action.data));
-        message.success('Cập nhật sản phẩm thành công',3)
+        message.success("Cập nhật sản phẩm thành công", 3);
       }
     } catch (error) {
       yield put(AdminPostActions.updatePostFailed(error));
     }
   },
-}
+};
 
-export default AdminPostSagas
+export default AdminPostSagas;

@@ -49,7 +49,6 @@ class UserInforList extends Component {
     });
   };
 
-
   onOpenDrawerMemberSetting = (event) => {
     event.preventDefault();
     this.setState({
@@ -82,13 +81,20 @@ class UserInforList extends Component {
   getDataTable = (list) => {
     const { keyFilterValue } = this.state;
     let data = [...list];
+    let checklist;
     if (keyFilterValue) {
-      const rg = new RegExp(keyFilterValue, "i");
-      data = data.filter(
-        (element) => rg.test(element.username) || rg.test(element.email)
+      checklist = keyFilterValue.match(
+        /[^\w\s\da-z0-9A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+/g
       );
+      if (checklist) {
+        data = [];
+      } else {
+        const rg = new RegExp(keyFilterValue, "i");
+        data = data.filter(
+          (element) => rg.test(element.username) || rg.test(element.email)
+        );
+      }
     }
-
     return data;
   };
 

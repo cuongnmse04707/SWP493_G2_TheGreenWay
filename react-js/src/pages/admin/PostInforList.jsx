@@ -31,7 +31,7 @@ class PostInforList extends Component {
     avatarLoading: false,
     postImageLoading: false,
     addPostLoading: false,
-    data: null
+    data: null,
   };
 
   componentDidMount() {
@@ -60,11 +60,15 @@ class PostInforList extends Component {
   viewPosttDetail = (id) => {
     this.props.form.resetFields();
     this.setState({
-      visible: true,
       postId: id,
     });
     const params = {
       idPost: id,
+      callback: () => {
+        this.setState({
+          visible: true,
+        });
+      },
     };
     this.props.getPostDetail(params);
   };
@@ -76,7 +80,7 @@ class PostInforList extends Component {
   };
 
   updatePostInfor = () => {
-    if ((this.props.postDetail.ImageDetail === "")) {
+    if (this.props.postDetail.ImageDetail === "") {
       message.error("Vui lòng chọn ảnh đại diện bài viết", 2);
     } else if (this.state.data === "") {
       message.error("Vui lòng nhập nội dung bài viết", 2);
@@ -97,7 +101,6 @@ class PostInforList extends Component {
           this.props.updatePost({
             params,
           });
-
         }
       });
     } else {
@@ -143,14 +146,13 @@ class PostInforList extends Component {
           }
         });
       } else {
-        message.error("Mô tả không được để trống", 2)
+        message.error("Mô tả không được để trống", 2);
       }
     }
   };
 
   render() {
     const { listPost, totalPage, postDetail } = this.props;
-
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -236,7 +238,12 @@ class PostInforList extends Component {
         ),
       },
     ];
-    const { avatarLoading, avatarUrl, postImageLoading, addPostLoading } = this.state
+    const {
+      avatarLoading,
+      avatarUrl,
+      postImageLoading,
+      addPostLoading,
+    } = this.state;
 
     const antIcon = (
       <Icon type="loading-3-quarters" style={{ fontSize: 60 }} spin />
@@ -262,7 +269,7 @@ class PostInforList extends Component {
             margin: "20px",
           }}
         />
-        {postDetail.Content !== undefined ? (
+        {this.state.visible ? (
           <Modal
             visible={this.state.visible}
             onOk={this.updatePostInfor}
@@ -313,16 +320,16 @@ class PostInforList extends Component {
                                     );
                                   } else {
                                     this.setState({
-                                      avatarLoading: true
-                                    })
+                                      avatarLoading: true,
+                                    });
                                     const uploadTask = storage
                                       .ref(`images/${file.name}`)
                                       .put(file);
                                     // Set vao state
                                     uploadTask.on(
                                       "state_changed",
-                                      (snapshot) => { },
-                                      (error) => { },
+                                      (snapshot) => {},
+                                      (error) => {},
                                       () => {
                                         storage
                                           .ref("images")
@@ -331,8 +338,8 @@ class PostInforList extends Component {
                                           .then((url) => {
                                             this.props.changeAvatarImage(url);
                                             this.setState({
-                                              avatarLoading: false
-                                            })
+                                              avatarLoading: false,
+                                            });
                                           });
                                       }
                                     );
@@ -349,15 +356,19 @@ class PostInforList extends Component {
                                   style={{
                                     zIndex: "200",
                                     background: "#d9d9d98f",
-                                    height: postDetail.ImageDetail ? "249px" : "232px",
+                                    height: postDetail.ImageDetail
+                                      ? "249px"
+                                      : "232px",
                                     width: "232px",
                                     position: "absolute",
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
                                     marginLeft: "-9px",
-                                    marginTop: postDetail.ImageDetail ? "-9px" : "-94px",
-                                    borderRadius: "4px"
+                                    marginTop: postDetail.ImageDetail
+                                      ? "-9px"
+                                      : "-94px",
+                                    borderRadius: "4px",
                                   }}
                                 >
                                   <Spin indicator={antIcon} />
@@ -370,8 +381,8 @@ class PostInforList extends Component {
                                   style={{ width: "100%" }}
                                 />
                               ) : (
-                                  uploadAvatarButton
-                                )}
+                                uploadAvatarButton
+                              )}
                             </Upload>
                           )}
                         </Form.Item>
@@ -401,16 +412,16 @@ class PostInforList extends Component {
                                   } else {
                                     //Link Image
                                     this.setState({
-                                      postImageLoading: true
-                                    })
+                                      postImageLoading: true,
+                                    });
                                     const uploadTask = storage
                                       .ref(`images/${file.name}`)
                                       .put(file);
                                     // Set vao state
                                     uploadTask.on(
                                       "state_changed",
-                                      (snapshot) => { },
-                                      (error) => { },
+                                      (snapshot) => {},
+                                      (error) => {},
                                       () => {
                                         storage
                                           .ref("images")
@@ -421,8 +432,8 @@ class PostInforList extends Component {
                                               postImageDetail: url,
                                             });
                                             this.setState({
-                                              postImageLoading: false
-                                            })
+                                              postImageLoading: false,
+                                            });
                                           });
                                       }
                                     );
@@ -439,15 +450,21 @@ class PostInforList extends Component {
                                   style={{
                                     zIndex: "200",
                                     background: "#d9d9d98f",
-                                    height: this.state.postImageDetail ? "145px" : "129px",
-                                    width: this.state.postImageDetail ? "146px" : "129px",
+                                    height: this.state.postImageDetail
+                                      ? "145px"
+                                      : "129px",
+                                    width: this.state.postImageDetail
+                                      ? "146px"
+                                      : "129px",
                                     position: "absolute",
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
                                     marginLeft: "-9px",
-                                    marginTop: this.state.postImageDetail ? "-8px" : "-43px",
-                                    borderRadius: "4px"
+                                    marginTop: this.state.postImageDetail
+                                      ? "-8px"
+                                      : "-43px",
+                                    borderRadius: "4px",
                                   }}
                                 >
                                   <Spin indicator={antIcon} />
@@ -459,8 +476,8 @@ class PostInforList extends Component {
                                   alt="avatar"
                                 />
                               ) : (
-                                  uploadAvatarButton
-                                )}
+                                uploadAvatarButton
+                              )}
                             </Upload>
                           )}
                         </Form.Item>
@@ -472,29 +489,15 @@ class PostInforList extends Component {
                       </div>
                     </div>
                   </Col>
-
                   <Col span={11}>
-                    {/* <Form.Item label="Nội dung bài viết">
-                      {getFieldDecorator("description", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập mô tả bài viết",
-                          },
-                        ],
-                      })(
-                        {this.state.visible ? () : }
-
-                      )}
-                    </Form.Item> */}
-                    <p><span style={{ color: "red" }}>*</span>Nội dung bài đăng:</p>
+                    <p>
+                      <span style={{ color: "red" }}>*</span>Nội dung bài đăng:
+                    </p>
                     <div className="post-editor">
-                      {this.state.visible ? (
-                        <CKEditor
-                          data={get(postDetail, "Content")}
-                          onChange={this.onEditorChange}
-                        />
-                      ) : null}
+                      <CKEditor
+                        data={postDetail.Content}
+                        onChange={this.onEditorChange}
+                      />
                     </div>
                   </Col>
                 </Form>

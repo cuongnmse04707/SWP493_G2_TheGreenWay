@@ -47,9 +47,17 @@ class CartInforList extends Component {
   getDataTable = (list) => {
     const { keyFilterValue } = this.state;
     let data = [...list];
+    let checklist;
     if (keyFilterValue) {
-      const rg = new RegExp(keyFilterValue, "i");
-      data = data.filter((element) => rg.test(element.OrderID));
+      checklist = keyFilterValue.match(
+        /[^\w\s\da-z0-9A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]+/g
+      );
+      if (checklist) {
+        data = [];
+      } else {
+        const rg = new RegExp(keyFilterValue, "i");
+        data = data.filter((element) => rg.test(element.OrderID));
+      }
     }
 
     return data;

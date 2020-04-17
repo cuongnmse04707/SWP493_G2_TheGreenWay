@@ -50,6 +50,7 @@ const AdminProductSagas = {
         yield put(
           AdminProductActions.getProductDetailAdminSucceed(productInfor.data)
         );
+        action.data.callback();
       }
     } catch (error) {
       yield put(AdminProductActions.getProductDetailRequestAdminFailed(error));

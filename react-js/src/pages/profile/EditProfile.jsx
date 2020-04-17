@@ -52,7 +52,7 @@ class EditProfile extends Component {
     this.props.getUserInfor();
   }
 
-  handleUpdateAccountSubmit = e => {
+  handleUpdateAccountSubmit = (e) => {
     e.stopPropagation();
     this.props.form.validateFieldsAndScroll(
       [
@@ -83,7 +83,6 @@ class EditProfile extends Component {
       }
     );
   };
-
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -120,6 +119,7 @@ class EditProfile extends Component {
                       rules: [
                         {
                           required: true,
+                          whitespace: true,
                           message: "Vui lòng nhập tên người dùng",
                         },
                         {
