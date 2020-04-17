@@ -118,6 +118,7 @@ class ProductInforList extends Component {
   updateProductInfor = () => {
     window.scrollTo(0, 0);
     const { valueDes } = this.state;
+    console.log('vao day',valueDes)
     if (this.props.productDetail.ImageDetail === "") {
       message.error("Vui lòng chọn ảnh đại diện sản phẩm", 2);
     } else if (this.props.imageDetail.length !== 4) {
@@ -130,6 +131,7 @@ class ProductInforList extends Component {
     } else if (valueDes === "") {
       message.error("Vui lòng nhập mô tả sản phẩm", 2);
     } else if (valueDes === null) {
+      console.log("khong doi gia tri")
       this.setState({
         visible: false,
         stateAddLoading: true,
