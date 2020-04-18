@@ -50,6 +50,7 @@ class ProductInforList extends Component {
     stateLoading: false,
     stateDetailLoading: false,
     stateAddLoading: false,
+    removeArr: [],
   };
 
   handleChange = (info) => {
@@ -95,6 +96,7 @@ class ProductInforList extends Component {
   handleModalCancel = (e) => {
     this.setState({
       visible: false,
+      removeArr: [],
     });
   };
 
@@ -118,7 +120,6 @@ class ProductInforList extends Component {
   updateProductInfor = () => {
     window.scrollTo(0, 0);
     const { valueDes } = this.state;
-    console.log('vao day',valueDes)
     if (this.props.productDetail.ImageDetail === "") {
       message.error("Vui lòng chọn ảnh đại diện sản phẩm", 2);
     } else if (this.props.imageDetail.length !== 4) {
@@ -131,7 +132,6 @@ class ProductInforList extends Component {
     } else if (valueDes === "") {
       message.error("Vui lòng nhập mô tả sản phẩm", 2);
     } else if (valueDes === null) {
-      console.log("khong doi gia tri")
       this.setState({
         visible: false,
         stateAddLoading: true,
@@ -211,6 +211,7 @@ class ProductInforList extends Component {
                     this.props.form.resetFields();
                     this.setState({
                       stateAddLoading: false,
+                      removeArr: [],
                     });
                   },
                 });
@@ -338,6 +339,11 @@ class ProductInforList extends Component {
     const antIcon = (
       <Icon type="loading-3-quarters" style={{ fontSize: 60 }} spin />
     );
+    const propsUpload = {
+      showUploadList: {
+        showDownloadIcon: false,
+      },
+    };
     const {
       imageUrl,
       stateLoading,
@@ -546,6 +552,7 @@ class ProductInforList extends Component {
                     })(
                       <div className="clearfix">
                         <Upload
+                          {...propsUpload}
                           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                           listType="picture-card"
                           fileList={(imageDetail || []).map((item) => {
@@ -558,9 +565,10 @@ class ProductInforList extends Component {
                           })}
                           onPreview={this.handlePreview}
                           onRemove={(file) => {
-                            this.props.deleteDetailImage({
-                              idImage: file.uid,
+                            this.setState({
+                              removeArr: [...this.state.removeArr, file.uid],
                             });
+                            this.props.removeImageLocal(file.uid);
                           }}
                           beforeUpload={(file) => {
                             const isJpgOrPng =
@@ -589,13 +597,21 @@ class ProductInforList extends Component {
                                       .child(file.name)
                                       .getDownloadURL()
                                       .then((url) => {
-                                        this.props.addDetailImage({
-                                          ProductID: this.props.productDetail
-                                            .ProductID,
+                                        this.props.updateDetailImage({
+                                          // ProductID: this.props.productDetail
+                                          //   .ProductID,
                                           urlImage: url,
+                                          idImage: Math.max(
+                                            ...this.state.removeArr
+                                          ),
                                         });
                                         this.setState({
                                           stateDetailLoading: false,
+                                          removeArr: this.state.removeArr.filter(
+                                            (el) =>
+                                              el !==
+                                              Math.max(...this.state.removeArr)
+                                          ),
                                         });
                                       });
                                   }
@@ -666,6 +682,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    removeImageLocal: (value) => {
+      dispatch(AdminProductTypes.removeImageLocalRequest(value));
+    },
     getProductList: () => {
       dispatch(AdminProductTypes.getProductRequest());
     },
@@ -683,6 +702,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     addDetailImage: (params) => {
       dispatch(AdminProductTypes.addImageDetailRequest(params));
+    },
+    updateDetailImage: (params) => {
+      dispatch(AdminProductTypes.updateImageDetailRequest(params));
     },
   };
 };

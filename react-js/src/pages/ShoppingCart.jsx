@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../css/shopping-cart.css";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { InputNumber, Modal,  message,Table } from "antd";
+import { InputNumber, Modal, message, Table } from "antd";
 import { connect } from "react-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
@@ -14,100 +14,100 @@ class ShoppingCart extends Component {
     paymentOption: "",
     idRemove: "",
     totalCash: 0,
-    remainingAmout: 0
+    remainingAmout: 0,
   };
 
   componentDidMount = () => {
     const { convensionRate } = this.props;
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     let total = 0;
-    cart.map(e => {
+    cart.map((e) => {
       total = total + e.ProductPrice * e.quatityBuy;
     });
     this.setState({
       totalCash: total,
-      remainingAmout: total
+      remainingAmout: total,
     });
     this.props.getPaperConvension();
     let numberOfTotal = 0;
-    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    cart.map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
     this.props.setDataCart(numberOfTotal);
   };
 
   getQuantity = (elementItem, value) => {
-    if(value == '' || value == null) value = 1
+    if (value == "" || value == null) value = 1;
     // Check san pham goi API o day
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const indexNumber = cart.findIndex(
-      element => element.ProductID === elementItem.ProductID
+      (element) => element.ProductID === elementItem.ProductID
     );
     cart[indexNumber].quatityBuy = value;
     localStorage.setItem("cart", JSON.stringify(cart));
     let total = 0;
-    cart.map(e => {
+    cart.map((e) => {
       total = total + e.ProductPrice * e.quatityBuy;
     });
     let numberOfTotal = 0;
-    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    cart.map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
     this.props.setDataCart(numberOfTotal);
     this.setState({
       quantity: value,
-      totalCash: total
+      totalCash: total,
     });
   };
 
-  showModal = ProductID => {
+  showModal = (ProductID) => {
     this.setState({
       visible: true,
-      idRemove: ProductID
+      idRemove: ProductID,
     });
   };
 
   componentDidUpdate() {}
 
-  handleOk = e => {
+  handleOk = (e) => {
     const { idRemove } = this.state;
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     localStorage.setItem(
       "cart",
-      JSON.stringify(cart.filter(element => element.ProductID !== idRemove))
+      JSON.stringify(cart.filter((element) => element.ProductID !== idRemove))
     );
     let total = 0;
     cart
-      .filter(element => element.ProductID !== idRemove)
-      .map(e => {
+      .filter((element) => element.ProductID !== idRemove)
+      .map((e) => {
         total = total + e.ProductPrice * e.quatityBuy;
       });
     let numberOfTotal = 0;
     cart
-      .filter(element => element.ProductID !== idRemove)
-      .map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+      .filter((element) => element.ProductID !== idRemove)
+      .map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
     this.props.setDataCart(numberOfTotal);
     this.setState({
       visible: false,
       idRemove: "",
-      totalCash: total
+      totalCash: total,
     });
   };
 
-  handleCancel = e => {
+  handleCancel = (e) => {
     this.setState({
       visible: false,
-      idRemove: ""
+      idRemove: "",
     });
   };
 
-  handleOptionChange = value => {
+  handleOptionChange = (value) => {
     this.setState({
-      paymentOption: value
+      paymentOption: value,
     });
   };
 
-  onPaperChange = value => {
+  onPaperChange = (value) => {
     const sotienthieu =
       this.state.totalCash - value * this.props.convensionRate;
     this.setState({
-      remainingAmout: this.state.totalCash - value * this.props.convensionRate
+      remainingAmout: this.state.totalCash - value * this.props.convensionRate,
     });
   };
 
@@ -136,7 +136,7 @@ class ShoppingCart extends Component {
               {record.ProductName}
             </span>
           </div>
-        )
+        ),
       },
       {
         title: "Giá Tiền | Số Lượng Giấy",
@@ -145,9 +145,11 @@ class ShoppingCart extends Component {
           <div>
             <span>{record.ProductPrice} VNĐ</span>
             <span className="mr-2 ml-2">|</span>
-            <span>{Math.floor(record.ProductPrice / this.props.convensionRate)}</span>
+            <span>
+              {Math.floor(record.ProductPrice / this.props.convensionRate)}
+            </span>
           </div>
-        )
+        ),
       },
       {
         title: "Số lượng",
@@ -158,22 +160,22 @@ class ShoppingCart extends Component {
             min={1}
             max={record.Quantity}
             value={record.quatityBuy || 1}
-            onChange={value   => this.getQuantity(record, value)}
+            onChange={(value) => this.getQuantity(record, value)}
           />
-        )
+        ),
       },
       {
         title: "Action",
         key: "action",
         render: (text, record) => (
           <img
-            onClick={event => this.showModal(record.ProductID)}
+            onClick={(event) => this.showModal(record.ProductID)}
             style={{ cursor: "pointer", width: "25px" }}
             src={require("../images/svgIcon/delete.svg")}
             alt=""
           />
-        )
-      }
+        ),
+      },
     ];
     const { totalCash } = this.state;
     const { convensionRate } = this.props;
@@ -241,20 +243,20 @@ class ShoppingCart extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    convensionRate: state.convension.convensionRate
+    convensionRate: state.convension.convensionRate,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getPaperConvension: () => {
       dispatch(ConvensionTypes.getConvensionRequest());
     },
-    setDataCart: param => {
+    setDataCart: (param) => {
       dispatch(HomePageTypes.updateStateCart(param));
-    }
+    },
   };
 };
 

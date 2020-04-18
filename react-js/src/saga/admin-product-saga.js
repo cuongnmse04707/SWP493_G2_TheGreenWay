@@ -116,6 +116,41 @@ const AdminProductSagas = {
     }
   },
 
+  *updateImageDetail(action) {
+    try {
+      const addImage = yield call(() => {
+        return axios.put(
+          `http://localhost:3001/product/updateImageDetail`,
+          {
+            idImage: action.data.idImage,
+            urlImage: action.data.urlImage,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
+          }
+        );
+      });
+      if (!addImage.data.success) {
+        yield put(
+          AdminProductActions.updateImageDetailRequestFailed(addImage.data)
+        );
+        message.error(addImage.data.message, 3);
+      } else {
+        yield put(
+          AdminProductActions.updateImageDetailSucceed({
+            ...action.data,
+          })
+        );
+        message.success("Thêm ảnh thành công", 3);
+      }
+    } catch (error) {
+      yield put(AdminProductActions.updateImageDetailRequestFailed(error));
+    }
+  },
+
   *addImageDetail(action) {
     try {
       const addImage = yield call(() => {
@@ -130,7 +165,6 @@ const AdminProductSagas = {
           }
         );
       });
-      console.log("addImage.data.success", addImage.data);
       if (!addImage.data.success) {
         yield put(
           AdminProductActions.addImageDetailRequestFailed(addImage.data)

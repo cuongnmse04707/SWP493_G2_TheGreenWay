@@ -66,7 +66,7 @@ class NavBar extends Component {
   toLifeWay = async () => {
     window.scrollTo(0, 0);
     const params = {
-      page: 1
+      page: 1,
     };
     await this.props.getPostInfor(params);
     await this.props.getPostLikeMuch();
@@ -81,8 +81,8 @@ class NavBar extends Component {
   render() {
     const token = window.localStorage.getItem("x-access-token");
     const roles = window.localStorage.getItem("roles");
-    const checkUrl = window.location.pathname.split("/")[1];
-    const { userInformation } = this.props
+    // const checkUrl = window.location.pathname.split("/")[1];
+    const { userInformation } = this.props;
     //menu dropdown
     const menu = (
       <Menu>
@@ -156,7 +156,7 @@ class NavBar extends Component {
                           borderRadius: "50%",
                         }}
                         src={userInformation.urlAvatar}
-                      // alt=""
+                        // alt=""
                       />
                       <Dropdown
                         style={{ width: "500px" }}
@@ -178,15 +178,15 @@ class NavBar extends Component {
                     </li>
                   </div>
                 ) : (
-                    <li className="nav-item">
-                      <a
-                        className="nav-link js-scroll-trigger"
-                        onClick={this.toLogin}
-                      >
-                        Đăng nhập/Đăng ký
+                  <li className="nav-item">
+                    <a
+                      className="nav-link js-scroll-trigger"
+                      onClick={this.toLogin}
+                    >
+                      Đăng nhập/Đăng ký
                     </a>
-                    </li>
-                  )}
+                  </li>
+                )}
                 <li className="shopping-cart-item">
                   <Badge
                     count={this.props.stateCartNumber}
@@ -216,8 +216,8 @@ class NavBar extends Component {
                     </Button>
                   </div>
                 ) : (
-                    <div></div>
-                  )}
+                  <div></div>
+                )}
               </ul>
             </div>
             <Modal
@@ -249,7 +249,7 @@ const mapDispatchToProps = (dispatch) => {
     setDataCart: (param) => {
       dispatch(HomePageTypes.updateStateCart(param));
     },
-    getPostInfor: params => {
+    getPostInfor: (params) => {
       dispatch(LifeWayTypes.getLifeWayRequest(params));
     },
     getPostLikeMuch: () => {
@@ -257,7 +257,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     setCheckSearchFalse: () => {
       dispatch(LifeWayTypes.setCheckSearchFalse());
-    }
+    },
   };
 };
 

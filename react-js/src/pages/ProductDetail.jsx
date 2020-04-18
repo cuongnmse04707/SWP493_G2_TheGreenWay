@@ -19,7 +19,7 @@ class ProductDetail extends Component {
     previewVisible: false,
     previewImage: "",
     imageShow: "",
-    fileList: []
+    fileList: [],
   };
 
   componentDidMount() {
@@ -27,23 +27,32 @@ class ProductDetail extends Component {
     this.props.getProductDetail(productId);
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     let numberOfTotal = 0;
-    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    cart.map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
     // this.props.setDataCart(numberOfTotal);
   }
 
-  getQuantity = value => {
-    if (Number(value)) {
+  getQuantity = (value, max) => {
+    if (Number(value) !== 0) {
+      if (max === 0) {
+        message.info("Sản phẩm đã hết hàng !");
+      } else {
+        if (value > max) {
+          message.info(`Hiện tại trong kho hàng chỉ còn ${max} sản phẩm !`);
+        }
+      }
+    }
+    if (Number(value) !== 0) {
       this.setState({
-        quantity: value || 0
+        quantity: value > max ? max : value,
       });
     } else {
       this.setState({
-        quantity: 0
+        quantity: 0,
       });
     }
   };
 
-  handleMouseMove = e => {
+  handleMouseMove = (e) => {
     const { left, top, width, height } = e.target.getBoundingClientRect();
     const x = ((e.pageX - left) / width) * 100;
     const y = ((e.pageY - top) / height) * 100;
@@ -52,7 +61,7 @@ class ProductDetail extends Component {
 
   addToCart = () => {
     const { quantity } = this.state;
-    const { convensionRate, productInfor, productImages } = this.props;
+    const { productInfor } = this.props;
     const product = {
       ProductID: productInfor.ProductID,
       ProductName: productInfor.ProductName,
@@ -60,70 +69,96 @@ class ProductDetail extends Component {
       ImageDetail: productInfor.ImageDetail,
       NumberOfLikes: productInfor.NumberOfLikes,
       Quantity: productInfor.Quantity,
-      quatityBuy: quantity
+      quatityBuy: quantity,
     };
-    if (quantity === 0) {
-      message.info("Opps. Hãy nhập số lượng cần mua !");
-      return;
-    }
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const indexNumber = cart.findIndex(
-      element => element.ProductID === product.ProductID
+      (element) => element.ProductID === product.ProductID
     );
     if (indexNumber >= 0) {
-      if (product.Quantity < cart[indexNumber].quatityBuy + quantity) {
-        message.error("Opps. Xin lỗi bạn, sản phẩm này đã không đủ số hàng !");
+      if (quantity === 0) {
+        if (product.Quantity === cart[indexNumber].quatityBuy + quantity) {
+          message.error(
+            "Opps. Xin lỗi bạn, sản phẩm này đã không đủ số hàng !"
+          );
+          return;
+        } else {
+          message.info("Opps. Hãy nhập số lượng cần mua !");
+          return;
+        }
       } else {
-        message.success("Thêm sản phẩm vào giỏ hàng thành công !");
-        cart[indexNumber].quatityBuy = cart[indexNumber].quatityBuy + quantity;
-        let numberOfTotal = 0;
-        cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
-        this.props.setDataCart(numberOfTotal);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        this.props.history.push("/cart");
+        if (product.Quantity < cart[indexNumber].quatityBuy + quantity) {
+          message.error(
+            "Opps. Xin lỗi bạn, sản phẩm này đã không đủ số hàng !"
+          );
+        } else {
+          message.success("Thêm sản phẩm vào giỏ hàng thành công !");
+          cart[indexNumber].quatityBuy =
+            cart[indexNumber].quatityBuy + quantity;
+          let numberOfTotal = 0;
+          cart.map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
+          this.props.setDataCart(numberOfTotal);
+          localStorage.setItem("cart", JSON.stringify(cart));
+          this.props.history.push("/cart");
+        }
       }
     } else {
-      if (product.Quantity === 0) {
-        message.error("Opps. Xin lỗi bạn, sản phẩm này đã hết hàng");
+      if (quantity === 0) {
+        if (product.Quantity === 0) {
+          message.error(
+            "Opps. Xin lỗi bạn, sản phẩm này đã không đủ số hàng !"
+          );
+          return;
+        } else {
+          message.info("Opps. Hãy nhập số lượng cần mua !");
+          return;
+        }
       } else {
-        message.success("Thêm sản phẩm vào giỏ hàng thành công !");
-        cart.push(product);
-        let numberOfTotal = 0;
-        cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
-        this.props.setDataCart(numberOfTotal);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        this.props.history.push("/cart");
+        if (product.Quantity === 0) {
+          message.error("Opps. Xin lỗi bạn, sản phẩm này đã hết hàng");
+        } else {
+          message.success(
+            `Thêm sản phẩm vào giỏ hàng thành công ${quantity} sản phẩm !`,
+            2
+          );
+          cart.push(product);
+          let numberOfTotal = 0;
+          cart.map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
+          this.props.setDataCart(numberOfTotal);
+          localStorage.setItem("cart", JSON.stringify(cart));
+          this.props.history.push("/cart");
+        }
       }
     }
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
 
-  handlePreview = async file => {
-  };
+  handlePreview = async (file) => {};
 
   render() {
     window.scrollTo(0, 0);
     const { convensionRate, productInfor, productImages } = this.props;
     let arrayImages = [];
     if (productImages !== "No Images") {
-      productImages.map(item => {
+      productImages.map((item) => {
         arrayImages.push(item.urlImage);
       });
     } else {
       arrayImages = [
-        "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
+        "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c",
       ];
     }
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const cartItem =
-      cart.find(element => element.ProductID === productInfor.ProductID) || {};
+      cart.find((element) => element.ProductID === productInfor.ProductID) ||
+      {};
 
     const props = {
       showUploadList: {
         showDownloadIcon: false,
-        showRemoveIcon: false
-      }
+        showRemoveIcon: false,
+      },
     };
 
     return (
@@ -135,7 +170,7 @@ class ProductDetail extends Component {
               <Carousel auto style={{ width: "440px", marginBottom: "20px" }}>
                 {(
                   productImages || [
-                    "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c"
+                    "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2FCay-van-loc-hop-menh-gi-1.jpg?alt=media&token=e3e70f2c-7727-4836-8bdb-07b08e52985c",
                   ]
                 ).map((item, index) => {
                   return (
@@ -157,25 +192,26 @@ class ProductDetail extends Component {
                     uid: index,
                     name: "a",
                     status: "done",
-                    url:
-                      ele
+                    url: ele,
                   }))}
-
-                  onPreview={ele => {
+                  onPreview={(ele) => {
                     this.setState({
                       previewVisible: true,
-                      imageShow: ele.url
+                      imageShow: ele.url,
                     });
                   }}
-                >
-                </Upload>
+                ></Upload>
 
                 <Modal
                   visible={this.state.previewVisible}
                   footer={null}
                   onCancel={this.handleCancel}
                 >
-                  <img alt="example" style={{ width: "100%" }} src={this.state.imageShow} />
+                  <img
+                    alt="example"
+                    style={{ width: "100%" }}
+                    src={this.state.imageShow}
+                  />
                 </Modal>
               </div>
             </div>
@@ -199,17 +235,20 @@ class ProductDetail extends Component {
                 <InputNumber
                   type="number"
                   min={0}
-                  max={
-                    (productInfor.Quantity || 0) - (cartItem.quatityBuy || 0)
-                  }
+                  // max={}
                   value={this.state.quantity}
-                  onChange={this.getQuantity}
+                  onChange={(value) =>
+                    this.getQuantity(
+                      value,
+                      (productInfor.Quantity || 0) - (cartItem.quatityBuy || 0)
+                    )
+                  }
                 />
               </div>
               <div className="item-short-decription mt-5">
-              <div
-                dangerouslySetInnerHTML={{ __html: productInfor.Description }}
-              />
+                <div
+                  dangerouslySetInnerHTML={{ __html: productInfor.Description }}
+                />
               </div>
               <div className="add-to-cart">
                 <div onClick={this.addToCart}>
@@ -217,7 +256,7 @@ class ProductDetail extends Component {
                     style={{
                       height: "32px",
                       width: "32px",
-                      marginRight: "10px"
+                      marginRight: "10px",
                     }}
                     src={require("../images/svgIcon/cart.svg")}
                     alt=""
@@ -256,22 +295,22 @@ class ProductDetail extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     productInfor: state.productDetail.productInfor,
     productImages: state.productDetail.productImages,
-    convensionRate: state.convension.convensionRate
+    convensionRate: state.convension.convensionRate,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getProductDetail: productId => {
+    getProductDetail: (productId) => {
       dispatch(ProductDetailTypes.getProductDetailRequest(productId));
     },
-    setDataCart: param => {
+    setDataCart: (param) => {
       dispatch(HomePageTypes.updateStateCart(param));
-    }
+    },
   };
 };
 

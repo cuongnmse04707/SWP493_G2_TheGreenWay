@@ -30,10 +30,11 @@ let productRouter = (server) => {
   router.get("/getListProductLike", ProductController.getListProductLike);
   // Check Token MOD
   router.use(ModMiddleware.isAuth);
-  // List Protect APIs:
+  // List Protect APIs:updateImageDetail
   router.get("/getProductsStatus", ProductController.getProductsStatus);
   router.post("/addNewProduct", ProductController.addNewProduct);
   router.put("/updateProduct", ProductController.updateProduct);
+  router.put("/updateImageDetail", ProductController.updateImageDetail);
   router.post("/addNewImageProduct", ProductController.addNewImageProduct);
   router.delete("/removeImageProduct", ProductController.removeImageProduct);
   router.delete("/deleteProduct", ProductController.deleteProduct);

@@ -609,13 +609,11 @@ let addNewProduct = async (req, res) => {
               message: "Add New Product is Unsuccess!",
             });
           } else {
-            return res
-              .status(200)
-              .json({
-                success: true,
-                message: "Add New Product is Success!",
-                idProduct: idProduct,
-              });
+            return res.status(200).json({
+              success: true,
+              message: "Add New Product is Success!",
+              idProduct: idProduct,
+            });
           }
         }
       );
@@ -784,6 +782,27 @@ let addNewImageProduct = async (req, res) => {
   );
 };
 
+let updateImageDetail = async (req, res) => {
+  //Get ID Products
+  const idImage = req.body.idImage;
+  const urlImage = req.body.urlImage;
+  let sql = `UPDATE ImagesOfProduct SET urlImage = ? WHERE ImageID = ?`;
+  let query = mysql.format(sql, [urlImage, idImage]);
+  connectionDB.query(query, async (err, result) => {
+    if (err) {
+      return res.status(200).json({
+        success: false,
+        message: "Add new image Faied",
+      });
+    } else {
+      return res.status(200).json({
+        success: true,
+        message: "Add new image Success!",
+      });
+    }
+  });
+};
+
 //remove Image by ID
 let removeImageProduct = async (req, res) => {
   //Get ID Products
@@ -851,4 +870,5 @@ module.exports = {
   getListProductLike: getListProductLike,
   getInfoProductFromCart: getInfoProductFromCart,
   getProductAllByCategory: getProductAllByCategory,
+  updateImageDetail: updateImageDetail,
 };

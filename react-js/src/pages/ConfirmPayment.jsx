@@ -6,66 +6,53 @@ import { connect } from "react-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import OrderCartTypes from "../redux/order-card-redux";
 import queryString from "query-string";
-import {
-  Form,
-  Input,
-  Button,
-  DatePicker,
-  Modal,
-  Progress,
-  message,
-  Row,
-  Col,
-  InputNumber,
-  Select
-} from "antd";
+import { Form, Input, InputNumber, Select } from "antd";
 const { Option } = Select;
 const { TextArea } = Input;
 
 var moment = require("moment");
 const phoneRegex = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
 const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
-const addressRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
+// const addressRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
 
 class ConfirmPayment extends Component {
   state = {
     totalCash: 0,
     paymentOption: "1",
     remainingAmout: 0,
-    QuantityPaper: 0
+    QuantityPaper: 0,
   };
 
   componentDidMount = () => {
-    const dataId = queryString.parse(this.props.history.location.search);
+    // const dataId = queryString.parse(this.props.history.location.search);
     this.props.getPaperConvension();
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     let total = 0;
-    cart.map(e => {
+    cart.map((e) => {
       total = total + e.ProductPrice * e.quatityBuy;
     });
     this.setState({
       totalCash: total,
-      remainingAmout: total
+      remainingAmout: total,
     });
   };
 
-  onPaperChange = value => {
+  onPaperChange = (value) => {
     this.setState({
-      QuantityPaper: value
+      QuantityPaper: value,
     });
     const sotienthieu =
       this.state.totalCash - value * this.props.convensionRate;
     this.setState({
-      remainingAmout: this.state.totalCash - value * this.props.convensionRate
+      remainingAmout: this.state.totalCash - value * this.props.convensionRate,
     });
   };
 
-  handleSelectChange = value => {
-  };
+  handleSelectChange = (value) => {};
 
-  handleOptionChange = value => {
+  handleOptionChange = (value) => {
     this.setState({
-      paymentOption: value
+      paymentOption: value,
     });
   };
 
@@ -73,51 +60,53 @@ class ConfirmPayment extends Component {
     const token = window.localStorage.getItem("x-access-token");
     if (token) {
       this.props.form.validateFieldsAndScroll((err, fieldsValues) => {
-          if (!err) {
-            var totalPaper = Math.floor(
-              this.state.totalCash / this.props.convensionRate
-            );
-            var totalMoney = this.state.totalCash;
-            var cash = 0;
-            var check = this.state.paymentOption;
-            const cart = JSON.parse(window.localStorage.getItem("cart"));
-            if (this.state.paymentOption === "1") {
-              totalPaper = 0;
-              cash = totalMoney;
-            }
-            if (this.state.paymentOption === "2") {
-            }
-            if (this.state.paymentOption === "3") {
-              totalPaper = this.state.QuantityPaper;
-              cash = this.state.remainingAmout;
-            }
-            const params = {
-              PaymentID: fieldsValues.paymentMethod,
-              ConversionID: this.props.convensionId,
-              TotalPrice: totalMoney,
-              ShipAddress: fieldsValues.address,
-              CreateDate: moment().format("YYYY-MM-DD"),
-              QuantityPaper: totalPaper,
-              Cash: cash,
-              cart: cart.map(ele => ({
-                ProductName: ele.ProductName,
-                id: ele.ProductID,
-                quatity: ele.Quantity,
-                price: ele.ProductPrice,
-                quatityBuy: ele.quatityBuy == null?  "0" : ele.quatityBuy
-              }))
-            };
-            this.props.sendOrderCart({
-              params,
-              method: "user",
-              callbackA: () => {
-                window.localStorage.removeItem("cart");
-                this.props.history.push("/order-success");
-              }
-            });
+        if (!err) {
+          var totalPaper = Math.floor(
+            this.state.totalCash / this.props.convensionRate
+          );
+          var totalMoney = this.state.totalCash;
+          var cash = 0;
+          var check = this.state.paymentOption;
+          const cart = JSON.parse(window.localStorage.getItem("cart"));
+          if (this.state.paymentOption === "1") {
+            totalPaper = 0;
+            cash = totalMoney;
           }
+          if (this.state.paymentOption === "2") {
+            // if(Number(this.state.QuantityPaper) === 0){
+            //   return
+            // }
+          }
+          if (this.state.paymentOption === "3") {
+            totalPaper = this.state.QuantityPaper;
+            cash = this.state.remainingAmout;
+          }
+          const params = {
+            PaymentID: fieldsValues.paymentMethod,
+            ConversionID: this.props.convensionId,
+            TotalPrice: totalMoney,
+            ShipAddress: fieldsValues.address,
+            CreateDate: moment().format("YYYY-MM-DD"),
+            QuantityPaper: totalPaper,
+            Cash: cash,
+            cart: cart.map((ele) => ({
+              ProductName: ele.ProductName,
+              id: ele.ProductID,
+              quatity: ele.Quantity,
+              price: ele.ProductPrice,
+              quatityBuy: ele.quatityBuy == null ? "0" : ele.quatityBuy,
+            })),
+          };
+          this.props.sendOrderCart({
+            params,
+            method: "user",
+            callbackA: () => {
+              window.localStorage.removeItem("cart");
+              this.props.history.push("/order-success");
+            },
+          });
         }
-      );
+      });
     } else {
       this.props.form.validateFields((err, values) => {
         if (!err) {
@@ -149,22 +138,22 @@ class ConfirmPayment extends Component {
             CreateDate: moment().format("YYYY-MM-DD"),
             QuantityPaper: totalPaper,
             Cash: cash,
-            cart: cart.map(ele => ({
+            cart: cart.map((ele) => ({
               ProductName: ele.ProductName,
               id: ele.ProductID,
               quatity: ele.Quantity,
               price: ele.ProductPrice,
-              quatityBuy: ele.quatityBuy
-            }))
+              quatityBuy: ele.quatityBuy,
+            })),
           };
           this.props.sendOrderCart({
             params,
             method: "guest",
-            callbackA: token => {
-              window.localStorage.setItem('token', token)
+            callbackA: (token) => {
+              window.localStorage.setItem("token", token);
               window.localStorage.removeItem("cart");
               this.props.history.push("/order-success");
-            }
+            },
           });
         }
       });
@@ -178,14 +167,14 @@ class ConfirmPayment extends Component {
         xs: { span: 24 },
         sm: { span: 24 },
         md: { span: 24 },
-        lg: { span: 24 }
+        lg: { span: 24 },
       },
       wrapperCol: {
         xs: { span: 23 },
         sm: { span: 23 },
         md: { span: 23 },
-        lg: { span: 18 }
-      }
+        lg: { span: 18 },
+      },
     };
     const token = window.localStorage.getItem("x-access-token");
     const cart = JSON.parse(window.localStorage.getItem("cart"));
@@ -210,9 +199,9 @@ class ConfirmPayment extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập tên người dùng"
-                          }
-                        ]
+                            message: "Vui lòng nhập tên người dùng",
+                          },
+                        ],
                       })(<Input />)}
                     </Form.Item>
                     <Form.Item label="Số điện thoại">
@@ -221,13 +210,13 @@ class ConfirmPayment extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập số điện thoại người dùng"
+                            message: "Vui lòng nhập số điện thoại người dùng",
                           },
                           {
                             pattern: phoneRegex,
-                            message: "Nhập đúng định dạng số điện thoại"
-                          }
-                        ]
+                            message: "Nhập đúng định dạng số điện thoại",
+                          },
+                        ],
                       })(<Input />)}
                     </Form.Item>
 
@@ -237,14 +226,14 @@ class ConfirmPayment extends Component {
                         rules: [
                           {
                             required: true,
-                            message: "Vui lòng nhập địa chỉ muốn giao hàng"
-                          }
-                        ]
+                            message: "Vui lòng nhập địa chỉ muốn giao hàng",
+                          },
+                        ],
                       })(<TextArea rows={4} />)}
                     </Form.Item>
                     <Form.Item label="Lựa chọn phương thức thanh toán">
                       {getFieldDecorator("paymentMethod", {
-                        initialValue: "1"
+                        initialValue: "1",
                       })(
                         <Select style={{ width: 200 }} {...this.props}>
                           <Option value="1">Ship COD</Option>
@@ -255,71 +244,73 @@ class ConfirmPayment extends Component {
                   </Form>
                 </div>
               ) : (
-                  <div>
-                    <Form {...formItemLayout} className="mt-4">
-                      <Form.Item label="Họ và tên">
-                        {getFieldDecorator("fullname", {
-                          rules: [
-                            {
-                              required: true,
-                              message: "Vui lòng nhập tên người dùng"
-                            }
-                          ]
-                        })(<Input />)}
-                      </Form.Item>
-                      <Form.Item label="Số điện thoại">
-                        {getFieldDecorator("phone", {
-                          rules: [
-                            {
-                              required: true,
-                              message: "Vui lòng nhập số điện thoại người dùng"
-                            },
-                            {
-                              pattern: phoneRegex,
-                              message: "Nhập đúng định dạng số điện thoại"
-                            }
-                          ]
-                        })(<Input />)}
-                      </Form.Item>
-                      <Form.Item label="Email">
-                        {getFieldDecorator("email", {
-                          rules: [
-                            {
-                              required: true,
-                              message:
-                                "Vui lòng nhập địa chỉ email"
-                            },
-                            {
-                              pattern: emailRegex,
-                              message:
-                                "Vui lòng nhập đúng định dạng email"
-                            }
-                          ]
-                        })(<Input style={{ width: "100%" }} />)}
-                      </Form.Item>
-                      <Form.Item label="Nhập địa chỉ giao hàng:">
-                        {getFieldDecorator("address", {
-                          rules: [
-                            {
-                              required: true,
-                              message: "Vui lòng nhập địa chỉ muốn giao hàng"
-                            }
-                          ]
-                        })(<TextArea rows={4} />)}
-                      </Form.Item>
-                      <Form.Item label="Lựa chọn phương thức thanh toán">
-                        {getFieldDecorator("paymentMethod", {
-                          initialValue: "1"
-                        })(
-                          <Select {...this.props} value="1" style={{ width: 200 }}>
-                            <Option value="1">Ship COD</Option>
-                            <Option value="2">Chuyển Khoản</Option>
-                          </Select>
-                        )}
-                      </Form.Item>
-                    </Form>
-                  </div>
-                )}
+                <div>
+                  <Form {...formItemLayout} className="mt-4">
+                    <Form.Item label="Họ và tên">
+                      {getFieldDecorator("fullname", {
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập tên người dùng",
+                          },
+                        ],
+                      })(<Input />)}
+                    </Form.Item>
+                    <Form.Item label="Số điện thoại">
+                      {getFieldDecorator("phone", {
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập số điện thoại người dùng",
+                          },
+                          {
+                            pattern: phoneRegex,
+                            message: "Nhập đúng định dạng số điện thoại",
+                          },
+                        ],
+                      })(<Input />)}
+                    </Form.Item>
+                    <Form.Item label="Email">
+                      {getFieldDecorator("email", {
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập địa chỉ email",
+                          },
+                          {
+                            pattern: emailRegex,
+                            message: "Vui lòng nhập đúng định dạng email",
+                          },
+                        ],
+                      })(<Input style={{ width: "100%" }} />)}
+                    </Form.Item>
+                    <Form.Item label="Nhập địa chỉ giao hàng:">
+                      {getFieldDecorator("address", {
+                        rules: [
+                          {
+                            required: true,
+                            message: "Vui lòng nhập địa chỉ muốn giao hàng",
+                          },
+                        ],
+                      })(<TextArea rows={4} />)}
+                    </Form.Item>
+                    <Form.Item label="Lựa chọn phương thức thanh toán">
+                      {getFieldDecorator("paymentMethod", {
+                        initialValue: "1",
+                      })(
+                        <Select
+                          {...this.props}
+                          value="1"
+                          style={{ width: 200 }}
+                        >
+                          <Option value="1">Ship COD</Option>
+                          <Option value="2">Chuyển Khoản</Option>
+                        </Select>
+                      )}
+                    </Form.Item>
+                  </Form>
+                </div>
+              )}
             </div>
             <div className="bill-infor-wrapper">
               <div className="bill-infor-container">
@@ -364,8 +355,26 @@ class ConfirmPayment extends Component {
                     value={this.state.paymentOption}
                   >
                     <Option value="1">Tiền</Option>
-                    <Option value="2">Giấy</Option>
-                    <Option value="3">Cả hai</Option>
+                    <Option
+                      value="2"
+                      disabled={
+                        Math.floor(totalCash / convensionRate) === 0
+                          ? true
+                          : false
+                      }
+                    >
+                      Giấy
+                    </Option>
+                    <Option
+                      value="3"
+                      disabled={
+                        Math.floor(totalCash / convensionRate) === 0
+                          ? true
+                          : false
+                      }
+                    >
+                      Cả hai
+                    </Option>
                   </Select>
                   {this.state.paymentOption == 3 ? (
                     <div className="show-option-payment">
@@ -377,7 +386,7 @@ class ConfirmPayment extends Component {
                           max={Math.floor(totalCash / convensionRate)}
                           // value={0}
                           placeholder="Nhập số kg giấy"
-                          onChange={value => this.onPaperChange(value)}
+                          onChange={(value) => this.onPaperChange(value)}
                           style={{ width: "135px" }}
                         />
                       </div>
@@ -393,8 +402,8 @@ class ConfirmPayment extends Component {
                       </div>
                     </div>
                   ) : (
-                      <div className="show-option-payment"></div>
-                    )}
+                    <div className="show-option-payment"></div>
+                  )}
                 </div>
                 <p className="change-shopping-cart">Thay đổi sản phẩm</p>
                 <div className="button-check-out" onClick={this.orderSuccess}>
@@ -410,22 +419,22 @@ class ConfirmPayment extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     userInformation: state.homePage.userInformation,
     convensionRate: state.convension.convensionRate,
-    convensionId: state.convension.convensionId
+    convensionId: state.convension.convensionId,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getPaperConvension: () => {
       dispatch(ConvensionTypes.getConvensionRequest());
     },
-    sendOrderCart: params => {
+    sendOrderCart: (params) => {
       dispatch(OrderCartTypes.getOrderCartRequest(params));
-    }
+    },
   };
 };
 const ConfirmPaymentScreen = Form.create()(ConfirmPayment);

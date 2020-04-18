@@ -40,6 +40,14 @@ const { Types, Creators } = createActions({
   addNewImageDetailRequest: ["data"],
   addNewImageDetailRequestFailed: ["error"],
   addNewImageDetailSucceed: ["data"],
+
+  //remove image local
+  removeImageLocalRequest: ["data"],
+
+  //upload new image detail of product
+  updateImageDetailRequest: ["data"],
+  updateImageDetailRequestFailed: ["error"],
+  updateImageDetailSucceed: ["data"],
 });
 
 export const AdminProductTypes = Types;
@@ -94,7 +102,6 @@ export const updateProductSucceed = (state, { data }) => {
 };
 
 export const addImageSucceed = (state, { data }) => {
-  console.log(data);
   return {
     ...state,
     imageDetail: [
@@ -143,6 +150,27 @@ export const failed = (state, { error }) => {
   };
 };
 
+export const updateImageSucceed = (state, data) => {
+  return {
+    ...state,
+    imageDetail: [
+      ...state.imageDetail,
+      {
+        ImageID: data.data.idImage,
+        urlImage: data.data.urlImage,
+      },
+    ],
+  };
+};
+
+export const removeImageLocalRequest = (state, value) => {
+  // console.log("day ne", value.data);
+  return {
+    ...state,
+    imageDetail: state.imageDetail.filter((el) => el.ImageID !== value.data),
+  };
+};
+
 //TODO:Hookup Reducers To Types in Action
 export const reducer = createReducer(INITIAL_STATE, {
   [AdminProductTypes.GET_PRODUCT_REQUEST]: request,
@@ -158,6 +186,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [AdminProductTypes.ADD_IMAGE_DETAIL_REQUEST]: request,
   [AdminProductTypes.ADD_IMAGE_DETAIL_SUCCEED]: addImageSucceed,
   [AdminProductTypes.ADD_IMAGE_DETAIL_REQUEST_FAILED]: failed,
+  [AdminProductTypes.UPDATE_IMAGE_DETAIL_REQUEST]: request,
+  [AdminProductTypes.UPDATE_IMAGE_DETAIL_SUCCEED]: updateImageSucceed,
+  [AdminProductTypes.UPDATE_IMAGE_DETAIL_REQUEST_FAILED]: failed,
   [AdminProductTypes.DELETE_IMAGE_DETAIL_REQUEST]: request,
   [AdminProductTypes.DELETE_IMAGE_DETAIL_SUCCEED]: deleteImageSucceed,
   [AdminProductTypes.DELETE_IMAGE_DETAIL_REQUEST_FAILED]: failed,
@@ -167,4 +198,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [AdminProductTypes.ADD_NEW_IMAGE_DETAIL_REQUEST]: request,
   [AdminProductTypes.ADD_NEW_IMAGE_DETAIL_SUCCEED]: addNewProductImageDetailSucceed,
   [AdminProductTypes.ADD_NEW_IMAGE_DETAIL_REQUEST_FAILED]: failed,
+  [AdminProductTypes.REMOVE_IMAGE_LOCAL_REQUEST]: removeImageLocalRequest,
 });

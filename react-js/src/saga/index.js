@@ -136,6 +136,10 @@ export default function* root() {
       AdminProductSagas.addImageDetail
     ),
     takeLatest(
+      AdminProductTypes.UPDATE_IMAGE_DETAIL_REQUEST,
+      AdminProductSagas.updateImageDetail
+    ),
+    takeLatest(
       AdminProductTypes.ADD_NEW_PRODUCT_REQUEST,
       AdminProductSagas.addNewProduct
     ),
@@ -153,8 +157,17 @@ export default function* root() {
       AdminPostSagas.getPostDetail
     ),
     takeLatest(AdminPostTypes.UPDATE_POST_REQUEST, AdminPostSagas.updatePost),
-    takeLatest(ConvensionTypes.APPLY_NEW_RATE_REQUEST,PaperConvensionSagas.applyNewRate),
-    takeLatest(ConvensionTypes.GET_CONVENSION_DETAIL_REQUEST,PaperConvensionSagas.getConversionDetail),
-    takeLatest(ConvensionTypes.ADD_CONVENSION_REQUEST,PaperConvensionSagas.addNewConversion),
+    takeLatest(
+      ConvensionTypes.APPLY_NEW_RATE_REQUEST,
+      PaperConvensionSagas.applyNewRate
+    ),
+    takeLatest(
+      ConvensionTypes.GET_CONVENSION_DETAIL_REQUEST,
+      PaperConvensionSagas.getConversionDetail
+    ),
+    takeLatest(
+      ConvensionTypes.ADD_CONVENSION_REQUEST,
+      PaperConvensionSagas.addNewConversion
+    ),
   ]);
 }

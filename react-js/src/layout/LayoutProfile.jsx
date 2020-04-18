@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import SideBar from "../components/SideBar";
-import HeaderComp from "../components/HeaderComp";
+// import HeaderComp from "../components/HeaderComp";
 import { Layout } from "antd";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
