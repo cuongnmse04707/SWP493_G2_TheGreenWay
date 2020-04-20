@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../css/related-product.css";
 import { withRouter } from "react-router";
+import { message} from "antd";
 import { connect } from "react-redux";
 import LifeWayTypes from "../redux/life-way-redux";
 
@@ -22,10 +23,14 @@ class RelatedPost extends Component {
 
   changeHeart = (event, item) => {
     event.stopPropagation();
+    const token = window.localStorage.getItem("x-access-token")
+    if (!token) {
+      message.error('Vui lòng đăng nhập để thích sản phẩm', 2)
+    } else {
     this.props.setDataLikePost({
       method: item.like === "like" ? "unLike" : "like",
       idP: item.PostID
-    });
+    });}
   };
 
   onClickDetailPost = (event, item) => {

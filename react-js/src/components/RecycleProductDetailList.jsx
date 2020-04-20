@@ -140,10 +140,15 @@ class RecycleProductDetailList extends Component {
 
   changeHeart = (event, item) => {
     event.stopPropagation();
+    const token = window.localStorage.getItem("x-access-token")
+    if (!token) {
+      message.error('Vui lòng đăng nhập để thích sản phẩm', 2)
+    } else {
     this.props.setDataLike({
       method: item.like === "like" ? "unLike" : "like",
       idP: item.ProductID
     });
+  }
   };
 
   addToShoppingCart = (event, item) => {

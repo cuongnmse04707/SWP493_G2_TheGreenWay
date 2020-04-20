@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../css/life-way.css";
+import { message } from "antd";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import { Input, Pagination } from "antd";
@@ -85,10 +86,15 @@ class Lifeway extends Component {
 
   changeHeart = (event, item) => {
     event.stopPropagation();
-    this.props.setDataLikePost({
-      method: item.like === "like" ? "unLike" : "like",
-      idP: item.PostID
-    });
+    const token = window.localStorage.getItem("x-access-token")
+    if (!token) {
+      message.error('Vui lòng đăng nhập để thích sản phẩm', 2)
+    } else {
+      this.props.setDataLikePost({
+        method: item.like === "like" ? "unLike" : "like",
+        idP: item.PostID
+      });
+    }
   };
 
   render() {
@@ -127,9 +133,12 @@ class Lifeway extends Component {
                 <span>{(postLikeMuch || {}).Title}</span>
               </div>
               <div className="post-header-descript">
-                <span
+                <span className="post-header-descript-span"
                   dangerouslySetInnerHTML={{ __html: (postLikeMuch || {}).Content }}
                 />
+                <span className="text-see-more"
+                  onClick={() => this.toPostDetail(postLikeMuch.PostID)}
+                >...Xem thêm</span>
               </div>
               <div className="post-header-time">
                 <img src={require("../../images/clock.png")} alt="" />
@@ -210,9 +219,12 @@ class Lifeway extends Component {
                         </span>
                       </div>
                       <div className="post-detail-descript">
-                        <span
+                        <span className="post-detail-descript-span"
                           dangerouslySetInnerHTML={{ __html: item.Content }}
                         />
+                        <span className="text-see-more"
+                          onClick={() => this.toPostDetail(item.PostID)}
+                        >...Xem thêm</span>
                       </div>
                       <div className="post-detail-like">
                         <span>Lượt thích : </span>

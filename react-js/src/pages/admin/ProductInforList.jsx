@@ -220,7 +220,8 @@ class ProductInforList extends Component {
           }
         );
       } else {
-        message.error("Mô tả không được để trống", 2);
+        console.log('không là chữ')
+        message.error("Mô tả không được để trống", 2)
       }
     }
   };

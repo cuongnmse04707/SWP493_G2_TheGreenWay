@@ -13,7 +13,7 @@ const { TextArea } = Input;
 var moment = require("moment");
 const phoneRegex = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
 const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
-// const addressRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
+const userNameRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
 
 class ConfirmPayment extends Component {
   state = {
@@ -199,10 +199,24 @@ class ConfirmPayment extends Component {
                         rules: [
                           {
                             required: true,
+                            whitespace: true,
                             message: "Vui lòng nhập tên người dùng",
                           },
+                          {
+                            min: 6,
+                            message: "Tên người dùng phải dài ít nhất 6 kí tự",
+                          },
+                          {
+                            max: 32,
+                            message: "Tên người dùng không dài quá 32 kí tự",
+                          },
+                          {
+                            pattern: userNameRegex,
+                            message:
+                              "Tên người dùng không được chưa kí tự đặc biệt và số",
+                          },
                         ],
-                      })(<Input />)}
+                      })(<Input/>)}
                     </Form.Item>
                     <Form.Item label="Số điện thoại">
                       {getFieldDecorator("phone", {
@@ -217,7 +231,7 @@ class ConfirmPayment extends Component {
                             message: "Nhập đúng định dạng số điện thoại",
                           },
                         ],
-                      })(<Input />)}
+                      })(<Input type ="number" />)}
                     </Form.Item>
 
                     <Form.Item label="Nhập địa chỉ giao hàng:">
@@ -268,7 +282,7 @@ class ConfirmPayment extends Component {
                             message: "Nhập đúng định dạng số điện thoại",
                           },
                         ],
-                      })(<Input />)}
+                      })(<Input type = "number" />)}
                     </Form.Item>
                     <Form.Item label="Email">
                       {getFieldDecorator("email", {

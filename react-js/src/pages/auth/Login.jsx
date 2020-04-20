@@ -8,7 +8,7 @@ import { withRouter } from "react-router";
 
 const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,10}$/;
-const userNameRegex = /^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
+const userNameRegex = /^([a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i;
 message.config({
   top: 100,
 });
@@ -26,7 +26,10 @@ class Login extends Component {
     logPassword: "",
     statusLoading: false,
   };
-
+  // ,
+  // "devDependencies": {
+  //   "jest": "^25.3.0"
+  // }
   // componentDidMount() {
   //   this._animation = lottie.loadAnimation({
   //     container: document.getElementById("animationDOM"), // render vao dau
@@ -195,6 +198,7 @@ class Login extends Component {
                         rules: [
                           {
                             required: true,
+                            whitespace: true,
                             message: "Vui lòng nhập tên người dùng",
                           },
                           {

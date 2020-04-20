@@ -555,11 +555,7 @@ header.masthead .intro-text .intro-heading {
 .timeline .timeline-body > p,
 .timeline .timeline-body > ul {
   margin-bottom: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5
+
 }
 
 @media (min-width: 768px) {
@@ -643,6 +639,11 @@ header.masthead .intro-text .intro-heading {
 
 .text-muted {
   color: black !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  height: 165px;
 }
 
 .team-member {

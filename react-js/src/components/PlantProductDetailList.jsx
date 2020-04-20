@@ -140,10 +140,15 @@ class PlantProductDetailList extends Component {
 
   changeHeart = (event, item) => {
     event.stopPropagation();
-    this.props.setDataLike({
-      method: item.like === "like" ? "unLike" : "like",
-      idP: item.ProductID
-    });
+    const token = window.localStorage.getItem("x-access-token")
+    if (!token) {
+      message.error('Vui lòng đăng nhập để thích sản phẩm', 2)
+    } else {
+      this.props.setDataLike({
+        method: item.like === "like" ? "unLike" : "like",
+        idP: item.ProductID
+      });
+    }
   };
 
   addToShoppingCart = (event, item) => {
@@ -229,13 +234,13 @@ class PlantProductDetailList extends Component {
                           alt=""
                         />
                       ) : (
-                        <img
-                          onClick={event => this.changeHeart(event, item)}
-                          style={{ height: "35px", width: "35px" }}
-                          src={require("../images/svgIcon/unLike.svg")}
-                          alt=""
-                        />
-                      )}
+                          <img
+                            onClick={event => this.changeHeart(event, item)}
+                            style={{ height: "35px", width: "35px" }}
+                            src={require("../images/svgIcon/unLike.svg")}
+                            alt=""
+                          />
+                        )}
                     </div>
                   </div>
                 </div>

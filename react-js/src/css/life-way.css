@@ -37,7 +37,25 @@
 .post-header-descript {
   font-size: 18px;
   margin-top: 5%;
+  /* overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4 */
 }
+
+.post-header-descript-span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  height: 154px;
+}
+
+.text-see-more {
+  cursor: pointer;
+}
+
 
 .post-header-time, .post-detail-time {
   display: flex;
@@ -155,12 +173,15 @@
 
 .post-detail-descript {
   font-size: 18px;
-  margin-top: 3%;
+  margin-top: 1%;
+}
+
+.post-detail-descript-span {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2
+  height: 67px;
 }
 
 .related-article-sub-title {
@@ -177,7 +198,7 @@
 }
 
 .post-detail-like {
-  margin-top: 3%;
+
   font-style: italic;
   font-weight: bold;
 }

@@ -24,6 +24,7 @@ const HomePageSagas = {
       }
     } catch (error) {
       window.localStorage.clear()
+      window.location.href = "/"
       yield put(HomePageActions.getInforFailed(error))
     }
   },

@@ -79,6 +79,15 @@
   font-size: 20px;
 }
 
+
+.item-short-decription-span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  height: 100px;
+}
+
 .add-to-cart {
   background-color: #fed136;
   border-radius: 5px;

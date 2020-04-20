@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../css/related-product.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
-import { Typography, message } from "antd";
+import { message } from "antd";
 import IntroProductTypes from "../redux/get-intro-product-redux";
 import ProductDetailTypes from "../redux/product-detail-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
@@ -33,10 +33,14 @@ class RelatedProduct extends Component {
 
   changeHeart = (event, item) => {
     event.stopPropagation();
+    const token = window.localStorage.getItem("x-access-token")
+    if (!token) {
+      message.error('Vui lòng đăng nhập để thích sản phẩm', 2)
+    } else {
     this.props.setDataLike({
       method: item.like === "like" ? "unLike" : "like",
       idP: item.ProductID
-    });
+    });}
   };
 
   addToShoppingCart = (event, item) => {

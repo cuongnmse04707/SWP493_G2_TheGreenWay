@@ -246,11 +246,13 @@ class ProductDetail extends Component {
                 />
               </div>
               <div className="item-short-decription mt-5">
-                <div
+                <span className="item-short-decription-span"
                   dangerouslySetInnerHTML={{ __html: productInfor.Description }}
                 />
+                 <a href="#description"  className="text-see-more mb-5"
+                >...Xem thêm</a>
               </div>
-              <div className="add-to-cart">
+              <div className="add-to-cart mt-2">
                 <div onClick={this.addToCart}>
                   <img
                     style={{
@@ -266,7 +268,7 @@ class ProductDetail extends Component {
               </div>
             </div>
           </div>
-          <div className="product-detail-bottom">
+          <div className="product-detail-bottom" id="description">
             <div className="product-detail-description">
               <span style={{ fontSize: "28px", fontWeight: "bold" }}>
                 Mô tả sản phẩm

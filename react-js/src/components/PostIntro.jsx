@@ -31,7 +31,7 @@ class PostIntro extends Component {
               <div className="row">
                 <div className="col-lg-12 text-center">
                   <h2 className="section-heading text-uppercase">Cách Sống</h2>
-                  <h3 className="section-subheading text-muted">
+                  <h3 className="section-subheading ">
                     Hãy cùng xem những cách sống nào giúp thay đổi môi trường
                     của chúng ta!
                   </h3>
@@ -63,6 +63,9 @@ class PostIntro extends Component {
                                 </div>
                                 <div className="timeline-body">
                                   <p className="text-muted" dangerouslySetInnerHTML={{ __html: item.Content }} />
+                                  <span className="text-see-more"
+                                    onClick={() => this.toPostDetail((item || {}).PostID)}
+                                  >...Xem thêm</span>
                                 </div>
                               </div>
                             </li>

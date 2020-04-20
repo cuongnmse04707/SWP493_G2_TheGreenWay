@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { Redirect } from "react-router-dom";
 import NavBar from "../components/NavBar";
-
 const { Content } = Layout;
 class LayoutProfile extends Component {
   render() {

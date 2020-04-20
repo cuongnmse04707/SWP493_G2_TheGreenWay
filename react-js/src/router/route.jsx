@@ -19,6 +19,7 @@ import UserProductLike from "../pages/UserProductLike";
 import UserOrderHistory from "../pages/UserOrderHistory";
 import OrderSuccess from "../pages/OrderSuccess";
 import OrderHistoryDetail from "../pages/OrderHistoryDetail";
+import NotFound from "../pages/NotFound";
 import { connect } from "react-redux";
 
 //admin
@@ -56,12 +57,14 @@ class PageLayout extends Component {
           <Route path="/confirm-payment" component={ConfirmPayment} exact></Route>
           <Route path="/order-success" component={OrderSuccess} exact></Route>
           <Route path="/admin" component={LayoutAdmin} exact></Route>
-         <LayoutProfile>
+          <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />
             <Route path="/user-order-history" component={UserOrderHistory} exact />
             <Route path="/user-product-like" component={UserProductLike} exact />
+            <Route component={NotFound}></Route>
           </LayoutProfile>
+
         </Switch>
       </BrowserRouter>
     );

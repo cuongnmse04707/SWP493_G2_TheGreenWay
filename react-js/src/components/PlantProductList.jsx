@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Typography, message } from "antd";
+import { message } from "antd";
 import "../css/product-list.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -9,8 +9,6 @@ import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
 
 class PlantProductList extends Component {
-  state = {};
-
   componentDidMount() {
     this.props.getPaperConvension();
     const params = {
@@ -20,6 +18,7 @@ class PlantProductList extends Component {
     this.props.getIntroProduct(params);
   }
 
+
   handleClick = (event, id) => {
     event.stopPropagation();
     this.props.history.push(`/product-detail/${id}`);
@@ -28,10 +27,16 @@ class PlantProductList extends Component {
 
   changeHeart = (event, item) => {
     event.stopPropagation();
-    this.props.setDataLike({
-      method: item.like === "like" ? "unLike" : "like",
-      idP: item.ProductID
-    });
+    const token = window.localStorage.getItem("x-access-token")
+    if (!token) {
+      message.error('Vui lòng đăng nhập để thích sản phẩm', 2)
+    } else {
+      event.stopPropagation();
+      this.props.setDataLike({
+        method: item.like === "like" ? "unLike" : "like",
+        idP: item.ProductID
+      });
+    }
   };
 
   addToShoppingCart = (event, item) => {
@@ -107,13 +112,13 @@ class PlantProductList extends Component {
                           alt=""
                         />
                       ) : (
-                        <img
-                          onClick={event => this.changeHeart(event, item)}
-                          style={{ height: "35px", width: "35px" }}
-                          src={require("../images/svgIcon/unLike.svg")}
-                          alt=""
-                        />
-                      )}
+                          <img
+                            onClick={event => this.changeHeart(event, item)}
+                            style={{ height: "35px", width: "35px" }}
+                            src={require("../images/svgIcon/unLike.svg")}
+                            alt=""
+                          />
+                        )}
                     </div>
                   </div>
                 </div>

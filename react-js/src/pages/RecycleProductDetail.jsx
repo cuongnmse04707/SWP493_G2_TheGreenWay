@@ -28,9 +28,6 @@ class RecycleProductDetail extends Component {
                   là những việc làm thiết thực nhất để hiện thực hóa những hành
                   động giúp môi trường của chúng ta ngày càng trở nên tốt hơn.
                 </p>
-                <div className="detail-btn" onClick={this.toListRecyclePage}>
-                  <p>Xem chi tiết</p>
-                </div>
               </div>
             </div>
             <RecycleProductDetailList />
