@@ -68,7 +68,7 @@
 .counter-number {
   font-size: 2rem;
   font-weight: bold;
-  color: #fffa2a;
+  color: rgb(74, 183, 133);
 }
 
 .counter-image img {
@@ -79,7 +79,7 @@
 
 .team-member-wrapper {
   text-align: center;
-  background: #e0ffff;
+  background: #ffffff;
 }
 
 .member-heading {

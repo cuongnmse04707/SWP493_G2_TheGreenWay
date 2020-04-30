@@ -31,7 +31,7 @@
 .list-item-table .table-header tr {
   width: 100%;
   height: 64px;
-  background: #f5f7fa;
+  background: #e6e6e6;
 }
 
 .list-item-table .table-body tr {
@@ -39,9 +39,9 @@
 }
 
 .total-money .total-money-card {
-  background: #f5f7fa;
+  background: #e6e6e6;
   width: 90%;
-  height: 450px;
+  height: 80%;
 }
 
 .total-money-card .text-bill {

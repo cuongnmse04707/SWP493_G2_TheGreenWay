@@ -419,7 +419,6 @@ class ConfirmPayment extends Component {
                     <div className="show-option-payment"></div>
                   )}
                 </div>
-                <p className="change-shopping-cart">Thay đổi sản phẩm</p>
                 <div className="button-check-out" onClick={this.orderSuccess}>
                   <span>Đặt hàng </span>
                 </div>

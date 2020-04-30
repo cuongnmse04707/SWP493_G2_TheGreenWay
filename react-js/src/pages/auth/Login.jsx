@@ -4,6 +4,7 @@ import { Form, Icon, Input, Modal, message, Spin } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import LoginTypes from "../../redux/login-redux";
+import NavBar from '../../components/NavBar'
 import { withRouter } from "react-router";
 
 const emailRegex = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
@@ -176,7 +177,7 @@ class Login extends Component {
             <Spin indicator={antIcon} />
           </div>
         ) : null}
-        {/* <NavBar /> */}
+         <NavBar />
         <div className="login-wrapper">
 
           <div className={this.state.className}>
@@ -212,7 +213,7 @@ class Login extends Component {
                           {
                             pattern: userNameRegex,
                             message:
-                              "Tên người dùng không được chưa kí tự đặc biệt",
+                              "Tên người dùng không được chưa kí tự đặc biệt và số",
                           },
                         ],
                       })(

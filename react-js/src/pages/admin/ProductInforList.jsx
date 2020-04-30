@@ -132,14 +132,15 @@ class ProductInforList extends Component {
     } else if (valueDes === "") {
       message.error("Vui lòng nhập mô tả sản phẩm", 2);
     } else if (valueDes === null) {
-      this.setState({
-        visible: false,
-        stateAddLoading: true,
-      });
+
       this.props.form.validateFieldsAndScroll(
         ["productName", "productPrice", "productQuantity", "category"],
         (err, values) => {
           if (!err) {
+            this.setState({
+              visible: false,
+              stateAddLoading: true,
+            });
             setTimeout(() => {
               this.props.updateProduct({
                 params: {
@@ -187,14 +188,15 @@ class ProductInforList extends Component {
       // console.log(myArray);
       if (myArray) {
         console.log("La Chu");
-        this.setState({
-          visible: false,
-          stateAddLoading: true,
-        });
+
         this.props.form.validateFieldsAndScroll(
           ["productName", "productPrice", "productQuantity", "category"],
           (err, values) => {
             if (!err) {
+              this.setState({
+                visible: false,
+                stateAddLoading: true,
+              });
               setTimeout(() => {
                 this.props.updateProduct({
                   params: {

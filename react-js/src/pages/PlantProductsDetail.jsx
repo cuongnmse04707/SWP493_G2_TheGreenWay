@@ -14,7 +14,7 @@ class PlantProductDetail extends Component {
         <NavBar />
         <div className="product-wrapper">
           <div className="plant-container">
-            <div className="plant-intro">
+            <div className="plant-intro" style={{marginBottom:"50px"}}>
               <div className="intro-left">
                 <p className="title">Cây cảnh, cây để bàn</p>
                 <p className="content">
@@ -24,7 +24,7 @@ class PlantProductDetail extends Component {
                 </p>
               </div>
               <div>
-                <img src={require("../images/product-a.png")} />
+                <img style={{height:"90%"}} src={require("../images/product-a.png")} />
               </div>
             </div>
             <PlantProductDetailList />

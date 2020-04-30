@@ -34,7 +34,7 @@ class lifeWayPageDetail extends Component {
                 Lượt thích: {postDetailInfor.NumberOfLikes}
               </span>
             </div>
-            <div className="article-header-image">
+            <div className="article-header-image" style={{textAlign:"center"}}>
               <img src={postDetailInfor.ImageDetail} alt="" />
             </div>
           </div>

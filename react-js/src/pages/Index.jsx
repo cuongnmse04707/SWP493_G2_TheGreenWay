@@ -60,18 +60,6 @@ class Index extends Component {
                     style={{
                       flex: "1",
                       display: "flex",
-                      justifyContent: "center",
-                      fontSize: "28px",
-                      color: "#000000",
-                      fontFamily: "none"
-                    }}
-                  >
-                    Mỗi chúng ta hãy cùng nhau chung tay vì một môi trường bền vững ...
-                  </div>
-                  <div
-                    style={{
-                      flex: "1",
-                      display: "flex",
                       justifyContent: "flex-end",
                       fontSize: "28px",
                       color: "#000000",
@@ -102,9 +90,9 @@ class Index extends Component {
                 <h2 className="section-heading text-uppercase">
                   Nhiệm vụ của chúng tôi
                 </h2>
-                <h3 className="section-subheading text-muted">
+                <h4  style={{fontWeight: "normal", fontStyle: "italic", marginBottom: "50px"}}>
                   Hành động nhỏ vì một mục tiêu lớn
-                </h3>
+                </h4>
               </div>
             </div>
             <div className="row text-center">
@@ -176,9 +164,9 @@ class Index extends Component {
                   <h2 className="section-heading text-uppercase">
                     Hãy Cùng Nhau Hành Động
                   </h2>
-                  <h3 className="section-subheading text-muted">
-                    Những người nổi tiếng, họ đang làm gì?
-                  </h3>
+                  <h4  style={{fontWeight: "normal", fontStyle: "italic", marginBottom: "50px"}}>
+                  Những người nổi tiếng, họ đang làm gì?
+                </h4>
                 </div>
               </div>
               <div className="row">

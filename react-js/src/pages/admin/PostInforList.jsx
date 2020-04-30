@@ -85,11 +85,12 @@ class PostInforList extends Component {
     } else if (this.state.data === "") {
       message.error("Vui lòng nhập nội dung bài viết", 2);
     } else if (this.state.data === null) {
-      this.setState({
-        visible: false,
-      });
+
       this.props.form.validateFieldsAndScroll(["title"], (err, values) => {
         if (!err) {
+          this.setState({
+            visible: false,
+          });
           const params = {
             idPost: this.state.postId,
             Title: values.title,
@@ -127,11 +128,12 @@ class PostInforList extends Component {
       // console.log(myArray);
       if (myArray) {
         console.log("La Chu");
-        this.setState({
-          visible: false,
-        });
+
         this.props.form.validateFieldsAndScroll(["title"], (err, values) => {
           if (!err) {
+            this.setState({
+              visible: false,
+            });
             const params = {
               idPost: this.state.postId,
               Title: values.title,
@@ -328,8 +330,8 @@ class PostInforList extends Component {
                                     // Set vao state
                                     uploadTask.on(
                                       "state_changed",
-                                      (snapshot) => {},
-                                      (error) => {},
+                                      (snapshot) => { },
+                                      (error) => { },
                                       () => {
                                         storage
                                           .ref("images")
@@ -381,8 +383,8 @@ class PostInforList extends Component {
                                   style={{ width: "100%" }}
                                 />
                               ) : (
-                                uploadAvatarButton
-                              )}
+                                  uploadAvatarButton
+                                )}
                             </Upload>
                           )}
                         </Form.Item>
@@ -420,8 +422,8 @@ class PostInforList extends Component {
                                     // Set vao state
                                     uploadTask.on(
                                       "state_changed",
-                                      (snapshot) => {},
-                                      (error) => {},
+                                      (snapshot) => { },
+                                      (error) => { },
                                       () => {
                                         storage
                                           .ref("images")
@@ -476,8 +478,8 @@ class PostInforList extends Component {
                                   alt="avatar"
                                 />
                               ) : (
-                                uploadAvatarButton
-                              )}
+                                  uploadAvatarButton
+                                )}
                             </Upload>
                           )}
                         </Form.Item>

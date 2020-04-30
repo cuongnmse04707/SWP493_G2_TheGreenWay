@@ -77,7 +77,7 @@ class ProductList extends Component {
                 </div>
               </div>
               <div>
-                <img src={require("../images/product-a.png")} />
+                <img style={{height:"100%"}} src={require("../images/product-a.png")} />
               </div>
             </div>
             <PlantProductList />
@@ -91,7 +91,7 @@ class ProductList extends Component {
                 />
               </div>
               <div className="intro-left">
-                <p className="title">Đồ tái chế</p>
+                <p className="title">Sản phẩm thân thiện với môi trường</p>
                 <p className="content">
                   Tái chế là một trong những hình thức việc làm đơn giản nhưng
                   lại góp phần bảo vệ môi trường làm giảm thiểu lượng lớn rác

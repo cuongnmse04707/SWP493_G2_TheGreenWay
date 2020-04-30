@@ -130,7 +130,7 @@ class AboutUs extends Component {
                           width: "150px",
                           height: "150px",
                           borderRadius: "50%",
-                          borderColor: "black"
+                          borderColor: "#d1d1d1"
                         }}
                         src={require("../images/about-us-4.jpg")}
                         alt=""
@@ -156,7 +156,7 @@ class AboutUs extends Component {
                           width: "150px",
                           height: "150px",
                           borderRadius: "50%",
-                          borderColor: "black"
+                          borderColor: "#d1d1d1"
                         }}
                         src={require("../images/about-us-6.jpg")}
                         alt=""
@@ -182,7 +182,7 @@ class AboutUs extends Component {
                           width: "150px",
                           height: "150px",
                           borderRadius: "50%",
-                          borderColor: "black"
+                          borderColor: "#d1d1d1"
                         }}
                         src={require("../images/about-us-5.jpg")}
                         alt=""

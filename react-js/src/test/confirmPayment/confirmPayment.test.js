@@ -49,3 +49,9 @@ describe('Phone Number', function () {
     expect('1234567890').not.toMatch(phoneRegex);
   });
 });
+
+describe('Phone Number', function () {
+  it('String "111111111" not match the regex', function () {
+    expect('1234567890').not.toMatch(phoneRegex);
+  });
+});

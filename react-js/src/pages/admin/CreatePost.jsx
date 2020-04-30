@@ -41,6 +41,8 @@ class CreatePost extends Component {
   };
 
   toListPost = () => {
+    console.log('vaoday')
+    console.log(this.props.parent)
     this.props.parent("postInfor");
   };
 

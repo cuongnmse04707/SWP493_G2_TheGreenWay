@@ -85,7 +85,7 @@ class UserProductLike extends Component {
             current={this.state.current}
             onChange={this.onSelectPageChange}
             total={this.props.totalPage * 10}
-            style={{ display: "flex", justifyContent: "center", marginTop: "3%" }}
+            style={{ display: "flex", justifyContent: "center", marginTop: "-13%" }}
           />
         ) : null}
       </div>

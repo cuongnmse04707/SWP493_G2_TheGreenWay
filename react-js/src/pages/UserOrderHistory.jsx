@@ -178,7 +178,8 @@ class UserOrderHistory extends Component {
             style={{
               display: "flex",
               justifyContent: "center",
-              marginTop: "3%"
+              marginTop: "-13%",
+              marginBottom:"10%"
             }}
           />
         ) : null}

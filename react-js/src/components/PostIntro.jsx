@@ -25,16 +25,16 @@ class PostIntro extends Component {
     const { listPost } = this.props
     return (
       <div>
-        <div style={{ backgroundColor: "#AFEEEE" }}>
+        <div style={{ backgroundColor: "#E0FFFF" }}>
           <section className="page-section" id="about">
             <div className="container">
               <div className="row">
                 <div className="col-lg-12 text-center">
                   <h2 className="section-heading text-uppercase">Cách Sống</h2>
-                  <h3 className="section-subheading ">
+                  <h4 style={{ fontWeight: "normal", fontStyle: "italic", marginBottom: "50px" }}>
                     Hãy cùng xem những cách sống nào giúp thay đổi môi trường
                     của chúng ta!
-                  </h3>
+                </h4>
                 </div>
               </div>
               <div className="row">
