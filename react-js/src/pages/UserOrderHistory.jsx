@@ -63,7 +63,7 @@ class UserOrderHistory extends Component {
         sorter: (a, b) => a.Cash - b.Cash,
         render: (text, record) => (
           <div>
-            <span>{record.Cash === 0 ? "--" : `${record.Cash} VNĐ`}</span>
+            <span>{record.Cash === 0 ? "--" : record.Cash + `VNĐ`}</span>
           </div>
         )
       },

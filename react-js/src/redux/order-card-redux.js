@@ -5,6 +5,9 @@ const { Types, Creators } = createActions({
   getOrderCartRequest: ['data'],
   getOrderCartRequestFailed: ['error'],
   getOrderCartSucceed: ['data'],
+  getInforNumberRequest: [],
+  getInforNumberRequestFailed: ['error'],
+  getInforNumberSucceed: ['data'],
   guestToken: ''
 })
 
@@ -13,6 +16,7 @@ export default Creators
 
 //TODO: Declare initial state
 export const INITIAL_STATE = {
+  inforAbout: ''
 }
 
 export const request = (state) => {
@@ -26,6 +30,15 @@ export const getOrderCartSucceed = (state, {data}) => {
     ...state,
   }
 }
+
+export const getInforAboutSucceed = (state, {data}) => {
+  console.log(data)
+  return {
+    ...state,
+    inforAbout: data.data
+  }
+}
+
 export const failed = (state, { error }) => {
   return {
     ...state,
@@ -36,5 +49,8 @@ export const failed = (state, { error }) => {
 export const reducer = createReducer(INITIAL_STATE, {
   [OrderCartTypes.GET_ORDER_CART_REQUEST]: request,
   [OrderCartTypes.GET_ORDER_CART_SUCCEED]: getOrderCartSucceed,
-  [OrderCartTypes.GET_ORDER_CART_REQUEST_FAILED]: failed
+  [OrderCartTypes.GET_ORDER_CART_REQUEST_FAILED]: failed,
+  [OrderCartTypes.GET_INFOR_NUMBER_REQUEST]: request,
+  [OrderCartTypes.GET_INFOR_NUMBER_SUCCEED]: getInforAboutSucceed,
+  [OrderCartTypes.GET_INFOR_NUMBER_REQUEST_FAILED]: failed
 })

@@ -107,6 +107,57 @@ let addNewOrderByUser = async (req, res) => {
     }
   });
 };
+// get information of user fron database
+let getInforAbout = async (req, res) => {
+  // get email from request after handle of authmiddleware
+  let sql = `SELECT
+              SUM(a.SUMP) AS SumProduct, SUM(Orders.QuantityPaper) AS QuantityPaper
+            FROM
+              Orders
+            JOIN(
+              SELECT OrderID,
+                  SUM(QuantityProduct) as SUMP
+              FROM
+                  OrderDetail
+              GROUP BY
+                  OrderDetail.OrderID
+            ) a
+            WHERE
+              a.OrderID = Orders.OrderID`;
+  let query = mysql.format(sql);
+  connectionDB.query(query, async (err, result) => {
+    if (err) {
+      // chua ton tai thi bao loi
+      return res.status(200).json({ success: false, message: err });
+    } else {
+      // Da ton tai thi tao ma token va gui ve client
+      const arr = Array.apply(null, result);
+      if (arr.length === 0) {
+        return res
+          .status(200)
+          .json({ success: false, message: "Error with server !" });
+      } else {
+        let sql = `SELECT COUNT(PostID) as SumPost FROM Posts`;
+        let query = mysql.format(sql);
+        connectionDB.query(query, async (err, results) => {
+          if (err) {
+            return res.status(200).json({ success: false, message: err });
+          } else {
+            const array = Array.apply(null, results);
+            return res.status(200).json({
+              success: true,
+              data: {
+                numberProduct: arr[0].SumProduct,
+                numberPaper: arr[0].QuantityPaper,
+                numberPosts: array[0].SumPost,
+              },
+            });
+          }
+        });
+      }
+    }
+  });
+};
 
 //Show Order List By Email
 //Get Price,Quatity by ProductID From Cart: Phuc vu chuc nang tinh tien va validate so luong san pham trong cart
@@ -502,7 +553,7 @@ let changeStatusOrder = async (req, res) => {
       }
     });
   } else if (OrderStatusCode === "3" || OrderStatusCode === "4") {
-    let sql = ` UPDATE Orders 
+    let sql = ` UPDATE Orders
                 SET Orders.EndDate=?
                 WHERE Orders.OrderID=?`;
     const today = moment().format(`YYYY-MM-DD`);
@@ -612,6 +663,7 @@ let getListOrderByStatusCode = async (req, res) => {
 };
 
 module.exports = {
+  getInforAbout: getInforAbout,
   addNewOrderByUser: addNewOrderByUser,
   showOrderListByEmail: showOrderListByEmail,
   showOrderByEmail: showOrderByEmail,

@@ -3,7 +3,9 @@ import "../css/about-us.css";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import CountUp from "react-countup";
+import { connect } from "react-redux";
 import TeamMember from "../components/TeamMember";
+import OrderCartTypes from "../redux/order-card-redux";
 
 class AboutUs extends Component {
   constructor(props) {
@@ -15,10 +17,13 @@ class AboutUs extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+    this.props.getInforAboutNumber()
   }
 
   render() {
     const { isHover } = this.state;
+    const {numberInfor} = this.props
+    console.log(numberInfor)
     return (
       <div children="about-us">
         <NavBar />
@@ -70,7 +75,7 @@ class AboutUs extends Component {
               data-aos="fade-left"
               data-aos-duration="1500"
             >
-              <h3>Đồ dùng, sản phẩm làm từ đồ tái chế</h3>
+              <h3>Đồ dùng, sản phẩm thân thiện với môi trường</h3>
               <p>
                 Nulla quis lorem ut libero malesuada feugiat. Donec sollicitudin
                 molestie malesuada. Curabitur arcu erat, accumsan id imperdiet
@@ -135,13 +140,13 @@ class AboutUs extends Component {
                         src={require("../images/about-us-4.jpg")}
                         alt=""
                       />
-                      <h4 className="counter-title">Số cây đã bán</h4>
+                      <h4 className="counter-title">Sản phẩm đã bán</h4>
                       <p className="counter-number">
                         {isHover ? (
-                          <CountUp start={0} end={500} duration={3} />
+                          <CountUp start={0} end={numberInfor.numberProduct || 0} duration={3} />
                         ) : (
-                          <CountUp start={500} />
-                        )}
+                            <CountUp start={numberInfor.numberProduct || 0} end={numberInfor.numberProduct || 0} />
+                          )}
                       </p>
                     </div>
                   </div>
@@ -164,10 +169,10 @@ class AboutUs extends Component {
                       <h4 className="counter-title">Số kg giấy thu được</h4>
                       <p className="counter-number">
                         {isHover ? (
-                          <CountUp start={0} end={500} duration={3} />
+                          <CountUp start={0} end={numberInfor.numberPaper || 0} duration={3} />
                         ) : (
-                          <CountUp start={500} />
-                        )}
+                            <CountUp start={numberInfor.numberPaper || 0} end={numberInfor.numberPaper || 0}/>
+                          )}
                       </p>
                     </div>
                   </div>
@@ -190,10 +195,10 @@ class AboutUs extends Component {
                       <h4 className="counter-title">Số bài viết đã chia sẻ</h4>
                       <p className="counter-number">
                         {isHover ? (
-                          <CountUp start={0} end={500} duration={3} />
+                          <CountUp start={0} end={numberInfor.numberPosts || 0} duration={3} />
                         ) : (
-                          <CountUp start={500} />
-                        )}
+                            <CountUp start={numberInfor.numberPosts || 0} end={numberInfor.numberPosts || 0}/>
+                          )}
                       </p>
                     </div>
                   </div>
@@ -209,4 +214,20 @@ class AboutUs extends Component {
   }
 }
 
-export default AboutUs;
+const mapStateToProps = (state) => {
+  return {
+    numberInfor: state.orderCart.inforAbout
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getInforAboutNumber: () => {
+      dispatch(OrderCartTypes.getInforNumberRequest());
+    },
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AboutUs);

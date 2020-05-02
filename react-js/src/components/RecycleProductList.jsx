@@ -83,6 +83,26 @@ class RecycleProductList extends Component {
                 key={index}
               >
                 <div className="hovereffect">
+                { item.Quantity === 0 ? (
+                    <div
+                    style={{
+                      width: "45px",
+                      height: "45px",
+                      position: "absolute",
+                      zIndex: "1000",
+                      margin: "10px 0 0 10px",
+                      background: "#f0524b",
+                      borderRadius: "50%"
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontSize: "12px",
+                        color: "#fff"
+                      }}
+                    >Hết hàng</p>
+                  </div>
+                  ) : null}
                   <img src={item.ImageDetail} alt="" />
                   <div className="overlayy">
                     <a
@@ -138,7 +158,7 @@ class RecycleProductList extends Component {
                         src={require("../images/svgIcon/money.svg")}
                         alt=""
                       />
-                      <span>{item.ProductPrice} VNĐ</span>
+                      <span>{item.ProductPrice ? item.ProductPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : 0} VNĐ</span>
                     </div>
                     <div className="item-coin" style={{ marginTop: "5px" }}>
                       <img

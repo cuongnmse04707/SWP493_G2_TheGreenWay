@@ -6,6 +6,7 @@ const ModMiddleware = require("../middlewares/ModMiddleware");
 
 let orderRouter = (server) => {
   // List Don't Need Protect APIs:
+  router.get("/getInforAbout", OrderController.getInforAbout);
   // Check Token User
   router.use(AuthMiddleware.isAuth);
   // List Protect APIs:

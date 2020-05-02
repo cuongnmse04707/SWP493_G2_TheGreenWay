@@ -55,6 +55,28 @@ const OrderCartSagas = {
         yield put(OrderCartctions.getOrderCartRequestFailed(error));
       }
     }
+  },
+  *getInforAbout123(action) {
+    try {
+      const inforAbout = yield call(() => {
+        return axios.get(
+          "http://localhost:3001/userorder/getInforAbout",
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      });
+      console.log(inforAbout)
+      if (!inforAbout.data.success) {
+        yield put(OrderCartctions.getInforNumberRequestFailed(inforAbout.data));
+      } else {
+        yield put(OrderCartctions.getInforNumberSucceed(inforAbout.data));
+      }
+    } catch (error) {
+      yield put(OrderCartctions.getInforNumberRequestFailed(error));
+    }
   }
 };
 

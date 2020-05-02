@@ -221,7 +221,7 @@ class ProductDetail extends Component {
               <div className="item-detail-price">
                 <div className="item-detail-coin">
                   <img src={require("../images/svgIcon/money.svg")} alt="" />
-                  <span>{productInfor.ProductPrice} VNĐ</span>
+                  <span>{productInfor.ProductPrice ? productInfor.ProductPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : 0} VNĐ</span>
                 </div>
                 <div className="item-detail-coin" style={{ marginTop: "10px" }}>
                   <img src={require("../images/svgIcon/paper.svg")} alt="" />
@@ -280,7 +280,7 @@ class ProductDetail extends Component {
             <div style={{ height: "auto", width: "100%" }}>
               <div>
                 <span style={{ fontSize: "28px", fontWeight: "bold" }}>
-                  Sản phẩm liên quan
+                  Xem thêm sản phẩm
                 </span>
               </div>
               <RelatedProduct

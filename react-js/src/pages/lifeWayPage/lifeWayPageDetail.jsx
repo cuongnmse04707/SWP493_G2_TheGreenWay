@@ -43,7 +43,7 @@ class lifeWayPageDetail extends Component {
 
           </div>
           <div className="related-article-title">
-            <span>Bài viết liên quan</span>
+            <span>Xem thêm bài viết</span>
           </div>
           <RelatedPost filterPost={window.location.pathname.split("/")[2]} />
         </div>
