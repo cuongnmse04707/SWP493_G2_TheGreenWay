@@ -79,15 +79,16 @@ class UserProductLike extends Component {
         <div className="like-product-wrapper">
           <Table dataSource={likeProductInfor} columns={columns} pagination={false} rowkey="id">
           </Table>
-        </div>
-        {likeProductInfor.length !== 0 ? (
+          {likeProductInfor.length !== 0 ? (
           <Pagination
             current={this.state.current}
             onChange={this.onSelectPageChange}
             total={this.props.totalPage * 10}
-            style={{ display: "flex", justifyContent: "center", marginTop: "-13%" }}
+            style={{ display: "flex", justifyContent: "center", margin: "3% 0" }}
           />
         ) : null}
+        </div>
+
       </div>
     );
   }

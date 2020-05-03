@@ -137,7 +137,7 @@ class Lifeway extends Component {
                   dangerouslySetInnerHTML={{ __html: (postLikeMuch || {}).Content }}
                 />
                 <span className="text-see-more"
-                  onClick={() => this.toPostDetail(postLikeMuch.PostID)}
+                  onClick={() => this.toPostDetail((postLikeMuch || {}).PostID)}
                 >...Xem thêm</span>
               </div>
               <div className="post-header-time">

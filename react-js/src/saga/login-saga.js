@@ -45,13 +45,14 @@ const LoginSagas = {
   },
 
   *signUpUser(action) {
+    console.log(action)
     try {
       const signUpUser = yield call(() => {
         return axios.post(
           "http://localhost:3001/auth/register",
           {
-            ...action.data,
-            password: cryptr.encrypt(action.data.password),
+            ...action.data.params,
+            password: cryptr.encrypt(action.data.params.password),
           },
           {
             headers: {
@@ -64,6 +65,7 @@ const LoginSagas = {
         yield put(LoginActions.signUpFailed(signUpUser.data));
         message.error(signUpUser.data.message, 3);
       } else {
+        action.data.callback()
         message.success(signUpUser.data.message, 3);
         yield put(LoginActions.signUpSucceed(signUpUser.data));
       }

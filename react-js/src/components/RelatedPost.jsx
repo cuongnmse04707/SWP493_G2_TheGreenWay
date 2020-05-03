@@ -40,12 +40,13 @@ class RelatedPost extends Component {
   };
 
   render() {
-    const { postInfor, filterPost } = this.props;
+    const { postInfor, filterPost} = this.props;
+    console.log(postInfor)
     return (
       <div>
         <div className="related-article">
           {postInfor
-            .filter(el => el.PostID !== filterPost)
+            .filter(el => el.PostID !== Number(filterPost))
             .map((item, index) => {
               if (index < 3) {
                 return (

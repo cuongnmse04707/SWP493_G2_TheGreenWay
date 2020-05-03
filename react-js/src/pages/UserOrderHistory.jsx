@@ -169,8 +169,7 @@ class UserOrderHistory extends Component {
             pagination={false}
             rowkey="id"
           ></Table>
-        </div>
-        {orderHistoryInfor.length !== 0 ? (
+           {orderHistoryInfor.length !== 0 ? (
           <Pagination
             current={this.state.current}
             onChange={this.onSelectPageChange}
@@ -178,11 +177,12 @@ class UserOrderHistory extends Component {
             style={{
               display: "flex",
               justifyContent: "center",
-              marginTop: "-13%",
-              marginBottom:"10%"
+              margin: "3% 0",
             }}
           />
         ) : null}
+        </div>
+
       </div>
     );
   }

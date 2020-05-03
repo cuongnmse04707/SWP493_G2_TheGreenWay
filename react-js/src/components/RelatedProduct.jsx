@@ -84,7 +84,6 @@ class RelatedProduct extends Component {
       recycleProduct
     } = this.props;
     const listProduct = category === "1" ? introProduct : recycleProduct;
-    console.log(listProduct)
     return (
       <div className="related-wrapper">
         <div className="product-container">

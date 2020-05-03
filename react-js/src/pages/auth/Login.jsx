@@ -107,10 +107,18 @@ class Login extends Component {
       ["username", "reEmail", "rePassword"],
       (err, values) => {
         if (!err) {
-          this.props.userRegister({
+          const params = {
             username: values.username.replace(/\s+/g, " ").trim(),
             email: values.reEmail,
-            password: values.rePassword,
+            password: values.rePassword
+          }
+          this.props.userRegister({
+            params,
+            callback: () => {
+              this.setState({
+                className: "login-container",
+              });
+            }
           });
           this.props.form.resetFields();
         }
@@ -177,7 +185,7 @@ class Login extends Component {
             <Spin indicator={antIcon} />
           </div>
         ) : null}
-         <NavBar />
+        <NavBar />
         <div className="login-wrapper">
 
           <div className={this.state.className}>
