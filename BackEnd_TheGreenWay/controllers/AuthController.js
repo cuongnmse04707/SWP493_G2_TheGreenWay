@@ -10,7 +10,7 @@ const Cryptr = require("cryptr");
 // Trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB // luu de con refresherToken
 // let tokenList = {};
 // Thời gian sống của token
-const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "10h";
+const accessTokenLife = "1h";
 // Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
 const accessTokenSecret =
   process.env.ACCESS_TOKEN_SECRET || "access-token-secret-cuongnm";

@@ -14,14 +14,8 @@ class ForgotPassword extends Component {
     show: true
   };
 
-  componentDidUpdate() {
-    if (
-      this.props.resetMessage ||
-      this.props.notifyMessage === `Tài khoản không cần đặt lại mật khẩu`
-    ) {
-      this.props.updateNotify();
-      this.props.history.push("/login");
-    }
+  componentDidMount() {
+    window.localStorage.removeItem('x-access-token')
   }
 
   compareToFirstPassword = (rule, value, callback) => {
@@ -37,11 +31,18 @@ class ForgotPassword extends Component {
     e.preventDefault();
     this.props.form.validateFields(["password", "confirm"], (err, values) => {
       if (!err) {
-        this.props.resetPassword({
+        const params = {
           password: values.password,
           token: window.location.search.split("?")[1],
-          email: window.location.search.split("?")[2]
-        });
+          email: window.location.search.split("?")[2],
+        }
+        this.props.resetPassword({
+          params,
+          callback: () => {
+            this.props.history.push("/login")
+          }
+        }
+        );
         this.props.form.resetFields();
       }
     });
@@ -114,9 +115,10 @@ class ForgotPassword extends Component {
             <div className="overlay-container">
               <div className="overlay">
                 <div className="overlay-panel overlay-right">
-                  <h1 className="intro-title-forgot">Hello, Friend!</h1>
+                  <h1 className="intro-title-forgot">Chào bạn!</h1>
                   <p className="text-intro">
-                    Enter your personal details and start journey with us
+                    The Green Way mong muốn cùng bạn tạo nên những giá trị xanh
+                    cho cuộc sống.
                   </p>
                 </div>
               </div>

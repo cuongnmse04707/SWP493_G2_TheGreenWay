@@ -281,7 +281,7 @@ class PlantProductDetailList extends Component {
                         src={require("../images/svgIcon/money.svg")}
                         alt=""
                       />
-                      <span>{item.ProductPrice} VNĐ</span>
+                      <span>{item.ProductPrice ? item.ProductPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : 0} VNĐ</span>
                     </div>
                     <div className="item-coin" style={{ marginTop: "5px" }}>
                       <img

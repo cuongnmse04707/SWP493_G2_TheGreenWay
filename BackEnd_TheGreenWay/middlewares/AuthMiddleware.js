@@ -32,7 +32,7 @@ let isAuth = async (req, res, next) => {
       debug("Error while verify token:", error);
       return res.status(401).json({
         success: false,
-        message: "Unauthorized."
+        message: "Token không chính xác hoặc đã hết hạn."
       });
     }
   } else {

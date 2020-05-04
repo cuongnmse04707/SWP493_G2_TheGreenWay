@@ -254,9 +254,9 @@ class CreateProduct extends Component {
                             },
                           ],
                         })(
-                          <Select {...this.props} style={{ width: 160 }} onChange={this.handleCategoryChange}>
+                          <Select {...this.props} style={{ width: 200 }} onChange={this.handleCategoryChange}>
                             <Option value="1">Cây văn phòng</Option>
-                            <Option value="2">Đồ tái chế</Option>
+                            <Option value="2">Đồ thân thiện môi trường</Option>
                           </Select>
                         )}
                       </Form.Item>

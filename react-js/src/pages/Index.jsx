@@ -66,7 +66,7 @@ class Index extends Component {
                       fontFamily: "none"
                     }}
                   >
-                    ...Mỗi chúng ta hãy cùng nhau chung tay vì một môi trường bền vững.
+                    ...Chúng ta hãy cùng nhau chung tay vì một môi trường bền vững.
                   </div>
                 </div>
               </div>

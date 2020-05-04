@@ -89,7 +89,7 @@ let getListProductLike = async (req, res) => {
       if (arr.length === 0) {
         return res
           .status(200)
-          .json({ success: false, message: "No Product In List!" });
+          .json({ success: false, message: "Không có sản phẩm!" });
       } else {
         // Chay Query de lay total page
         let sql = ` SELECT COUNT(*) AS Total FROM
