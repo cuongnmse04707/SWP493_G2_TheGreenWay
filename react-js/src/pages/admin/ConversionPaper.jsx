@@ -346,6 +346,8 @@ class ConversionPaper extends Component {
           visible={this.state.visible}
           onOk={this.updateConversion}
           onCancel={this.handleCancel}
+          okText="Xác nhận"
+          cancelText="Hủy bỏ"
         >
           <Form {...formItemLayout} className="mt-4">
             <Form.Item label="Số tiền/ 1kg giấy">

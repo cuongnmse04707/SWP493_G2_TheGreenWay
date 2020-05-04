@@ -408,6 +408,8 @@ class Login extends Component {
               visible={this.state.visible}
               onOk={this.handleOk}
               onCancel={this.handleCancel}
+              okText="Xác nhận"
+              cancelText="Hủy bỏ"
             >
               <Form className="login-form">
                 <Form.Item>

@@ -156,7 +156,7 @@ class NavBar extends Component {
                           borderRadius: "50%",
                         }}
                         src={userInformation.urlAvatar}
-                        // alt=""
+                      // alt=""
                       />
                       <Dropdown
                         style={{ width: "500px" }}
@@ -178,15 +178,15 @@ class NavBar extends Component {
                     </li>
                   </div>
                 ) : (
-                  <li className="nav-item">
-                    <a
-                      className="nav-link js-scroll-trigger"
-                      onClick={this.toLogin}
-                    >
-                      Đăng nhập/Đăng ký
+                    <li className="nav-item">
+                      <a
+                        className="nav-link js-scroll-trigger"
+                        onClick={this.toLogin}
+                      >
+                        Đăng nhập/Đăng ký
                     </a>
-                  </li>
-                )}
+                    </li>
+                  )}
                 <li className="shopping-cart-item">
                   <Badge
                     count={this.props.stateCartNumber}
@@ -216,14 +216,16 @@ class NavBar extends Component {
                     </Button>
                   </div>
                 ) : (
-                  <div></div>
-                )}
+                    <div></div>
+                  )}
               </ul>
             </div>
             <Modal
               visible={this.state.visibleLogout}
               onOk={this.handleLogoutOk}
               onCancel={this.handleLogoutCancel}
+              okText="Xác nhận"
+              cancelText="Hủy bỏ"
             >
               <p>Bạn có thực sự muốn đăng xuất không?</p>
             </Modal>

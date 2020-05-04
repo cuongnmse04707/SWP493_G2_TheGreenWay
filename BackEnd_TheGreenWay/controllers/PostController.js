@@ -158,11 +158,11 @@ let addnewpost = async (req, res) => {
           debug(err);
           return res
             .status(200)
-            .json({ success: false, message: "Add New Post is Unsuccess!" });
+            .json({ success: false, message: "Thêm bài viết mới không thành công!" });
         } else {
           return res
             .status(200)
-            .json({ success: true, message: "Add New Post is Success!" });
+            .json({ success: true, message: "Thêm bài viết mới thành công!" });
         }
       });
     }
@@ -188,11 +188,11 @@ let addNewImagePost = async (req, res) => {
         debug(err);
         return res
           .status(200)
-          .json({ success: false, message: "Add New Image is Unsuccess!" });
+          .json({ success: false, message: "Thêm ảnh mới không thành công!" });
       } else {
         return res
           .status(200)
-          .json({ success: true, message: "Add New Image is Success!" });
+          .json({ success: true, message: "Thêm ảnh mới thành công!" });
       }
     }
   );
@@ -247,11 +247,11 @@ let updatePost = async (req, res) => {
       debug(err);
       return res
         .status(200)
-        .json({ success: false, message: "Update Post Failed!" });
+        .json({ success: false, message: "Cập nhật bài viết không thành công" });
     } else {
       return res
         .status(200)
-        .json({ success: true, message: "Update Post Success!" });
+        .json({ success: true, message: "Cập nhật bài viết thành công" });
     }
   });
 };

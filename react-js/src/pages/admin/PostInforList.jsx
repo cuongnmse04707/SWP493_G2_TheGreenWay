@@ -276,6 +276,8 @@ class PostInforList extends Component {
             visible={this.state.visible}
             onOk={this.updatePostInfor}
             onCancel={this.handleModalCancel}
+            okText="Xác nhận"
+            cancelText="Hủy bỏ"
             width={"80%"}
           >
             <div style={{ width: "100%" }}>

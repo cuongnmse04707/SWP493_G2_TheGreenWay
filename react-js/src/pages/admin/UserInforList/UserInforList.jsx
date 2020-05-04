@@ -108,7 +108,7 @@ class UserInforList extends Component {
     const { downRole } = this.props;
     downRole({
       email: value,
-      callback: (value) => {},
+      callback: (value) => { },
     });
   };
 
@@ -116,7 +116,7 @@ class UserInforList extends Component {
     const { lockUser } = this.props;
     lockUser({
       email: value,
-      callback: (value) => {},
+      callback: (value) => { },
     });
   };
 
@@ -124,7 +124,7 @@ class UserInforList extends Component {
     const { unlockUser } = this.props;
     unlockUser({
       email: value,
-      callback: (value) => {},
+      callback: (value) => { },
     });
   };
 
@@ -139,7 +139,7 @@ class UserInforList extends Component {
               alignItems: "center",
             }}
           >
-            <span>Name</span>
+            <span>Tên</span>
           </div>
         ),
         key: "name",
@@ -152,7 +152,7 @@ class UserInforList extends Component {
         ),
       },
       {
-        title: <span>Email Address</span>,
+        title: <span>Địa chỉ email</span>,
         dataIndex: "email",
         key: "email",
         width: "15%",
@@ -166,7 +166,7 @@ class UserInforList extends Component {
         ),
       },
       {
-        title: <span>Role</span>,
+        title: <span>Quyền</span>,
         dataIndex: "roles",
         key: "role",
         width: "10%",
@@ -188,9 +188,9 @@ class UserInforList extends Component {
                   record.roles === "admin"
                     ? "#FF4500"
                     : record.roles === "mod"
-                    ? "blue"
-                    : "#00BFFF"
-                }`,
+                      ? "blue"
+                      : "#00BFFF"
+                  }`,
                 width: "auto",
                 color: "white",
                 borderRadius: "5px",
@@ -202,7 +202,7 @@ class UserInforList extends Component {
         ),
       },
       {
-        title: <span>DOB</span>,
+        title: <span>Ngày sinh</span>,
         dataIndex: "DOB",
         key: "DOB",
         render: (text) => (
@@ -213,7 +213,7 @@ class UserInforList extends Component {
         width: "10%",
       },
       {
-        title: <span>Address</span>,
+        title: <span>Địa chỉ</span>,
         dataIndex: "address",
         key: "address",
         render: (text) => <span>{text !== "" ? text : `--`}</span>,
@@ -251,13 +251,13 @@ class UserInforList extends Component {
                     style={{ marginLeft: "8px" }}
                   />
                 ) : (
-                  <Button
-                    icon="unlock"
-                    onClick={() => this.unLockUser(record.email)}
-                    // disabled={record.roles === "admin"}
-                    style={{ marginLeft: "8px" }}
-                  />
-                )}
+                    <Button
+                      icon="unlock"
+                      onClick={() => this.unLockUser(record.email)}
+                      // disabled={record.roles === "admin"}
+                      style={{ marginLeft: "8px" }}
+                    />
+                  )}
               </div>
             )}
           </div>
@@ -274,7 +274,7 @@ class UserInforList extends Component {
               alignItems: "center",
             }}
           >
-            <span>Name</span>
+            <span>Tên</span>
           </div>
         ),
         key: "name",
@@ -286,12 +286,12 @@ class UserInforList extends Component {
         ),
       },
       {
-        title: <span>Email Address</span>,
+        title: <span>Địa chỉ email</span>,
         dataIndex: "email",
         key: "email",
       },
       {
-        title: <span>Role</span>,
+        title: <span>Quyền</span>,
         dataIndex: "roles",
         key: "role",
         render: (text, record) => (
@@ -312,9 +312,9 @@ class UserInforList extends Component {
                   record.roles === "admin"
                     ? "#FF4500"
                     : record.roles === "mod"
-                    ? "blue"
-                    : "#00BFFF"
-                }`,
+                      ? "blue"
+                      : "#00BFFF"
+                  }`,
                 width: "auto",
                 color: "white",
                 borderRadius: "5px",
@@ -334,7 +334,7 @@ class UserInforList extends Component {
               alignItems: "center",
             }}
           >
-            <span>Delete</span>
+            <span>Xóa</span>
           </div>
         ),
         key: "action",
@@ -374,14 +374,14 @@ class UserInforList extends Component {
               }}
             >
               <span className="textProjectMember">
-                The Green Way have {get(listUser, "length")} members
+                The Green Way có {get(listUser, "length")} thành viên
               </span>
             </div>
             <div className="divSearh">
-              <span style={{ fontSize: "16px" }}>Filter user</span>
+              <span style={{ fontSize: "16px" }}>Tìm kiếm người dùng</span>
               <div className="FilterName">
                 <Input
-                  placeholder="Search in Nickname or Email address"
+                  placeholder="Tìm kiếm theo tên hoặc địa chỉ email"
                   bordered="false"
                   onChange={(event) => {
                     this.setState({
@@ -396,7 +396,7 @@ class UserInforList extends Component {
                 style={{ marginLeft: "10px" }}
                 onClick={this.onOpenDrawerMemberSetting}
               >
-                Web User Setting
+                Cài đặt người dùng
               </Button>
             </div>
             <Collapse
@@ -405,9 +405,9 @@ class UserInforList extends Component {
               expandIconPosition={"right"}
             >
               <Panel
-                header={`Account Active (${
+                header={`Tài khoản đang hoạt động (${
                   (listUser || []).filter((el) => el.status === "ok").length
-                })`}
+                  })`}
                 key="1"
               >
                 <div>
@@ -431,9 +431,9 @@ class UserInforList extends Component {
                 </div>
               </Panel>
               <Panel
-                header={`Account Lock (${
+                header={`Tài khoản đang khóa (${
                   (listUser || []).filter((el) => el.status !== "ok").length
-                })`}
+                  })`}
                 key="2"
               >
                 <div>
@@ -521,7 +521,7 @@ class UserInforList extends Component {
                   style={{ marginLeft: "10px", width: "100px" }}
                   onClick={this.saveInfor}
                 >
-                  Save
+                  Lưu
                 </Button>
               </div>
               <div
@@ -559,12 +559,14 @@ class UserInforList extends Component {
                     fontSize: "15px",
                   }}
                 />
-                <span>Information Of User</span>
+                <span>Thông tin người dùng</span>
               </div>
             }
             visible={visibleRemove}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
+            okText="Xác nhận"
+            cancelText="Hủy bỏ"
             width={345}
           >
             <div
@@ -650,7 +652,7 @@ class UserInforList extends Component {
                     height: "100%",
                   }}
                 >
-                  <span>Roles</span>
+                  <span>Quyền</span>
                 </div>
                 <div
                   style={{
@@ -688,7 +690,7 @@ class UserInforList extends Component {
                     height: "100%",
                   }}
                 >
-                  <span>Phone</span>
+                  <span>Điện thoại</span>
                 </div>
                 <div
                   style={{
@@ -726,7 +728,7 @@ class UserInforList extends Component {
                     height: "100%",
                   }}
                 >
-                  <span>Address</span>
+                  <span>Địa chỉ</span>
                 </div>
                 <div
                   style={{
@@ -764,7 +766,7 @@ class UserInforList extends Component {
                     height: "100%",
                   }}
                 >
-                  <span>City</span>
+                  <span>Thành phố</span>
                 </div>
                 <div
                   style={{
@@ -802,7 +804,7 @@ class UserInforList extends Component {
                     height: "100%",
                   }}
                 >
-                  <span>Country</span>
+                  <span>Quốc gia</span>
                 </div>
                 <div
                   style={{

@@ -159,13 +159,13 @@ class CartInforList extends Component {
         ),
       },
       {
-        title: <span>TotalPrice</span>,
+        title: <span>Tổng số tiền</span>,
         dataIndex: "TotalPrice",
         key: "TotalPrice",
         render: (text) => <span>{text} VNĐ</span>,
       },
       {
-        title: <span>CreateDate</span>,
+        title: <span>Ngày tạo</span>,
         dataIndex: "CreateDate",
         key: "CreateDate",
         sorter: {
@@ -179,7 +179,7 @@ class CartInforList extends Component {
         ),
       },
       {
-        title: <span>EndDate</span>,
+        title: <span>Ngày giao hàng</span>,
         dataIndex: "EndDate",
         key: "EndDate",
         render: (text) => (
@@ -189,7 +189,7 @@ class CartInforList extends Component {
         ),
       },
       {
-        title: <span>ShipAddress</span>,
+        title: <span>Địa chỉ giao hàng</span>,
         dataIndex: "ShipAddress",
         key: "ShipAddress",
         render: (text) => <span>{text !== "" ? text : `--`}</span>,
@@ -338,10 +338,10 @@ class CartInforList extends Component {
               </div>
             </div>
             <div className="divSearh">
-              <span style={{ fontSize: "16px" }}>Filter order</span>
+              <span style={{ fontSize: "16px" }}>Tìm kiếm đơn hàng</span>
               <div className="FilterName">
                 <Input
-                  placeholder="Search in Nickname or Email address"
+                  placeholder="Tìm kiếm theo ID"
                   bordered="false"
                   onChange={(event) => {
                     this.setState({

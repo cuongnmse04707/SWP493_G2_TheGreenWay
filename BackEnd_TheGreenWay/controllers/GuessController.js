@@ -92,7 +92,7 @@ let addNewOrderByGuest = async (req, res) => {
                 debug(err);
                 return res.status(200).json({
                   success: false,
-                  message: "Add New Orders is Unsuccess!"
+                  message: "Thêm đơn hàng mới không thành công"
                 });
               } else {
                 // Insert Into OrderDetail Table
@@ -112,7 +112,7 @@ let addNewOrderByGuest = async (req, res) => {
                         debug(err);
                         return res.status(200).json({
                           success: false,
-                          message: "Add New Orders is Unsuccess!"
+                          message: "Thêm đơn hàng mới không thành công"
                         });
                       } else {
                         //Next sang viec save database voi OrderStatusDetail
@@ -136,7 +136,7 @@ let addNewOrderByGuest = async (req, res) => {
                       debug(err);
                       return res.status(200).json({
                         success: false,
-                        message: "Add New Orders is Unsuccess!"
+                        message: "Thêm đơn hàng mới không thành công"
                       });
                     } else {
                       //Next sang viec save token

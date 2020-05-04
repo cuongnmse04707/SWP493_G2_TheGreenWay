@@ -38,13 +38,13 @@ let register = async (req, res) => {
   if (!emailRegex.test(email)) {
     res.status(200).json({
       success: false,
-      message: "Invalid email adress",
+      message: "Email không đúng định dạng",
     });
   } else if (!passwordRegex.test(password)) {
     // validate password
     res.status(200).json({
       success: false,
-      message: "Invalid password",
+      message: "Mật khẩu không đúng định dạng",
     });
     return;
   }
@@ -291,7 +291,7 @@ let resetPassword = async (req, res) => {
           if (err) {
             return res
               .status(200)
-              .json({ success: false, message: "Reset Password Faild!" });
+              .json({ success: false, message: "Thay đổi mật khẩu không thành công" });
           } else {
             //Sau khi update password thi xoa bo luon. Tranh truong hop gui bang postman
             let sqlReset = `DELETE FROM AccountsToken WHERE email=?`;
@@ -305,7 +305,7 @@ let resetPassword = async (req, res) => {
               } else {
                 return res
                   .status(200)
-                  .json({ success: true, message: "Reset Password Success!" });
+                  .json({ success: true, message: "Thay đổi mật khẩu thành công" });
               }
             });
           }

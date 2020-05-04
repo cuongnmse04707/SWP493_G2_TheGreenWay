@@ -87,7 +87,7 @@ class ProductInforList extends Component {
     });
   };
 
-  handleCategoryChange(value) {}
+  handleCategoryChange(value) { }
 
   componentDidMount() {
     this.props.getProductList();
@@ -125,7 +125,7 @@ class ProductInforList extends Component {
     } else if (this.props.imageDetail.length !== 4) {
       message.error(
         `Vui lòng chọn thêm ${
-          4 - this.props.imageDetail.length
+        4 - this.props.imageDetail.length
         } ảnh chi tiết sản phẩm !`,
         2
       );
@@ -370,6 +370,8 @@ class ProductInforList extends Component {
             visible={this.state.visible}
             onOk={this.updateProductInfor}
             onCancel={this.handleModalCancel}
+            okText="Xác nhận"
+            cancelText="Hủy bỏ"
             width={"80%"}
           >
             <Row>
@@ -487,8 +489,8 @@ class ProductInforList extends Component {
                               // Set vao state
                               uploadTask.on(
                                 "state_changed",
-                                (snapshot) => {},
-                                (error) => {},
+                                (snapshot) => { },
+                                (error) => { },
                                 () => {
                                   storage
                                     .ref("images")
@@ -538,8 +540,8 @@ class ProductInforList extends Component {
                         {productDetail.ImageDetail ? (
                           <img src={productDetail.ImageDetail} alt="avatar" />
                         ) : (
-                          uploadAvatarButton
-                        )}
+                            uploadAvatarButton
+                          )}
                       </Upload>
                     )}
                   </Form.Item>
@@ -592,8 +594,8 @@ class ProductInforList extends Component {
                                 // Set vao state
                                 uploadTask.on(
                                   "state_changed",
-                                  (snapshot) => {},
-                                  (error) => {},
+                                  (snapshot) => { },
+                                  (error) => { },
                                   () => {
                                     storage
                                       .ref("images")

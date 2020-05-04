@@ -4,6 +4,7 @@ import { Table, Button, Pagination } from "antd";
 import { connect } from "react-redux";
 import UserLikeProductTypes from "../redux/user-product-like-redux";
 import ProductDetailTypes from "../redux/product-detail-redux";
+import ConvensionTypes from "../redux/paper-conversion-redux";
 
 class UserProductLike extends Component {
   state = {
@@ -11,6 +12,7 @@ class UserProductLike extends Component {
   }
 
   componentDidMount() {
+    this.props.getPaperConvension();
     const params = {
       page: 1
     }
@@ -60,7 +62,7 @@ class UserProductLike extends Component {
           <div>
             <span>{record.ProductPrice} VNĐ</span>
             <span className="mr-2 ml-2">|</span>
-            <span>{record.ProductPrice}</span>
+            <span>{Math.floor(record.ProductPrice / this.props.convensionRate)}</span>
           </div>
         )
       },
@@ -74,6 +76,7 @@ class UserProductLike extends Component {
     ];
 
     const { likeProductInfor } = this.props
+    console.log(likeProductInfor)
     return (
       <div className="user-like">
         <div className="like-product-wrapper">
@@ -97,7 +100,8 @@ class UserProductLike extends Component {
 const mapStateToProps = state => {
   return {
     likeProductInfor: state.userProductLike.likeProductList,
-    totalPage: state.userProductLike.totalPage
+    totalPage: state.userProductLike.totalPage,
+    convensionRate: state.convension.convensionRate
   };
 };
 
@@ -108,6 +112,9 @@ const mapDispatchToProps = dispatch => {
     },
     getProductDetail: (params) => {
       dispatch(ProductDetailTypes.getProductDetailRequest(params));
+    },
+    getPaperConvension: () => {
+      dispatch(ConvensionTypes.getConvensionRequest());
     },
   };
 };

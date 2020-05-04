@@ -102,7 +102,8 @@ class ModalChangeOrderStatus extends Component {
         title={`Đơn hàng #${orderChange.OrderID}`}
         visible={visibleModalChangeStatusOrder}
         onOk={this.handleOk}
-        okText="Comfirm"
+        okText="Xác nhận"
+        cancelText="Hủy bỏ"
         onCancel={() => onCloseModal()}
       >
         <span style={{ display: "flex", alignItems: "center" }}>

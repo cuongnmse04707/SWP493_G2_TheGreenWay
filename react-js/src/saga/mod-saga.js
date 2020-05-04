@@ -41,7 +41,7 @@ const ModSagas = {
       });
       if (!userInfor.data.success) {
         yield put(ModActions.upRoleFailed(userInfor.data));
-        message.error("You don't have permission !");
+        message.error("Bạn không có quyền thực hiện!");
       } else {
         action.data.callback("success");
         message.success("Update is Success !");
@@ -49,7 +49,7 @@ const ModSagas = {
       }
     } catch (error) {
       yield put(ModActions.upRoleFailed(error));
-      message.error("You don't have permission !");
+      message.error("Bạn không có quyền thực hiện!");
     }
   },
 
@@ -68,13 +68,13 @@ const ModSagas = {
       });
       if (!userInfor.data.success) {
         yield put(ModActions.downRoleFailed(userInfor.data));
-        message.error("You don't have permission !");
+        message.error("Bạn không có quyền thực hiện!");
       } else {
         message.success("Update is Success !");
         yield put(ModActions.downRoleSucceed(action.data.email));
       }
     } catch (error) {
-      message.error("You don't have permission !");
+      message.error("Bạn không có quyền thực hiện!");
       yield put(ModActions.downRoleFailed(error));
     }
   },
@@ -94,13 +94,13 @@ const ModSagas = {
       });
       if (!userInfor.data.success) {
         yield put(ModActions.unlockFailed(userInfor.data));
-        message.error("You don't have permission !");
+        message.error("Bạn không có quyền thực hiện!");
       } else {
-        message.success("UnLock is Success !");
+        message.success("Mở khóa tài khoản thành công");
         yield put(ModActions.unlockSucceed(action.data.email));
       }
     } catch (error) {
-      message.error("You don't have permission !");
+      message.error("Bạn không có quyền thực hiện!");
       yield put(ModActions.unlockFailed(error));
     }
   },
@@ -120,13 +120,13 @@ const ModSagas = {
       });
       if (!userInfor.data.success) {
         yield put(ModActions.lockFailed(userInfor.data));
-        message.error("You don't have permission !");
+        message.error("Bạn không có quyền thực hiện!");
       } else {
-        message.success("Lock is Success !");
+        message.success("Khóa tài khoản thành công!");
         yield put(ModActions.lockSucceed(action.data.email));
       }
     } catch (error) {
-      message.error("You don't have permission !");
+      message.error("Bạn không có quyền thực hiện!");
       yield put(ModActions.lockFailed(error));
     }
   },

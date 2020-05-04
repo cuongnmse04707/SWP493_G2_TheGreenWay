@@ -48,7 +48,7 @@ let addNewOrderByUser = async (req, res) => {
           debug(err);
           return res
             .status(200)
-            .json({ success: false, message: "Add New Orders is Unsuccess!" });
+            .json({ success: false, message: "Thêm đơn hàng mới không thành công!" });
         } else {
           // Insert Into OrderDetail Table
           arrayCart.forEach(function (item, index, arrays) {
@@ -67,7 +67,7 @@ let addNewOrderByUser = async (req, res) => {
                   debug(err);
                   return res.status(200).json({
                     success: false,
-                    message: "Add New Orders is Unsuccess!",
+                    message: "Thêm đơn hàng mới không thành công!",
                   });
                 } else {
                   //Next sang viec save database voi OrderStatusDetail
@@ -91,13 +91,13 @@ let addNewOrderByUser = async (req, res) => {
                 debug(err);
                 return res.status(200).json({
                   success: false,
-                  message: "Add New Orders is Unsuccess!",
+                  message: "Thêm đơn hàng mới không thành công!",
                 });
               } else {
                 //Next sang viec save database voi OrderStatusDetail
                 return res.status(200).json({
                   success: true,
-                  message: "Add New Orders is Success!",
+                  message: "Thêm đơn hàng mới thành công!",
                 });
               }
             }
@@ -190,7 +190,7 @@ let showOrderListByEmail = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Order!",
+          message: "Không có đơn hàng!",
         });
       } else {
         let sql = ` SELECT COUNT(*) AS Total
@@ -254,7 +254,7 @@ let showOrderByEmail = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "You can't have access this order!",
+          message: "Bạn không có quyền truy cập",
         });
       } else {
         let sql = ` SELECT Orders.OrderID,Orders.PaymentID,Orders.TotalPrice,Orders.ShipAddress,Orders.CreateDate,Orders.EndDate,Orders.QuantityPaper,Orders.Cash,OrderStatusDes.Description,OrderStatusDes.ModifyDate
@@ -277,7 +277,7 @@ let showOrderByEmail = async (req, res) => {
               // Chua co thi likex
               return res.status(200).json({
                 success: false,
-                message: "You can't have access this order!",
+                message: "Bạn không có quyền truy cập",
               });
             } else {
               let sql = `SELECT
@@ -301,7 +301,7 @@ let showOrderByEmail = async (req, res) => {
                     // Chua co thi likex
                     return res.status(200).json({
                       success: false,
-                      message: "You can't have access this order!",
+                      message: "Bạn không có quyền truy cập",
                     });
                   } else {
                     return res.status(200).json({
@@ -344,7 +344,7 @@ let showOrderByID = async (req, res) => {
         // Chua co thi likex
         return res.status(200).json({
           success: false,
-          message: "You can't have access this order!",
+          message: "Bạn không có quyền truy cập",
         });
       } else {
         let sql = `SELECT
@@ -368,7 +368,7 @@ let showOrderByID = async (req, res) => {
               // Chua co thi likex
               return res.status(200).json({
                 success: false,
-                message: "You can't have access this order!",
+                message: "Bạn không có quyền truy cập",
               });
             } else {
               return res.status(200).json({
@@ -406,7 +406,7 @@ let showOrderListForMOD = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Order In List!",
+          message: "Không có đơn hàng",
         });
       } else {
         let sql = ` SELECT COUNT(*) AS Total
@@ -534,7 +534,7 @@ let changeStatusOrder = async (req, res) => {
                           } else {
                             return res.status(200).json({
                               success: true,
-                              message: "Change Status Order Success!",
+                              message: "Thay đổi trạn thái đơn hàng thành công",
                             });
                           }
                         });
@@ -575,7 +575,7 @@ let changeStatusOrder = async (req, res) => {
           } else {
             return res.status(200).json({
               success: true,
-              message: "Change Status Order Success!",
+              message: "Thay đổi trạng thái đơn hàng thành công!",
             });
           }
         });
@@ -584,7 +584,7 @@ let changeStatusOrder = async (req, res) => {
   } else {
     return res.status(200).json({
       success: true,
-      message: "Change Status Order Success!",
+      message: "Thay đổi trạng thái đơn hàng thành công!",
     });
   }
 };
@@ -619,7 +619,7 @@ let getListOrderByStatusCode = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Order In List!",
+          message: "Không có đơn hàng!",
         });
       } else {
         let sql = ` SELECT COUNT(*) AS Total
