@@ -148,8 +148,8 @@ let addnewpost = async (req, res) => {
         ModEmail: email,
         Title: req.body.Title,
         Content: req.body.Content,
-        CreateDate: moment(req.body.CreateDate).format("YYYY-MM-DD hh:mm:ss"),
-        UpdateDate: moment(req.body.UpdateDate).format("YYYY-MM-DD hh:mm:ss"),
+        CreateDate: moment(req.body.CreateDate).format("YYYY-MM-DD HH:mm:ss"),
+        UpdateDate: moment(req.body.UpdateDate).format("YYYY-MM-DD HH:mm:ss"),
         ImageDetail: ImageDetail,
       };
       // Luu vao Database

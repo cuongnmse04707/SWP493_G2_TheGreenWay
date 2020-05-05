@@ -11,6 +11,7 @@ const Cryptr = require("cryptr");
 // let tokenList = {};
 // Thời gian sống của token
 const accessTokenLife = "10h";
+const accessTokenLifeReset = "5m";
 // Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
 const accessTokenSecret =
   process.env.ACCESS_TOKEN_SECRET || "access-token-secret-cuongnm";
@@ -165,7 +166,7 @@ let forgotpassword = async (req, res) => {
           const accessToken = await jwtHelper.generateToken(
             userData,
             accessTokenSecret,
-            accessTokenLife
+            accessTokenLifeReset
           );
           //Tao transporter
           const transporter = nodemailer.createTransport({
@@ -182,7 +183,7 @@ let forgotpassword = async (req, res) => {
             subject: "[TGW] - Tạo lại mật khẩu",
             text:
               "Bạn đang nhận được điều này bởi vì bạn (hoặc người khác) đã yêu cầu đặt lại mật khẩu cho tài khoản của bạn.\n\n" +
-              "Vui lòng nhấp vào liên kết sau hoặc dán liên kết này vào trình duyệt của bạn để hoàn tất quy trình trong vòng mười giờ sau khi nhận được:\n\n" +
+              "Vui lòng nhấp vào liên kết sau hoặc dán liên kết này vào trình duyệt của bạn để hoàn tất quy trình trong vòng 5 phút sau khi nhận được:\n\n" +
               `http://localhost:3000/forgot?${accessToken}?${req.body.email}` +
               "\n\nNếu bạn không yêu cầu điều này, xin vui lòng bỏ qua email này và mật khẩu của bạn sẽ không thay đổi.\n",
           };
