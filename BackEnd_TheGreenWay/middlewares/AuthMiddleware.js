@@ -21,7 +21,6 @@ let isAuth = async (req, res, next) => {
         accessTokenSecret
       );
       // Nếu token hợp lệ, lưu thông tin giải mã được vào đối tượng req, dùng cho các xử lý ở phía sau.
-
       //Gan them jwtDecoded vao trong request de gui tiep sang middleware tiep theo
       req.jwtDecoded = decoded;
       // Cho phép req đi tiếp sang controller.

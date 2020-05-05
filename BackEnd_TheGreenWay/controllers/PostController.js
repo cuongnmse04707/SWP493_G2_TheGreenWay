@@ -142,23 +142,24 @@ let addnewpost = async (req, res) => {
       const ImageDetail = req.body.ImageDetail
         ? req.body.ImageDetail
         : "https://firebasestorage.googleapis.com/v0/b/demoweb-2d974.appspot.com/o/images%2Fmaxresdefault.jpg?alt=media&token=2aa6af8d-44a0-43fc-bdaa-73f38bd006dd";
-
+      moment(req.body.CreateDate).format("YYYY-MM-DD");
       const empty = {
         PostID: idPost,
         ModEmail: email,
         Title: req.body.Title,
         Content: req.body.Content,
-        CreateDate: moment(req.body.CreateDate).format("YYYY-MM-DD"),
-        UpdateDate: moment(req.body.UpdateDate).format("YYYY-MM-DD"),
+        CreateDate: moment(req.body.CreateDate).format("YYYY-MM-DD hh:mm:ss"),
+        UpdateDate: moment(req.body.UpdateDate).format("YYYY-MM-DD hh:mm:ss"),
         ImageDetail: ImageDetail,
       };
       // Luu vao Database
       connectionDB.query("INSERT INTO Posts SET ? ", empty, (err, result) => {
         if (err) {
           debug(err);
-          return res
-            .status(200)
-            .json({ success: false, message: "Thêm bài viết mới không thành công!" });
+          return res.status(200).json({
+            success: false,
+            message: "Thêm bài viết mới không thành công!",
+          });
         } else {
           return res
             .status(200)
@@ -245,9 +246,10 @@ let updatePost = async (req, res) => {
   connectionDB.query(query, async (err, result) => {
     if (err) {
       debug(err);
-      return res
-        .status(200)
-        .json({ success: false, message: "Cập nhật bài viết không thành công" });
+      return res.status(200).json({
+        success: false,
+        message: "Cập nhật bài viết không thành công",
+      });
     } else {
       return res
         .status(200)

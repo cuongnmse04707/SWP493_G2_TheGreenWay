@@ -11,19 +11,19 @@ class AboutUs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isHover: false
+      isHover: false,
     };
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.props.getInforAboutNumber()
+    this.props.getInforAboutNumber();
   }
 
   render() {
     const { isHover } = this.state;
-    const {numberInfor} = this.props
-    console.log(numberInfor)
+    const { numberInfor } = this.props;
+    console.log(numberInfor);
     return (
       <div children="about-us">
         <NavBar />
@@ -50,9 +50,12 @@ class AboutUs extends Component {
               <div data-aos="fade-right" data-aos-duration="1500">
                 <h3>Cây để bàn, văn phòng</h3>
                 <p>
-                  Cây xanh không chỉ giúp không gian của chúng ta trở nên thân
-                  thiện, đẹp đẽ hơn mà chúng còn giúp tái tạo không khí, tốt cho
-                  sức khỏe...
+                  Lựa chọn cây văn phòng , cây để bàn là một trong những sản
+                  phẩm của website , đội ngũ chúng tôi muốn hướng các bạn đến
+                  một không gian làm việc nơi văn phòng trong lành nhất,loại bọ
+                  bụi bẩn, nấm mốc,giúp bạn hạn chế tác hại của tia phóng xạ
+                  phát ra từ những thiết bị điện tử..Đây chắc chắn là sự lựa
+                  chọn không thể thiếu của dân văn phòng
                 </p>
               </div>
             </div>
@@ -77,15 +80,13 @@ class AboutUs extends Component {
             >
               <h3>Đồ dùng, sản phẩm thân thiện với môi trường</h3>
               <p>
-                Nulla quis lorem ut libero malesuada feugiat. Donec sollicitudin
-                molestie malesuada. Curabitur arcu erat, accumsan id imperdiet
-                et, porttitor at sem. Curabitur aliquet quam id dui posuere
-                blandit. Praesent sapien massa, convallis a pellentesque nec,
-                egestas non nisi. Donec rutrum congue leo eget malesuada.
-                Vivamus suscipit tortor eget felis porttitor volutpat. Quisque
-                velit nisi, pretium ut lacinia in, elementum id enim. Vivamus
-                magna justo, lacinia eget consectetur sed, convallis at
-                tellus...
+                Một trong những giải pháp bảo vệ môi trường gần đây được rất
+                nhiều người tham gia, hưởng ứng đó chính là sử dụng các vật dụng
+                thân thiện với môi trường , góp phần tiết kiệm chi phí , giảm
+                thiểu rác thải. Nói một cách khác , đây là lối sống bền vững ,
+                hạn chế đến mức tối đa việc sử dụng các tài nguyên thiên nhiên
+                để phục vụ nhu cầu cá nhân, đồng thời đảm bảo có thể bù vào
+                những nguồn tài nguyên mình vừa sử dụng
               </p>
             </div>
           </div>
@@ -94,10 +95,11 @@ class AboutUs extends Component {
               <div data-aos="fade-right" data-aos-duration="1500">
                 <h3>Chia sẻ kiến thức về bảo vệ môi trường</h3>
                 <p>
-                  Nulla quis lorem ut libero malesuada feugiat. Donec
-                  sollicitudin molestie malesuada. Curabitur arcu erat, accumsan
-                  id imperdiet et, porttitor at sem. Curabitur aliquet quam id
-                  dui posuere blandit....
+                  Đây được xem là một trong những nét khác biệt của website
+                  chúng tôi so với những website có cùng chức năng khác, đó là
+                  chuyên mục tổng hợp các bài đăng hướng dẫn mọi người tạo lối
+                  sống xanh cho riêng mình, chia sẻ những thông tin , kiến thức
+                  cần thiết để bảo vệ môi trường .
                 </p>
               </div>
             </div>
@@ -112,7 +114,7 @@ class AboutUs extends Component {
         <div className="counter-wrapper">
           <div
             className="counter-number-container"
-            onMouseEnter={event => this.setState({ isHover: true })}
+            onMouseEnter={(event) => this.setState({ isHover: true })}
           >
             <section className=" page-section" id="team">
               <div className="container">
@@ -135,7 +137,7 @@ class AboutUs extends Component {
                           width: "150px",
                           height: "150px",
                           borderRadius: "50%",
-                          borderColor: "#d1d1d1"
+                          borderColor: "#d1d1d1",
                         }}
                         src={require("../images/about-us-4.jpg")}
                         alt=""
@@ -143,10 +145,17 @@ class AboutUs extends Component {
                       <h4 className="counter-title">Sản phẩm đã bán</h4>
                       <p className="counter-number">
                         {isHover ? (
-                          <CountUp start={0} end={numberInfor.numberProduct || 0} duration={3} />
+                          <CountUp
+                            start={0}
+                            end={numberInfor.numberProduct || 0}
+                            duration={3}
+                          />
                         ) : (
-                            <CountUp start={numberInfor.numberProduct || 0} end={numberInfor.numberProduct || 0} />
-                          )}
+                          <CountUp
+                            start={numberInfor.numberProduct || 0}
+                            end={numberInfor.numberProduct || 0}
+                          />
+                        )}
                       </p>
                     </div>
                   </div>
@@ -161,7 +170,7 @@ class AboutUs extends Component {
                           width: "150px",
                           height: "150px",
                           borderRadius: "50%",
-                          borderColor: "#d1d1d1"
+                          borderColor: "#d1d1d1",
                         }}
                         src={require("../images/about-us-6.jpg")}
                         alt=""
@@ -169,10 +178,17 @@ class AboutUs extends Component {
                       <h4 className="counter-title">Số kg giấy thu được</h4>
                       <p className="counter-number">
                         {isHover ? (
-                          <CountUp start={0} end={numberInfor.numberPaper || 0} duration={3} />
+                          <CountUp
+                            start={0}
+                            end={numberInfor.numberPaper || 0}
+                            duration={3}
+                          />
                         ) : (
-                            <CountUp start={numberInfor.numberPaper || 0} end={numberInfor.numberPaper || 0}/>
-                          )}
+                          <CountUp
+                            start={numberInfor.numberPaper || 0}
+                            end={numberInfor.numberPaper || 0}
+                          />
+                        )}
                       </p>
                     </div>
                   </div>
@@ -187,7 +203,7 @@ class AboutUs extends Component {
                           width: "150px",
                           height: "150px",
                           borderRadius: "50%",
-                          borderColor: "#d1d1d1"
+                          borderColor: "#d1d1d1",
                         }}
                         src={require("../images/about-us-5.jpg")}
                         alt=""
@@ -195,10 +211,17 @@ class AboutUs extends Component {
                       <h4 className="counter-title">Số bài viết đã chia sẻ</h4>
                       <p className="counter-number">
                         {isHover ? (
-                          <CountUp start={0} end={numberInfor.numberPosts || 0} duration={3} />
+                          <CountUp
+                            start={0}
+                            end={numberInfor.numberPosts || 0}
+                            duration={3}
+                          />
                         ) : (
-                            <CountUp start={numberInfor.numberPosts || 0} end={numberInfor.numberPosts || 0}/>
-                          )}
+                          <CountUp
+                            start={numberInfor.numberPosts || 0}
+                            end={numberInfor.numberPosts || 0}
+                          />
+                        )}
                       </p>
                     </div>
                   </div>
@@ -216,7 +239,7 @@ class AboutUs extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    numberInfor: state.orderCart.inforAbout
+    numberInfor: state.orderCart.inforAbout,
   };
 };
 
@@ -227,7 +250,4 @@ const mapDispatchToProps = (dispatch) => {
     },
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AboutUs);
+export default connect(mapStateToProps, mapDispatchToProps)(AboutUs);

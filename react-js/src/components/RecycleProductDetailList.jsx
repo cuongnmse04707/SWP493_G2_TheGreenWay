@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {message, Pagination } from "antd";
+import { message, Pagination } from "antd";
 import "../css/product-list.css";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
@@ -14,56 +14,56 @@ class RecycleProductDetailList extends Component {
     current: 1,
     checkSearch: false,
     valueSearch: "",
-    valueSearchHigh: {}
+    valueSearchHigh: {},
   };
 
   componentDidMount() {
     this.props.getPaperConvension();
     const params = {
       idCategory: 2,
-      page: 1
+      page: 1,
     };
     this.props.getIntroProduct(params);
     this.props.getDataSearch({ idCategory: 2 });
   }
 
-  onSelectPageChange = page => {
+  onSelectPageChange = (page) => {
     window.scrollTo(500, 500);
     const { checkSearch, valueSearch, valueSearchHigh } = this.state;
     if (checkSearch) {
       if (valueSearchHigh) {
         this.setState({
-          current: page
+          current: page,
         });
         this.setState({
-          checkSearch: true
+          checkSearch: true,
         });
         this.props.searchHigh({
           value: valueSearchHigh,
           page: page,
-          cate: "2"
+          cate: "2",
         });
       }
       if (valueSearch) {
         this.setState({
-          current: page
+          current: page,
         });
         this.setState({
-          checkSearch: true
+          checkSearch: true,
         });
         this.props.searchDefault({
           value: valueSearch,
           page: page,
-          cate: "2"
+          cate: "2",
         });
       }
     } else {
       this.setState({
-        current: page
+        current: page,
       });
       const params = {
         idCategory: 2,
-        page: page
+        page: page,
       };
       this.props.getIntroProduct(params);
     }
@@ -74,65 +74,65 @@ class RecycleProductDetailList extends Component {
     this.props.history.push(`/product-detail/${id}`);
   };
 
-  onChangeCheckSearch = value => {
+  onChangeCheckSearch = (value) => {
     this.setState({
-      checkSearch: value
+      checkSearch: value,
     });
   };
 
-  onSearchHigh = value => {
+  onSearchHigh = (value) => {
     this.setState({
       valueSearchHigh: value,
-      valueSearch: null
+      valueSearch: null,
     });
     this.setState({
-      current: 1
+      current: 1,
     });
     if (value.textName === "" && value.maxP === "" && value.minP === "") {
       this.setState({
-        checkSearch: false
+        checkSearch: false,
       });
       const params = {
         idCategory: 2,
-        page: 1
+        page: 1,
       };
       this.props.getIntroProduct(params);
     } else {
       this.setState({
-        checkSearch: true
+        checkSearch: true,
       });
       this.props.searchHigh({
         value: value,
         page: 1,
-        cate: "2"
+        cate: "2",
       });
     }
   };
 
-  onSearchFullText = value => {
+  onSearchFullText = (value) => {
     this.setState({
       valueSearch: value,
-      valueSearchHigh: null
+      valueSearchHigh: null,
     });
     this.setState({
-      current: 1
+      current: 1,
     });
     if (value) {
       this.setState({
-        checkSearch: true
+        checkSearch: true,
       });
       this.props.searchDefault({
         value: value,
         page: 1,
-        cate: "2"
+        cate: "2",
       });
     } else {
       this.setState({
-        checkSearch: false
+        checkSearch: false,
       });
       const params = {
         idCategory: 2,
-        page: 1
+        page: 1,
       };
       this.props.getIntroProduct(params);
     }
@@ -140,30 +140,30 @@ class RecycleProductDetailList extends Component {
 
   changeHeart = (event, item) => {
     event.stopPropagation();
-    const token = window.localStorage.getItem("x-access-token")
+    const token = window.localStorage.getItem("x-access-token");
     if (!token) {
-      message.error('Vui lòng đăng nhập để thích sản phẩm', 2)
+      message.error("Vui lòng đăng nhập để thích sản phẩm", 2);
     } else {
-    this.props.setDataLike({
-      method: item.like === "like" ? "unLike" : "like",
-      idP: item.ProductID
-    });
-  }
+      this.props.setDataLike({
+        method: item.like === "like" ? "unLike" : "like",
+        idP: item.ProductID,
+      });
+    }
   };
 
   addToShoppingCart = (event, item) => {
     event.stopPropagation();
     const product = {
       ...item,
-      quatityBuy: 1
+      quatityBuy: 1,
     };
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     const indexNumber = cart.findIndex(
-      element => element.ProductID === product.ProductID
+      (element) => element.ProductID === product.ProductID
     );
     if (indexNumber >= 0) {
       if (product.Quantity < cart[indexNumber].quatityBuy + 1) {
-        message.error("Opps. Xin lỗi bạn, sản phẩm này đã hết hàng !");
+        message.error("Opps. Bạn đã đặt tối đa số sản phẩm này!");
       } else {
         message.success("Thêm sản phẩm vào giỏ hàng thành công !");
         cart[indexNumber].quatityBuy = cart[indexNumber].quatityBuy + 1;
@@ -178,7 +178,7 @@ class RecycleProductDetailList extends Component {
     }
 
     let numberOfTotal = 0;
-    cart.map(e => (numberOfTotal = numberOfTotal + e.quatityBuy));
+    cart.map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
     this.props.setDataCart(numberOfTotal);
     localStorage.setItem("cart", JSON.stringify(cart));
   };
@@ -202,42 +202,44 @@ class RecycleProductDetailList extends Component {
             return (
               <div
                 className="sub-item shadow bg-white rounded"
-                onClick={event => this.handleClick(event, item.ProductID)}
+                onClick={(event) => this.handleClick(event, item.ProductID)}
                 key={index}
               >
                 <div className="hovereffect">
-                { item.Quantity === 0 ? (
+                  {item.Quantity === 0 ? (
                     <div
-                    style={{
-                      width: "45px",
-                      height: "45px",
-                      position: "absolute",
-                      zIndex: "1000",
-                      margin: "10px 0 0 10px",
-                      background: "#f0524b",
-                      borderRadius: "50%"
-                    }}
-                  >
-                    <p
                       style={{
-                        fontSize: "12px",
-                        color: "#fff"
+                        width: "45px",
+                        height: "45px",
+                        position: "absolute",
+                        zIndex: "1000",
+                        margin: "10px 0 0 10px",
+                        background: "#f0524b",
+                        borderRadius: "50%",
                       }}
-                    >Hết hàng</p>
-                  </div>
+                    >
+                      <p
+                        style={{
+                          fontSize: "12px",
+                          color: "#fff",
+                        }}
+                      >
+                        Hết hàng
+                      </p>
+                    </div>
                   ) : null}
                   <img src={item.ImageDetail} alt="" />
                   <div className="overlayy">
                     <a
                       className="info"
-                      onClick={event => this.addToShoppingCart(event, item)}
+                      onClick={(event) => this.addToShoppingCart(event, item)}
                     >
                       <div style={{ display: "flex" }}>
                         <img
                           style={{
                             height: "32px",
                             width: "32px",
-                            marginRight: "10px"
+                            marginRight: "10px",
                           }}
                           src={require("../images/svgIcon/cart.svg")}
                           alt=""
@@ -248,14 +250,14 @@ class RecycleProductDetailList extends Component {
                     <div className="heart-icon">
                       {(item || {}).like === "like" ? (
                         <img
-                          onClick={event => this.changeHeart(event, item)}
+                          onClick={(event) => this.changeHeart(event, item)}
                           style={{ height: "35px", width: "35px" }}
                           src={require("../images/svgIcon/like.svg")}
                           alt=""
                         />
                       ) : (
                         <img
-                          onClick={event => this.changeHeart(event, item)}
+                          onClick={(event) => this.changeHeart(event, item)}
                           style={{ height: "35px", width: "35px" }}
                           src={require("../images/svgIcon/unLike.svg")}
                           alt=""
@@ -269,7 +271,7 @@ class RecycleProductDetailList extends Component {
                     marginTop: "300px",
                     fontSize: "25px",
                     fontStyle: "normal",
-                    fontWeight: "normal"
+                    fontWeight: "normal",
                   }}
                 >
                   <span>{item.ProductName}</span>
@@ -281,7 +283,15 @@ class RecycleProductDetailList extends Component {
                         src={require("../images/svgIcon/money.svg")}
                         alt=""
                       />
-                      <span>{item.ProductPrice ? item.ProductPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : 0} VNĐ</span>
+                      <span>
+                        {item.ProductPrice
+                          ? item.ProductPrice.replace(
+                              /(\d)(?=(\d{3})+(?!\d))/g,
+                              "$1,"
+                            )
+                          : 0}{" "}
+                        VNĐ
+                      </span>
                     </div>
                     <div className="item-coin" style={{ marginTop: "5px" }}>
                       <img
@@ -300,7 +310,7 @@ class RecycleProductDetailList extends Component {
                         flexDirection: "row",
                         alignItems: "center",
                         justifyContent: " center",
-                        height: " 100%"
+                        height: " 100%",
                       }}
                     >
                       <img
@@ -331,41 +341,41 @@ class RecycleProductDetailList extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     resultSize: state.introProduct.resultsize,
     introProduct: state.introProduct.recycleProduct,
     totalPage: state.introProduct.totalRecyclePage,
-    convensionRate: state.convension.convensionRate
+    convensionRate: state.convension.convensionRate,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getPaperConvension: () => {
       dispatch(ConvensionTypes.getConvensionRequest());
     },
-    getIntroProduct: params => {
+    getIntroProduct: (params) => {
       dispatch(IntroProductTypes.getRecycleProductRequest(params));
     },
-    setDataCart: params => {
+    setDataCart: (params) => {
       dispatch(HomePageTypes.updateStateCart(params));
     },
-    setDataLike: params => {
+    setDataLike: (params) => {
       dispatch(IntroProductTypes.updateLikeProduct(params));
     },
-    searchDefault: params => {
+    searchDefault: (params) => {
       dispatch(IntroProductTypes.searchDefault(params));
     },
-    searchHigh: params => {
+    searchHigh: (params) => {
       dispatch(IntroProductTypes.searchHigh(params));
     },
-    resetData: params => {
+    resetData: (params) => {
       dispatch(IntroProductTypes.resetData());
     },
-    getDataSearch: params => {
+    getDataSearch: (params) => {
       dispatch(IntroProductTypes.listProductSearch(params));
-    }
+    },
   };
 };
 

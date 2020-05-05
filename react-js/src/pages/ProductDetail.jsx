@@ -31,10 +31,14 @@ class ProductDetail extends Component {
     // this.props.setDataCart(numberOfTotal);
   }
 
-  getQuantity = (value, max) => {
+  getQuantity = (value, max, valueCheck) => {
     if (Number(value) !== 0) {
       if (max === 0) {
-        message.info("Sản phẩm đã hết hàng !");
+        if (valueCheck === "true") {
+          message.info("Bạn đã đặt số lượng hàng tối đa!");
+        } else {
+          message.info("Opps. Sản phẩm đã hết hàng!");
+        }
       } else {
         if (value > max) {
           message.info(`Hiện tại trong kho hàng chỉ còn ${max} sản phẩm !`);
@@ -221,7 +225,15 @@ class ProductDetail extends Component {
               <div className="item-detail-price">
                 <div className="item-detail-coin">
                   <img src={require("../images/svgIcon/money.svg")} alt="" />
-                  <span>{productInfor.ProductPrice ? productInfor.ProductPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : 0} VNĐ</span>
+                  <span>
+                    {productInfor.ProductPrice
+                      ? productInfor.ProductPrice.replace(
+                          /(\d)(?=(\d{3})+(?!\d))/g,
+                          "$1,"
+                        )
+                      : 0}{" "}
+                    VNĐ
+                  </span>
                 </div>
                 <div className="item-detail-coin" style={{ marginTop: "10px" }}>
                   <img src={require("../images/svgIcon/paper.svg")} alt="" />
@@ -240,17 +252,20 @@ class ProductDetail extends Component {
                   onChange={(value) =>
                     this.getQuantity(
                       value,
-                      (productInfor.Quantity || 0) - (cartItem.quatityBuy || 0)
+                      (productInfor.Quantity || 0) - (cartItem.quatityBuy || 0),
+                      cartItem.quatityBuy ? "true" : "false"
                     )
                   }
                 />
               </div>
               <div className="item-short-decription mt-5">
-                <span className="item-short-decription-span"
+                <span
+                  className="item-short-decription-span"
                   dangerouslySetInnerHTML={{ __html: productInfor.Description }}
                 />
-                 <a href="#description"  className="text-see-more mb-5"
-                >...Xem thêm</a>
+                <a href="#description" className="text-see-more mb-5">
+                  ...Xem thêm
+                </a>
               </div>
               <div className="add-to-cart mt-2">
                 <div onClick={this.addToCart}>

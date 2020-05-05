@@ -7,78 +7,77 @@ import { Input, Pagination } from "antd";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import LifeWayTypes from "../../redux/life-way-redux";
-
+import vietnam from "moment/locale/vi";
 var moment = require("moment");
 
 class Lifeway extends Component {
   state = {
     current: 1,
     searchText: "",
-    checkSearch: false
+    checkSearch: false,
   };
 
   componentDidMount() {
     window.scrollTo(0, 0);
     const params = {
-      page: 1
+      page: 1,
     };
     this.props.getPostInfor(params);
     this.props.getPostLikeMuch();
-    this.props.setCheckSearchFalse()
+    this.props.setCheckSearchFalse();
   }
 
-  onChange(date, dateString) {
-  }
+  onChange(date, dateString) {}
 
-  toPostDetail = id => {
+  toPostDetail = (id) => {
     this.props.history.push(`/life-way-detail/${id}`);
   };
 
-  onSelectPageChange = page => {
+  onSelectPageChange = (page) => {
     window.scrollTo(600, 600);
     const { searchText } = this.state;
     const { checkSearch } = this.props;
     if (checkSearch) {
       this.setState({
-        current: page
+        current: page,
       });
-      this.props.setCheckSearchTrue()
+      this.props.setCheckSearchTrue();
       this.props.searchDefaultPost({
         value: searchText,
-        page: page
+        page: page,
       });
     } else {
       this.setState({
-        current: page
+        current: page,
       });
       const params = {
-        page: page
+        page: page,
       };
       this.props.getPostInfor(params);
     }
   };
 
-  handleSearchChange = event => {
+  handleSearchChange = (event) => {
     this.setState({
-      searchText: event.target.value
+      searchText: event.target.value,
     });
   };
 
-  searchPost = event => {
+  searchPost = (event) => {
     const { searchText } = this.state;
     this.setState({
-      current: 1
+      current: 1,
     });
     if (searchText) {
-      this.props.setCheckSearchTrue()
+      this.props.setCheckSearchTrue();
       this.props.searchDefaultPost({
         value: searchText,
-        page: 1
+        page: 1,
       });
     } else {
-      this.props.setCheckSearchFalse()
+      this.props.setCheckSearchFalse();
       const params = {
-        page: 1
+        page: 1,
       };
       this.props.getPostInfor(params);
     }
@@ -86,13 +85,13 @@ class Lifeway extends Component {
 
   changeHeart = (event, item) => {
     event.stopPropagation();
-    const token = window.localStorage.getItem("x-access-token")
+    const token = window.localStorage.getItem("x-access-token");
     if (!token) {
-      message.error('Vui lòng đăng nhập để thích sản phẩm', 2)
+      message.error("Vui lòng đăng nhập để thích sản phẩm", 2);
     } else {
       this.props.setDataLikePost({
         method: item.like === "like" ? "unLike" : "like",
-        idP: item.PostID
+        idP: item.PostID,
       });
     }
   };
@@ -111,19 +110,23 @@ class Lifeway extends Component {
                   <div className="heart-icon">
                     {(postLikeMuch || {}).like === "like" ? (
                       <img
-                        onClick={event => this.changeHeart(event, postLikeMuch)}
+                        onClick={(event) =>
+                          this.changeHeart(event, postLikeMuch)
+                        }
                         style={{ height: "35px", width: "35px" }}
                         src={require("../../images/svgIcon/like.svg")}
                         alt=""
                       />
                     ) : (
-                        <img
-                          onClick={event => this.changeHeart(event, postLikeMuch)}
-                          style={{ height: "35px", width: "35px" }}
-                          src={require("../../images/svgIcon/unLike.svg")}
-                          alt=""
-                        />
-                      )}
+                      <img
+                        onClick={(event) =>
+                          this.changeHeart(event, postLikeMuch)
+                        }
+                        style={{ height: "35px", width: "35px" }}
+                        src={require("../../images/svgIcon/unLike.svg")}
+                        alt=""
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -133,12 +136,18 @@ class Lifeway extends Component {
                 <span>{(postLikeMuch || {}).Title}</span>
               </div>
               <div className="post-header-descript">
-                <span className="post-header-descript-span"
-                  dangerouslySetInnerHTML={{ __html: (postLikeMuch || {}).Content }}
+                <span
+                  className="post-header-descript-span"
+                  dangerouslySetInnerHTML={{
+                    __html: (postLikeMuch || {}).Content,
+                  }}
                 />
-                <span className="text-see-more"
+                <span
+                  className="text-see-more"
                   onClick={() => this.toPostDetail((postLikeMuch || {}).PostID)}
-                >...Xem thêm</span>
+                >
+                  ...Xem thêm
+                </span>
               </div>
               <div className="post-header-time">
                 <img src={require("../../images/clock.png")} alt="" />
@@ -191,19 +200,23 @@ class Lifeway extends Component {
                           <div className="heart-icon">
                             {(item || {}).like === "like" ? (
                               <img
-                                onClick={event => this.changeHeart(event, item)}
+                                onClick={(event) =>
+                                  this.changeHeart(event, item)
+                                }
                                 style={{ height: "35px", width: "35px" }}
                                 src={require("../../images/svgIcon/like.svg")}
                                 alt=""
                               />
                             ) : (
-                                <img
-                                  onClick={event => this.changeHeart(event, item)}
-                                  style={{ height: "35px", width: "35px" }}
-                                  src={require("../../images/svgIcon/unLike.svg")}
-                                  alt=""
-                                />
-                              )}
+                              <img
+                                onClick={(event) =>
+                                  this.changeHeart(event, item)
+                                }
+                                style={{ height: "35px", width: "35px" }}
+                                src={require("../../images/svgIcon/unLike.svg")}
+                                alt=""
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
@@ -219,12 +232,16 @@ class Lifeway extends Component {
                         </span>
                       </div>
                       <div className="post-detail-descript">
-                        <span className="post-detail-descript-span"
+                        <span
+                          className="post-detail-descript-span"
                           dangerouslySetInnerHTML={{ __html: item.Content }}
                         />
-                        <span className="text-see-more"
+                        <span
+                          className="text-see-more"
                           onClick={() => this.toPostDetail(item.PostID)}
-                        >...Xem thêm</span>
+                        >
+                          ...Xem thêm
+                        </span>
                       </div>
                       <div className="post-detail-like">
                         <span>Lượt thích : </span>
@@ -241,8 +258,8 @@ class Lifeway extends Component {
                 );
               })
             ) : (
-                <div></div>
-              )}
+              <div></div>
+            )}
           </div>
           <Pagination
             current={this.state.current}
@@ -256,7 +273,7 @@ class Lifeway extends Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     postInfor: state.lifeWay.postInfor,
     totalPage: state.lifeWay.totalPostPage,
@@ -267,21 +284,21 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getPostInfor: params => {
+    getPostInfor: (params) => {
       dispatch(LifeWayTypes.getLifeWayRequest(params));
     },
-    getPostDetailInfor: id => {
+    getPostDetailInfor: (id) => {
       dispatch(LifeWayTypes.getLifeWayDetailRequest(id));
     },
     getPostLikeMuch: () => {
       dispatch(LifeWayTypes.getPostLikeMuch());
     },
-    setDataLikePost: params => {
+    setDataLikePost: (params) => {
       dispatch(LifeWayTypes.getLifeWayLikeRequest(params));
     },
-    searchDefaultPost: params => {
+    searchDefaultPost: (params) => {
       dispatch(LifeWayTypes.getLifeWaySearchRequest(params));
     },
     setCheckSearchTrue: () => {
@@ -289,7 +306,7 @@ const mapDispatchToProps = dispatch => {
     },
     setCheckSearchFalse: () => {
       dispatch(LifeWayTypes.setCheckSearchFalse());
-    }
+    },
   };
 };
 Lifeway = withRouter(Lifeway);
