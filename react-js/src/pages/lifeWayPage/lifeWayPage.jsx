@@ -98,6 +98,7 @@ class Lifeway extends Component {
 
   render() {
     const { postInfor, totalPage, postLikeMuch, resultSearch } = this.props;
+    console.log(moment((postLikeMuch || {}).CreateDate).fromNow())
     return (
       <div>
         <NavBar />

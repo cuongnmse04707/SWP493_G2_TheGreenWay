@@ -61,7 +61,7 @@ class ForgotPassword extends Component {
           <div className={this.state.className}>
             <div className="form-container sign-in-container">
               <div className="form-intro">
-                <h1>Reset Password</h1>
+                <h1>Đặt lại mật khẩu</h1>
                 <div className="logo-container">
                   <img
                     style={{ width: "64px", height: "64px" }}
@@ -106,7 +106,7 @@ class ForgotPassword extends Component {
                       className="btn-reset"
                       onClick={this.handleConfirmSubmit}
                     >
-                      Reset
+                      Đặt lại
                     </button>
                   </Form>
                 </div>
