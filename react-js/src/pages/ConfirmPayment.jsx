@@ -48,7 +48,7 @@ class ConfirmPayment extends Component {
     });
   };
 
-  handleSelectChange = (value) => {};
+  handleSelectChange = (value) => { };
 
   handleOptionChange = (value) => {
     this.setState({
@@ -216,7 +216,7 @@ class ConfirmPayment extends Component {
                               "Tên người dùng không được chưa kí tự đặc biệt và số",
                           },
                         ],
-                      })(<Input/>)}
+                      })(<Input />)}
                     </Form.Item>
                     <Form.Item label="Số điện thoại">
                       {getFieldDecorator("phone", {
@@ -231,7 +231,7 @@ class ConfirmPayment extends Component {
                             message: "Nhập đúng định dạng số điện thoại",
                           },
                         ],
-                      })(<Input type ="number" />)}
+                      })(<Input type="number" />)}
                     </Form.Item>
 
                     <Form.Item label="Nhập địa chỉ giao hàng:">
@@ -258,73 +258,85 @@ class ConfirmPayment extends Component {
                   </Form>
                 </div>
               ) : (
+                  <div>
+                    <Form {...formItemLayout} className="mt-4">
+                      <Form.Item label="Họ và tên">
+                        {getFieldDecorator("fullname", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập tên người dùng",
+                            },
+                          ],
+                        })(<Input />)}
+                      </Form.Item>
+                      <Form.Item label="Số điện thoại">
+                        {getFieldDecorator("phone", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập số điện thoại người dùng",
+                            },
+                            {
+                              pattern: phoneRegex,
+                              message: "Nhập đúng định dạng số điện thoại",
+                            },
+                          ],
+                        })(<Input type="number" />)}
+                      </Form.Item>
+                      <Form.Item label="Email">
+                        {getFieldDecorator("email", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập địa chỉ email",
+                            },
+                            {
+                              pattern: emailRegex,
+                              message: "Vui lòng nhập đúng định dạng email",
+                            },
+                          ],
+                        })(<Input style={{ width: "100%" }} />)}
+                      </Form.Item>
+                      <Form.Item label="Nhập địa chỉ giao hàng:">
+                        {getFieldDecorator("address", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập địa chỉ muốn giao hàng",
+                            },
+                          ],
+                        })(<TextArea rows={4} />)}
+                      </Form.Item>
+                        <Form.Item label="Lựa chọn phương thức thanh toán">
+                          {getFieldDecorator("paymentMethod", {
+                            initialValue: "1",
+                          })(
+                            <Select
+                              {...this.props}
+                              value="1"
+                              style={{ width: 200 }}
+                            >
+                              <Option value="1">Ship COD</Option>
+                              <Option value="2">Chuyển Khoản</Option>
+                            </Select>
+                          )}
+                        </Form.Item>
+                    </Form>
+                  </div>
+                )}
+              <div>
                 <div>
-                  <Form {...formItemLayout} className="mt-4">
-                    <Form.Item label="Họ và tên">
-                      {getFieldDecorator("fullname", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập tên người dùng",
-                          },
-                        ],
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Số điện thoại">
-                      {getFieldDecorator("phone", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập số điện thoại người dùng",
-                          },
-                          {
-                            pattern: phoneRegex,
-                            message: "Nhập đúng định dạng số điện thoại",
-                          },
-                        ],
-                      })(<Input type = "number" />)}
-                    </Form.Item>
-                    <Form.Item label="Email">
-                      {getFieldDecorator("email", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập địa chỉ email",
-                          },
-                          {
-                            pattern: emailRegex,
-                            message: "Vui lòng nhập đúng định dạng email",
-                          },
-                        ],
-                      })(<Input style={{ width: "100%" }} />)}
-                    </Form.Item>
-                    <Form.Item label="Nhập địa chỉ giao hàng:">
-                      {getFieldDecorator("address", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập địa chỉ muốn giao hàng",
-                          },
-                        ],
-                      })(<TextArea rows={4} />)}
-                    </Form.Item>
-                    <Form.Item label="Lựa chọn phương thức thanh toán">
-                      {getFieldDecorator("paymentMethod", {
-                        initialValue: "1",
-                      })(
-                        <Select
-                          {...this.props}
-                          value="1"
-                          style={{ width: 200 }}
-                        >
-                          <Option value="1">Ship COD</Option>
-                          <Option value="2">Chuyển Khoản</Option>
-                        </Select>
-                      )}
-                    </Form.Item>
-                  </Form>
+                  <p style={{ fontWeight: "bold" }}>Nếu thanh toán chuyển khoản, quý khách vui lòng chuyển khoản trước</p>
+                  <p>Tên chủ tài khoản: Lê Văn Đức</p>
+                  <p>Số tài khoản: 123123123123</p>
+                  <p>Ngân hàng: Vietcombank</p>
                 </div>
-              )}
+                <div>
+                  <p style={{ fontWeight: "bold" }}>Nếu thanh toán ship COD</p>
+                  <p>Qúy khách sẽ thanh toán khi nhận được hàng tại nhà</p>
+                </div>
+              </div>
             </div>
             <div className="bill-infor-wrapper">
               <div className="bill-infor-container">
@@ -416,8 +428,8 @@ class ConfirmPayment extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="show-option-payment"></div>
-                  )}
+                      <div className="show-option-payment"></div>
+                    )}
                 </div>
                 <div className="button-check-out" onClick={this.orderSuccess}>
                   <span>Đặt hàng </span>
