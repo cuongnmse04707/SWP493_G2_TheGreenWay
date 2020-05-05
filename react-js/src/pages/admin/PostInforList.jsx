@@ -85,7 +85,6 @@ class PostInforList extends Component {
     } else if (this.state.data === "") {
       message.error("Vui lòng nhập nội dung bài viết", 2);
     } else if (this.state.data === null) {
-
       this.props.form.validateFieldsAndScroll(["title"], (err, values) => {
         if (!err) {
           this.setState({
@@ -320,7 +319,7 @@ class PostInforList extends Component {
                                   const isLt2M = file.size / 1024 / 1024 < 3;
                                   if (!isLt2M) {
                                     message.error(
-                                      "Image must smaller than 3MB!"
+                                      "Ảnh phải có kích thước nhỏ hơn 3MB!"
                                     );
                                   } else {
                                     this.setState({
@@ -332,8 +331,8 @@ class PostInforList extends Component {
                                     // Set vao state
                                     uploadTask.on(
                                       "state_changed",
-                                      (snapshot) => { },
-                                      (error) => { },
+                                      (snapshot) => {},
+                                      (error) => {},
                                       () => {
                                         storage
                                           .ref("images")
@@ -385,8 +384,8 @@ class PostInforList extends Component {
                                   style={{ width: "100%" }}
                                 />
                               ) : (
-                                  uploadAvatarButton
-                                )}
+                                uploadAvatarButton
+                              )}
                             </Upload>
                           )}
                         </Form.Item>
@@ -411,7 +410,7 @@ class PostInforList extends Component {
                                   const isLt2M = file.size / 1024 / 1024 < 3;
                                   if (!isLt2M) {
                                     message.error(
-                                      "Image must smaller than 3MB!"
+                                      "Ảnh phải có kích thước nhỏ hơn 3MB!"
                                     );
                                   } else {
                                     //Link Image
@@ -424,8 +423,8 @@ class PostInforList extends Component {
                                     // Set vao state
                                     uploadTask.on(
                                       "state_changed",
-                                      (snapshot) => { },
-                                      (error) => { },
+                                      (snapshot) => {},
+                                      (error) => {},
                                       () => {
                                         storage
                                           .ref("images")
@@ -480,8 +479,8 @@ class PostInforList extends Component {
                                   alt="avatar"
                                 />
                               ) : (
-                                  uploadAvatarButton
-                                )}
+                                uploadAvatarButton
+                              )}
                             </Upload>
                           )}
                         </Form.Item>

@@ -87,7 +87,7 @@ class ProductInforList extends Component {
     });
   };
 
-  handleCategoryChange(value) { }
+  handleCategoryChange(value) {}
 
   componentDidMount() {
     this.props.getProductList();
@@ -125,14 +125,13 @@ class ProductInforList extends Component {
     } else if (this.props.imageDetail.length !== 4) {
       message.error(
         `Vui lòng chọn thêm ${
-        4 - this.props.imageDetail.length
+          4 - this.props.imageDetail.length
         } ảnh chi tiết sản phẩm !`,
         2
       );
     } else if (valueDes === "") {
       message.error("Vui lòng nhập mô tả sản phẩm", 2);
     } else if (valueDes === null) {
-
       this.props.form.validateFieldsAndScroll(
         ["productName", "productPrice", "productQuantity", "category"],
         (err, values) => {
@@ -222,8 +221,8 @@ class ProductInforList extends Component {
           }
         );
       } else {
-        console.log('không là chữ')
-        message.error("Mô tả không được để trống", 2)
+        console.log("không là chữ");
+        message.error("Mô tả không được để trống", 2);
       }
     }
   };
@@ -478,7 +477,9 @@ class ProductInforList extends Component {
                           if (isJpgOrPng) {
                             const isLt2M = file.size / 1024 / 1024 < 3;
                             if (!isLt2M) {
-                              message.error("Image must smaller than 3MB!");
+                              message.error(
+                                "Ảnh phải có kích thước nhỏ hơn 3MB!"
+                              );
                             } else {
                               this.setState({
                                 stateLoading: true,
@@ -489,8 +490,8 @@ class ProductInforList extends Component {
                               // Set vao state
                               uploadTask.on(
                                 "state_changed",
-                                (snapshot) => { },
-                                (error) => { },
+                                (snapshot) => {},
+                                (error) => {},
                                 () => {
                                   storage
                                     .ref("images")
@@ -540,8 +541,8 @@ class ProductInforList extends Component {
                         {productDetail.ImageDetail ? (
                           <img src={productDetail.ImageDetail} alt="avatar" />
                         ) : (
-                            uploadAvatarButton
-                          )}
+                          uploadAvatarButton
+                        )}
                       </Upload>
                     )}
                   </Form.Item>
@@ -582,7 +583,9 @@ class ProductInforList extends Component {
                             if (isJpgOrPng) {
                               const isLt2M = file.size / 1024 / 1024 < 3;
                               if (!isLt2M) {
-                                message.error("Image must smaller than 3MB!");
+                                message.error(
+                                  "Ảnh phải có kích thước nhỏ hơn 3MB!"
+                                );
                               } else {
                                 //Link Image
                                 this.setState({
@@ -594,8 +597,8 @@ class ProductInforList extends Component {
                                 // Set vao state
                                 uploadTask.on(
                                   "state_changed",
-                                  (snapshot) => { },
-                                  (error) => { },
+                                  (snapshot) => {},
+                                  (error) => {},
                                   () => {
                                     storage
                                       .ref("images")

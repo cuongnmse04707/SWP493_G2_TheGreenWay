@@ -107,7 +107,10 @@ export default function* root() {
     // takeLatest(UserOrderHistoryTypes.GET_ORDER_DETAIL_BY_GUEST_REQUEST,UserOrderHistorySagas.getOrderDetailInforGuest),
     // takeLatest(IntroProductTypes.LIST_PRODUCT_SEARCH, IntroProductSagas.getListSearchProduct),
     takeLatest(OrderCartTypes.GET_ORDER_CART_REQUEST, OrderCartSagas.orderCart),
-    takeLatest(OrderCartTypes.GET_INFOR_NUMBER_REQUEST, OrderCartSagas.getInforAbout123),
+    takeLatest(
+      OrderCartTypes.GET_INFOR_NUMBER_REQUEST,
+      OrderCartSagas.getInforAbout123
+    ),
     takeLatest(ModTypes.GET_USER_REQUEST, ModSagas.getUser),
     takeLatest(ModTypes.UP_ROLE_REQUEST, ModSagas.upRole),
     takeLatest(ModTypes.DOWN_ROLE_REQUEST, ModSagas.downRole),

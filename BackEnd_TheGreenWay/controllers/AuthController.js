@@ -10,7 +10,7 @@ const Cryptr = require("cryptr");
 // Trong dự án thực tế, nên lưu chỗ khác, có thể lưu vào Redis hoặc DB // luu de con refresherToken
 // let tokenList = {};
 // Thời gian sống của token
-const accessTokenLife = "1h";
+const accessTokenLife = "10h";
 // Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
 const accessTokenSecret =
   process.env.ACCESS_TOKEN_SECRET || "access-token-secret-cuongnm";
@@ -289,9 +289,10 @@ let resetPassword = async (req, res) => {
         ]);
         connectionDB.query(queryForgot, async (err, resultForgot) => {
           if (err) {
-            return res
-              .status(200)
-              .json({ success: false, message: "Thay đổi mật khẩu không thành công" });
+            return res.status(200).json({
+              success: false,
+              message: "Thay đổi mật khẩu không thành công",
+            });
           } else {
             //Sau khi update password thi xoa bo luon. Tranh truong hop gui bang postman
             let sqlReset = `DELETE FROM AccountsToken WHERE email=?`;
@@ -303,9 +304,10 @@ let resetPassword = async (req, res) => {
                   message: "Error with reset password",
                 });
               } else {
-                return res
-                  .status(200)
-                  .json({ success: true, message: "Thay đổi mật khẩu thành công" });
+                return res.status(200).json({
+                  success: true,
+                  message: "Thay đổi mật khẩu thành công",
+                });
               }
             });
           }

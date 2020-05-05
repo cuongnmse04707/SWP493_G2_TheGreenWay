@@ -41,8 +41,8 @@ class CreatePost extends Component {
   };
 
   toListPost = () => {
-    console.log('vaoday')
-    console.log(this.props.parent)
+    console.log("vaoday");
+    console.log(this.props.parent);
     this.props.parent("postInfor");
   };
 
@@ -177,7 +177,9 @@ class CreatePost extends Component {
                               if (isJpgOrPng) {
                                 const isLt2M = file.size / 1024 / 1024 < 3;
                                 if (!isLt2M) {
-                                  message.error("Image must smaller than 3MB!");
+                                  message.error(
+                                    "Ảnh phải có kích thước nhỏ hơn 3MB!"
+                                  );
                                 } else {
                                   //Link Image
                                   this.setState({
@@ -265,7 +267,9 @@ class CreatePost extends Component {
                               if (isJpgOrPng) {
                                 const isLt2M = file.size / 1024 / 1024 < 3;
                                 if (!isLt2M) {
-                                  message.error("Image must smaller than 3MB!");
+                                  message.error(
+                                    "Ảnh phải có kích thước nhỏ hơn 3MB!"
+                                  );
                                 } else {
                                   //Link Image
                                   this.setState({

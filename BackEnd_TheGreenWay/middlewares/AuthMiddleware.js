@@ -32,18 +32,18 @@ let isAuth = async (req, res, next) => {
       debug("Error while verify token:", error);
       return res.status(401).json({
         success: false,
-        message: "Token không chính xác hoặc đã hết hạn."
+        message: "Token không chính xác hoặc đã hết hạn.",
       });
     }
   } else {
     // Không tìm thấy token trong request
     return res.status(403).send({
       success: false,
-      message: "No token provided."
+      message: "No token provided.",
     });
   }
 };
 
 module.exports = {
-  isAuth: isAuth
+  isAuth: isAuth,
 };

@@ -1,35 +1,33 @@
-import { put, call } from 'redux-saga/effects'
-import HomePageActions from '../redux/home-page-redux'
-import { message } from 'antd';
-import 'antd/dist/antd.css';
-import axios from 'axios'
+import { put, call } from "redux-saga/effects";
+import HomePageActions from "../redux/home-page-redux";
+import { message } from "antd";
+import "antd/dist/antd.css";
+import axios from "axios";
 
 const HomePageSagas = {
   *userInformation() {
-    console.log('123')
     try {
       const userInfor = yield call(async () => {
-        return await axios.get('http://localhost:3001/user/information', {
+        return await axios.get("http://localhost:3001/user/information", {
           headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': window.localStorage.getItem("x-access-token"),
+            "Content-Type": "application/json",
+            "x-access-token": window.localStorage.getItem("x-access-token"),
           },
-        })
-      })
+        });
+      });
       if (!userInfor.data.success) {
-        yield put(HomePageActions.getInforFailed(userInfor.data.message))
-        message.error(userInfor.data.message, 3)
+        yield put(HomePageActions.getInforFailed(userInfor.data.message));
+        message.error(userInfor.data.message, 3);
       } else {
-        yield put(HomePageActions.getInforSucceed(userInfor.data.data))
+        yield put(HomePageActions.getInforSucceed(userInfor.data.data));
       }
     } catch (error) {
-      window.localStorage.clear()
-      window.location.href = "/"
-      yield put(HomePageActions.getInforFailed(error))
+      message.error("Token không chính xác hoặc đã hết hạn sử dụng!", 3);
+      window.localStorage.clear();
+      window.location.href = "/";
+      yield put(HomePageActions.getInforFailed(error));
     }
   },
+};
 
-
-}
-
-export default HomePageSagas
+export default HomePageSagas;

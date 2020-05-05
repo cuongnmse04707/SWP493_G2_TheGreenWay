@@ -83,43 +83,52 @@ class SideBar extends Component {
 
   changeImage = (e) => {
     if (e.target.files[0]) {
-      this.setState({
-        stateLoading: true,
-      });
       const image = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document
-          .querySelector("#profileDisplay")
-          .setAttribute("src", e.target.result);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-
-      const uploadTask = storage.ref(`images/${image.name}`).put(image);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {},
-        (error) => {},
-        () => {
-          storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL()
-            .then((url) => {
-              this.setState({ url });
-              this.setState({
-                stateLoading: false,
-              });
-              // if (this.state.url) {
-              this.props.changeAvatar({
-                urlAvatar: url,
-              });
-            });
+      const isJpgOrPng =
+        image.type === "image/jpeg" || image.type === "image/png";
+      if (isJpgOrPng) {
+        const isLt2M = image.size / 1024 / 1024 < 3;
+        if (!isLt2M) {
+          message.error("Ảnh phái có kích thước nhỏ hơn 3MB!");
+        } else {
+          this.setState({
+            stateLoading: true,
+          });
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document
+              .querySelector("#profileDisplay")
+              .setAttribute("src", e.target.result);
+          };
+          reader.readAsDataURL(e.target.files[0]);
+          const uploadTask = storage.ref(`images/${image.name}`).put(image);
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {},
+            (error) => {},
+            () => {
+              storage
+                .ref("images")
+                .child(image.name)
+                .getDownloadURL()
+                .then((url) => {
+                  this.setState({ url });
+                  this.setState({
+                    stateLoading: false,
+                  });
+                  // if (this.state.url) {
+                  this.props.changeAvatar({
+                    urlAvatar: url,
+                  });
+                });
+            }
+          );
         }
-      );
+      } else {
+        message.error("File upload phải có định dạng .jpg hoặc .png");
+      }
     }
   };
-
 
   render() {
     const antIcon = (
@@ -135,9 +144,7 @@ class SideBar extends Component {
       >
         <div className="sideBar-container">
           <div className="logo" />
-          <div
-            style={{ position: "relative", marginTop: "30px" }}
-          >
+          <div style={{ position: "relative", marginTop: "30px" }}>
             {stateLoading ? (
               <div
                 style={{
