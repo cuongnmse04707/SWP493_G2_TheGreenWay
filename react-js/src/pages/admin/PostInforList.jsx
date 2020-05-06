@@ -54,6 +54,7 @@ class PostInforList extends Component {
   handleModalCancel = (e) => {
     this.setState({
       visible: false,
+      data: null
     });
   };
 

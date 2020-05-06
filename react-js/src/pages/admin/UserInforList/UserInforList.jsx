@@ -565,8 +565,12 @@ class UserInforList extends Component {
             visible={visibleRemove}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
-            okText="Xác nhận"
             cancelText="Hủy bỏ"
+            footer= {[
+              <Button onClick={this.handleCancel}>
+                Hủy bỏ
+              </Button>
+            ]}
             width={345}
           >
             <div

@@ -35,13 +35,13 @@ class AboutUs extends Component {
             data-aos-anchor-placement="top-center"
           >
             <p className="introduce-title">THE GREEN WAY</p>
-            <p
+            <a
               className="btn btn-primary btn-xl text-uppercase js-scroll-trigger"
-              href="#services"
+              href="#teammember"
               style={{ marginTop: "50px" }}
             >
               Về chúng tôi
-            </p>
+            </a>
           </div>
         </div>
         <div className="our-mission">
@@ -151,11 +151,11 @@ class AboutUs extends Component {
                             duration={3}
                           />
                         ) : (
-                          <CountUp
-                            start={numberInfor.numberProduct || 0}
-                            end={numberInfor.numberProduct || 0}
-                          />
-                        )}
+                            <CountUp
+                              start={numberInfor.numberProduct || 0}
+                              end={numberInfor.numberProduct || 0}
+                            />
+                          )}
                       </p>
                     </div>
                   </div>
@@ -184,11 +184,11 @@ class AboutUs extends Component {
                             duration={3}
                           />
                         ) : (
-                          <CountUp
-                            start={numberInfor.numberPaper || 0}
-                            end={numberInfor.numberPaper || 0}
-                          />
-                        )}
+                            <CountUp
+                              start={numberInfor.numberPaper || 0}
+                              end={numberInfor.numberPaper || 0}
+                            />
+                          )}
                       </p>
                     </div>
                   </div>
@@ -217,11 +217,11 @@ class AboutUs extends Component {
                             duration={3}
                           />
                         ) : (
-                          <CountUp
-                            start={numberInfor.numberPosts || 0}
-                            end={numberInfor.numberPosts || 0}
-                          />
-                        )}
+                            <CountUp
+                              start={numberInfor.numberPosts || 0}
+                              end={numberInfor.numberPosts || 0}
+                            />
+                          )}
                       </p>
                     </div>
                   </div>
@@ -230,7 +230,7 @@ class AboutUs extends Component {
             </section>
           </div>
         </div>
-        <TeamMember />
+        <TeamMember  />
         <Footer />
       </div>
     );

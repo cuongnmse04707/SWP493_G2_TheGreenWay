@@ -106,9 +106,9 @@
 .sub-member {
   margin: 10px;
   padding: 20px;
+  width: 30%;
   max-width: 30%;
   box-sizing: border-box;
-  cursor: pointer;
   transition: 0.3s;
   background: #ddd;
 }
@@ -117,7 +117,7 @@
   background: #faf0e6;
 }
 
-.sub-member img {
+.sub-member .sub-member-image {
   width: 200px;
   height: 200px;
   border-radius: 50%;
@@ -133,7 +133,8 @@
 
 .member-position {
   font-style: italic;
-  color: #999;
+  color: #000;
+  font-weight: bold;
 }
 
 .member-description {
@@ -142,6 +143,15 @@
   font-weight: lighter;
   line-height: 25px;
   color: #4e4e4e;
+}
+
+.member-description .member-infor {
+  display: flex;
+  justify-content: center;
+}
+
+.member-description .member-infor p {
+  font-weight: bold;
 }
 
 .member-contact {

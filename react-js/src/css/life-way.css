@@ -31,7 +31,8 @@
 .post-header-title, .post-detail-title {
   font-size: 22px;
   font-weight: bold;
-  text-transform: uppercase
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .post-header-descript {
@@ -54,6 +55,7 @@
 
 .text-see-more {
   cursor: pointer;
+  color:  #007bff;
 }
 
 

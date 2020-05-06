@@ -30,6 +30,11 @@ class ProductDetail extends Component {
     cart.map((e) => (numberOfTotal = numberOfTotal + e.quatityBuy));
     // this.props.setDataCart(numberOfTotal);
   }
+  resetQuantity = () => {
+    this.setState({
+      quantity: 0,
+    });
+  }
 
   getQuantity = (value, max, valueCheck) => {
     if (Number(value) !== 0) {
@@ -164,7 +169,6 @@ class ProductDetail extends Component {
         showRemoveIcon: false,
       },
     };
-
     return (
       <div>
         <NavBar />
@@ -302,6 +306,7 @@ class ProductDetail extends Component {
                 idP={window.location.pathname.split("/")[2]}
                 category={productInfor.CategoryID}
                 onClickTop={this.onClickTop}
+                resetData={this.resetQuantity}
               />
             </div>
           </div>

@@ -180,6 +180,7 @@ const ModSagas = {
       } else {
         action.data.callback();
         yield put(ModActions.changeStatusSucceed(action));
+        message.success(orderHistoryInfor.data.message, 3);
       }
     } catch (error) {
       yield put(ModActions.changeStatusFailed(error));
