@@ -63,8 +63,16 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields(["resetEmail"], (err, values) => {
       if (!err) {
-        this.props.forgotPassword({
+        const params = {
           email: values.resetEmail,
+        }
+        this.props.forgotPassword({
+          params,
+          callback: () => {
+            this.setState({
+              visible: false,
+            });
+          }
         });
         this.props.form.resetFields();
       }

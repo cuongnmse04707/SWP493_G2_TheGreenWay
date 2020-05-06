@@ -222,7 +222,7 @@ class SideBar extends Component {
                 alt="aaa"
                 style={{ height: "32px", width: "32px" }}
               />
-              <span>Thay Đổi mật khẩu</span>
+              <span>Thay đổi mật khẩu</span>
             </Menu.Item>
             <Menu.Item
               key="/changepassword1"

@@ -27,6 +27,7 @@ class RelatedProduct extends Component {
 
   handleClick = (event, id) => {
     event.stopPropagation();
+    this.props.resetData()
     this.props.history.push(`/product-detail/${id}`);
     this.props.getProductDetail(id);
   };
@@ -83,6 +84,7 @@ class RelatedProduct extends Component {
       idP,
       category,
       recycleProduct,
+      resetData
     } = this.props;
     const listProduct = category === "1" ? introProduct : recycleProduct;
     return (
@@ -95,7 +97,9 @@ class RelatedProduct extends Component {
                 return (
                   <div
                     className="sub-item shadow bg-white rounded"
-                    onClick={(event) => this.handleClick(event, item.ProductID)}
+                    onClick={(event) => {
+                      this.handleClick(event, item.ProductID)
+                    }}
                     key={index}
                   >
                     <div className="hovereffect">
@@ -153,13 +157,13 @@ class RelatedProduct extends Component {
                               alt=""
                             />
                           ) : (
-                            <img
-                              onClick={(event) => this.changeHeart(event, item)}
-                              style={{ height: "35px", width: "35px" }}
-                              src={require("../images/svgIcon/unLike.svg")}
-                              alt=""
-                            />
-                          )}
+                              <img
+                                onClick={(event) => this.changeHeart(event, item)}
+                                style={{ height: "35px", width: "35px" }}
+                                src={require("../images/svgIcon/unLike.svg")}
+                                alt=""
+                              />
+                            )}
                         </div>
                       </div>
                     </div>
@@ -183,9 +187,9 @@ class RelatedProduct extends Component {
                           <span>
                             {item.ProductPrice
                               ? item.ProductPrice.replace(
-                                  /(\d)(?=(\d{3})+(?!\d))/g,
-                                  "$1,"
-                                )
+                                /(\d)(?=(\d{3})+(?!\d))/g,
+                                "$1,"
+                              )
                               : 0}{" "}
                             VNĐ
                           </span>

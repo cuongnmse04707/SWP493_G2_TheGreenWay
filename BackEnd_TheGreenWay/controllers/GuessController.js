@@ -204,7 +204,7 @@ let addNewOrderByGuest = async (req, res) => {
                           } else {
                             return res.status(200).json({
                               success: true,
-                              message: "Create Order by Guest Success!",
+                              message: "Tạo đơn hàng thành công!",
                               accessToken
                             });
                           }

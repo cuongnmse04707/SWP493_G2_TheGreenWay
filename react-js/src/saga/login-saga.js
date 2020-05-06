@@ -78,7 +78,7 @@ const LoginSagas = {
       const forgotEmail = yield call(() => {
         return axios.post(
           "http://localhost:3001/auth/forgotpassword",
-          action.data,
+          action.data.params,
           {
             headers: {
               "Content-Type": "application/json",
@@ -90,6 +90,7 @@ const LoginSagas = {
         yield put(LoginActions.forgotFailed(forgotEmail.data));
         message.error(forgotEmail.data.message, 3);
       } else {
+        action.data.callback()
         yield put(LoginActions.forgotSucceed(forgotEmail.data));
         message.success(forgotEmail.data.message, 3);
       }

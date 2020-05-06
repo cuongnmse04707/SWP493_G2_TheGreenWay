@@ -27,7 +27,7 @@ class Lifeway extends Component {
     this.props.setCheckSearchFalse();
   }
 
-  onChange(date, dateString) {}
+  onChange(date, dateString) { }
 
   toPostDetail = (id) => {
     this.props.history.push(`/life-way-detail/${id}`);
@@ -98,7 +98,7 @@ class Lifeway extends Component {
 
   render() {
     const { postInfor, totalPage, postLikeMuch, resultSearch } = this.props;
-    console.log(moment((postLikeMuch || {}).CreateDate).fromNow())
+    console.log((postLikeMuch.Content || '').length)
     return (
       <div>
         <NavBar />
@@ -119,15 +119,15 @@ class Lifeway extends Component {
                         alt=""
                       />
                     ) : (
-                      <img
-                        onClick={(event) =>
-                          this.changeHeart(event, postLikeMuch)
-                        }
-                        style={{ height: "35px", width: "35px" }}
-                        src={require("../../images/svgIcon/unLike.svg")}
-                        alt=""
-                      />
-                    )}
+                        <img
+                          onClick={(event) =>
+                            this.changeHeart(event, postLikeMuch)
+                          }
+                          style={{ height: "35px", width: "35px" }}
+                          src={require("../../images/svgIcon/unLike.svg")}
+                          alt=""
+                        />
+                      )}
                   </div>
                 </div>
               </div>
@@ -209,21 +209,21 @@ class Lifeway extends Component {
                                 alt=""
                               />
                             ) : (
-                              <img
-                                onClick={(event) =>
-                                  this.changeHeart(event, item)
-                                }
-                                style={{ height: "35px", width: "35px" }}
-                                src={require("../../images/svgIcon/unLike.svg")}
-                                alt=""
-                              />
-                            )}
+                                <img
+                                  onClick={(event) =>
+                                    this.changeHeart(event, item)
+                                  }
+                                  style={{ height: "35px", width: "35px" }}
+                                  src={require("../../images/svgIcon/unLike.svg")}
+                                  alt=""
+                                />
+                              )}
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="post-detail-content">
-                      <div className="post-detail-title">
+                      <div className="post-detail-title" onClick={() => this.toPostDetail(item.PostID)}>
                         <span>{item.Title}</span>
                       </div>
                       <div className="post-detail-time">
@@ -259,8 +259,8 @@ class Lifeway extends Component {
                 );
               })
             ) : (
-              <div></div>
-            )}
+                <div></div>
+              )}
           </div>
           <Pagination
             current={this.state.current}

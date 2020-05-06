@@ -18,6 +18,7 @@ class ShoppingCart extends Component {
   };
 
   componentDidMount = () => {
+    window.scrollTo(0, 0);
     const { convensionRate } = this.props;
     const cart = JSON.parse(window.localStorage.getItem("cart")) || [];
     let total = 0;
