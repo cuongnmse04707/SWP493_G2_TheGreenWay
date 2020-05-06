@@ -22,6 +22,7 @@ const cryptr = new Cryptr("thegreenway");
 /**
  * controller login
  */
+
 let register = async (req, res) => {
   debug(req.body);
   // get email,password

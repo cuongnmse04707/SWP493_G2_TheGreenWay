@@ -22,46 +22,57 @@ let addNewOrderByUser = async (req, res) => {
   const QuantityPaper = req.body.QuantityPaper;
   const Cash = req.body.Cash;
   // Insert Into Orders Table
-  let sql = `SELECT MAX(Orders.OrderID) AS OrderID FROM Orders`;
+  let arrID = arrayCart.map((e) => e.id);
+  let sql = `SELECT Products.ProductID, Products.Quantity, Products.ProductName FROM Products WHERE Products.ProductID IN (${arrID.toString()})`;
   let query = mysql.format(sql);
   connectionDB.query(query, async (err, result) => {
     if (err) {
       return res.status(200).json({ success: false, message: err });
     } else {
-      //Lay ID day vao Database cho bang Product
       const arr = await Array.apply(null, result);
-      const OrderID = Number(arr[0].OrderID) + 1; // Vi IDProduct là NVARCHAR
-      const empty = {
-        OrderID: OrderID,
-        UserEmail: email,
-        PaymentID: PaymentID,
-        ConversionID: ConversionID,
-        TotalPrice: TotalPrice,
-        ShipAddress: ShipAddress,
-        CreateDate: CreateDate,
-        QuantityPaper: QuantityPaper,
-        Cash: Cash,
-      };
-      // Luu vao Database
-      connectionDB.query("INSERT INTO Orders SET ? ", empty, (err, result) => {
-        if (err) {
-          debug(err);
-          return res
-            .status(200)
-            .json({ success: false, message: "Thêm đơn hàng mới không thành công!" });
+      var checkOrder = true;
+      arr.forEach((e, index) => {
+        if (e.Quantity >= arrayCart[index].quatityBuy) {
         } else {
-          // Insert Into OrderDetail Table
-          arrayCart.forEach(function (item, index, arrays) {
-            const emptyOrderDetail = {
+          checkOrder = false;
+          if (e.Quantity === 0) {
+            return res.status(200).json({
+              success: false,
+              message: `Sản phẩm ${e.ProductName} đã hết hàng!`,
+            });
+          } else {
+            return res.status(200).json({
+              success: false,
+              message: `${e.ProductName} chỉ còn ${e.Quantity} sản phẩm`,
+            });
+          }
+        }
+      });
+      if (checkOrder) {
+        let sql = `SELECT MAX(Orders.OrderID) AS OrderID FROM Orders`;
+        let query = mysql.format(sql);
+        connectionDB.query(query, async (err, result) => {
+          if (err) {
+            return res.status(200).json({ success: false, message: err });
+          } else {
+            //Lay ID day vao Database cho bang Product
+            const arr = await Array.apply(null, result);
+            const OrderID = Number(arr[0].OrderID) + 1; // Vi IDProduct là NVARCHAR
+            const empty = {
               OrderID: OrderID,
-              ProductID: item.id,
-              QuantityProduct: item.quatityBuy,
-              Price: Number(item.quatityBuy) * Number(item.price),
+              UserEmail: email,
+              PaymentID: PaymentID,
+              ConversionID: ConversionID,
+              TotalPrice: TotalPrice,
+              ShipAddress: ShipAddress,
+              CreateDate: CreateDate,
+              QuantityPaper: QuantityPaper,
+              Cash: Cash,
             };
             // Luu vao Database
             connectionDB.query(
-              "INSERT INTO OrderDetail SET ? ",
-              emptyOrderDetail,
+              "INSERT INTO Orders SET ? ",
+              empty,
               (err, result) => {
                 if (err) {
                   debug(err);
@@ -70,43 +81,68 @@ let addNewOrderByUser = async (req, res) => {
                     message: "Thêm đơn hàng mới không thành công!",
                   });
                 } else {
-                  //Next sang viec save database voi OrderStatusDetail
+                  // Insert Into OrderDetail Table
+                  arrayCart.forEach(function (item, index, arrays) {
+                    const emptyOrderDetail = {
+                      OrderID: OrderID,
+                      ProductID: item.id,
+                      QuantityProduct: item.quatityBuy,
+                      Price: Number(item.quatityBuy) * Number(item.price),
+                    };
+                    // Luu vao Database
+                    connectionDB.query(
+                      "INSERT INTO OrderDetail SET ? ",
+                      emptyOrderDetail,
+                      (err, result) => {
+                        if (err) {
+                          debug(err);
+                          return res.status(200).json({
+                            success: false,
+                            message: "Thêm đơn hàng mới không thành công!",
+                          });
+                        } else {
+                          //Next sang viec save database voi OrderStatusDetail
+                        }
+                      }
+                    );
+                  });
+                  //Save database OrderStatusDetail Mac dinh trang thai la dang xu li
+                  // Mod email chưa có gì cả ... Chưa có ngừoi click
+                  const emptyOrderStatusDetail = {
+                    OrderID: OrderID,
+                    OrderStatusID: "1",
+                    ModifyDate: CreateDate,
+                  };
+                  // Luu vao Database
+                  connectionDB.query(
+                    "INSERT INTO OrderStatusDetail SET ? ",
+                    emptyOrderStatusDetail,
+                    (err, result) => {
+                      if (err) {
+                        debug(err);
+                        return res.status(200).json({
+                          success: false,
+                          message: "Thêm đơn hàng mới không thành công!",
+                        });
+                      } else {
+                        //Next sang viec save database voi OrderStatusDetail
+                        return res.status(200).json({
+                          success: true,
+                          message: "Thêm đơn hàng mới thành công!",
+                        });
+                      }
+                    }
+                  );
                 }
               }
             );
-          });
-          //Save database OrderStatusDetail Mac dinh trang thai la dang xu li
-          // Mod email chưa có gì cả ... Chưa có ngừoi click
-          const emptyOrderStatusDetail = {
-            OrderID: OrderID,
-            OrderStatusID: "1",
-            ModifyDate: CreateDate,
-          };
-          // Luu vao Database
-          connectionDB.query(
-            "INSERT INTO OrderStatusDetail SET ? ",
-            emptyOrderStatusDetail,
-            (err, result) => {
-              if (err) {
-                debug(err);
-                return res.status(200).json({
-                  success: false,
-                  message: "Thêm đơn hàng mới không thành công!",
-                });
-              } else {
-                //Next sang viec save database voi OrderStatusDetail
-                return res.status(200).json({
-                  success: true,
-                  message: "Thêm đơn hàng mới thành công!",
-                });
-              }
-            }
-          );
-        }
-      });
+          }
+        });
+      }
     }
   });
 };
+
 // get information of user fron database
 let getInforAbout = async (req, res) => {
   // get email from request after handle of authmiddleware
@@ -467,7 +503,7 @@ let changeStatusOrder = async (req, res) => {
           return res.status(200).json({ success: false, message: err });
         } else {
           // console.log(arrP);
-          var check = false;
+          var check = true;
           var arrData = [];
           arrP.forEach((e) => {
             if (e.Quantity >= e.QuantityProduct) {
@@ -475,12 +511,12 @@ let changeStatusOrder = async (req, res) => {
                 ProductID: e.ProductID,
                 Quantity: Number(e.Quantity - e.QuantityProduct),
               });
-              check = true;
             } else {
               check = false;
-              return res
-                .status(200)
-                .json({ success: false, message: `${e.ProductName} đã hết hàng` });
+              return res.status(200).json({
+                success: false,
+                message: `${e.ProductName} đã hết hàng`,
+              });
             }
           });
           if (check) {
@@ -624,9 +660,38 @@ let changeStatusOrder = async (req, res) => {
             }
           });
         } else {
-          return res.status(200).json({
-            success: true,
-            message: "Thay đổi trạng thái đơn hàng thành công!",
+          let sql = ` UPDATE Orders
+                SET Orders.EndDate=?
+                WHERE Orders.OrderID=?`;
+          const today = moment().format(`YYYY-MM-DD`);
+          let query = mysql.format(sql, [today, idOrder]);
+          connectionDB.query(query, async (err, resultP) => {
+            if (err) {
+              return res.status(200).json({ success: false, message: err });
+            } else {
+              let sql = ` UPDATE OrderStatusDetail
+                          SET OrderStatusID=?,MODEmail=?,ModifyDate=?
+                          WHERE OrderStatusDetail.OrderID=?`;
+              const day = new Date();
+              const today =
+                day.getFullYear() + "-" + day.getMonth() + "-" + day.getDate();
+              let query = mysql.format(sql, [
+                OrderStatusCode,
+                email,
+                today,
+                idOrder,
+              ]);
+              connectionDB.query(query, async (err, resultS) => {
+                if (err) {
+                  return res.status(200).json({ success: false, message: err });
+                } else {
+                  return res.status(200).json({
+                    success: true,
+                    message: "Thay đổi trạng thái đơn hàng thành công!",
+                  });
+                }
+              });
+            }
           });
         }
       }

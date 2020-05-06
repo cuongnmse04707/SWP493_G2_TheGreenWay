@@ -174,6 +174,7 @@ const ModSagas = {
           }
         );
       });
+
       if (!orderHistoryInfor.data.success) {
         yield put(ModActions.changeStatusFailed(orderHistoryInfor.data.data));
         message.error(orderHistoryInfor.data.message, 3);
