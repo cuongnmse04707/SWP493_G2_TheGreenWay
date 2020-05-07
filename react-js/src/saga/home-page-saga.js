@@ -22,9 +22,9 @@ const HomePageSagas = {
         yield put(HomePageActions.getInforSucceed(userInfor.data.data));
       }
     } catch (error) {
-      message.error("Token không chính xác hoặc đã hết hạn sử dụng!", 3);
+      // message.error("Token không chính xác hoặc đã hết hạn sử dụng!", 3);
+      // window.location.href = "/";
       window.localStorage.clear();
-      window.location.href = "/";
       yield put(HomePageActions.getInforFailed(error));
     }
   },

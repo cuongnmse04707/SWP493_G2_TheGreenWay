@@ -108,7 +108,7 @@ class UserInforList extends Component {
     const { downRole } = this.props;
     downRole({
       email: value,
-      callback: (value) => { },
+      callback: (value) => {},
     });
   };
 
@@ -116,7 +116,7 @@ class UserInforList extends Component {
     const { lockUser } = this.props;
     lockUser({
       email: value,
-      callback: (value) => { },
+      callback: (value) => {},
     });
   };
 
@@ -124,7 +124,7 @@ class UserInforList extends Component {
     const { unlockUser } = this.props;
     unlockUser({
       email: value,
-      callback: (value) => { },
+      callback: (value) => {},
     });
   };
 
@@ -188,9 +188,9 @@ class UserInforList extends Component {
                   record.roles === "admin"
                     ? "#FF4500"
                     : record.roles === "mod"
-                      ? "blue"
-                      : "#00BFFF"
-                  }`,
+                    ? "blue"
+                    : "#00BFFF"
+                }`,
                 width: "auto",
                 color: "white",
                 borderRadius: "5px",
@@ -251,13 +251,13 @@ class UserInforList extends Component {
                     style={{ marginLeft: "8px" }}
                   />
                 ) : (
-                    <Button
-                      icon="unlock"
-                      onClick={() => this.unLockUser(record.email)}
-                      // disabled={record.roles === "admin"}
-                      style={{ marginLeft: "8px" }}
-                    />
-                  )}
+                  <Button
+                    icon="unlock"
+                    onClick={() => this.unLockUser(record.email)}
+                    // disabled={record.roles === "admin"}
+                    style={{ marginLeft: "8px" }}
+                  />
+                )}
               </div>
             )}
           </div>
@@ -312,9 +312,9 @@ class UserInforList extends Component {
                   record.roles === "admin"
                     ? "#FF4500"
                     : record.roles === "mod"
-                      ? "blue"
-                      : "#00BFFF"
-                  }`,
+                    ? "blue"
+                    : "#00BFFF"
+                }`,
                 width: "auto",
                 color: "white",
                 borderRadius: "5px",
@@ -407,7 +407,7 @@ class UserInforList extends Component {
               <Panel
                 header={`Tài khoản đang hoạt động (${
                   (listUser || []).filter((el) => el.status === "ok").length
-                  })`}
+                })`}
                 key="1"
               >
                 <div>
@@ -433,7 +433,7 @@ class UserInforList extends Component {
               <Panel
                 header={`Tài khoản đang khóa (${
                   (listUser || []).filter((el) => el.status !== "ok").length
-                  })`}
+                })`}
                 key="2"
               >
                 <div>
@@ -566,14 +566,9 @@ class UserInforList extends Component {
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             cancelText="Hủy bỏ"
-            footer= {[
-              <Button onClick={this.handleCancel}>
-                Hủy bỏ
-              </Button>
-            ]}
+            footer={[<Button onClick={this.handleCancel}>Hủy bỏ</Button>]}
             width={345}
           >
-            
             <div
               style={{
                 display: "flex",

@@ -6,10 +6,10 @@ let generateTokenGuest = (user, secretSignature, tokenLife) => {
     const guestData = {
       GuestID: user.GuestID,
       OrderID: user.OrderID,
-    }
+    };
     // Thực hiện ký và tạo token password: user.password,
     jwt.sign(
-      {data: guestData},
+      { data: guestData },
       secretSignature,
       {
         algorithm: "HS256", // Thuat toan ma hoa
@@ -20,10 +20,10 @@ let generateTokenGuest = (user, secretSignature, tokenLife) => {
           return reject(error);
         }
         resolve(token); // thanh cong
-    });
+      }
+    );
   });
-}
-
+};
 
 /**
  * This module used for verify jwt token
@@ -37,7 +37,7 @@ let verifyTokenGuest = (token, secretKey) => {
       resolve(decoded);
     });
   });
-}
+};
 module.exports = {
   generateTokenGuest: generateTokenGuest,
   verifyTokenGuest: verifyTokenGuest,

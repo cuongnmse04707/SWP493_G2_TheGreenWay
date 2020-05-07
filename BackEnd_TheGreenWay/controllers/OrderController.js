@@ -147,26 +147,26 @@ let addNewOrderByUser = async (req, res) => {
 let getInforAbout = async (req, res) => {
   // get email from request after handle of authmiddleware
   let sql = `SELECT
-  SUM(a.SUMP) AS SumProduct, SUM(Orders.QuantityPaper) AS QuantityPaper
-FROM
-  Orders
-JOIN(
-  SELECT
-      OrderDetail.OrderID,
-      SUM(QuantityProduct) AS SUMP
-  FROM
-      OrderDetail
-  JOIN
-    OrderStatusDetail
-  WHERE
-    OrderDetail.OrderID = OrderStatusDetail.OrderID
-  AND
-    OrderStatusDetail.OrderStatusID IN (2,3)
-  GROUP BY
-      OrderDetail.OrderID
-) a
-WHERE
-  a.OrderID = Orders.OrderID`;
+                SUM(a.SUMP) AS SumProduct, SUM(Orders.QuantityPaper) AS QuantityPaper
+              FROM
+                Orders
+              JOIN(
+                SELECT
+                    OrderDetail.OrderID,
+                    SUM(QuantityProduct) AS SUMP
+                FROM
+                    OrderDetail
+                JOIN 
+                  OrderStatusDetail
+                WHERE 
+                  OrderDetail.OrderID = OrderStatusDetail.OrderID
+                AND 
+                  OrderStatusDetail.OrderStatusID IN (2,3)
+                GROUP BY
+                    OrderDetail.OrderID
+              ) a
+              WHERE
+                a.OrderID = Orders.OrderID`;
   let query = mysql.format(sql);
   connectionDB.query(query, async (err, result) => {
     if (err) {

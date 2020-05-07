@@ -13,8 +13,8 @@ const LifeWaySagas = {
           }&email=${window.localStorage.getItem("email") || ""}`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -33,13 +33,13 @@ const LifeWaySagas = {
     try {
       const postDetailInfor = yield call(() => {
         return axios.get(
-          `http://localhost:3001/post/getpostbyid?idPost=${
-            action.data
-          }&email=${window.localStorage.getItem("email") || ""}`,
+          `http://localhost:3001/post/getpostbyid?idPost=${action.data}&email=${
+            window.localStorage.getItem("email") || ""
+          }`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -58,7 +58,7 @@ const LifeWaySagas = {
 
   *likePost(action) {
     const params = {
-      email: "cuong1234@gmail.com"
+      email: "cuong1234@gmail.com",
     };
     try {
       const postDetailInfor = yield call(() => {
@@ -68,8 +68,8 @@ const LifeWaySagas = {
           {
             headers: {
               "Content-Type": "application/json",
-              "x-access-token": window.localStorage.getItem("x-access-token")
-            }
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
           }
         );
       });
@@ -92,7 +92,7 @@ const LifeWaySagas = {
     textName = textName.split(`"`).join("");
     textName = textName.split(`*`).join("");
     const params = {
-      fulltextsearch: textName
+      fulltextsearch: textName,
     };
     try {
       const postInfor = yield call(() => {
@@ -103,8 +103,8 @@ const LifeWaySagas = {
           params,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -123,13 +123,13 @@ const LifeWaySagas = {
     try {
       const postInfor = yield call(() => {
         return axios.get(
-          `http://localhost:3001/post/getMuchLike?email=${window.localStorage.getItem(
-            "email"
-          ) || ""}`,
+          `http://localhost:3001/post/getMuchLike?email=${
+            window.localStorage.getItem("email") || ""
+          }`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -142,7 +142,7 @@ const LifeWaySagas = {
     } catch (error) {
       yield put(LifeWayActions.getPostLikeMuchFailed(error));
     }
-  }
+  },
 };
 
 export default LifeWaySagas;

@@ -4,22 +4,22 @@ import { withRouter } from "react-router";
 import "antd/dist/antd.css";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import PostIntro from '../components/PostIntro';
+import PostIntro from "../components/PostIntro";
 class Index extends Component {
   state = {
     email: "",
     index: 0,
-    direction: null
+    direction: null,
   };
 
   componentDidMount() {
     window.scrollTo(0, 0);
-   }
+  }
 
   handleSelect = (selectedIndex, e) => {
     this.setState({
       index: selectedIndex,
-      direction: e.direction
+      direction: e.direction,
     });
   };
 
@@ -42,7 +42,7 @@ class Index extends Component {
                     display: "flex",
                     flexDirection: "column",
                     paddingRight: "160px",
-                    paddingLeft: "160px"
+                    paddingLeft: "160px",
                   }}
                 >
                   <div
@@ -51,10 +51,11 @@ class Index extends Component {
                       display: "flex",
                       color: "#000000",
                       fontSize: "28px",
-                      fontFamily: "none"
+                      fontFamily: "none",
                     }}
                   >
-                    Môi trường là khởi nguồn cho mọi sự sống của toàn nhân loại ...
+                    Môi trường là khởi nguồn cho mọi sự sống của toàn nhân loại
+                    ...
                   </div>
                   <div
                     style={{
@@ -63,10 +64,11 @@ class Index extends Component {
                       justifyContent: "flex-end",
                       fontSize: "28px",
                       color: "#000000",
-                      fontFamily: "none"
+                      fontFamily: "none",
                     }}
                   >
-                    ...Chúng ta hãy cùng nhau chung tay vì một môi trường bền vững.
+                    ...Chúng ta hãy cùng nhau chung tay vì một môi trường bền
+                    vững.
                   </div>
                 </div>
               </div>
@@ -74,7 +76,7 @@ class Index extends Component {
                 className="btn btn-primary btn-xl text-uppercase js-scroll-trigger"
                 href="#services"
                 style={{
-                  marginTop: "50px"
+                  marginTop: "50px",
                 }}
               >
                 Về chúng tôi
@@ -90,7 +92,13 @@ class Index extends Component {
                 <h2 className="section-heading text-uppercase">
                   Nhiệm vụ của chúng tôi
                 </h2>
-                <h4  style={{fontWeight: "normal", fontStyle: "italic", marginBottom: "50px"}}>
+                <h4
+                  style={{
+                    fontWeight: "normal",
+                    fontStyle: "italic",
+                    marginBottom: "50px",
+                  }}
+                >
                   Hành động nhỏ vì một mục tiêu lớn
                 </h4>
               </div>
@@ -101,17 +109,19 @@ class Index extends Component {
                   style={{
                     width: "200px",
                     height: "200px",
-                    borderRadius: "50%"
+                    borderRadius: "50%",
                   }}
                   src={require("../images/plant-1.jpg")}
                   alt=""
                 />
                 <h4 className="service-heading">Cây văn phòng</h4>
                 <p className="text-muted">
-                  Không gian làm việc nơi văn phòng sẽ thực sự mang một diện mạo mới khi được bày
-                  trí một vài loại cây xanh . Sử dụng cây xanh trong thiết kế nội thất văn phòng
-                  không chỉ giúp thanh lọc không khí, giảm thiếu các chất độc hại từ thiết bị điện tử
-                  mà còn giúp tăng khả năng tập trung , kích thích sáng tạo trong công việc.
+                  Không gian làm việc nơi văn phòng sẽ thực sự mang một diện mạo
+                  mới khi được bày trí một vài loại cây xanh . Sử dụng cây xanh
+                  trong thiết kế nội thất văn phòng không chỉ giúp thanh lọc
+                  không khí, giảm thiếu các chất độc hại từ thiết bị điện tử mà
+                  còn giúp tăng khả năng tập trung , kích thích sáng tạo trong
+                  công việc.
                 </p>
               </div>
               <div className="col-md-4">
@@ -119,18 +129,18 @@ class Index extends Component {
                   style={{
                     width: "200px",
                     height: "200px",
-                    borderRadius: "50%"
+                    borderRadius: "50%",
                   }}
                   src={require("../images/recycle-1.jpg")}
                   alt=""
                 />
                 <h4 className="service-heading">Đồ tái chế</h4>
                 <p className="text-muted">
-                  Tái chế là một hành động đơn giản gần gũi mà bất cứ ai cũng đều có thể làm được, việc
-                  tái chế chính là tái sử dụng lại những vật liệu đã cũ , không còn sử dụng được nữa
-                  nhằm giảm lượng chất thải thải ra môi trường hàng ngày và giải quyết được vắn đề
-                  lãng phí tài nguyên hiện nay.
-
+                  Tái chế là một hành động đơn giản gần gũi mà bất cứ ai cũng
+                  đều có thể làm được, việc tái chế chính là tái sử dụng lại
+                  những vật liệu đã cũ , không còn sử dụng được nữa nhằm giảm
+                  lượng chất thải thải ra môi trường hàng ngày và giải quyết
+                  được vắn đề lãng phí tài nguyên hiện nay.
                 </p>
               </div>
               <div className="col-md-4">
@@ -138,23 +148,24 @@ class Index extends Component {
                   style={{
                     width: "200px",
                     height: "200px",
-                    borderRadius: "50%"
+                    borderRadius: "50%",
                   }}
                   src={require("../images/plant-3.jpg")}
                   alt=""
                 />
                 <h4 className="service-heading">Chia sẻ thông tin</h4>
                 <p className="text-muted">
-                  Ngay từ bây giờ mỗi người dân chúng ta hãy cùng nhau lan tỏa những hành động ý nghĩa ,
-                   giúp ích gìn giữ và bảo vệ hành tinh xanh “lá phổi của nhân loại”.
-                    Hãy cùng The Green Way chúng tôi chung tay tạo nên một thông điệp
-                    vàng “Bảo vệ môi trường chính là bảo vệ cuộc sống của bạn”
+                  Ngay từ bây giờ mỗi người dân chúng ta hãy cùng nhau lan tỏa
+                  những hành động ý nghĩa , giúp ích gìn giữ và bảo vệ hành tinh
+                  xanh “lá phổi của nhân loại”. Hãy cùng The Green Way chúng tôi
+                  chung tay tạo nên một thông điệp vàng “Bảo vệ môi trường chính
+                  là bảo vệ cuộc sống của bạn”
                 </p>
               </div>
             </div>
           </div>
         </section>
-        <PostIntro/>
+        <PostIntro />
         <Review />
         <div style={{ backgroundColor: "#AFEEEE" }}>
           <section className=" page-section" id="team">
@@ -164,9 +175,15 @@ class Index extends Component {
                   <h2 className="section-heading text-uppercase">
                     Hãy Cùng Nhau Hành Động
                   </h2>
-                  <h4  style={{fontWeight: "normal", fontStyle: "italic", marginBottom: "50px"}}>
-                  Những người nổi tiếng, họ đang làm gì?
-                </h4>
+                  <h4
+                    style={{
+                      fontWeight: "normal",
+                      fontStyle: "italic",
+                      marginBottom: "50px",
+                    }}
+                  >
+                    Những người nổi tiếng, họ đang làm gì?
+                  </h4>
                 </div>
               </div>
               <div className="row">
@@ -177,7 +194,7 @@ class Index extends Component {
                         width: "150px",
                         height: "150px",
                         borderRadius: "50%",
-                        borderColor: "black"
+                        borderColor: "black",
                       }}
                       src={require("../images/bill-gates.jpg")}
                       alt=""
@@ -196,7 +213,7 @@ class Index extends Component {
                         width: "150px",
                         height: "150px",
                         borderRadius: "50%",
-                        borderColor: "black"
+                        borderColor: "black",
                       }}
                       src={require("../images/ronaldo.png")}
                       alt=""
@@ -214,7 +231,7 @@ class Index extends Component {
                         width: "150px",
                         height: "150px",
                         borderRadius: "50%",
-                        borderColor: "black"
+                        borderColor: "black",
                       }}
                       src={require("../images/obama.jpg")}
                       alt=""

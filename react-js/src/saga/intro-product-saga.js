@@ -10,13 +10,13 @@ const IntroProductSagas = {
         return axios.get(
           `http://localhost:3001/product/getProductsByCategory?idCategory=${
             action.data.idCategory
-          }&page=${action.data.page}&email=${window.localStorage.getItem(
-            "email"
-          ) || ""}`,
+          }&page=${action.data.page}&email=${
+            window.localStorage.getItem("email") || ""
+          }`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -41,13 +41,13 @@ const IntroProductSagas = {
         return axios.get(
           `http://localhost:3001/product/getProductsByCategory?idCategory=${
             action.data.idCategory
-          }&page=${action.data.page}&email=${window.localStorage.getItem(
-            "email"
-          ) || ""}`,
+          }&page=${action.data.page}&email=${
+            window.localStorage.getItem("email") || ""
+          }`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -73,8 +73,8 @@ const IntroProductSagas = {
           `http://localhost:3001/product/getProductAllByCategory?cate=${action.data.idCategory}`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -96,7 +96,7 @@ const IntroProductSagas = {
   *updateLikeProduct(action) {
     //Magic
     const params = {
-      email: "cuong1234@gmail.com"
+      email: "cuong1234@gmail.com",
     };
     try {
       const productInfor = yield call(() => {
@@ -106,8 +106,8 @@ const IntroProductSagas = {
           {
             headers: {
               "Content-Type": "application/json",
-              "x-access-token": window.localStorage.getItem("x-access-token")
-            }
+              "x-access-token": window.localStorage.getItem("x-access-token"),
+            },
           }
         );
       });
@@ -121,7 +121,7 @@ const IntroProductSagas = {
           IntroProductActions.updateLikeProductSucceed({
             mess: productInfor.data,
             method: action.data.method,
-            idP: action.data.idP
+            idP: action.data.idP,
           })
         );
       }
@@ -136,21 +136,21 @@ const IntroProductSagas = {
     textName = textName.split(`"`).join("");
     textName = textName.split(`*`).join("");
     const params = {
-      fulltextsearch: textName
+      fulltextsearch: textName,
     };
     try {
       const productInfor = yield call(() => {
         return axios.post(
           `http://localhost:3001/product/fulltextsearchProduct?page=${
             action.data.page
-          }&category=${action.data.cate}&email=${window.localStorage.getItem(
-            "email"
-          ) || ""}`,
+          }&category=${action.data.cate}&email=${
+            window.localStorage.getItem("email") || ""
+          }`,
           params,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -173,16 +173,16 @@ const IntroProductSagas = {
     let params = {
       ProductName: textName.toLowerCase(),
       MaxPrice: action.data.value.maxP,
-      MinPrice: action.data.value.minP
+      MinPrice: action.data.value.minP,
     };
     const regex = /[\_\%]/g;
     let newtext = textName;
     const found = newtext.match(regex);
     if (found) {
-      found.map(el => (newtext = newtext.replace(el, `!${el}`)));
+      found.map((el) => (newtext = newtext.replace(el, `!${el}`)));
       params = {
         ...params,
-        ProductName: newtext.toLowerCase()
+        ProductName: newtext.toLowerCase(),
       };
     }
     try {
@@ -190,14 +190,14 @@ const IntroProductSagas = {
         return axios.post(
           `http://localhost:3001/product/searchProduct?page=${
             action.data.page
-          }&category=${action.data.cate}&email=${window.localStorage.getItem(
-            "email"
-          ) || ""}`,
+          }&category=${action.data.cate}&email=${
+            window.localStorage.getItem("email") || ""
+          }`,
           params,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
       });
@@ -210,7 +210,7 @@ const IntroProductSagas = {
     } catch (error) {
       yield put(IntroProductActions.searchHighFailed(error));
     }
-  }
+  },
 };
 
 export default IntroProductSagas;

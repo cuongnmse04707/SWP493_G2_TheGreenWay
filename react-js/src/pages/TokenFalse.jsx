@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import "../css/lock-account.css";
 import NavBar from "../components/NavBar";
 
-class LockAccount extends Component {
+class TokenFalse extends Component {
   render() {
     return (
       <div className="lock-wrapper">
         <NavBar />
         <div className="not-found">
-          <div className="txt1">Tài khoản của bạn đã bị khóa</div>
+          <div className="txt1">Tài khoản đã hết phiên sử dụng</div>
           <div className="txt2">
-            Vui lòng liên hệ với admin để khắc phục tình trạng này
+            Vui lòng đăng nhập lại để tiếp tục sử dụng!
           </div>
           <div id="orbit-system">
             <div className="system">
@@ -28,4 +28,4 @@ class LockAccount extends Component {
   }
 }
 
-export default LockAccount;
+export default TokenFalse;

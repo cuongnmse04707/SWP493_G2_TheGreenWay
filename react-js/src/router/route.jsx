@@ -21,6 +21,7 @@ import OrderSuccess from "../pages/OrderSuccess";
 import OrderHistoryDetail from "../pages/OrderHistoryDetail";
 import NotFound from "../pages/NotFound";
 import LockAccount from "../pages/LockAccount";
+import TokenFalse from "../pages/TokenFalse";
 import { connect } from "react-redux";
 
 //admin
@@ -38,6 +39,7 @@ class PageLayout extends Component {
           <Route path="/product" component={ProductList} exact></Route>
           <Route path="/life-way" component={LifeWay} exact></Route>
           <Route path="/lock-account" component={LockAccount} exact></Route>
+          <Route path="/token-false" component={TokenFalse} exact></Route>
           <Route
             path="/life-way-detail/:id"
             component={LifeWayPageDetail}

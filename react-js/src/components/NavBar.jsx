@@ -90,10 +90,10 @@ class NavBar extends Component {
         },
       }
     );
-    if (check.data.success) {
-      return true;
-    } else {
+    if (check.data.success === false) {
       throw new Error("Tài khoản bị khoá");
+    } else {
+      return true;
     }
   };
 
@@ -101,13 +101,18 @@ class NavBar extends Component {
     var token = window.localStorage.getItem("x-access-token");
     var roles = window.localStorage.getItem("roles");
     if (token) {
-      // console.log("token :>> ", token);
-      // console.log(this.checkToken());
       this.checkToken().then(
         () => {},
-        () => {
-          window.localStorage.clear();
-          this.props.history.push("/lock-account");
+        (e) => {
+          if (e.message === "Tài khoản bị khoá") {
+            window.localStorage.clear();
+            this.props.history.push("/lock-account");
+          }
+          // message.error("Token không chính xác hoặc đã hết hạn sử dụng!", 3);
+          if (e.message === "Request failed with status code 401") {
+            // console.log("123");
+            this.props.history.push("/token-false");
+          }
         }
       );
     }
