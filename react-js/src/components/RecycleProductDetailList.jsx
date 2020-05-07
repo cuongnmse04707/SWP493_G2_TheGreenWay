@@ -299,7 +299,10 @@ class RecycleProductDetailList extends Component {
                         alt=""
                       />
                       <span>
-                        {Math.floor(item.ProductPrice / convensionRate)} Kg
+                        {Number(
+                          (item.ProductPrice / convensionRate).toFixed(1)
+                        )}{" "}
+                        Kg
                       </span>
                     </div>
                   </div>

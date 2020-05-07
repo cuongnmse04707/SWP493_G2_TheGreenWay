@@ -64,7 +64,7 @@ class ShoppingCart extends Component {
     });
   };
 
-  componentDidUpdate() { }
+  componentDidUpdate() {}
 
   handleOk = (e) => {
     const { idRemove } = this.state;
@@ -203,26 +203,28 @@ class ShoppingCart extends Component {
                     <span style={{ fontWeight: "bold" }}>{totalCash} VNĐ</span>
                   </div>
                 ) : (
-                    <div className="text-total-money">
-                      <span>Tổng số tiền</span>
-                      <span style={{ fontWeight: "bold" }}>{totalCash} VNĐ</span>
-                    </div>
-                  )}
+                  <div className="text-total-money">
+                    <span>Tổng số tiền</span>
+                    <span style={{ fontWeight: "bold" }}>{totalCash} VNĐ</span>
+                  </div>
+                )}
                 {this.state.paymentOption == "1" ? (
                   <div className="text-total-money-disable">
                     <span>Tổng số giấy</span>
                     <span style={{ fontWeight: "bold" }}>
-                      {Math.floor(totalCash / convensionRate)} kg
+                      {/* {Math.floor(totalCash / convensionRate)} kg */}
+                      {Number((totalCash / convensionRate).toFixed(1))} Kg
                     </span>
                   </div>
                 ) : (
-                    <div className="text-total-money">
-                      <span>Tổng số giấy</span>
-                      <span style={{ fontWeight: "bold" }}>
-                        {Math.floor(totalCash / convensionRate)} kg
+                  <div className="text-total-money">
+                    <span>Tổng số giấy</span>
+                    <span style={{ fontWeight: "bold" }}>
+                      {/* {Math.floor(totalCash / convensionRate)} kg */}
+                      {Number((totalCash / convensionRate).toFixed(1))} Kg
                     </span>
-                    </div>
-                  )}
+                  </div>
+                )}
 
                 <div className="button-check-out" onClick={this.confirmPayment}>
                   <span>Tiến hành thanh toán </span>

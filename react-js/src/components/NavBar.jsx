@@ -101,6 +101,7 @@ class NavBar extends Component {
     var token = window.localStorage.getItem("x-access-token");
     var roles = window.localStorage.getItem("roles");
     if (token) {
+      // console.log("token :>> ", token);
       // console.log(this.checkToken());
       this.checkToken().then(
         () => {},

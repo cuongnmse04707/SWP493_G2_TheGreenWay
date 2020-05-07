@@ -61,8 +61,11 @@ class ConfirmPayment extends Component {
     if (token) {
       this.props.form.validateFieldsAndScroll((err, fieldsValues) => {
         if (!err) {
-          var totalPaper = Math.floor(
-            this.state.totalCash / this.props.convensionRate
+          // var totalPaper = Math.floor(
+          //   this.state.totalCash / this.props.convensionRate
+          // );
+          var totalPaper = Number(
+            (this.state.totalCash / this.props.convensionRate).toFixed(1)
           );
           var totalMoney = this.state.totalCash;
           var cash = 0;
@@ -110,8 +113,11 @@ class ConfirmPayment extends Component {
     } else {
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          var totalPaper = Math.floor(
-            this.state.totalCash / this.props.convensionRate
+          // var totalPaper = Math.floor(
+          //   this.state.totalCash / this.props.convensionRate
+          // );
+          var totalPaper = Number(
+            (this.state.totalCash / this.props.convensionRate).toFixed(1)
           );
           var totalMoney = this.state.totalCash;
           var cash = 0;
@@ -371,7 +377,8 @@ class ConfirmPayment extends Component {
                 <div className="text-bill-detail">
                   <span>Tổng số giấy</span>
                   <span style={{ fontWeight: "bold" }}>
-                    {Math.floor(totalCash / convensionRate)} Kg
+                    {/* {Math.floor(totalCash / convensionRate)} Kg */}
+                    {Number((totalCash / convensionRate).toFixed(1))} Kg
                   </span>
                 </div>
                 <div className="payment-option mt-3">
@@ -386,8 +393,13 @@ class ConfirmPayment extends Component {
                     <Option value="1">Tiền</Option>
                     <Option
                       value="2"
+                      // disabled={
+                      //   Math.floor(totalCash / convensionRate) === 0
+                      //     ? true
+                      //     : false
+                      // }
                       disabled={
-                        Math.floor(totalCash / convensionRate) === 0
+                        Number((totalCash / convensionRate).toFixed(1)) === 0
                           ? true
                           : false
                       }
@@ -396,8 +408,13 @@ class ConfirmPayment extends Component {
                     </Option>
                     <Option
                       value="3"
+                      // disabled={
+                      //   Math.floor(totalCash / convensionRate) === 0
+                      //     ? true
+                      //     : false
+                      // }
                       disabled={
-                        Math.floor(totalCash / convensionRate) === 0
+                        Number((totalCash / convensionRate).toFixed(1)) === 0
                           ? true
                           : false
                       }
@@ -412,7 +429,8 @@ class ConfirmPayment extends Component {
                         <InputNumber
                           type="number"
                           min={0}
-                          max={Math.floor(totalCash / convensionRate)}
+                          // max={Math.floor(totalCash / convensionRate)}
+                          max={Number((totalCash / convensionRate).toFixed(1))}
                           // value={0}
                           placeholder="Nhập số kg giấy"
                           onChange={(value) => this.onPaperChange(value)}
