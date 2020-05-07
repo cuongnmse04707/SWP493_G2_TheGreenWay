@@ -66,11 +66,9 @@ class ConfirmPayment extends Component {
             this.setState({
               methodPayment: "1"
             })
-
           } else {
             this.setState({
               methodPayment: "2",
-              paymentOption: "1"
             })
             if(this.state.paymentOption === "2"){
               this.setState({
