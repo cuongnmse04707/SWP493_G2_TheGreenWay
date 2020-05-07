@@ -273,6 +273,19 @@ class ConfirmPayment extends Component {
                             required: true,
                             message: "Vui lòng nhập tên người dùng",
                           },
+                          {
+                            min: 6,
+                            message: "Tên người dùng phải dài ít nhất 6 kí tự",
+                          },
+                          {
+                            max: 32,
+                            message: "Tên người dùng không dài quá 32 kí tự",
+                          },
+                          {
+                            pattern: userNameRegex,
+                            message:
+                              "Tên người dùng không được chưa kí tự đặc biệt và số",
+                          },
                         ],
                       })(<Input />)}
                     </Form.Item>

@@ -90,6 +90,7 @@ const LifeWaySagas = {
     let textName = action.data.value.split("`").join("");
     textName = textName.split(`'`).join("");
     textName = textName.split(`"`).join("");
+    textName = textName.split(`*`).join("");
     const params = {
       fulltextsearch: textName
     };

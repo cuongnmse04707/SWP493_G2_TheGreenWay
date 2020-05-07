@@ -1,36 +1,21 @@
 import React, { Component } from "react";
-import "../css/not-found.css";
+import "../css/lock-account.css";
+import NavBar from '../components/NavBar'
 
 class LockAccount extends Component {
   render() {
     return (
-      <div
-        style={{
-          background: "white",
-          left: "0",
-          height: "100vh",
-          width: "100vw",
-          position: "fixed",
-        }}
-        className="test-not-found"
-      >
-        <section className="page_404">
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-12 ">
-                <div className="col-sm-10 col-sm-offset-1  text-center">
-                  <div className="four_zero_four_bg">
-                    <h1 className="text-center ">404</h1>
-                  </div>
-                  <div className="contant_box_404">
-                    <h3 className="h2">Tài khoản của bạn đã bị khoá</h3>
-                    <p>Hãy liên hệ với admin để khắc phục tình trạng này!</p>
-                  </div>
-                </div>
-              </div>
+      <div className="lock-wrapper">
+        <NavBar />
+        <div className="not-found">
+          <div className="txt1">Tài khoản của bạn đã bị khóa</div>
+          <div className="txt2">Vui lòng liên hệ với admin để khắc phục tình trạng này</div>
+          <div id="orbit-system">
+            <div className="system">
+              <div className="planet"><img src="http://orig02.deviantart.net/69ab/f/2013/106/0/4/sad_man_by_agiq-d61wk0d.png" height="200px" /> </div>
             </div>
           </div>
-        </section>
+        </div>
       </div>
     );
   }
