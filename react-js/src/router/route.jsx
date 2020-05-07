@@ -20,6 +20,7 @@ import UserOrderHistory from "../pages/UserOrderHistory";
 import OrderSuccess from "../pages/OrderSuccess";
 import OrderHistoryDetail from "../pages/OrderHistoryDetail";
 import NotFound from "../pages/NotFound";
+import LockAccount from "../pages/LockAccount";
 import { connect } from "react-redux";
 
 //admin
@@ -36,8 +37,17 @@ class PageLayout extends Component {
           <Route path="/about-us" component={AboutUs} exact></Route>
           <Route path="/product" component={ProductList} exact></Route>
           <Route path="/life-way" component={LifeWay} exact></Route>
-          <Route path="/life-way-detail/:id" component={LifeWayPageDetail} exact></Route>
-          <Route path="/order-detail/order" component={OrderHistoryDetail} exact></Route>
+          <Route path="/lock-account" component={LockAccount} exact></Route>
+          <Route
+            path="/life-way-detail/:id"
+            component={LifeWayPageDetail}
+            exact
+          ></Route>
+          <Route
+            path="/order-detail/order"
+            component={OrderHistoryDetail}
+            exact
+          ></Route>
           <Route
             path="/product-detail/:id"
             component={ProductDetail}
@@ -54,17 +64,28 @@ class PageLayout extends Component {
             component={RecycleProducDetail}
             exact
           ></Route>
-          <Route path="/confirm-payment" component={ConfirmPayment} exact></Route>
+          <Route
+            path="/confirm-payment"
+            component={ConfirmPayment}
+            exact
+          ></Route>
           <Route path="/order-success" component={OrderSuccess} exact></Route>
           <Route path="/admin" component={LayoutAdmin} exact></Route>
           <LayoutProfile>
             <Route path="/account" component={EditProfile} exact />
             <Route path="/changepassword" component={ChangePassword} exact />
-            <Route path="/user-order-history" component={UserOrderHistory} exact />
-            <Route path="/user-product-like" component={UserProductLike} exact />
+            <Route
+              path="/user-order-history"
+              component={UserOrderHistory}
+              exact
+            />
+            <Route
+              path="/user-product-like"
+              component={UserProductLike}
+              exact
+            />
             <Route component={NotFound}></Route>
           </LayoutProfile>
-
         </Switch>
       </BrowserRouter>
     );

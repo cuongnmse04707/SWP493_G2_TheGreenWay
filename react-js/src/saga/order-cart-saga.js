@@ -14,8 +14,8 @@ const OrderCartSagas = {
             {
               headers: {
                 "Content-Type": "application/json",
-                "x-access-token": window.localStorage.getItem("x-access-token")
-              }
+                "x-access-token": window.localStorage.getItem("x-access-token"),
+              },
             }
           );
         });
@@ -38,8 +38,8 @@ const OrderCartSagas = {
             action.data.params,
             {
               headers: {
-                "Content-Type": "application/json"
-              }
+                "Content-Type": "application/json",
+              },
             }
           );
         });
@@ -50,7 +50,7 @@ const OrderCartSagas = {
           action.data.callbackA(orderInfor.data.accessToken);
           yield put(OrderCartctions.getOrderCartSucceed(orderInfor.data));
           message.success(orderInfor.data.message, 3);
-          }
+        }
       } catch (error) {
         yield put(OrderCartctions.getOrderCartRequestFailed(error));
       }
@@ -59,16 +59,13 @@ const OrderCartSagas = {
   *getInforAbout123(action) {
     try {
       const inforAbout = yield call(() => {
-        return axios.get(
-          "http://localhost:3001/userorder/getInforAbout",
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        return axios.get("http://localhost:3001/userorder/getInforAbout", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
       });
-      console.log(inforAbout)
+      // console.log(inforAbout)
       if (!inforAbout.data.success) {
         yield put(OrderCartctions.getInforNumberRequestFailed(inforAbout.data));
       } else {
@@ -77,7 +74,7 @@ const OrderCartSagas = {
     } catch (error) {
       yield put(OrderCartctions.getInforNumberRequestFailed(error));
     }
-  }
+  },
 };
 
 export default OrderCartSagas;

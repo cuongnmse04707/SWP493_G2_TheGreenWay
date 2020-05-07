@@ -23,7 +23,7 @@ class AboutUs extends Component {
   render() {
     const { isHover } = this.state;
     const { numberInfor } = this.props;
-    console.log(numberInfor);
+    // console.log(numberInfor);
     return (
       <div children="about-us">
         <NavBar />
@@ -151,11 +151,11 @@ class AboutUs extends Component {
                             duration={3}
                           />
                         ) : (
-                            <CountUp
-                              start={numberInfor.numberProduct || 0}
-                              end={numberInfor.numberProduct || 0}
-                            />
-                          )}
+                          <CountUp
+                            start={numberInfor.numberProduct || 0}
+                            end={numberInfor.numberProduct || 0}
+                          />
+                        )}
                       </p>
                     </div>
                   </div>
@@ -184,11 +184,11 @@ class AboutUs extends Component {
                             duration={3}
                           />
                         ) : (
-                            <CountUp
-                              start={numberInfor.numberPaper || 0}
-                              end={numberInfor.numberPaper || 0}
-                            />
-                          )}
+                          <CountUp
+                            start={numberInfor.numberPaper || 0}
+                            end={numberInfor.numberPaper || 0}
+                          />
+                        )}
                       </p>
                     </div>
                   </div>
@@ -217,11 +217,11 @@ class AboutUs extends Component {
                             duration={3}
                           />
                         ) : (
-                            <CountUp
-                              start={numberInfor.numberPosts || 0}
-                              end={numberInfor.numberPosts || 0}
-                            />
-                          )}
+                          <CountUp
+                            start={numberInfor.numberPosts || 0}
+                            end={numberInfor.numberPosts || 0}
+                          />
+                        )}
                       </p>
                     </div>
                   </div>
@@ -230,7 +230,7 @@ class AboutUs extends Component {
             </section>
           </div>
         </div>
-        <TeamMember  />
+        <TeamMember />
         <Footer />
       </div>
     );

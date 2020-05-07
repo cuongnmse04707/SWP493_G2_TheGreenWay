@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "../css/user-product-like.css";
 import { Table, Button, Pagination } from "antd";
 import { connect } from "react-redux";
@@ -9,38 +9,38 @@ import ConvensionTypes from "../redux/paper-conversion-redux";
 class UserProductLike extends Component {
   state = {
     current: 1,
-  }
+  };
 
   componentDidMount() {
     this.props.getPaperConvension();
     const params = {
-      page: 1
-    }
-    this.props.getProductLike(params)
+      page: 1,
+    };
+    this.props.getProductLike(params);
   }
 
   onSelectPageChange = (page) => {
     this.setState({
-      current: page
+      current: page,
     });
     const params = {
-      page: page
-    }
-    this.props.getProductLike(params)
-  }
+      page: page,
+    };
+    this.props.getProductLike(params);
+  };
 
   toDetailProduct = (record) => {
     const params = {
       idCategory: record.CategoryID,
-      id: record.ProductID
-    }
+      id: record.ProductID,
+    };
     this.props.history.push(`/product-detail/${record.ProductID}`);
-    this.props.getProductDetail(params)
-  }
+    this.props.getProductDetail(params);
+  };
   render() {
     const columns = [
       {
-        title: 'Tên Sản Phẩm',
+        title: "Tên Sản Phẩm",
         dataIndex: "ProductName",
         render: (text, record) => (
           <div>
@@ -53,7 +53,7 @@ class UserProductLike extends Component {
               {record.ProductName}
             </span>
           </div>
-        )
+        ),
       },
       {
         title: "Giá Tiền | Số Lượng Giấy",
@@ -62,50 +62,66 @@ class UserProductLike extends Component {
           <div>
             <span>{record.ProductPrice} VNĐ</span>
             <span className="mr-2 ml-2">|</span>
-            <span>{Math.floor(record.ProductPrice / this.props.convensionRate)}</span>
+            <span>
+              {Math.floor(record.ProductPrice / this.props.convensionRate)}
+            </span>
           </div>
-        )
+        ),
       },
       {
-        title: 'Tùy chọn',
-        dataIndex: 'address',
+        title: "Tùy chọn",
+        dataIndex: "address",
         render: (text, record) => (
-          <Button type="primary" onClick={() => {this.toDetailProduct(record)}}>Xem chi tiết</Button>
-        )
+          <Button
+            type="primary"
+            onClick={() => {
+              this.toDetailProduct(record);
+            }}
+          >
+            Xem chi tiết
+          </Button>
+        ),
       },
     ];
 
-    const { likeProductInfor } = this.props
-    console.log(likeProductInfor)
+    const { likeProductInfor } = this.props;
+    // console.log(likeProductInfor)
     return (
       <div className="user-like">
         <div className="like-product-wrapper">
-          <Table dataSource={likeProductInfor} columns={columns} pagination={false} rowkey="id">
-          </Table>
+          <Table
+            dataSource={likeProductInfor}
+            columns={columns}
+            pagination={false}
+            rowkey="id"
+          ></Table>
           {likeProductInfor.length !== 0 ? (
-          <Pagination
-            current={this.state.current}
-            onChange={this.onSelectPageChange}
-            total={this.props.totalPage * 10}
-            style={{ display: "flex", justifyContent: "center", margin: "3% 0" }}
-          />
-        ) : null}
+            <Pagination
+              current={this.state.current}
+              onChange={this.onSelectPageChange}
+              total={this.props.totalPage * 10}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "3% 0",
+              }}
+            />
+          ) : null}
         </div>
-
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     likeProductInfor: state.userProductLike.likeProductList,
     totalPage: state.userProductLike.totalPage,
-    convensionRate: state.convension.convensionRate
+    convensionRate: state.convension.convensionRate,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getProductLike: (params) => {
       dispatch(UserLikeProductTypes.getProductLikeRequest(params));

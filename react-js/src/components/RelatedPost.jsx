@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../css/related-product.css";
 import { withRouter } from "react-router";
-import { message} from "antd";
+import { message } from "antd";
 import { connect } from "react-redux";
 import LifeWayTypes from "../redux/life-way-redux";
 
@@ -10,27 +10,28 @@ var moment = require("moment");
 class RelatedPost extends Component {
   state = {
     heart: false,
-    introData: []
+    introData: [],
   };
 
   componentDidMount() {
     const params = {
       idCategory: 1,
-      page: 1
+      page: 1,
     };
     this.props.getPostInfor(params);
   }
 
   changeHeart = (event, item) => {
     event.stopPropagation();
-    const token = window.localStorage.getItem("x-access-token")
+    const token = window.localStorage.getItem("x-access-token");
     if (!token) {
-      message.error('Vui lòng đăng nhập để thích sản phẩm', 2)
+      message.error("Vui lòng đăng nhập để thích sản phẩm", 2);
     } else {
-    this.props.setDataLikePost({
-      method: item.like === "like" ? "unLike" : "like",
-      idP: item.PostID
-    });}
+      this.props.setDataLikePost({
+        method: item.like === "like" ? "unLike" : "like",
+        idP: item.PostID,
+      });
+    }
   };
 
   onClickDetailPost = (event, item) => {
@@ -40,20 +41,20 @@ class RelatedPost extends Component {
   };
 
   render() {
-    const { postInfor, filterPost} = this.props;
-    console.log(postInfor)
+    const { postInfor, filterPost } = this.props;
+    // console.log(postInfor)
     return (
       <div>
         <div className="related-article">
           {postInfor
-            .filter(el => el.PostID !== Number(filterPost))
+            .filter((el) => el.PostID !== Number(filterPost))
             .map((item, index) => {
               if (index < 3) {
                 return (
                   <div
                     className="sub-item shadow bg-white rounded"
                     key={index}
-                    onClick={event => this.onClickDetailPost(event, item)}
+                    onClick={(event) => this.onClickDetailPost(event, item)}
                   >
                     <div className="hovereffect">
                       <img src={item.ImageDetail} alt="" />
@@ -61,14 +62,14 @@ class RelatedPost extends Component {
                         <div className="heart-icon">
                           {(item || {}).like === "like" ? (
                             <img
-                              onClick={event => this.changeHeart(event, item)}
+                              onClick={(event) => this.changeHeart(event, item)}
                               style={{ height: "35px", width: "35px" }}
                               src={require("../images/svgIcon/like.svg")}
                               alt=""
                             />
                           ) : (
                             <img
-                              onClick={event => this.changeHeart(event, item)}
+                              onClick={(event) => this.changeHeart(event, item)}
                               style={{ height: "35px", width: "35px" }}
                               src={require("../images/svgIcon/unLike.svg")}
                               alt=""
@@ -98,23 +99,23 @@ class RelatedPost extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    postInfor: state.lifeWay.postInfor
+    postInfor: state.lifeWay.postInfor,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getPostInfor: params => {
+    getPostInfor: (params) => {
       dispatch(LifeWayTypes.getLifeWayRequest(params));
     },
-    setDataLikePost: params => {
+    setDataLikePost: (params) => {
       dispatch(LifeWayTypes.getLifeWayLikeRequest(params));
     },
-    getPostDetailInfor: id => {
+    getPostDetailInfor: (id) => {
       dispatch(LifeWayTypes.getLifeWayDetailRequest(id));
-    }
+    },
   };
 };
 

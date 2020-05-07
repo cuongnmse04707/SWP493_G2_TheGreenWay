@@ -87,7 +87,7 @@ class ProductInforList extends Component {
     });
   };
 
-  handleCategoryChange(value) { }
+  handleCategoryChange(value) {}
 
   componentDidMount() {
     this.props.getProductList();
@@ -97,7 +97,7 @@ class ProductInforList extends Component {
     this.setState({
       visible: false,
       removeArr: [],
-      valueDes: null
+      valueDes: null,
     });
   };
 
@@ -125,7 +125,7 @@ class ProductInforList extends Component {
     } else if (this.props.imageDetail.length !== 4) {
       message.error(
         `Vui lòng chọn thêm ${
-        4 - this.props.imageDetail.length
+          4 - this.props.imageDetail.length
         } ảnh chi tiết sản phẩm !`,
         2
       );
@@ -186,7 +186,7 @@ class ProductInforList extends Component {
       var myArray = s2.match(re1);
       // console.log(myArray);
       if (myArray) {
-        console.log("La Chu");
+        // console.log("La Chu");
 
         this.props.form.validateFieldsAndScroll(
           ["productName", "productPrice", "productQuantity", "category"],
@@ -221,7 +221,7 @@ class ProductInforList extends Component {
           }
         );
       } else {
-        console.log("không là chữ");
+        // console.log("không là chữ");
         message.error("Mô tả không được để trống", 2);
       }
     }
@@ -446,7 +446,7 @@ class ProductInforList extends Component {
                           });
                         } else {
                           this.setState({
-                            valueDes: '',
+                            valueDes: "",
                           });
                           message.error("Vui lòng nhập mô tả sản phẩm", 2);
                         }
@@ -490,8 +490,8 @@ class ProductInforList extends Component {
                               // Set vao state
                               uploadTask.on(
                                 "state_changed",
-                                (snapshot) => { },
-                                (error) => { },
+                                (snapshot) => {},
+                                (error) => {},
                                 () => {
                                   storage
                                     .ref("images")
@@ -541,8 +541,8 @@ class ProductInforList extends Component {
                         {productDetail.ImageDetail ? (
                           <img src={productDetail.ImageDetail} alt="avatar" />
                         ) : (
-                            uploadAvatarButton
-                          )}
+                          uploadAvatarButton
+                        )}
                       </Upload>
                     )}
                   </Form.Item>
@@ -597,8 +597,8 @@ class ProductInforList extends Component {
                                 // Set vao state
                                 uploadTask.on(
                                   "state_changed",
-                                  (snapshot) => { },
-                                  (error) => { },
+                                  (snapshot) => {},
+                                  (error) => {},
                                   () => {
                                     storage
                                       .ref("images")

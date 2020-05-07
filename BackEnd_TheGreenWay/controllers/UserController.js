@@ -164,9 +164,37 @@ let changepassword = async (req, res) => {
   });
 };
 
+//Check lock user
+let checkStatusUser = async (req, res) => {
+  // get email from request after handle of authmiddleware
+  const email = req.jwtDecoded.data.email;
+  //Luu thong tin tu database
+  let sql = `SELECT status FROM Accounts WHERE email=?`;
+  let query = mysql.format(sql, [email]);
+  connectionDB.query(query, async (err, result) => {
+    if (err) {
+      return res
+        .status(200)
+        .json({ success: false, message: "Tài khoản không được sử dụng" });
+    } else {
+      const arr = Array.apply(null, result);
+      if (arr[0].status === "ok") {
+        return res
+          .status(200)
+          .json({ success: true, message: "Tài khoản được sử dụng" });
+      } else {
+        return res
+          .status(200)
+          .json({ success: false, message: "Tài khoản không được sử dụng" });
+      }
+    }
+  });
+};
+
 module.exports = {
   information: information,
   saveinformation: saveinformation,
   changeavatar: changeavatar,
   changepassword: changepassword,
+  checkStatusUser: checkStatusUser,
 };

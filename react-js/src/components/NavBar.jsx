@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { Icon, Dropdown, Menu, Modal, Button, Badge } from "antd";
+import { Icon, Dropdown, Menu, Modal, Button, Badge, message } from "antd";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import HomePageTypes from "../redux/home-page-redux";
 import LifeWayTypes from "../redux/life-way-redux";
+import axios from "axios";
+import { resolveOnChange } from "antd/lib/input/Input";
 class NavBar extends Component {
   state = {
     userName: "",
@@ -78,10 +80,36 @@ class NavBar extends Component {
     this.props.history.push("/cart");
   };
 
+  checkToken = async () => {
+    const check = await axios.get(
+      "http://localhost:3001/user/checkstatususer",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": window.localStorage.getItem("x-access-token"),
+        },
+      }
+    );
+    if (check.data.success) {
+      return true;
+    } else {
+      throw new Error("Tài khoản bị khoá");
+    }
+  };
+
   render() {
-    const token = window.localStorage.getItem("x-access-token");
-    const roles = window.localStorage.getItem("roles");
-    // const checkUrl = window.location.pathname.split("/")[1];
+    var token = window.localStorage.getItem("x-access-token");
+    var roles = window.localStorage.getItem("roles");
+    if (token) {
+      // console.log(this.checkToken());
+      this.checkToken().then(
+        () => {},
+        () => {
+          window.localStorage.clear();
+          this.props.history.push("/lock-account");
+        }
+      );
+    }
     const { userInformation } = this.props;
     //menu dropdown
     const menu = (
@@ -156,7 +184,7 @@ class NavBar extends Component {
                           borderRadius: "50%",
                         }}
                         src={userInformation.urlAvatar}
-                      // alt=""
+                        // alt=""
                       />
                       <Dropdown
                         style={{ width: "500px" }}
@@ -178,15 +206,15 @@ class NavBar extends Component {
                     </li>
                   </div>
                 ) : (
-                    <li className="nav-item">
-                      <a
-                        className="nav-link js-scroll-trigger"
-                        onClick={this.toLogin}
-                      >
-                        Đăng nhập/Đăng ký
+                  <li className="nav-item">
+                    <a
+                      className="nav-link js-scroll-trigger"
+                      onClick={this.toLogin}
+                    >
+                      Đăng nhập/Đăng ký
                     </a>
-                    </li>
-                  )}
+                  </li>
+                )}
                 <li className="shopping-cart-item">
                   <Badge
                     count={this.props.stateCartNumber}
@@ -204,7 +232,7 @@ class NavBar extends Component {
                     />
                   </Badge>
                 </li>
-                {roles === "admin" || roles === "mod" && token ? (
+                {roles === "admin" || (roles === "mod" && token) ? (
                   <div
                     style={{
                       display: "flex",
@@ -216,8 +244,8 @@ class NavBar extends Component {
                     </Button>
                   </div>
                 ) : (
-                    <div></div>
-                  )}
+                  <div></div>
+                )}
               </ul>
             </div>
             <Modal

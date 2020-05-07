@@ -7,7 +7,7 @@ const Cryptr = require("cryptr");
 const cryptr = new Cryptr("thegreenway");
 const ResetPassword = {
   *resetPassword(action) {
-    console.log(action);
+    // console.log(action);
     try {
       const resetInfor = yield call(async () => {
         return await axios.post(
