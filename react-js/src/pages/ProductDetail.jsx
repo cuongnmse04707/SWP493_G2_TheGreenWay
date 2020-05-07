@@ -34,7 +34,7 @@ class ProductDetail extends Component {
     this.setState({
       quantity: 0,
     });
-  }
+  };
 
   getQuantity = (value, max, valueCheck) => {
     if (Number(value) !== 0) {
@@ -242,7 +242,11 @@ class ProductDetail extends Component {
                 <div className="item-detail-coin" style={{ marginTop: "10px" }}>
                   <img src={require("../images/svgIcon/paper.svg")} alt="" />
                   <span>
-                    {Math.floor(productInfor.ProductPrice / convensionRate)} Kg
+                    {/* {Math.floor(productInfor.ProductPrice / convensionRate)} Kg */}
+                    {Number(
+                      (productInfor.ProductPrice / convensionRate).toFixed(1)
+                    )}{" "}
+                    Kg
                   </span>
                 </div>
               </div>

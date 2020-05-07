@@ -63,7 +63,11 @@ class UserProductLike extends Component {
             <span>{record.ProductPrice} VNĐ</span>
             <span className="mr-2 ml-2">|</span>
             <span>
-              {Math.floor(record.ProductPrice / this.props.convensionRate)}
+              {/* {Math.floor(record.ProductPrice / this.props.convensionRate)} */}
+              {Number(
+                (record.ProductPrice / this.props.convensionRate).toFixed(1)
+              )}{" "}
+              Kg
             </span>
           </div>
         ),
