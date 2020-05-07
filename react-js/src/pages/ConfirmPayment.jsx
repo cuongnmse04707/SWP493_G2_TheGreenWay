@@ -19,6 +19,7 @@ class ConfirmPayment extends Component {
   state = {
     totalCash: 0,
     paymentOption: "1",
+    methodPayment: "1",
     remainingAmout: 0,
     QuantityPaper: 0,
   };
@@ -48,13 +49,39 @@ class ConfirmPayment extends Component {
     });
   };
 
-  handleSelectChange = (value) => {};
+  handleSelectChange = (value) => { };
 
   handleOptionChange = (value) => {
     this.setState({
       paymentOption: value,
     });
   };
+
+  getPaymentMethod = () => {
+    this.props.form.validateFields(
+      ["paymentMethod"],
+      (err, values) => {
+        if (!err) {
+          if (values.paymentMethod === "1") {
+            this.setState({
+              methodPayment: "1"
+            })
+
+          } else {
+            this.setState({
+              methodPayment: "2",
+              paymentOption: "1"
+            })
+            if(this.state.paymentOption === "2"){
+              this.setState({
+                paymentOption: "1"
+              })
+            }
+          }
+        }
+      }
+    );
+  }
 
   orderSuccess = () => {
     const token = window.localStorage.getItem("x-access-token");
@@ -253,88 +280,12 @@ class ConfirmPayment extends Component {
                     </Form.Item>
                     <Form.Item label="Lựa chọn phương thức thanh toán">
                       {getFieldDecorator("paymentMethod", {
-                        initialValue: "1",
-                      })(
-                        <Select style={{ width: 200 }} {...this.props}>
-                          <Option value="1">Ship COD</Option>
-                          <Option value="2">Chuyển Khoản</Option>
-                        </Select>
-                      )}
-                    </Form.Item>
-                  </Form>
-                </div>
-              ) : (
-                <div>
-                  <Form {...formItemLayout} className="mt-4">
-                    <Form.Item label="Họ và tên">
-                      {getFieldDecorator("fullname", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập tên người dùng",
-                          },
-                          {
-                            min: 6,
-                            message: "Tên người dùng phải dài ít nhất 6 kí tự",
-                          },
-                          {
-                            max: 32,
-                            message: "Tên người dùng không dài quá 32 kí tự",
-                          },
-                          {
-                            pattern: userNameRegex,
-                            message:
-                              "Tên người dùng không được chưa kí tự đặc biệt và số",
-                          },
-                        ],
-                      })(<Input />)}
-                    </Form.Item>
-                    <Form.Item label="Số điện thoại">
-                      {getFieldDecorator("phone", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập số điện thoại người dùng",
-                          },
-                          {
-                            pattern: phoneRegex,
-                            message: "Nhập đúng định dạng số điện thoại",
-                          },
-                        ],
-                      })(<Input type="number" />)}
-                    </Form.Item>
-                    <Form.Item label="Email">
-                      {getFieldDecorator("email", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập địa chỉ email",
-                          },
-                          {
-                            pattern: emailRegex,
-                            message: "Vui lòng nhập đúng định dạng email",
-                          },
-                        ],
-                      })(<Input style={{ width: "100%" }} />)}
-                    </Form.Item>
-                    <Form.Item label="Nhập địa chỉ giao hàng:">
-                      {getFieldDecorator("address", {
-                        rules: [
-                          {
-                            required: true,
-                            message: "Vui lòng nhập địa chỉ muốn giao hàng",
-                          },
-                        ],
-                      })(<TextArea rows={4} />)}
-                    </Form.Item>
-                    <Form.Item label="Lựa chọn phương thức thanh toán">
-                      {getFieldDecorator("paymentMethod", {
-                        initialValue: "1",
+                        initialValue: this.state.methodPayment,
                       })(
                         <Select
-                          {...this.props}
-                          value="1"
-                          style={{ width: 200 }}
+                        style={{ width: 200 }}
+                        {...this.props}
+                        onSelect={this.getPaymentMethod}
                         >
                           <Option value="1">Ship COD</Option>
                           <Option value="2">Chuyển Khoản</Option>
@@ -343,21 +294,107 @@ class ConfirmPayment extends Component {
                     </Form.Item>
                   </Form>
                 </div>
-              )}
+              ) : (
+                  <div>
+                    <Form {...formItemLayout} className="mt-4">
+                      <Form.Item label="Họ và tên">
+                        {getFieldDecorator("fullname", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập tên người dùng",
+                            },
+                            {
+                              min: 6,
+                              message: "Tên người dùng phải dài ít nhất 6 kí tự",
+                            },
+                            {
+                              max: 32,
+                              message: "Tên người dùng không dài quá 32 kí tự",
+                            },
+                            {
+                              pattern: userNameRegex,
+                              message:
+                                "Tên người dùng không được chưa kí tự đặc biệt và số",
+                            },
+                          ],
+                        })(<Input />)}
+                      </Form.Item>
+                      <Form.Item label="Số điện thoại">
+                        {getFieldDecorator("phone", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập số điện thoại người dùng",
+                            },
+                            {
+                              pattern: phoneRegex,
+                              message: "Nhập đúng định dạng số điện thoại",
+                            },
+                          ],
+                        })(<Input type="number" />)}
+                      </Form.Item>
+                      <Form.Item label="Email">
+                        {getFieldDecorator("email", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập địa chỉ email",
+                            },
+                            {
+                              pattern: emailRegex,
+                              message: "Vui lòng nhập đúng định dạng email",
+                            },
+                          ],
+                        })(<Input style={{ width: "100%" }} />)}
+                      </Form.Item>
+                      <Form.Item label="Nhập địa chỉ giao hàng:">
+                        {getFieldDecorator("address", {
+                          rules: [
+                            {
+                              required: true,
+                              message: "Vui lòng nhập địa chỉ muốn giao hàng",
+                            },
+                          ],
+                        })(<TextArea rows={4} />)}
+                      </Form.Item>
+                      <Form.Item label="Lựa chọn phương thức thanh toán">
+                        {getFieldDecorator("paymentMethod", {
+                          initialValue: this.state.methodPayment,
+                        })(
+                          <Select
+                            {...this.props}
+                            style={{ width: 200 }}
+                            onSelect={this.getPaymentMethod}
+                          >
+                            <Option value="1">Ship COD</Option>
+                            <Option value="2">Chuyển Khoản</Option>
+                          </Select>
+                        )}
+                      </Form.Item>
+                    </Form>
+                  </div>
+                )}
               <div>
-                <div>
-                  <p style={{ fontWeight: "bold" }}>
-                    Nếu thanh toán chuyển khoản, quý khách vui lòng chuyển khoản
-                    trước
+                {
+                  this.state.methodPayment === "2" ? (
+                    <div>
+                      <p style={{ fontWeight: "bold" }}>
+                        Nếu thanh toán chuyển khoản, quý khách vui lòng chuyển khoản
+                        trước
                   </p>
-                  <p>Tên chủ tài khoản: Lê Văn Đức</p>
-                  <p>Số tài khoản: 123123123123</p>
-                  <p>Ngân hàng: Vietcombank</p>
-                </div>
-                <div>
-                  <p style={{ fontWeight: "bold" }}>Nếu thanh toán ship COD</p>
-                  <p>Qúy khách sẽ thanh toán khi nhận được hàng tại nhà</p>
-                </div>
+                      <p>Tên chủ tài khoản: Lê Văn Đức</p>
+                      <p>Số tài khoản: 123123123123</p>
+                      <p>Ngân hàng: Vietcombank</p>
+                    </div>
+                  ) : (
+                      <div>
+                        <p style={{ fontWeight: "bold" }}>Nếu thanh toán ship COD</p>
+                        <p>Qúy khách sẽ thanh toán khi nhận được hàng tại nhà</p>
+                      </div>
+                    )
+                }
+
               </div>
             </div>
             <div className="bill-infor-wrapper">
@@ -398,43 +435,55 @@ class ConfirmPayment extends Component {
                   <span style={{ fontSize: "18px", marginBottom: "10px" }}>
                     Chọn hình thức thanh toán:
                   </span>
-                  <Select
-                    style={{ width: 200, marginBottom: "10px" }}
-                    onChange={this.handleOptionChange}
-                    value={this.state.paymentOption}
-                  >
-                    <Option value="1">Tiền</Option>
-                    <Option
-                      value="2"
-                      // disabled={
-                      //   Math.floor(totalCash / convensionRate) === 0
-                      //     ? true
-                      //     : false
-                      // }
-                      disabled={
-                        Number((totalCash / convensionRate).toFixed(1)) === 0
-                          ? true
-                          : false
-                      }
-                    >
-                      Giấy
+                  {
+                    this.state.methodPayment === "1" ? (
+                      <Select
+                        style={{ width: 200, marginBottom: "10px" }}
+                        onChange={this.handleOptionChange}
+                        value={this.state.paymentOption}
+                      >
+                        <Option value="1">Tiền</Option>
+                        <Option
+                          value="2"
+                          disabled={
+                            Number((totalCash / convensionRate).toFixed(1)) === 0
+                              ? true
+                              : false
+                          }
+                        >
+                          Giấy
                     </Option>
-                    <Option
-                      value="3"
-                      // disabled={
-                      //   Math.floor(totalCash / convensionRate) === 0
-                      //     ? true
-                      //     : false
-                      // }
-                      disabled={
-                        Number((totalCash / convensionRate).toFixed(1)) === 0
-                          ? true
-                          : false
-                      }
-                    >
-                      Cả hai
+                        <Option
+                          value="3"
+                          disabled={
+                            Number((totalCash / convensionRate).toFixed(1)) === 0
+                              ? true
+                              : false
+                          }
+                        >
+                          Cả hai
                     </Option>
-                  </Select>
+                      </Select>
+                    ) : (
+                        <Select
+                          style={{ width: 200, marginBottom: "10px" }}
+                          onChange={this.handleOptionChange}
+                          value={this.state.paymentOption}
+                        >
+                          <Option value="1">Tiền</Option>
+                          <Option
+                            value="3"
+                            disabled={
+                              Number((totalCash / convensionRate).toFixed(1)) === 0
+                                ? true
+                                : false
+                            }
+                          >
+                            Cả hai
+                    </Option>
+                        </Select>
+                      )
+                  }
                   {this.state.paymentOption == 3 ? (
                     <div className="show-option-payment">
                       <div className="money-input mb-1">
@@ -462,8 +511,8 @@ class ConfirmPayment extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="show-option-payment"></div>
-                  )}
+                      <div className="show-option-payment"></div>
+                    )}
                 </div>
                 <div className="button-check-out" onClick={this.orderSuccess}>
                   <span>Đặt hàng </span>
