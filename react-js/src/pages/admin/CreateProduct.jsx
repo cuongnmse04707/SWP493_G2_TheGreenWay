@@ -247,7 +247,7 @@ class CreateProduct extends Component {
                         ],
                       })(<InputNumber type="number" min={1} />)}
                     </Form.Item>
-                    <Form.Item label="Loại sản phẩm">
+                    <Form.Item label="Loại sản phẩm" style={{marginRight:"8%"}}>
                       {getFieldDecorator("category", {
                         rules: [
                           {

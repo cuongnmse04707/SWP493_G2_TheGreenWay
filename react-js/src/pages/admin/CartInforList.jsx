@@ -73,7 +73,7 @@ class CartInforList extends Component {
     const { downRole } = this.props;
     downRole({
       email: value,
-      callback: (value) => {},
+      callback: (value) => { },
     });
   };
 
@@ -141,15 +141,15 @@ class CartInforList extends Component {
                     record.Description === "Đang Chờ Xử Lý"
                       ? "blue"
                       : `${
-                          record.Description === "Đang Giao Hàng"
-                            ? "yellow"
-                            : `${
-                                record.Description === "Giao Hàng Thành Công"
-                                  ? "#10ea10"
-                                  : `red`
-                              }`
+                      record.Description === "Đang Giao Hàng"
+                        ? "yellow"
+                        : `${
+                        record.Description === "Giao Hàng Thành Công"
+                          ? "#10ea10"
+                          : `red`
                         }`
-                  }`,
+                      }`
+                    }`,
                   marginRight: "15px",
                 }}
               />
@@ -162,7 +162,10 @@ class CartInforList extends Component {
         title: <span>Tổng số tiền</span>,
         dataIndex: "TotalPrice",
         key: "TotalPrice",
-        render: (text) => <span>{text} VNĐ</span>,
+        render: (text) => <span>{text ? text.toString().replace(
+          /(\d)(?=(\d{3})+(?!\d))/g,
+          "$1,"
+        ) : ''} VNĐ</span>,
       },
       {
         title: <span>Ngày tạo</span>,
@@ -247,7 +250,10 @@ class CartInforList extends Component {
         dataIndex: "age",
         render: (text, record) => (
           <div>
-            <span>{record.Price} VNĐ</span>
+            <span>{record.Price ? record.Price.toString().replace(
+              /(\d)(?=(\d{3})+(?!\d))/g,
+              "$1,"
+            ) : ''} VNĐ</span>
           </div>
         ),
       },
@@ -358,19 +364,19 @@ class CartInforList extends Component {
               dataSource={
                 stateTable === "all"
                   ? this.getDataTable(
-                      (listOrder || []).sort(
+                    (listOrder || []).sort(
+                      (a, b) =>
+                        new Date(b.CreateDate) - new Date(a.CreateDate)
+                    )
+                  )
+                  : this.getDataTable(
+                    (listOrder || [])
+                      .filter((el) => el.Description === stateTable)
+                      .sort(
                         (a, b) =>
                           new Date(b.CreateDate) - new Date(a.CreateDate)
                       )
-                    )
-                  : this.getDataTable(
-                      (listOrder || [])
-                        .filter((el) => el.Description === stateTable)
-                        .sort(
-                          (a, b) =>
-                            new Date(b.CreateDate) - new Date(a.CreateDate)
-                        )
-                    )
+                  )
               }
               style={{ background: "white", marginTop: "10px" }}
               // pagination={false}
@@ -378,19 +384,19 @@ class CartInforList extends Component {
                 pageSize: 9,
                 total: (stateTable === "all"
                   ? this.getDataTable(
-                      (listOrder || []).sort(
+                    (listOrder || []).sort(
+                      (a, b) =>
+                        new Date(b.CreateDate) - new Date(a.CreateDate)
+                    )
+                  )
+                  : this.getDataTable(
+                    (listOrder || [])
+                      .filter((el) => el.Description === stateTable)
+                      .sort(
                         (a, b) =>
                           new Date(b.CreateDate) - new Date(a.CreateDate)
                       )
-                    )
-                  : this.getDataTable(
-                      (listOrder || [])
-                        .filter((el) => el.Description === stateTable)
-                        .sort(
-                          (a, b) =>
-                            new Date(b.CreateDate) - new Date(a.CreateDate)
-                        )
-                    )
+                  )
                 ).length,
               }}
             />
@@ -423,11 +429,17 @@ class CartInforList extends Component {
                       <span className="mr-4 order-infor-title">
                         Tổng số tiền:
                       </span>{" "}
-                      <span>{cartInfor.TotalPrice} VND</span>
+                      <span>{cartInfor.TotalPrice ? cartInfor.TotalPrice.toString().replace(
+                        /(\d)(?=(\d{3})+(?!\d))/g,
+                        "$1,"
+                      ) : ''} VND</span>
                     </div>
                     <div style={{ display: "flex" }}>
                       <span className="mr-4 order-infor-title">Tiền mặt:</span>{" "}
-                      <span>{cartInfor.Cash} VND</span>
+                      <span>{cartInfor.Cash ? cartInfor.Cash.toString().replace(
+                        /(\d)(?=(\d{3})+(?!\d))/g,
+                        "$1,"
+                      ) : ''} VND</span>
                     </div>
                     <div style={{ display: "flex" }}>
                       <span className="mr-4 order-infor-title">Giấy:</span>{" "}

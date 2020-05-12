@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../css/order-history-detail.css";
 import { connect } from "react-redux";
 import NavBar from "../components/NavBar";
-import {Table, Button } from "antd";
+import { Table, Button } from "antd";
 import UserOrderHistoryTypes from "../redux/user-order-history-redux";
 import queryString from "query-string";
 
@@ -50,7 +50,10 @@ class OrderHistoryDetail extends Component {
         dataIndex: "age",
         render: (text, record) => (
           <div>
-            <span>{record.Price} VNĐ</span>
+            <span>{record.Price ? record.Price.toString().replace(
+              /(\d)(?=(\d{3})+(?!\d))/g,
+              "$1,"
+            ): ''} VNĐ</span>
           </div>
         )
       },
@@ -78,11 +81,17 @@ class OrderHistoryDetail extends Component {
               </p>
               <div style={{ display: "flex" }}>
                 <span className="mr-4 order-infor-title">Tổng số tiền:</span>{" "}
-                <span>{cartInfor.TotalPrice} VND</span>
+                <span>{cartInfor.TotalPrice ? cartInfor.TotalPrice.toString().replace(
+                  /(\d)(?=(\d{3})+(?!\d))/g,
+                  "$1,"
+                ) : ''} VND</span>
               </div>
               <div style={{ display: "flex" }}>
                 <span className="mr-4 order-infor-title">Tiền mặt:</span>{" "}
-                <span>{cartInfor.Cash} VND</span>
+                <span>{cartInfor.Cash ? cartInfor.Cash.toString().replace(
+                  /(\d)(?=(\d{3})+(?!\d))/g,
+                  "$1,"
+                ) : ''} VND</span>
               </div>
               <div style={{ display: "flex" }}>
                 <span className="mr-4 order-infor-title">Giấy:</span>{" "}

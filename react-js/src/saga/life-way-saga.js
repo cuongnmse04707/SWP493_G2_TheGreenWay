@@ -5,6 +5,7 @@ import axios from "axios";
 
 const LifeWaySagas = {
   *getPostInfor(action) {
+    console.log('vao saga post')
     try {
       const postInfor = yield call(() => {
         return axios.get(

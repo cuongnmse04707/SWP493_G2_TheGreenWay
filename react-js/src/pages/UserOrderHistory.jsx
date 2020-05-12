@@ -52,7 +52,10 @@ class UserOrderHistory extends Component {
         render: (text, record) => (
           <div>
             <span>
-              {record.TotalPrice === 0 ? "--" : `${record.TotalPrice} VNĐ`}
+              {record.TotalPrice === 0 ? "--" : `${record.TotalPrice.toString().replace(
+              /(\d)(?=(\d{3})+(?!\d))/g,
+              "$1,"
+            )} VNĐ`}
             </span>
           </div>
         )
@@ -63,7 +66,10 @@ class UserOrderHistory extends Component {
         sorter: (a, b) => a.Cash - b.Cash,
         render: (text, record) => (
           <div>
-            <span>{record.Cash === 0 ? "--" : record.Cash + `VNĐ`}</span>
+            <span>{record.Cash === 0 ? "--" : record.Cash.toString().replace(
+              /(\d)(?=(\d{3})+(?!\d))/g,
+              "$1,"
+            ) + `VNĐ`}</span>
           </div>
         )
       },

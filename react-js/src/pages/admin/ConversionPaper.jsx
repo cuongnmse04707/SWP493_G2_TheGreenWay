@@ -134,7 +134,10 @@ class ConversionPaper extends Component {
         dataIndex: 'rate',
         render: (text, record) => (
           <div>
-            <span>{record.PaperPrice} VNĐ</span>
+            <span>{record.PaperPrice ? record.PaperPrice.toString().replace(
+              /(\d)(?=(\d{3})+(?!\d))/g,
+              "$1,"
+            ) : ''} VNĐ</span>
           </div>
         ),
       },
@@ -215,7 +218,10 @@ class ConversionPaper extends Component {
         dataIndex: 'rate',
         render: (text, record) => (
           <div>
-            <span>{record.PaperPrice} VNĐ</span>
+            <span>{record.PaperPrice ? record.PaperPrice.toString().replace(
+              /(\d)(?=(\d{3})+(?!\d))/g,
+              "$1,"
+            ) : ''} VNĐ</span>
           </div>
         ),
       },

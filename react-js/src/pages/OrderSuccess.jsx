@@ -42,7 +42,7 @@ class OrderSuccess extends Component {
                   alt=""
                 />
               </div>
-              <p className="thank-order">thank for your order</p>
+              <p className="thank-order">Cảm ơn quý khách</p>
               <div>
                 <p>Cảm ơn bạn đã lựa chọn The Green Way để trải nghiệm cho mình phong cách sống xanh,
                 lựa chọn những sản phẩm thân thiện với môi trường.

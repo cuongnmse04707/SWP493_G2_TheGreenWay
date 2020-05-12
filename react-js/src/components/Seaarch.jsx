@@ -179,7 +179,7 @@ class SearchComponent extends Component {
                   type="number"
                   allowClear
                   style={{ width: 150, textAlign: "center" }}
-                  placeholder="Minimum"
+                  placeholder="Nhỏ nhất"
                   onChange={event => {
                     this.setState({
                       minP: event.target.value
@@ -205,7 +205,7 @@ class SearchComponent extends Component {
                     width: 150,
                     textAlign: "center"
                   }}
-                  placeholder="Maximum"
+                  placeholder="Lớn nhất"
                   onChange={event => {
                     this.setState({
                       maxP: event.target.value

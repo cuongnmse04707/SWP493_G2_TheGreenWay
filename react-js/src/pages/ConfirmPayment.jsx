@@ -379,16 +379,16 @@ class ConfirmPayment extends Component {
                     <div>
                       <p style={{ fontWeight: "bold" }}>
                         Nếu thanh toán chuyển khoản, quý khách vui lòng chuyển khoản
-                        trước
+                        trước theo thông tin dưới đây
                   </p>
                       <p>Tên chủ tài khoản: Lê Văn Đức</p>
-                      <p>Số tài khoản: 123123123123</p>
-                      <p>Ngân hàng: Vietcombank</p>
+                      <p>Số tài khoản: 45210000478382</p>
+                      <p>Ngân hàng: BIDV chi nhánh Thạch Thất</p>
                     </div>
                   ) : (
                       <div>
                         <p style={{ fontWeight: "bold" }}>Nếu thanh toán ship COD</p>
-                        <p>Qúy khách sẽ thanh toán khi nhận được hàng tại nhà</p>
+                        <p>Quý khách sẽ thanh toán khi nhận được hàng tại nhà</p>
                       </div>
                     )
                 }
@@ -419,7 +419,10 @@ class ConfirmPayment extends Component {
                 <div className="text-bill-total-money">
                   <span>Tổng số tiền</span>
                   <span style={{ fontWeight: "bold" }}>
-                    {this.state.totalCash}VNĐ
+                    {this.state.totalCash.toString().replace(
+                        /(\d)(?=(\d{3})+(?!\d))/g,
+                        "$1,"
+                      )} VNĐ
                   </span>
                 </div>
                 <div className="text-bill-detail">

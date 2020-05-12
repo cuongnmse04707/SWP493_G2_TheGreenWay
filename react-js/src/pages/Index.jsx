@@ -134,7 +134,7 @@ class Index extends Component {
                   src={require("../images/recycle-1.jpg")}
                   alt=""
                 />
-                <h4 className="service-heading">Đồ tái chế</h4>
+                <h4 className="service-heading">Đồ thân thiện với môi trường</h4>
                 <p className="text-muted">
                   Tái chế là một hành động đơn giản gần gũi mà bất cứ ai cũng
                   đều có thể làm được, việc tái chế chính là tái sử dụng lại

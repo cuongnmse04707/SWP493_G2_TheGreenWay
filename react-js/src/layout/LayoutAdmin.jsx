@@ -248,7 +248,7 @@ class LayoutAdmin extends Component {
         <NavBar />
         <div style={{ width: "100%", height: "82vh", marginTop: "81px" }}>
           <div className="admin-content-container">
-            <div style={{ width: 256 }}>
+            <div style={{ width: 256 ,position:"fixed", height:"100%"}}>
               <Menu
                 selectedKeys={[`${selectedKey}`]}
                 mode="inline"

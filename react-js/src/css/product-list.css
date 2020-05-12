@@ -2,6 +2,11 @@
   height: 100%;
   margin-top: 78px;
 }
+.ant-btn-circle, .ant-input-search-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .product-header {
   height: 80vh;

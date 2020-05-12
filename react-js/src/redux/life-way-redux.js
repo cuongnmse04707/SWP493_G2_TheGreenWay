@@ -35,12 +35,14 @@ export const INITIAL_STATE = {
 };
 
 export const request = state => {
+  console.log("vao request ")
   return {
     ...state
   };
 };
 
 export const getLifeWaySucceed = (state, { data }) => {
+  console.log("vao success ")
   return {
     ...state,
     postInfor: data.data,

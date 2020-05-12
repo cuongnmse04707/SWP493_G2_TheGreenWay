@@ -60,7 +60,10 @@ class UserProductLike extends Component {
         dataIndex: "age",
         render: (text, record) => (
           <div>
-            <span>{record.ProductPrice} VNĐ</span>
+            <span>{record.ProductPrice ? record.ProductPrice.replace(
+              /(\d)(?=(\d{3})+(?!\d))/g,
+              "$1,"
+            ) : ''} VNĐ</span>
             <span className="mr-2 ml-2">|</span>
             <span>
               {/* {Math.floor(record.ProductPrice / this.props.convensionRate)} */}
