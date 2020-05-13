@@ -274,10 +274,10 @@ class ProductInforList extends Component {
         dataIndex: "age",
         render: (text, record) => (
           <div>
-            <span>{record.ProductPrice ? record.ProductPrice.replace(
+            <span>{ get(record,'ProductPrice').toString().replace(
               /(\d)(?=(\d{3})+(?!\d))/g,
               "$1,"
-            ) : ''} VNĐ</span>
+            )} VNĐ</span>
           </div>
         ),
       },

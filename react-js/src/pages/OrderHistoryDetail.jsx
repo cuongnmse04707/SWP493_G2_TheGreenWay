@@ -5,7 +5,7 @@ import NavBar from "../components/NavBar";
 import { Table, Button } from "antd";
 import UserOrderHistoryTypes from "../redux/user-order-history-redux";
 import queryString from "query-string";
-
+import { get } from "lodash";
 var moment = require("moment");
 class OrderHistoryDetail extends Component {
   componentDidMount() {
@@ -50,10 +50,11 @@ class OrderHistoryDetail extends Component {
         dataIndex: "age",
         render: (text, record) => (
           <div>
-            <span>{record.Price ? record.Price.toString().replace(
+            <span>   {get(record, 'Price').toString().replace(
               /(\d)(?=(\d{3})+(?!\d))/g,
               "$1,"
-            ): ''} VNĐ</span>
+            )}{" "}
+            VNĐ</span>
           </div>
         )
       },

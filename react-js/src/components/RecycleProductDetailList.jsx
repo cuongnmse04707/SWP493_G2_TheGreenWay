@@ -7,7 +7,7 @@ import IntroProductTypes from "../redux/get-intro-product-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
 import SearchComponent from "./Seaarch";
-
+import { get } from "lodash";
 class RecycleProductDetailList extends Component {
   state = {
     introData: [],
@@ -284,12 +284,10 @@ class RecycleProductDetailList extends Component {
                         alt=""
                       />
                       <span>
-                        {item.ProductPrice
-                          ? item.ProductPrice.replace(
-                              /(\d)(?=(\d{3})+(?!\d))/g,
-                              "$1,"
-                            )
-                          : 0}{" "}
+                      {get(item, 'ProductPrice').toString().replace(
+                          /(\d)(?=(\d{3})+(?!\d))/g,
+                          "$1,"
+                        )}{" "}
                         VNĐ
                       </span>
                     </div>

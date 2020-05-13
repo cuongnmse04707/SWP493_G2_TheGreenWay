@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import UserLikeProductTypes from "../redux/user-product-like-redux";
 import ProductDetailTypes from "../redux/product-detail-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
-
+import { get } from "lodash";
 class UserProductLike extends Component {
   state = {
     current: 1,
@@ -60,10 +60,11 @@ class UserProductLike extends Component {
         dataIndex: "age",
         render: (text, record) => (
           <div>
-            <span>{record.ProductPrice ? record.ProductPrice.replace(
+            <span>{get(record, 'ProductPrice').toString().replace(
               /(\d)(?=(\d{3})+(?!\d))/g,
               "$1,"
-            ) : ''} VNĐ</span>
+            )}{" "}
+            VNĐ</span>
             <span className="mr-2 ml-2">|</span>
             <span>
               {/* {Math.floor(record.ProductPrice / this.props.convensionRate)} */}

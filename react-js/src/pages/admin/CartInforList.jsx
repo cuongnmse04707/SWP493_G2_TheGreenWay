@@ -439,7 +439,7 @@ class CartInforList extends Component {
                       <span>{cartInfor.Cash ? cartInfor.Cash.toString().replace(
                         /(\d)(?=(\d{3})+(?!\d))/g,
                         "$1,"
-                      ) : ''} VND</span>
+                      ) : '0'} VND</span>
                     </div>
                     <div style={{ display: "flex" }}>
                       <span className="mr-4 order-infor-title">Giấy:</span>{" "}

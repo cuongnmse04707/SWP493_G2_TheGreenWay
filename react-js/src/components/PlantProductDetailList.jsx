@@ -7,6 +7,7 @@ import IntroProductTypes from "../redux/get-intro-product-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
 import SearchComponent from "./Seaarch";
+import { get } from "lodash";
 
 class PlantProductDetailList extends Component {
   state = {
@@ -256,13 +257,13 @@ class PlantProductDetailList extends Component {
                           alt=""
                         />
                       ) : (
-                        <img
-                          onClick={(event) => this.changeHeart(event, item)}
-                          style={{ height: "35px", width: "35px" }}
-                          src={require("../images/svgIcon/unLike.svg")}
-                          alt=""
-                        />
-                      )}
+                          <img
+                            onClick={(event) => this.changeHeart(event, item)}
+                            style={{ height: "35px", width: "35px" }}
+                            src={require("../images/svgIcon/unLike.svg")}
+                            alt=""
+                          />
+                        )}
                     </div>
                   </div>
                 </div>
@@ -284,12 +285,10 @@ class PlantProductDetailList extends Component {
                         alt=""
                       />
                       <span>
-                        {item.ProductPrice
-                          ? item.ProductPrice.replace(
-                              /(\d)(?=(\d{3})+(?!\d))/g,
-                              "$1,"
-                            )
-                          : 0}{" "}
+                        {get(item, 'ProductPrice').toString().replace(
+                          /(\d)(?=(\d{3})+(?!\d))/g,
+                          "$1,"
+                        )}{" "}
                         VNĐ
                       </span>
                     </div>

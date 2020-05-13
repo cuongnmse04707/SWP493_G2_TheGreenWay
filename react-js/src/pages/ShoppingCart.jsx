@@ -6,7 +6,7 @@ import { InputNumber, Modal, message, Table } from "antd";
 import { connect } from "react-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
-
+import { get } from "lodash";
 class ShoppingCart extends Component {
   state = {
     quantity: 1,
@@ -144,10 +144,12 @@ class ShoppingCart extends Component {
         dataIndex: "age",
         render: (text, record) => (
           <div>
-            <span>{record.ProductPrice.replace(
+            <span>   {get(record, 'ProductPrice').toString().replace(
               /(\d)(?=(\d{3})+(?!\d))/g,
               "$1,"
-            )} VNĐ</span>
+            )}{" "}
+            VNĐ
+            </span>
             <span className="mr-2 ml-2">|</span>
             <span>
               {/* {Math.floor(record.ProductPrice / this.props.convensionRate)} */}

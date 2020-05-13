@@ -6,7 +6,7 @@ import { message } from "antd";
 import IntroProductTypes from "../redux/get-intro-product-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
-
+import { get } from "lodash";
 class RecycleProductList extends Component {
   state = {
     convensionRate: 0,
@@ -133,13 +133,13 @@ class RecycleProductList extends Component {
                           alt=""
                         />
                       ) : (
-                        <img
-                          onClick={(event) => this.changeHeart(event, item)}
-                          style={{ height: "35px", width: "35px" }}
-                          src={require("../images/svgIcon/unLike.svg")}
-                          alt=""
-                        />
-                      )}
+                          <img
+                            onClick={(event) => this.changeHeart(event, item)}
+                            style={{ height: "35px", width: "35px" }}
+                            src={require("../images/svgIcon/unLike.svg")}
+                            alt=""
+                          />
+                        )}
                     </div>
                   </div>
                 </div>
@@ -163,12 +163,10 @@ class RecycleProductList extends Component {
                         alt=""
                       />
                       <span>
-                        {item.ProductPrice
-                          ? item.ProductPrice.replace(
-                              /(\d)(?=(\d{3})+(?!\d))/g,
-                              "$1,"
-                            )
-                          : 0}{" "}
+                        {get(item, 'ProductPrice').toString().replace(
+                          /(\d)(?=(\d{3})+(?!\d))/g,
+                          "$1,"
+                        )}{" "}
                         VNĐ
                       </span>
                     </div>

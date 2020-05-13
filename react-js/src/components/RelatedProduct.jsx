@@ -7,7 +7,7 @@ import IntroProductTypes from "../redux/get-intro-product-redux";
 import ProductDetailTypes from "../redux/product-detail-redux";
 import ConvensionTypes from "../redux/paper-conversion-redux";
 import HomePageTypes from "../redux/home-page-redux";
-
+import { get } from "lodash";
 class RelatedProduct extends Component {
   state = {};
 
@@ -185,13 +185,11 @@ class RelatedProduct extends Component {
                             alt=""
                           />
                           <span>
-                            {item.ProductPrice
-                              ? item.ProductPrice.replace(
-                                  /(\d)(?=(\d{3})+(?!\d))/g,
-                                  "$1,"
-                                )
-                              : 0}{" "}
-                            VNĐ
+                          {get(item, 'ProductPrice').toString().replace(
+                          /(\d)(?=(\d{3})+(?!\d))/g,
+                          "$1,"
+                        )}{" "}
+                        VNĐ
                           </span>
                         </div>
                         <div className="item-coin" style={{ marginTop: "5px" }}>
