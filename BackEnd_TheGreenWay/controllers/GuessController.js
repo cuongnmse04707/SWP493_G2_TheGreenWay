@@ -32,6 +32,7 @@ let addNewOrderByGuest = async (req, res) => {
     "-" +
     day.getHours();
   // Information of Guess
+  console.log(guestID);
   const Name = req.body.Name;
   const Phone = req.body.Phone;
   const Email = req.body.Email;
@@ -77,198 +78,199 @@ let addNewOrderByGuest = async (req, res) => {
             });
           }
         }
-        if (checkOrder) {
-          connectionDB.query(
-            "INSERT INTO Guest SET ? ",
-            emptyGuess,
-            (err, result) => {
-              if (err) {
-                debug(err);
-                return res
-                  .status(200)
-                  .json({ success: false, message: "Add Guest is Unsuccess!" });
-              } else {
-                //Sucess thi bat dau tao Order
-                // Insert Into Orders Table
-                let sql = `SELECT MAX(Orders.OrderID) AS OrderID FROM Orders`;
-                let query = mysql.format(sql);
-                connectionDB.query(query, async (err, result) => {
-                  if (err) {
-                    return res
-                      .status(200)
-                      .json({ success: false, message: err });
-                  } else {
-                    //Lay ID day vao Database cho bang Product
-                    const arr = await Array.apply(null, result);
-                    debug(Number(arr[0].OrderID));
-                    const OrderID = Number(arr[0].OrderID) + 1; // Vi IDProduct là NVARCHAR
-                    debug(OrderID);
-                    const empty = {
-                      OrderID: OrderID,
-                      GuestID: guestID,
-                      PaymentID: PaymentID,
-                      ConversionID: ConversionID,
-                      TotalPrice: TotalPrice,
-                      ShipAddress: ShipAddress,
-                      CreateDate: CreateDate,
-                      QuantityPaper: QuantityPaper,
-                      Cash: Cash,
-                    };
-                    // Luu vao Database
-                    connectionDB.query(
-                      "INSERT INTO Orders SET ? ",
-                      empty,
-                      (err, result) => {
-                        if (err) {
-                          debug(err);
-                          return res.status(200).json({
-                            success: false,
-                            message: "Thêm đơn hàng mới không thành công",
-                          });
-                        } else {
-                          // Insert Into OrderDetail Table
-                          arrayCart.forEach(function (item, index, arrays) {
-                            const emptyOrderDetail = {
-                              OrderID: OrderID,
-                              ProductID: item.id,
-                              QuantityProduct: item.quatityBuy,
-                              Price:
-                                Number(item.quatityBuy) * Number(item.price),
-                            };
-                            // Luu vao Database
-                            connectionDB.query(
-                              "INSERT INTO OrderDetail SET ? ",
-                              emptyOrderDetail,
-                              (err, result) => {
-                                if (err) {
-                                  debug(err);
-                                  return res.status(200).json({
-                                    success: false,
-                                    message:
-                                      "Thêm đơn hàng mới không thành công",
-                                  });
-                                } else {
-                                  //Next sang viec save database voi OrderStatusDetail
-                                }
-                              }
-                            );
-                          });
-                          //Save database OrderStatusDetail Mac dinh trang thai la dang xu li
-                          // Mod email chưa có gì cả ... Chưa có ngừoi click
-                          const emptyOrderStatusDetail = {
+
+      });
+      if (checkOrder) {
+        connectionDB.query(
+          "INSERT INTO Guest SET ? ",
+          emptyGuess,
+          (err, result) => {
+            if (err) {
+              debug(err);
+              return res
+                .status(200)
+                .json({ success: false, message: "Add Guest is Unsuccess!" });
+            } else {
+              //Sucess thi bat dau tao Order
+              // Insert Into Orders Table
+              let sql = `SELECT MAX(Orders.OrderID) AS OrderID FROM Orders`;
+              let query = mysql.format(sql);
+              connectionDB.query(query, async (err, result) => {
+                if (err) {
+                  return res
+                    .status(200)
+                    .json({ success: false, message: err });
+                } else {
+                  //Lay ID day vao Database cho bang Product
+                  const arr = await Array.apply(null, result);
+                  debug(Number(arr[0].OrderID));
+                  const OrderID = Number(arr[0].OrderID) + 1; // Vi IDProduct là NVARCHAR
+                  debug(OrderID);
+                  const empty = {
+                    OrderID: OrderID,
+                    GuestID: guestID,
+                    PaymentID: PaymentID,
+                    ConversionID: ConversionID,
+                    TotalPrice: TotalPrice,
+                    ShipAddress: ShipAddress,
+                    CreateDate: CreateDate,
+                    QuantityPaper: QuantityPaper,
+                    Cash: Cash,
+                  };
+                  // Luu vao Database
+                  connectionDB.query(
+                    "INSERT INTO Orders SET ? ",
+                    empty,
+                    (err, result) => {
+                      if (err) {
+                        debug(err);
+                        return res.status(200).json({
+                          success: false,
+                          message: "Thêm đơn hàng mới không thành công",
+                        });
+                      } else {
+                        // Insert Into OrderDetail Table
+                        arrayCart.forEach(function (item, index, arrays) {
+                          const emptyOrderDetail = {
                             OrderID: OrderID,
-                            OrderStatusID: "1",
-                            ModifyDate: CreateDate,
+                            ProductID: item.id,
+                            QuantityProduct: item.quatityBuy,
+                            Price:
+                              Number(item.quatityBuy) * Number(item.price),
                           };
                           // Luu vao Database
                           connectionDB.query(
-                            "INSERT INTO OrderStatusDetail SET ? ",
-                            emptyOrderStatusDetail,
-                            async (err, result) => {
+                            "INSERT INTO OrderDetail SET ? ",
+                            emptyOrderDetail,
+                            (err, result) => {
                               if (err) {
                                 debug(err);
                                 return res.status(200).json({
                                   success: false,
-                                  message: "Thêm đơn hàng mới không thành công",
+                                  message:
+                                    "Thêm đơn hàng mới không thành công",
                                 });
                               } else {
-                                //Next sang viec save token
-                                // return res.status(200).json({success: true,message : "Add New Orders is Success!"});
-                                try {
-                                  const guestData = {
-                                    GuestID: guestID,
-                                    OrderID: OrderID,
-                                  };
-                                  debug(
-                                    `Thực hiện tạo mã Token, [thời gian sống 3650 ngày.]`
-                                  );
-                                  const accessToken = await jwtGuest.generateTokenGuest(
-                                    guestData,
-                                    accessTokenSecret,
-                                    accessTokenLife
-                                  );
-                                  debug(
-                                    `Gửi Token và Refresh Token về cho client...`
-                                  );
-                                  const emptyGuest = {
-                                    GuestID: guestID,
-                                    token: accessToken,
-                                  };
-
-                                  //Tao transporter
-                                  const transporter = nodemailer.createTransport(
-                                    {
-                                      service: "gmail",
-                                      auth: {
-                                        user: `nguyencuong.3061997@gmail.com`,
-                                        pass: `manhcuong@vickyrius1997`,
-                                      },
-                                    }
-                                  );
-                                  // tao mailOptions
-                                  const mailOptions = {
-                                    from: "nguyencuong.3061997@gmail.com",
-                                    to: `${Email}`,
-                                    subject: "[TGW] - Đơn hàng của bạn",
-                                    text:
-                                      "Bạn đang nhận được điều này bởi vì bạn (hoặc người khác) đã yêu cầu đặt hàng bằng email của bạn.\n\n" +
-                                      "Vui lòng nhấp vào liên kết sau hoặc dán liên kết này vào trình duyệt của bạn để xem thông tin đơn hàng:\n\n" +
-                                      `http://localhost:3000/order-detail/order?token=${accessToken}` +
-                                      "\n\nNếu bạn không yêu cầu điều này, xin vui lòng bỏ qua email này.\n",
-                                  };
-                                  // Luu vao Database
-                                  connectionDB.query(
-                                    "INSERT INTO GuestToken SET ? ",
-                                    emptyGuest,
-                                    (err, result) => {
-                                      if (err) {
-                                        debug(err);
-                                        return res.status(200).json({
-                                          success: false,
-                                          message: "Add Guest is Unsuccess!",
-                                        });
-                                      } else {
-                                      }
-                                    }
-                                  );
-
-                                  transporter.sendMail(
-                                    mailOptions,
-                                    (err, response) => {
-                                      if (err) {
-                                        return res.status(200).json({
-                                          success: false,
-                                          message: err,
-                                        });
-                                      } else {
-                                        return res.status(200).json({
-                                          success: true,
-                                          message:
-                                            "Bạn đã đặt hàng thành công!",
-                                          accessToken,
-                                        });
-                                      }
-                                    }
-                                  );
-                                } catch (error) {
-                                  return res.status(200).json({
-                                    success: false,
-                                    message: error,
-                                  });
-                                }
+                                //Next sang viec save database voi OrderStatusDetail
                               }
                             }
                           );
-                        }
+                        });
+                        //Save database OrderStatusDetail Mac dinh trang thai la dang xu li
+                        // Mod email chưa có gì cả ... Chưa có ngừoi click
+                        const emptyOrderStatusDetail = {
+                          OrderID: OrderID,
+                          OrderStatusID: "1",
+                          ModifyDate: CreateDate,
+                        };
+                        // Luu vao Database
+                        connectionDB.query(
+                          "INSERT INTO OrderStatusDetail SET ? ",
+                          emptyOrderStatusDetail,
+                          async (err, result) => {
+                            if (err) {
+                              debug(err);
+                              return res.status(200).json({
+                                success: false,
+                                message: "Thêm đơn hàng mới không thành công",
+                              });
+                            } else {
+                              //Next sang viec save token
+                              // return res.status(200).json({success: true,message : "Add New Orders is Success!"});
+                              try {
+                                const guestData = {
+                                  GuestID: guestID,
+                                  OrderID: OrderID,
+                                };
+                                debug(
+                                  `Thực hiện tạo mã Token, [thời gian sống 3650 ngày.]`
+                                );
+                                const accessToken = await jwtGuest.generateTokenGuest(
+                                  guestData,
+                                  accessTokenSecret,
+                                  accessTokenLife
+                                );
+                                debug(
+                                  `Gửi Token và Refresh Token về cho client...`
+                                );
+                                const emptyGuest = {
+                                  GuestID: guestID,
+                                  token: accessToken,
+                                };
+
+                                //Tao transporter
+                                const transporter = nodemailer.createTransport(
+                                  {
+                                    service: "gmail",
+                                    auth: {
+                                      user: `nguyencuong.3061997@gmail.com`,
+                                      pass: `manhcuong@vickyrius1997`,
+                                    },
+                                  }
+                                );
+                                // tao mailOptions
+                                const mailOptions = {
+                                  from: "nguyencuong.3061997@gmail.com",
+                                  to: `${Email}`,
+                                  subject: "[TGW] - Đơn hàng của bạn",
+                                  text:
+                                    "Bạn đang nhận được điều này bởi vì bạn (hoặc người khác) đã yêu cầu đặt hàng bằng email của bạn.\n\n" +
+                                    "Vui lòng nhấp vào liên kết sau hoặc dán liên kết này vào trình duyệt của bạn để xem thông tin đơn hàng:\n\n" +
+                                    `http://localhost:3000/order-detail/order?token=${accessToken}` +
+                                    "\n\nNếu bạn không yêu cầu điều này, xin vui lòng bỏ qua email này.\n",
+                                };
+                                // Luu vao Database
+                                connectionDB.query(
+                                  "INSERT INTO GuestToken SET ? ",
+                                  emptyGuest,
+                                  (err, result) => {
+                                    if (err) {
+                                      debug(err);
+                                      return res.status(200).json({
+                                        success: false,
+                                        message: "Add Guest is Unsuccess!",
+                                      });
+                                    } else {
+                                    }
+                                  }
+                                );
+
+                                transporter.sendMail(
+                                  mailOptions,
+                                  (err, response) => {
+                                    if (err) {
+                                      return res.status(200).json({
+                                        success: false,
+                                        message: err,
+                                      });
+                                    } else {
+                                      return res.status(200).json({
+                                        success: true,
+                                        message:
+                                          "Bạn đã đặt hàng thành công!",
+                                        accessToken,
+                                      });
+                                    }
+                                  }
+                                );
+                              } catch (error) {
+                                return res.status(200).json({
+                                  success: false,
+                                  message: error,
+                                });
+                              }
+                            }
+                          }
+                        );
                       }
-                    );
-                  }
-                });
-              }
+                    }
+                  );
+                }
+              });
             }
-          );
-        }
-      });
+          }
+        );
+      }
     }
   });
   // Luu vao Database

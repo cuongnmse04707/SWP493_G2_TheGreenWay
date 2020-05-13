@@ -189,6 +189,7 @@ class ConversionPaper extends Component {
                 borderRadius: "4px",
                 marginRight: "10px",
                 cursor: "pointer",
+                minWidth: "90px",
               }}
               onClick={() => {
                 this.editCoversion(record.ConversionID);
@@ -277,6 +278,7 @@ class ConversionPaper extends Component {
                 color: "white",
                 borderRadius: "4px",
                 marginRight: "10px",
+                minWidth: "90px",
                 cursor: "pointer",
               }}
               onClick={() => {
@@ -296,6 +298,7 @@ class ConversionPaper extends Component {
                 color: "white",
                 borderRadius: "4px",
                 cursor: "pointer",
+                minWidth: "90px",
               }}
               onClick={() => {
                 this.applyNewRate(record);

@@ -288,7 +288,7 @@ let searchProduct = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products!",
+          message: "Không có sản phẩm!",
         });
       } else {
         // Chay Query de lay total page
@@ -432,7 +432,7 @@ let getProductsByCategory = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products!",
+          message: "Không có sản phẩm!",
         });
       } else {
         let sql = `SELECT COUNT(*) AS Total
@@ -480,7 +480,7 @@ let getProductAllByCategory = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products!",
+          message: "Không có sản phẩm!",
         });
       } else {
         return res.status(200).json({
@@ -511,7 +511,7 @@ let getProducts = async (req, res) => {
         // Chua co thi like
         return res.status(200).json({
           success: false,
-          message: "No Products!",
+          message: "Không có sản phẩm!",
         });
       } else {
         let sql = `SELECT COUNT(*) AS Total FROM Products`;
@@ -606,12 +606,12 @@ let addNewProduct = async (req, res) => {
             debug(err);
             return res.status(200).json({
               success: false,
-              message: "Add New Product is Unsuccess!",
+              message: "Thêm sản phẩm không thành công!",
             });
           } else {
             return res.status(200).json({
               success: true,
-              message: "Add New Product is Success!",
+              message: "Thêm sản phẩm thành công!",
               idProduct: idProduct,
             });
           }
@@ -657,11 +657,11 @@ let updateProduct = async (req, res) => {
     if (err) {
       return res
         .status(200)
-        .json({ success: false, message: "Update Product Failed!" });
+        .json({ success: false, message: "Cập nhật sản phẩm không thành công!" });
     } else {
       return res
         .status(200)
-        .json({ success: true, message: "Update Product Success!" });
+        .json({ success: true, message: "Cập nhật sản phẩm thành công" });
     }
   });
 };
